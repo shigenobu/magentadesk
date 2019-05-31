@@ -1,0 +1,217 @@
+Usage:
+
+    echo '${json}' \
+      | [MD_ENV=${mdEnv}] [MD_OUTPUT=${mdOutput}] [MD_HOME=${mdHome}] \
+        java -jar magentadesk.jar --mode=${mode} [--logPath=${logPath}] [--addSeconds=${addSeconds}]
+
+(args)
+
+  mode        (required) diff or sync
+  logPath     optionally, log to file. if 'stdout', log to stdout. if 'stderr', log to stderr.
+  addSeconds  optionally, modify log time. if '0', it's equal to locale en. default locale ja.
+
+(env)
+
+  mdEnv       if 'DEBUG', log in detail.
+  mdOutput    if 'PRETTY', output json is pretty.
+  mdHome      default is '${HOME}/.magentadesk'.
+
+(stdin)
+
+  mode=diff
+
+    {
+      "host":"127.0.0.1",                     // (required) connect host
+      "port":13306,                           // (required) connect port
+      "user":"root",                          // (required) connect user, need 'base' database, 'compare' database, and 'magentadesk' database privileges
+      "pass":"pass",                          // (required) connect password
+      "charset":"utf8mb4",                    // (required) connect charset, 'utf8' or 'utf8mb4' is allowed. default is 'utf8mb4'.
+      "baseDatabase":"base",                  // (required) base database
+      "compareDatabase":"compare",            // (required) compare database
+      "option":{                              // optionally
+        "includeTableLikePatterns": [           // list. default is '%'. OR condition.
+          "m\\_*"
+        ],
+        "excludeTableLikePatterns": [           // list. default is ''. AND condition.
+          "m\\_admin\\_%"
+        ],
+        "ignoreAutoIncrement": false,           // if true, ignore table structure diff. default is false.
+        "ignoreComment": false,                 // if true, ignore table structure diff. default is false.
+        "ignorePartitions": false,              // if true, ignore table structure diff. default is false.
+        "ignoreSystemVersioned": false          // if true, ignore table structure diff. default is false.
+      },
+    }
+
+  mode=sync
+
+    {
+      "host":"127.0.0.1",                     // (required) connect host
+      "port":13306,                           // (required) connect port
+      "user":"root",                          // (required) connect user, need 'base' database, 'compare' database, and 'magentadesk' database privileges
+      "pass":"pass",                          // (required) connect password
+      "charset":"utf8mb4",                    // (required) connect charset, 'utf8' or 'utf8mb4' is allowed. default is 'utf8mb4'.
+      "summaryId":"XXXXX",                    // (required) diff result id
+      "diffSeqs": [],                         // optionally, if listed, selected diffSeqs are only reflected.
+      "run": false,                           // optionally, if 'true', execute sync, 'false' is dryrun. default is false.
+      "force": false,                         // optionally, if 'true', not exists in base, but exists in compare, force to delete from compare. default is false.
+      "loose": false,                         // optionally, if 'true', delete only summary id records in complete execution, 'false' is delete base and compare concerned records. default is false.
+      "commandsBeforeCommit": [               // optionally, execute commands just before commit.
+        {
+          "command": "XXX",                     // (required) command
+          "timeout": 10                         // default is 30.
+        }
+      ],
+      "commandsAfterCommit": [                // optionally, execute commands just after commit.
+        {
+          "command": "XXX",                     // (required) command
+          "timeout": 10                         // default is 30.
+        }
+      ]
+    }
+
+(stdout)
+
+  mode=diff
+
+    {
+      "existsOnlyBaseTables": [
+        {
+          "tableName": "t1",
+          "tableComment": "",
+          "baseDefinition": "CREATE ..."
+        }
+      ],
+      "existsOnlyCompareTables": [
+        {
+          "tableName": "t1",
+          "tableComment": "",
+          "compareDefinition": "CREATE ..."
+        }
+      ],
+      "mismatchDefinitionTables": [
+        {
+          "tableName": "t1",
+          "tableComment": "",
+          "baseDefinition": "CREATE ...",
+          "compareDefinition": "CREATE ..."
+        }
+      ],
+      "incorrectDefinitionTables": [
+        {
+          "tableName": "t1",
+          "tableComment": "",
+          "definition": "CREATE ...",
+          "reason": "(noPrimaryKey|hasForeignKey)"
+        }
+      ],
+      "forceExcludeTables": [
+        {
+          "tableName": "t1",
+          "tableComment": "",
+          "definition": "CREATE ...",
+          "reason": "(referencedForeignKey|isView|isSequence|notInnoDB|mismatchTrigger)"
+        }
+      ],
+      "mismatchRecordTables": [
+        {
+          "tableName": "t1",
+          "tableComment": "",
+          "columns": [
+            {
+              "columnName": "",
+              "columnType": "",
+              "columnComment": "",
+              "isPrimary": (true|false),
+            }
+          ],
+          "records": [
+            {
+              "diffSeq": XXX,
+              "baseValues": [],
+              "compareValues": []
+            }
+          ]
+        }
+      ],
+      "matchTables": [
+        {
+          "tableName": "t1",
+          "tableComment": "",
+          "baseTableType": "",
+          "compareTableType": "",
+          "baseChecksum": "",
+          "compareChecksum": ""
+        }
+      ],
+      "summaryId": "XXXXX"
+    }
+
+  mode=sync
+
+    {
+      "reflectedRecordTables": [
+        {
+          "tableName": "t1",
+          "tableComment": "",
+          "columns": [
+            {
+              "columnName": "",
+              "columnType": "",
+              "columnComment": "",
+              "isPrimary": (true|false),
+            }
+          ],
+          "records": [
+            {
+              "diffSeq": XXX,
+              "values": []
+            }
+          ]
+        }
+      ],
+      "notReflectedRecordTables": [
+        {
+          "tableName": "t1",
+          "tableComment": "",
+          "columns": [
+            {
+              "columnName": "",
+              "columnType": "",
+              "columnComment": "",
+              "isPrimary": (true|false),
+            }
+          ],
+          "records": [
+            {
+              "diffSeq": XXX,
+              "baseValues": [],
+              "compareValues": []
+            }
+          ]
+        }
+      ],
+      "commandResultsBeforeCommit": [
+        {
+          "command": "XXX",
+          "code": XXX,
+          "output": "XXX"
+        }
+      ],
+      "commandResultsAfterCommit": [
+        {
+          "command": "XXX",
+          "code": XXX,
+          "output": "XXX"
+        }
+      ],
+      "summaryId": "XXXXX"
+    }
+
+(called command in commandsBeforeCommit or commandsAfterCommit)
+
+  (stdin)
+
+    {
+      "run": false,                                                     // when mode=sync, input run value.
+      "reflectedJsonPath": "${mdHome}/reflected_${summaryId}.json"      // when mode=sync, output reflectedRecordTables value.
+    }

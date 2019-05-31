@@ -1,0 +1,129 @@
+package com.walksocket.md;
+
+import com.walksocket.md.exception.MdExceptionInvalidVersion;
+import com.walksocket.md.exception.MdExceptionUnknown;
+import com.walksocket.md.execute.*;
+import com.walksocket.md.input.MdInputAbstract;
+import com.walksocket.md.mariadb.MdMariadbConnection;
+import com.walksocket.md.mariadb.MdMariadbRecord;
+import com.walksocket.md.output.MdOutputAbstract;
+
+/**
+ * execute.
+ */
+import java.util.List;
+
+public class MdExecute {
+
+  /**
+   * execute.
+   * @param input input object
+   * @return output object
+   * @throws Exception several error
+   */
+  public static MdOutputAbstract execute(MdInputAbstract input) throws Exception {
+    String sql;
+    List<MdMariadbRecord> records;
+
+    try (MdMariadbConnection con = new MdMariadbConnection(input.getConnectionString())) {
+      try {
+        // begin
+        con.begin();
+
+        // check version 10.3 or 10.4
+        String version = null;
+        sql = "SELECT @@version as version";
+        records = con.getRecords(sql);
+        for (MdMariadbRecord record : records) {
+          version = record.get("version").toLowerCase();
+          break;
+        }
+        if (MdUtils.isNullOrEmpty(version)
+          || !version.contains("mariadb")
+          || !(version.contains("10.3.") || version.contains("10.4."))) {
+          throw new MdExceptionInvalidVersion("MariaDB 10.3 or 10.4 is required.");
+        }
+
+        // create database `magentadesk`.
+        sql = "CREATE DATABASE IF NOT EXISTS `magentadesk`";
+        con.execute(sql);
+
+        // create table `magentadesk`.`diffSummary`.
+        sql = "CREATE TABLE IF NOT EXISTS `magentadesk`.`diffSummary` (" +
+            "  `summaryId` varchar(32) not null," +
+            "  `baseDatabase` varchar(64) not null," +
+            "  `compareDatabase` varchar(64) not null," +
+            "  `created` datetime not null default current_timestamp," +
+            "  primary key (`summaryId`)," +
+            "  key (`baseDatabase`, `compareDatabase`)," +
+            "  key (`created`)" +
+            ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+        con.execute(sql);
+
+        // create table `magentadesk`.`diffTable`.
+        sql = "CREATE TABLE IF NOT EXISTS `magentadesk`.`diffTable` (" +
+            "  `summaryId` varchar(32) not null," +
+            "  `tableName` varchar(64) not null," +
+            "  `tableComment` varchar(512)," +
+            "  `columns` json," +
+            "  primary key (`summaryId`, `tableName`)," +
+            "  foreign key (`summaryId`) references `magentadesk`.`diffSummary` (`summaryId`) on delete cascade" +
+            ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+        con.execute(sql);
+
+        // create sequence `magentadesk`.`diffSequence`.
+        sql = "CREATE SEQUENCE IF NOT EXISTS `magentadesk`.`diffSequence` increment by 0 cycle;";
+        con.execute(sql);
+
+        // create table `magentadesk`.`diffRecord`.
+        sql = "CREATE TABLE IF NOT EXISTS `magentadesk`.`diffRecord` (" +
+            "  `summaryId` varchar(32) not null," +
+            "  `tableName` varchar(64) not null," +
+            "  `diffSeq` bigint not null default nextval(`magentadesk`.`diffSequence`)," +
+            "  `baseValues` longblob," +
+            "  `compareValues` longblob," +
+            "  primary key (`summaryId`, `tableName`, `diffSeq`)," +
+            "  unique key (`diffSeq`)," +
+            "  foreign key (`summaryId`) references `magentadesk`.`diffSummary` (`summaryId`) on delete cascade" +
+            ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+        con.execute(sql);
+
+        // delete from `magentadesk`.`diffSummary` where expired.
+        sql = "DELETE FROM `magentadesk`.`diffSummary` WHERE `created` < (NOW() - INTERVAL 10800 SECOND)";
+        con.execute(sql);
+
+        // create table `magentadesk`.`diffLock`.
+        sql = "CREATE TABLE IF NOT EXISTS `magentadesk`.`diffLock` (" +
+            "  `baseDatabase` varchar(64) not null," +
+            "  `compareDatabase` varchar(64) not null," +
+            "  primary key (`baseDatabase`, `compareDatabase`)" +
+            ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+        con.execute(sql);
+
+        // execute
+        MdExecuteAbstract execute = null;
+        MdInputAbstract.Mode mode = input.getMode();
+        if (mode == MdInputAbstract.Mode.DIFF) {
+          execute = new MdExecuteDiff(con);
+        } else if (mode == MdInputAbstract.Mode.SYNC) {
+          execute = new MdExecuteSync(con);
+        }
+        MdOutputAbstract output = execute.execute(input);
+
+        // rollback
+        con.rollback();
+
+        return output;
+
+      } catch (Exception e) {
+        // rollback
+        MdLogger.error(e);
+        if (con != null) {
+          con.rollback();
+        }
+      }
+    }
+
+    throw new MdExceptionUnknown();
+  }
+}
