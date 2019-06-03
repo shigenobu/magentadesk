@@ -1,24 +1,49 @@
-Usage:
+# magentadesk - Get MariaDB Table Difference, And Reflect.
+
+### About
+
+Get diff and sync between two databases in same host created by MariaDB.  
+
+### System Required
+
+* over JDK 1.8
+* over MariaDB 10.3
+
+### Usage
+
+When put json to stdin, get result from stdout by json.  
+Below, it's simple usage.  
+
+    echo '${json}' | java -jar magentadesk.jar --mode=${mode}
+
+[args]  
+
+|name|value|remarks|
+|:--|:-|:---|
+|--mode|(required)diff or sync| 'diff' is get diff, 'sync' is reflected used by diff results.|
+|--logPath|log written path.|when 'stdout', write out to stdout, when 'stderr', write out to stderr.|
+|--addSeconds|add seconds in log time|default is 60x60x9, it means 'ja', if 0, it means 'en'.|
+
+[env]  
+
+|name|remarks|
+|:--|:---|
+|MD_ENV|if 'DEBUG', log in detail.|
+|MD_OUTPUT|if 'PRETTY', write out json result in pretty.|
+|MD_HOME|default is ${HOME}/.magentadesk. There is a temporary directory, by commands which execute in sync.|
+
+Complete sample, containis args and env.  
 
     echo '${json}' \
       | [MD_ENV=${mdEnv}] [MD_OUTPUT=${mdOutput}] [MD_HOME=${mdHome}] \
         java -jar magentadesk.jar --mode=${mode} [--logPath=${logPath}] [--addSeconds=${addSeconds}]
 
-(args)
 
-  mode        (required) diff or sync
-  logPath     optionally, log to file. if 'stdout', log to stdout. if 'stderr', log to stderr.
-  addSeconds  optionally, modify log time. if '0', it's equal to locale en. default locale ja.
+### JSON FORMAT
 
-(env)
+[INPUT JSON]
 
-  mdEnv       if 'DEBUG', log in detail.
-  mdOutput    if 'PRETTY', output json is pretty.
-  mdHome      default is '${HOME}/.magentadesk'.
-
-(stdin)
-
-  mode=diff
+__mode=diff__
 
     {
       // (required) connect host
@@ -46,18 +71,18 @@ Usage:
         "excludeTableLikePatterns": [
           "m\\_admin\\_%"
         ],
-        // if true, ignore table structure diff. default is false.
+        // if true, ignore auto increment value for table structure diff. default is false.
         "ignoreAutoIncrement": false,
-        // if true, ignore table structure diff. default is false.
+        // if true, ignore table, column, index and partition comment for table structure diff. default is false.
         "ignoreComment": false,
-        // if true, ignore table structure diff. default is false.
+        // if true, ignore partition for table structure diff. default is false.
         "ignorePartitions": false,
-        // if true, ignore table structure diff. default is false.
+        // if true, ignore system versioned column and table info for table structure diff. default is false.
         "ignoreSystemVersioned": false
       }
     }
 
-  mode=sync
+__mode=sync__
 
     {
       // (required) connect host
@@ -101,9 +126,9 @@ Usage:
       ]
     }
 
-(stdout)
+[OUTPUT JSON]
 
-  mode=diff
+__mode=diff__
 
     {
       "existsOnlyBaseTables": [
@@ -178,7 +203,7 @@ Usage:
       "summaryId": "XXXXX"
     }
 
-  mode=sync
+__mode=sync__
 
     {
       "reflectedRecordTables": [
@@ -249,3 +274,28 @@ Usage:
       // when mode=sync, output reflectedRecordTables value.
       "reflectedJsonPath": "${mdHome}/reflected_${summaryId}.json"
     }
+
+### Outline
+
+[mode=diff]  
+
+* (diff and sync) create magentadesk database, and table.
+* (diff and sync) delete from diff recored passed over 3 hours since created.
+* (diff and sync) base and compare, lock execute simultaneously. （FOR UPDATE NOWAIT）
+* extract target to diff table.
+* register table diff.
+
+[mode=sync]  
+
+* (diff and sync) create magentadesk database, and table.
+* (diff and sync) delete from diff recored passed over 3 hours since created.
+* (diff and sync) base and compare, lock execute simultaneously. （FOR UPDATE NOWAIT）
+* sync table diff used by diff.
+* execute any commands.
+
+### Notice
+
+* Use checksum, checksum is different, as a result to extract record diff takes more time.
+* In much record, to extract diff may takes much time.
+* Mainly, magentadesk is target to 'master data'.
+

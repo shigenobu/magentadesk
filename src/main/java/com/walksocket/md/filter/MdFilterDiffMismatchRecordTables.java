@@ -3,10 +3,8 @@ package com.walksocket.md.filter;
 import com.walksocket.md.MdDesk;
 import com.walksocket.md.MdInfoDiff;
 import com.walksocket.md.MdUtils;
-import com.walksocket.md.info.MdInfoDiffColumn;
 import com.walksocket.md.mariadb.MdMariadbConnection;
 import com.walksocket.md.mariadb.MdMariadbRecord;
-import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.output.MdOutputDiff;
 import com.walksocket.md.output.member.MdOutputMemberMatchTables;
 import com.walksocket.md.output.member.MdOutputMemberMismatchRecordTable;
@@ -16,7 +14,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * filter diff mismatch record.

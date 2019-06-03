@@ -4,6 +4,7 @@ import com.walksocket.md.*;
 import com.walksocket.md.bash.MdBashCommand;
 import com.walksocket.md.bash.MdBashResult;
 import com.walksocket.md.bash.MdBashStdin;
+import com.walksocket.md.exception.MdExceptionNoExistsBaseOrCompare;
 import com.walksocket.md.exception.MdExceptionNoExistsDiffSeqs;
 import com.walksocket.md.filter.*;
 import com.walksocket.md.input.MdInputAbstract;
@@ -55,7 +56,7 @@ public class MdExecuteSync extends MdExecuteAbstract {
       compareDatabase = record.get("compareDatabase");
     }
     if (MdUtils.isNullOrEmpty(baseDatabase) || MdUtils.isNullOrEmpty(compareDatabase)) {
-      throw new Exception();
+      throw new MdExceptionNoExistsBaseOrCompare();
     }
 
     // -----
