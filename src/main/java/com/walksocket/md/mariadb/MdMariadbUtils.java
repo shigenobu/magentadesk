@@ -67,6 +67,7 @@ public class MdMariadbUtils {
     columnTypes.put("MEDIUMTEXT", MdMariadbColumnType.STRING);
     columnTypes.put("LONGTEXT", MdMariadbColumnType.STRING);
     columnTypes.put("ENUM", MdMariadbColumnType.STRING);
+    columnTypes.put("SET", MdMariadbColumnType.STRING);
     columnTypes.put("JSON", MdMariadbColumnType.STRING);
 
     columnTypes.put("DATE", MdMariadbColumnType.STRING);
@@ -100,6 +101,7 @@ public class MdMariadbUtils {
     dynamicTypes.put("MEDIUMTEXT", MdMariadbDynamicType.CHAR);
     dynamicTypes.put("LONGTEXT", MdMariadbDynamicType.CHAR);
     dynamicTypes.put("ENUM", MdMariadbDynamicType.CHAR);
+    dynamicTypes.put("SET", MdMariadbDynamicType.CHAR);
     dynamicTypes.put("JSON", MdMariadbDynamicType.CHAR);
 
     dynamicTypes.put("DATE", MdMariadbDynamicType.DATE);

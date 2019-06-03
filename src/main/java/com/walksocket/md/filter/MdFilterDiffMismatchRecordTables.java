@@ -70,18 +70,15 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
         continue;
       }
 
-      // if system versioned, confirm except
-      if (baseInfo.getInfoTable().isSystemVersioned()
-          || compareInfo.getInfoTable().isSystemVersioned()) {
-        if (getExceptRecordsCount(baseInfo, compareInfo) == 0) {
-          // add matches
-          outputDiff.matchTables.add(
-              new MdOutputMemberMatchTables(baseInfo, compareInfo));
+      // if system versioned or lower and upper mixed, confirm except
+      if (getExceptRecordsCount(baseInfo, compareInfo) == 0) {
+        // add matches
+        outputDiff.matchTables.add(
+            new MdOutputMemberMatchTables(baseInfo, compareInfo));
 
-          removedBaseInfoList.add(baseInfo);
-          removedCompareInfoLIst.add(compareInfo);
-          continue;
-        }
+        removedBaseInfoList.add(baseInfo);
+        removedCompareInfoLIst.add(compareInfo);
+        continue;
       }
 
       // register
