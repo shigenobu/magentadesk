@@ -1,9 +1,11 @@
 package com.walksocket.md.mariadb;
 
+import com.walksocket.md.MdUtils;
 import com.walksocket.md.input.member.MdInputMemberOption;
 import org.apache.commons.lang3.StringUtils;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +13,15 @@ import java.util.Map;
  * mariadb utils.
  */
 public class MdMariadbUtils {
+
+  /**
+   * charset.
+   */
+  public enum MdMariadbCharset {
+    UTF8,
+    UTF8MB4,
+    ;
+  }
 
   /**
    * column type.
@@ -125,6 +136,29 @@ public class MdMariadbUtils {
    */
   public static String quote(String src) {
     return StringUtils.replace(src, "'", "''");
+  }
+
+  /**
+   * is valid charset.
+   * @param charset charset
+   * @return if valid, true
+   */
+  public static boolean isValidCharset(String charset) {
+    return Arrays.asList(MdMariadbCharset.values())
+        .stream()
+        .filter(c -> c.toString().equalsIgnoreCase(charset))
+        .findFirst()
+        .isPresent();
+  }
+
+  /**
+   * is valid collation.
+   * @param collation collation.
+   * @return if valid, true
+   */
+  public static boolean isValidCollation(String collation) {
+    String charset = collation.split("_")[0];
+    return isValidCharset(charset);
   }
 
   /**

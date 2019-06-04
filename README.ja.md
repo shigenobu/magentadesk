@@ -163,13 +163,13 @@ __mode=diffのとき__
           "compareDefinition": "CREATE ..."
         }
       ],
-      // 主キーがないテーブル、外部キーを持っているテーブルで、データ差分比較対象外となる
+      // 主キーがないテーブル、外部キーを持っているテーブル、有効でないキャラセットで、データ差分比較対象外となる
       "incorrectDefinitionTables": [
         {
           "tableName": "t1",
           "tableComment": "",
           "definition": "CREATE ...",
-          "reason": "(noPrimaryKey|hasForeignKey)"
+          "reason": "(noPrimaryKey|hasForeignKey|invalidCharset)"
         }
       ],
       // 外部キー参照をされているテーブル、ビュー、シーケンス、InnoDB以外のストレージエンジン、トリガー定義が異なるテーブルで、

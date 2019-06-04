@@ -483,36 +483,36 @@ public class MdInfoDiff {
   }
 
   /**
-   * get primary column names.
-   * @return primary column names
+   * get primary columns.
+   * @return primary columns
    * @throws SQLException sql error
    */
-  public List<String> getPrimaryColumnNames() throws SQLException {
-    List<String> columnNames = new ArrayList<>();
+  public List<MdInfoDiffColumn> getPrimaryColumns() throws SQLException {
+    List<MdInfoDiffColumn> columns = new ArrayList<>();
     for (MdInfoDiffColumn infoColumn : getInfoColumns()) {
       if (!infoColumn.isPrimary() || infoColumn.isGenerated()) {
         continue;
       }
-      columnNames.add(infoColumn.getColumnName());
+      columns.add(infoColumn);
     }
 
-    return columnNames;
+    return columns;
   }
 
   /**
-   * get real column names.
-   * @return real column names
+   * get real columns.
+   * @return real columns
    * @throws SQLException sql error
    */
-  public List<String> getRealColumnNames() throws SQLException {
-    List<String> columnNames = new ArrayList<>();
+  public List<MdInfoDiffColumn> getRealColumns() throws SQLException {
+    List<MdInfoDiffColumn> columns = new ArrayList<>();
     for (MdInfoDiffColumn infoColumn : getInfoColumns()) {
       if (infoColumn.isGenerated()) {
         continue;
       }
-      columnNames.add(infoColumn.getColumnName());
+      columns.add(infoColumn);
     }
 
-    return columnNames;
+    return columns;
   }
 }

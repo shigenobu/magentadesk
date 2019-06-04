@@ -3,6 +3,7 @@ package com.walksocket.md.input;
 import com.google.gson.annotations.Expose;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.exception.MdExceptionInvalidInput;
+import com.walksocket.md.mariadb.MdMariadbUtils;
 
 /**
  * input abstract.
@@ -118,9 +119,8 @@ public abstract class MdInputAbstract {
     if (MdUtils.isNullOrEmpty(pass)) {
       throw new MdExceptionInvalidInput("Invalid pass.");
     }
-
     if (MdUtils.isNullOrEmpty(charset)
-      || !(charset.toLowerCase().equals("utf8") || charset.toLowerCase().equals("utf8mb4"))) {
+      || !MdMariadbUtils.isValidCharset(charset)) {
       throw new MdExceptionInvalidInput("Invalid charset.");
     }
   }

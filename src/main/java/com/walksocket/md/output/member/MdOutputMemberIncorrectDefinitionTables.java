@@ -24,6 +24,11 @@ public class MdOutputMemberIncorrectDefinitionTables {
      * has foreign key.
      */
     HAS_FOREIGN_KEY("hasForeignKey"),
+
+    /**
+     * invalid charset.
+     */
+    INVALID_CHARSET("invalidCharset"),
     ;
 
     /**

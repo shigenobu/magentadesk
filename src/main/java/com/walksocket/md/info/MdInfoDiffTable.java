@@ -3,6 +3,7 @@ package com.walksocket.md.info;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.input.member.MdInputMemberOption;
 import com.walksocket.md.mariadb.MdMariadbRecord;
+import com.walksocket.md.mariadb.MdMariadbUtils;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -85,6 +86,14 @@ public class MdInfoDiffTable implements MdInfoDiffInterface {
    */
   public String getTableComment() {
     return TABLE_COMMENT;
+  }
+
+  /**
+   * is valid collation.
+   * @return if valid, true
+   */
+  public boolean isValidCollation() {
+    return MdMariadbUtils.isValidCollation(TABLE_COLLATION);
   }
 
   /**

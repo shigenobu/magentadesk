@@ -158,7 +158,7 @@ __mode=diff__
           "tableName": "t1",
           "tableComment": "",
           "definition": "CREATE ...",
-          "reason": "(noPrimaryKey|hasForeignKey)"
+          "reason": "(noPrimaryKey|hasForeignKey|invalidCharset)"
         }
       ],
       "forceExcludeTables": [

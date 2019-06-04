@@ -3,6 +3,7 @@ package com.walksocket.md.filter;
 import com.walksocket.md.MdDesk;
 import com.walksocket.md.MdInfoDiff;
 import com.walksocket.md.MdUtils;
+import com.walksocket.md.info.MdInfoDiffColumn;
 import com.walksocket.md.mariadb.MdMariadbConnection;
 import com.walksocket.md.mariadb.MdMariadbRecord;
 import com.walksocket.md.output.MdOutputDiff;
@@ -119,8 +120,19 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
    */
   private int getExceptRecordsCount(MdInfoDiff baseInfo, MdInfoDiff compareInfo) throws SQLException {
     List<String> realColumnNames = new ArrayList<>();
-    for (String columnName : baseInfo.getRealColumnNames()) {
-      realColumnNames.add(String.format("`%s`", columnName));
+    for (MdInfoDiffColumn column : baseInfo.getRealColumns()) {
+      if (column.hasCollation()) {
+        realColumnNames.add(String.format(
+            "`%s` collate %s as cl_%s",
+            column.getColumnName(),
+            column.getBinaryCollationName(),
+            column.getColumnName()));
+      } else {
+        realColumnNames.add(String.format(
+            "`%s` as cl_%s",
+            column.getColumnName(),
+            column.getColumnName()));
+      }
     }
 
     int cnt = 0;
@@ -165,39 +177,53 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
     List<String> baseDynamicColumnNames = new ArrayList<>();
     List<String> compareDynamicColumnNames = new ArrayList<>();
     List<String> realColumnNames = new ArrayList<>();
-    for (String columnName : baseInfo.getRealColumnNames()) {
+    for (MdInfoDiffColumn column : baseInfo.getRealColumns()) {
       baseColumnNames.add(
           String.format(
-              "md_b2c.`%s` as mdb_%s",
-              columnName,
-              columnName));
+              "md_b2c.cl_%s as mdb_%s",
+              column.getColumnName(),
+              column.getColumnName()));
 
       compareColumnNames.add(
           String.format(
-              "md_c2b.`%s` as mdc_%s",
-              columnName,
-              columnName));
+              "md_c2b.cl_%s as mdc_%s",
+              column.getColumnName(),
+              column.getColumnName()));
 
       baseDynamicColumnNames.add(
           String.format("'%s', mdb_%s",
-              columnName,
-              columnName));
+              column.getColumnName(),
+              column.getColumnName()));
 
       compareDynamicColumnNames.add(
           String.format("'%s', mdc_%s",
-              columnName,
-              columnName));
+              column.getColumnName(),
+              column.getColumnName()));
 
-      realColumnNames.add(String.format("`%s`", columnName));
+      if (column.hasCollation()) {
+        realColumnNames.add(String.format(
+            "`%s` collate %s as cl_%s",
+            column.getColumnName(),
+            column.getBinaryCollationName(),
+            column.getColumnName()));
+      } else {
+        realColumnNames.add(String.format(
+            "`%s` as cl_%s",
+            column.getColumnName(),
+            column.getColumnName()));
+      }
     }
 
     List<String> conditions = new ArrayList<>();
-    for (String columnName : baseInfo.getPrimaryColumnNames()) {
-      conditions.add(
-          String.format(
-              "md_b2c.`%s` = md_c2b.`%s`",
-              columnName,
-              columnName));
+    for (MdInfoDiffColumn column : baseInfo.getPrimaryColumns()) {
+      String condition = String.format(
+          "md_b2c.cl_%s = md_c2b.cl_%s",
+          column.getColumnName(),
+          column.getColumnName());
+      if (column.hasCollation()) {
+        condition = String.format("%s collate %s", condition, column.getBinaryCollationName());
+      }
+      conditions.add(condition);
     }
 
     String sql = String.format(

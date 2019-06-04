@@ -3,6 +3,7 @@ package com.walksocket.md.info;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.input.member.MdInputMemberOption;
 import com.walksocket.md.mariadb.MdMariadbRecord;
+import com.walksocket.md.mariadb.MdMariadbUtils;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -145,6 +146,38 @@ public class MdInfoDiffColumn implements MdInfoDiffInterface {
    */
   public boolean isGenerated() {
     return !MdUtils.isNullOrEmpty(IS_GENERATED) && !IS_GENERATED.toUpperCase().equals("NEVER");
+  }
+
+  /**
+   * is valid collation.
+   * @return if valid, true
+   */
+  public boolean isValidCollation() {
+    if (!hasCollation()) {
+      // number and so on, is valid.
+      return true;
+    }
+    return MdMariadbUtils.isValidCollation(COLLATION_NAME);
+  }
+
+  /**
+   * has collation.
+   * @return if collation name defined, true
+   */
+  public boolean hasCollation() {
+    return !MdUtils.isNullOrEmpty(COLLATION_NAME);
+  }
+
+  /**
+   * get binary collation name.
+   * @return binary collation name
+   */
+  public String getBinaryCollationName() {
+    if (!hasCollation()) {
+      return "";
+    }
+
+    return CHARACTER_SET_NAME.toLowerCase() + "_bin";
   }
 
   @Override

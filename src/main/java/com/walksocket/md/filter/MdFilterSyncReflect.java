@@ -150,7 +150,7 @@ public class MdFilterSyncReflect extends MdFilterSyncAbstract {
           List<String> conditions = new ArrayList<>();
           for (Map.Entry<String, String> entry : primaryCompareValues.entrySet()) {
             MdOutputPartsColumn column = info.getColumns().stream()
-                .filter(c -> c.isPrimary && c.columnName.toLowerCase().equals(entry.getKey()))
+                .filter(c -> c.isPrimary && c.columnName.equalsIgnoreCase(entry.getKey()))
                 .findFirst().get();
             conditions.add(
                 String.format(

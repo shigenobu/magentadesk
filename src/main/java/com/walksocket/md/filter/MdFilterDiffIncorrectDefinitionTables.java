@@ -67,6 +67,21 @@ public class MdFilterDiffIncorrectDefinitionTables extends MdFilterDiffAbstract 
         removedCompareInfoLIst.add(compareInfo);
         continue;
       }
+
+      // charset check
+      if (!baseInfo.getInfoTable().isValidCollation()
+          || !compareInfo.getInfoTable().isValidCollation()
+          || baseInfo.getInfoColumns().stream().filter(c -> !c.isValidCollation()).findFirst().isPresent()
+          || compareInfo.getInfoColumns().stream().filter(c -> !c.isValidCollation()).findFirst().isPresent()) {
+        outputDiff.incorrectDefinitionTables.add(
+            new MdOutputMemberIncorrectDefinitionTables(
+                baseInfo,
+                MdOutputMemberIncorrectDefinitionTables.MdOutputMemberIncorrectReason.INVALID_CHARSET));
+
+        removedBaseInfoList.add(baseInfo);
+        removedCompareInfoLIst.add(compareInfo);
+        continue;
+      }
     }
     for (MdInfoDiff info : removedBaseInfoList) {
       baseInfoList.remove(info);
