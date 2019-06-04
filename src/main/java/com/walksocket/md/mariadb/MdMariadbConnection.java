@@ -122,6 +122,9 @@ public class MdMariadbConnection implements AutoCloseable {
       stmt = con.createStatement();
       stmt.execute(sql);
       MdLogger.sql(sql);
+    } catch (Exception e) {
+      MdLogger.error(sql);
+      throw e;
     } finally {
       if (stmt != null) {
         try {
@@ -159,6 +162,9 @@ public class MdMariadbConnection implements AutoCloseable {
         }
         records.add(new MdMariadbRecord(record));
       }
+    } catch (Exception e) {
+      MdLogger.error(sql);
+      throw e;
     } finally {
       if (rs != null) {
         try {

@@ -93,6 +93,9 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
           outputDiff.summaryId,
           baseInfo,
           compareInfo);
+      if (MdUtils.isNullOrEmpty(partsRecord)) {
+        throw new RuntimeException("Error mismatch records are not detected.");
+      }
 
       // add mismatch
       outputDiff.mismatchRecordTables.add(new MdOutputMemberMismatchRecordTable(baseInfo, partsRecord));
