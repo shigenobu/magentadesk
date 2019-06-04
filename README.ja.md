@@ -81,7 +81,9 @@ __mode=diffのとき__
         // trueにすると、パーティション定義を、テーブル構造比較項目の対象から外します
         "ignorePartitions": false,
         // trueにすると、system versioned tableのテーブル定義・カラム定義を、テーブル構造比較項目の対象から外します
-        "ignoreSystemVersioned": false
+        "ignoreSystemVersioned": false,
+        // trueにすると、default値にsequenceのnextval、lastvalが定義されている場合、テーブル構造比較項目の対象から外します
+        "ignoreDefaultForSequence": false
       }
     }
 

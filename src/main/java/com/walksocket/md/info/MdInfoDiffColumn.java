@@ -192,7 +192,13 @@ public class MdInfoDiffColumn implements MdInfoDiffInterface {
         ) && option.ignoreSystemVersioned)) {
       src.add(COLUMN_NAME);
       src.add(ORDINAL_POSITION);
-      src.add(COLUMN_DEFAULT);
+      if (!(!MdUtils.isNullOrEmpty(COLUMN_DEFAULT) &&
+          (
+              COLUMN_DEFAULT.toLowerCase().startsWith("nextval")
+              || COLUMN_DEFAULT.toLowerCase().startsWith("lastval")
+          ) && option.ignoreDefaultForSequence)) {
+        src.add(COLUMN_DEFAULT);
+      }
       src.add(IS_NULLABLE);
       src.add(DATA_TYPE);
       src.add(CHARACTER_SET_NAME);

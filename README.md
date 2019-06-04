@@ -78,7 +78,9 @@ __mode=diff__
         // if true, ignore partition for table structure diff. default is false.
         "ignorePartitions": false,
         // if true, ignore system versioned column and table info for table structure diff. default is false.
-        "ignoreSystemVersioned": false
+        "ignoreSystemVersioned": false,
+        // if true, ignore column default sequence definition for table structure diff. default is false.
+        "ignoreDefaultForSequence": false
       }
     }
 

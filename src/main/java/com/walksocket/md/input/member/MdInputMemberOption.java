@@ -51,4 +51,10 @@ public class MdInputMemberOption {
    */
   @Expose
   public boolean ignoreSystemVersioned;
+
+  /**
+   * ignore column default sequence definition on structure.
+   */
+  @Expose
+  public boolean ignoreDefaultForSequence;
 }

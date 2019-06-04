@@ -53,7 +53,9 @@ Usage:
         // if true, ignore table structure diff. default is false.
         "ignorePartitions": false,
         // if true, ignore table structure diff. default is false.
-        "ignoreSystemVersioned": false
+        "ignoreSystemVersioned": false,
+        // if true, ignore table structure diff. default is false.
+        "ignoreDefaultForSequence": false
       }
     }
 
