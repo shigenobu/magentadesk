@@ -1,5 +1,6 @@
 package com.walksocket.md.info;
 
+import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.input.member.MdInputMemberOption;
 import com.walksocket.md.mariadb.MdMariadbRecord;
@@ -97,14 +98,6 @@ public class MdInfoDiffTable implements MdInfoDiffInterface {
   }
 
   /**
-   * is system versioned.
-   * @return if system versioned, true
-   */
-  public boolean isSystemVersioned() {
-    return TABLE_TYPE.equalsIgnoreCase("SYSTEM VERSIONED");
-  }
-
-  /**
    * is innodeb.
    * @return if innodb, true
    */
@@ -134,17 +127,19 @@ public class MdInfoDiffTable implements MdInfoDiffInterface {
     src.add(getClass().getName());
 
     src.add(TABLE_NAME);
-    if (!(isSystemVersioned() && option.ignoreSystemVersioned)) {
-      src.add(TABLE_TYPE);
-    }
+    src.add(TABLE_TYPE);
     src.add(ENGINE);
     src.add(ROW_FORMAT);
     if (!option.ignoreAutoIncrement) {
       src.add(AUTO_INCREMENT);
+    } else {
+      MdLogger.trace(String.format("ignoreAutoIncrement table:%s", TABLE_NAME));
     }
     src.add(TABLE_COLLATION);
     if (!option.ignoreComment) {
       src.add(TABLE_COMMENT);
+    } else {
+      MdLogger.trace(String.format("ignoreComment table:%s", TABLE_NAME));
     }
 
     return MdUtils.getHash(MdUtils.join(src, "|"));

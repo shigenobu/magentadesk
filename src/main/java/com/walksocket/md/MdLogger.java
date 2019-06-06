@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.function.Supplier;
 
 /**
  * logger.
@@ -96,6 +97,16 @@ public class MdLogger {
   public static void trace(Object message) {
     if (MdEnv.isDebug()) {
       out("TRACE", message);
+    }
+  }
+
+  /**
+   * trace logger.
+   * @param message message
+   */
+  public static void trace(Supplier<Object> message) {
+    if (MdEnv.isDebug()) {
+      out("TRACE", message.get());
     }
   }
 

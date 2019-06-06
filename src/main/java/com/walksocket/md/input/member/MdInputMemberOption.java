@@ -47,12 +47,6 @@ public class MdInputMemberOption {
   public boolean ignorePartitions;
 
   /**
-   * ignore table and column system versioned config on structure.
-   */
-  @Expose
-  public boolean ignoreSystemVersioned;
-
-  /**
    * ignore column default sequence definition on structure.
    */
   @Expose

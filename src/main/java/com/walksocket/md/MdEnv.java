@@ -52,11 +52,25 @@ public class MdEnv {
   }
 
   /**
+   * set debug.
+   */
+  public static void setDebug() {
+    isDebug = true;
+  }
+
+  /**
    * is pretty.
    * @return if pretty, true
    */
   public static boolean isPretty() {
     return isPretty;
+  }
+
+  /**
+   * set pretty.
+   */
+  public static void setPretty() {
+    isPretty = true;
   }
 
   /**

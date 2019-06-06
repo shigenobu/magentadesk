@@ -1,5 +1,6 @@
 package com.walksocket.md.info;
 
+import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.input.member.MdInputMemberOption;
 import com.walksocket.md.mariadb.MdMariadbRecord;
@@ -12,6 +13,11 @@ import java.util.List;
  * input diff partition.
  */
 public class MdInfoDiffPartition implements MdInfoDiffInterface {
+
+  /**
+   * table name.
+   */
+  private String TABLE_NAME;
 
   /**
    * partition name.
@@ -70,6 +76,7 @@ public class MdInfoDiffPartition implements MdInfoDiffInterface {
    * @throws SQLException sql error
    */
   public MdInfoDiffPartition(MdMariadbRecord record, MdInputMemberOption option) throws SQLException {
+    this.TABLE_NAME = record.get("TABLE_NAME");
     this.PARTITION_NAME = record.get("PARTITION_NAME");
     this.SUBPARTITION_NAME = record.get("SUBPARTITION_NAME");
     this.PARTITION_ORDINAL_POSITION = record.get("PARTITION_ORDINAL_POSITION");
@@ -98,6 +105,8 @@ public class MdInfoDiffPartition implements MdInfoDiffInterface {
     src.add(SUBPARTITION_EXPRESSION);
     if (!option.ignoreComment) {
       src.add(PARTITION_COMMENT);
+    } else {
+      MdLogger.trace(String.format("ignoreComment partition:%s.%s", TABLE_NAME, PARTITION_NAME));
     }
 
     return MdUtils.getHash(MdUtils.join(src, "|"));

@@ -1,5 +1,6 @@
 package com.walksocket.md.info;
 
+import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.input.member.MdInputMemberOption;
 import com.walksocket.md.mariadb.MdMariadbRecord;
@@ -13,6 +14,11 @@ import java.util.List;
  * input diff column.
  */
 public class MdInfoDiffColumn implements MdInfoDiffInterface {
+
+  /**
+   * table name.
+   */
+  private String TABLE_NAME;
 
   /**
    * column name.
@@ -91,6 +97,7 @@ public class MdInfoDiffColumn implements MdInfoDiffInterface {
    * @throws SQLException sql error
    */
   public MdInfoDiffColumn(MdMariadbRecord record, MdInputMemberOption option) throws SQLException {
+    this.TABLE_NAME = record.get("TABLE_NAME");
     this.COLUMN_NAME = record.get("COLUMN_NAME");
     this.ORDINAL_POSITION = record.get("ORDINAL_POSITION");
     this.COLUMN_DEFAULT = record.get("COLUMN_DEFAULT");
@@ -193,33 +200,31 @@ public class MdInfoDiffColumn implements MdInfoDiffInterface {
     List<String> src = new ArrayList<>();
     src.add(getClass().getName());
 
-    if (!(isGenerated() &&
+    src.add(COLUMN_NAME);
+    src.add(ORDINAL_POSITION);
+    if (!(!MdUtils.isNullOrEmpty(COLUMN_DEFAULT) &&
         (
-            GENERATION_EXPRESSION.equalsIgnoreCase("ROW START")
-            || GENERATION_EXPRESSION.equalsIgnoreCase("ROW END")
-        ) && option.ignoreSystemVersioned)) {
-      src.add(COLUMN_NAME);
-      src.add(ORDINAL_POSITION);
-      if (!(!MdUtils.isNullOrEmpty(COLUMN_DEFAULT) &&
-          (
-              COLUMN_DEFAULT.toLowerCase().startsWith("nextval")
-              || COLUMN_DEFAULT.toLowerCase().startsWith("lastval")
-          ) && option.ignoreDefaultForSequence)) {
-        src.add(COLUMN_DEFAULT);
-      }
-      src.add(IS_NULLABLE);
-      src.add(DATA_TYPE);
-      src.add(CHARACTER_SET_NAME);
-      src.add(COLLATION_NAME);
-      src.add(COLUMN_TYPE);
-      src.add(COLUMN_KEY);
-      src.add(EXTRA);
-      if (!option.ignoreComment) {
-        src.add(COLUMN_COMMENT);
-      }
-      src.add(IS_GENERATED);
-      src.add(GENERATION_EXPRESSION);
+            COLUMN_DEFAULT.toLowerCase().startsWith("nextval")
+            || COLUMN_DEFAULT.toLowerCase().startsWith("lastval")
+        ) && option.ignoreDefaultForSequence)) {
+      src.add(COLUMN_DEFAULT);
+    } else {
+      MdLogger.trace(String.format("ignoreDefaultForSequence column:%s.%s", TABLE_NAME, COLUMN_NAME));
     }
+    src.add(IS_NULLABLE);
+    src.add(DATA_TYPE);
+    src.add(CHARACTER_SET_NAME);
+    src.add(COLLATION_NAME);
+    src.add(COLUMN_TYPE);
+    src.add(COLUMN_KEY);
+    src.add(EXTRA);
+    if (!option.ignoreComment) {
+      src.add(COLUMN_COMMENT);
+    } else {
+      MdLogger.trace(String.format("ignoreComment column:%s.%s", TABLE_NAME, COLUMN_NAME));
+    }
+    src.add(IS_GENERATED);
+    src.add(GENERATION_EXPRESSION);
 
     return MdUtils.getHash(MdUtils.join(src, "|"));
   }

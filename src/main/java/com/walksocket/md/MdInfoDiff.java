@@ -8,7 +8,6 @@ import com.walksocket.md.mariadb.MdMariadbUtils;
 
 import java.sql.SQLException;
 import java.util.*;
-import java.util.stream.Stream;
 
 /**
  * info for diff.
@@ -246,26 +245,31 @@ public class MdInfoDiff {
 
     // table
     buffer.append(getInfoTable().getHash());
+    MdLogger.trace(() -> ("after table hash:" + buffer.toString()));
 
     // column
     for (MdInfoDiffColumn i : getInfoColumns()) {
       buffer.append(i.getHash());
     }
+    MdLogger.trace(() -> ("after column hash:" + buffer.toString()));
 
     // reference
     for (MdInfoDiffReference i : getInfoReferences()) {
       buffer.append(i.getHash());
     }
+    MdLogger.trace(() -> ("after reference hash:" + buffer.toString()));
 
     // constraint
     for (MdInfoDiffConstraint i : getInfoConstraints()) {
       buffer.append(i.getHash());
     }
+    MdLogger.trace(() -> ("after constraint hash:" + buffer.toString()));
 
     // index
     for (MdInfoDiffIndex i : getInfoIndexes()) {
       buffer.append(i.getHash());
     }
+    MdLogger.trace(() -> ("after index hash:" + buffer.toString()));
 
     // partition
     if (!option.ignorePartitions) {
@@ -273,10 +277,13 @@ public class MdInfoDiff {
         buffer.append(i.getHash());
       }
     }
+    MdLogger.trace(() -> ("after partition hash:" + buffer.toString()));
 
     // no trigger
 
-    return MdUtils.getHash(buffer.toString());
+    String hash = MdUtils.getHash(buffer.toString());
+    MdLogger.trace(() -> ("hash of " + tableName + ":" + buffer.toString()));
+    return hash;
   }
 
   /**
