@@ -65,9 +65,9 @@ public class MdExecuteDiff extends MdExecuteAbstract {
     List<MdFilterDiffAbstract> filters = Arrays.asList(
         new MdFilterDiffExistsOnlyBaseTables(con),
         new MdFilterDiffExistsOnlyCompareTables(con),
-        new MdFilterDiffMismatchDefinitionTables(con),
-        new MdFilterDiffIncorrectDefinitionTables(con),
         new MdFilterDiffForceExcludeTables(con),
+        new MdFilterDiffIncorrectDefinitionTables(con),
+        new MdFilterDiffMismatchDefinitionTables(con),
         new MdFilterDiffMismatchRecordTables(con));
     for (MdFilterDiffAbstract filter : filters) {
       filter.filter(baseInfoList, compareInfoList, outputDiff);

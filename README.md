@@ -147,12 +147,12 @@ __mode=diff__
           "compareDefinition": "CREATE ..."
         }
       ],
-      "mismatchDefinitionTables": [
+      "forceExcludeTables": [
         {
           "tableName": "t1",
           "tableComment": "",
-          "baseDefinition": "CREATE ...",
-          "compareDefinition": "CREATE ..."
+          "definition": "CREATE ...",
+          "reason": "(referencedForeignKey|isView|isSequence|notInnoDB|mismatchTrigger)"
         }
       ],
       "incorrectDefinitionTables": [
@@ -163,12 +163,12 @@ __mode=diff__
           "reason": "(noPrimaryKey|hasForeignKey|invalidCharset)"
         }
       ],
-      "forceExcludeTables": [
+      "mismatchDefinitionTables": [
         {
           "tableName": "t1",
           "tableComment": "",
-          "definition": "CREATE ...",
-          "reason": "(referencedForeignKey|isView|isSequence|notInnoDB|mismatchTrigger)"
+          "baseDefinition": "CREATE ...",
+          "compareDefinition": "CREATE ..."
         }
       ],
       "mismatchRecordTables": [
@@ -179,6 +179,7 @@ __mode=diff__
             {
               "columnName": "",
               "columnType": "",
+              "columnCollation": "",
               "columnComment": "",
               "isPrimary": (true|false),
             }
@@ -216,6 +217,7 @@ __mode=sync__
             {
               "columnName": "",
               "columnType": "",
+              "columnCollation": "",
               "columnComment": "",
               "isPrimary": (true|false),
             }
@@ -236,6 +238,7 @@ __mode=sync__
             {
               "columnName": "",
               "columnType": "",
+              "columnCollation": "",
               "columnComment": "",
               "isPrimary": (true|false),
             }

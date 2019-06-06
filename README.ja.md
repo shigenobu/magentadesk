@@ -156,13 +156,14 @@ __mode=diffのとき__
           "compareDefinition": "CREATE ..."
         }
       ],
-      // 比較先と比較元の構造が異なるテーブルで、データ差分比較対象外となる
-      "mismatchDefinitionTables": [
+      // 外部キー参照をされているテーブル、ビュー、シーケンス、InnoDB以外のストレージエンジン、トリガー定義が異なるテーブルで、
+      // データ差分比較対象外となる
+      "forceExcludeTables": [
         {
           "tableName": "t1",
           "tableComment": "",
-          "baseDefinition": "CREATE ...",
-          "compareDefinition": "CREATE ..."
+          "definition": "CREATE ...",
+          "reason": "(referencedForeignKey|isView|isSequence|notInnoDB|mismatchTrigger)"
         }
       ],
       // 主キーがないテーブル、外部キーを持っているテーブル、有効でないキャラセットで、データ差分比較対象外となる
@@ -174,14 +175,13 @@ __mode=diffのとき__
           "reason": "(noPrimaryKey|hasForeignKey|invalidCharset)"
         }
       ],
-      // 外部キー参照をされているテーブル、ビュー、シーケンス、InnoDB以外のストレージエンジン、トリガー定義が異なるテーブルで、
-      // データ差分比較対象外となる
-      "forceExcludeTables": [
+      // 比較先と比較元の構造が異なるテーブルで、データ差分比較対象外となる
+      "mismatchDefinitionTables": [
         {
           "tableName": "t1",
           "tableComment": "",
-          "definition": "CREATE ...",
-          "reason": "(referencedForeignKey|isView|isSequence|notInnoDB|mismatchTrigger)"
+          "baseDefinition": "CREATE ...",
+          "compareDefinition": "CREATE ..."
         }
       ],
       // データ差分が検出されたテーブルのレコード詳細
@@ -193,6 +193,7 @@ __mode=diffのとき__
             {
               "columnName": "",
               "columnType": "",
+              "columnCollation": "",
               "columnComment": "",
               "isPrimary": (true|false),
             }
@@ -234,6 +235,7 @@ __mode=syncのとき__
             {
               "columnName": "",
               "columnType": "",
+              "columnCollation": "",
               "columnComment": "",
               "isPrimary": (true|false),
             }
@@ -255,6 +257,7 @@ __mode=syncのとき__
             {
               "columnName": "",
               "columnType": "",
+              "columnCollation": "",
               "columnComment": "",
               "isPrimary": (true|false),
             }

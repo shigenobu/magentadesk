@@ -56,10 +56,10 @@ public class MdLogger {
       return;
     }
     if (writer == null) {
-      if (logPath.toUpperCase().equals(LOG_STDOUT)) {
+      if (logPath.equalsIgnoreCase(LOG_STDOUT)) {
         // stdout
         writer = new OutputStreamWriter(System.out);
-      } else if (logPath.toUpperCase().equals(LOG_STDERR)) {
+      } else if (logPath.equalsIgnoreCase(LOG_STDERR)) {
         // stderr
         writer = new OutputStreamWriter(System.err);
       } else {

@@ -117,6 +117,14 @@ public class MdInfoDiffColumn implements MdInfoDiffInterface {
   }
 
   /**
+   * get column collation.
+   * @return column collation
+   */
+  public String getColumnCollation() {
+    return COLLATION_NAME;
+  }
+
+  /**
    * get column comment.
    * @return column comment.
    */
@@ -137,7 +145,7 @@ public class MdInfoDiffColumn implements MdInfoDiffInterface {
    * @return if primary, true
    */
   public boolean isPrimary() {
-    return !MdUtils.isNullOrEmpty(COLUMN_KEY) && COLUMN_KEY.toUpperCase().equals("PRI");
+    return !MdUtils.isNullOrEmpty(COLUMN_KEY) && COLUMN_KEY.equalsIgnoreCase("PRI");
   }
 
   /**
@@ -145,7 +153,7 @@ public class MdInfoDiffColumn implements MdInfoDiffInterface {
    * @return if generated, true
    */
   public boolean isGenerated() {
-    return !MdUtils.isNullOrEmpty(IS_GENERATED) && !IS_GENERATED.toUpperCase().equals("NEVER");
+    return !MdUtils.isNullOrEmpty(IS_GENERATED) && !IS_GENERATED.equalsIgnoreCase("NEVER");
   }
 
   /**
@@ -187,8 +195,8 @@ public class MdInfoDiffColumn implements MdInfoDiffInterface {
 
     if (!(isGenerated() &&
         (
-            GENERATION_EXPRESSION.toUpperCase().equals("ROW START")
-            || GENERATION_EXPRESSION.toUpperCase().equals("ROW END")
+            GENERATION_EXPRESSION.equalsIgnoreCase("ROW START")
+            || GENERATION_EXPRESSION.equalsIgnoreCase("ROW END")
         ) && option.ignoreSystemVersioned)) {
       src.add(COLUMN_NAME);
       src.add(ORDINAL_POSITION);

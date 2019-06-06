@@ -24,10 +24,10 @@ public class MdOutputDiff extends MdOutputAbstract {
   public List<MdOutputMemberExistsOnlyCompareTable> existsOnlyCompareTables = new ArrayList<>();
 
   /**
-   * mismatch definition tables.
+   * force exclude tables.
    */
   @Expose
-  public List<MdOutputMemberMismatchDefinitionTable> mismatchDefinitionTables = new ArrayList<>();
+  public List<MdOutputMemberForceExcludeTable> forceExcludeTables = new ArrayList<>();
 
   /**
    * incorrect tables.
@@ -36,10 +36,10 @@ public class MdOutputDiff extends MdOutputAbstract {
   public List<MdOutputMemberIncorrectDefinitionTables> incorrectDefinitionTables = new ArrayList<>();
 
   /**
-   * force exclude tables.
+   * mismatch definition tables.
    */
   @Expose
-  public List<MdOutputMemberForceExcludeTable> forceExcludeTables = new ArrayList<>();
+  public List<MdOutputMemberMismatchDefinitionTable> mismatchDefinitionTables = new ArrayList<>();
 
   /**
    * mismatch record tables.

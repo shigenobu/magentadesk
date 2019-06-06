@@ -21,6 +21,12 @@ public class MdOutputPartsColumn {
   public String columnType;
 
   /**
+   * column collation.
+   */
+  @Expose
+  public String columnCollation;
+
+  /**
    * column comment.
    */
   @Expose
@@ -39,6 +45,7 @@ public class MdOutputPartsColumn {
   public MdOutputPartsColumn(MdInfoDiffColumn infoColumn) {
     this.columnName = infoColumn.getColumnName();
     this.columnType = infoColumn.getColumnType();
+    this.columnCollation = infoColumn.getColumnCollation();
     this.columnComment = infoColumn.getColumnComment();
     this.isPrimary = infoColumn.isPrimary();
   }

@@ -101,7 +101,7 @@ public class MdInfoDiffTable implements MdInfoDiffInterface {
    * @return if system versioned, true
    */
   public boolean isSystemVersioned() {
-    return TABLE_TYPE.toUpperCase().equals("SYSTEM VERSIONED");
+    return TABLE_TYPE.equalsIgnoreCase("SYSTEM VERSIONED");
   }
 
   /**
@@ -109,7 +109,7 @@ public class MdInfoDiffTable implements MdInfoDiffInterface {
    * @return if innodb, true
    */
   public boolean isInnodb() {
-    return ENGINE.toUpperCase().equals("INNODB");
+    return ENGINE.equalsIgnoreCase("INNODB");
   }
 
   /**
@@ -117,7 +117,7 @@ public class MdInfoDiffTable implements MdInfoDiffInterface {
    * @return if view, true
    */
   public boolean isView() {
-    return TABLE_TYPE.toUpperCase().equals("VIEW") || TABLE_TYPE.toUpperCase().equals("SYSTEM VIEW");
+    return TABLE_TYPE.equalsIgnoreCase("VIEW") || TABLE_TYPE.equalsIgnoreCase("SYSTEM VIEW");
   }
 
   /**
@@ -125,7 +125,7 @@ public class MdInfoDiffTable implements MdInfoDiffInterface {
    * @return if sequence, true
    */
   public boolean isSequence() {
-    return TABLE_TYPE.toUpperCase().equals("SEQUENCE");
+    return TABLE_TYPE.equalsIgnoreCase("SEQUENCE");
   }
 
   @Override
