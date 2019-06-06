@@ -16,14 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Current Database: `compare`
---
-
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `compare` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
-
-USE `compare`;
-
---
 -- Table structure for table `T_ALL_UPPER`
 --
 
@@ -197,6 +189,34 @@ LOCK TABLES `t_comment` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `t_comment_mismatch`
+--
+
+DROP TABLE IF EXISTS `t_comment_mismatch`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_comment_mismatch` (
+  `id` int(11) NOT NULL,
+  `name` varchar(16) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+ PARTITION BY LIST  COLUMNS(`id`)
+(PARTITION `p1` VALUES IN (1,2,3) ENGINE = InnoDB,
+ PARTITION `p2` VALUES IN (4,5,6) ENGINE = InnoDB,
+ PARTITION `p3` VALUES IN (7,8,9) ENGINE = InnoDB);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_comment_mismatch`
+--
+
+LOCK TABLES `t_comment_mismatch` WRITE;
+/*!40000 ALTER TABLE `t_comment_mismatch` DISABLE KEYS */;
+/*!40000 ALTER TABLE `t_comment_mismatch` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `t_data_lower_upper`
 --
 
@@ -218,6 +238,30 @@ LOCK TABLES `t_data_lower_upper` WRITE;
 /*!40000 ALTER TABLE `t_data_lower_upper` DISABLE KEYS */;
 INSERT INTO `t_data_lower_upper` VALUES (1,'MaN b');
 /*!40000 ALTER TABLE `t_data_lower_upper` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `t_diff`
+--
+
+DROP TABLE IF EXISTS `t_diff`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_diff` (
+  `id` int(11) NOT NULL,
+  `name` varchar(16) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_diff`
+--
+
+LOCK TABLES `t_diff` WRITE;
+/*!40000 ALTER TABLE `t_diff` DISABLE KEYS */;
+INSERT INTO `t_diff` VALUES (1,'a'),(2,'b');
+/*!40000 ALTER TABLE `t_diff` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -323,7 +367,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 trigger insert_trigger after insert on t_has_trigger for each row insert into t_trigger_result values(now(), 'insert') */;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 trigger t_has_trigger_insert_trigger after insert on t_has_trigger for each row insert into t_trigger_result values(now(), 'insert') */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -338,7 +382,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 trigger update_trigger after insert on t_has_trigger for each row insert into t_trigger_result values(now(), 'update') */;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 trigger t_has_trigger_update_trigger after insert on t_has_trigger for each row insert into t_trigger_result values(now(), 'update') */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -353,12 +397,58 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 trigger delete_trigger after insert on t_has_trigger for each row insert into t_trigger_result values(now(), 'delete') */;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 trigger t_has_trigger_delete_trigger after insert on t_has_trigger for each row insert into t_trigger_result values(now(), 'delete') */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `t_has_trigger_mismatch`
+--
+
+DROP TABLE IF EXISTS `t_has_trigger_mismatch`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_has_trigger_mismatch` (
+  `id` int(11) NOT NULL,
+  `name` varchar(16) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_has_trigger_mismatch`
+--
+
+LOCK TABLES `t_has_trigger_mismatch` WRITE;
+/*!40000 ALTER TABLE `t_has_trigger_mismatch` DISABLE KEYS */;
+/*!40000 ALTER TABLE `t_has_trigger_mismatch` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `t_invalid_charset`
+--
+
+DROP TABLE IF EXISTS `t_invalid_charset`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_invalid_charset` (
+  `id` int(11) NOT NULL,
+  `name` varchar(16) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_invalid_charset`
+--
+
+LOCK TABLES `t_invalid_charset` WRITE;
+/*!40000 ALTER TABLE `t_invalid_charset` DISABLE KEYS */;
+/*!40000 ALTER TABLE `t_invalid_charset` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `t_lower_UPPER`
@@ -503,6 +593,30 @@ LOCK TABLES `t_partition` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `t_partition_mismatch`
+--
+
+DROP TABLE IF EXISTS `t_partition_mismatch`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_partition_mismatch` (
+  `id` int(11) NOT NULL,
+  `name` varchar(16) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_partition_mismatch`
+--
+
+LOCK TABLES `t_partition_mismatch` WRITE;
+/*!40000 ALTER TABLE `t_partition_mismatch` DISABLE KEYS */;
+INSERT INTO `t_partition_mismatch` VALUES (1,'a'),(4,'d');
+/*!40000 ALTER TABLE `t_partition_mismatch` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `t_partition_sub`
 --
 
@@ -532,6 +646,33 @@ LOCK TABLES `t_partition_sub` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `t_system_versioned`
+--
+
+DROP TABLE IF EXISTS `t_system_versioned`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_system_versioned` (
+  `id` int(11) NOT NULL,
+  `name` varchar(16) DEFAULT NULL,
+  `start_t` timestamp(6) GENERATED ALWAYS AS ROW START,
+  `end_t` timestamp(6) GENERATED ALWAYS AS ROW END,
+  PRIMARY KEY (`id`,`end_t`),
+  PERIOD FOR SYSTEM_TIME (`start_t`, `end_t`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 WITH SYSTEM VERSIONING;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_system_versioned`
+--
+
+LOCK TABLES `t_system_versioned` WRITE;
+/*!40000 ALTER TABLE `t_system_versioned` DISABLE KEYS */;
+INSERT INTO `t_system_versioned` VALUES (1,'A','2019-06-06 08:48:43.441256','2038-01-19 03:14:07.999999');
+/*!40000 ALTER TABLE `t_system_versioned` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `t_system_versioned_invisible`
 --
 
@@ -551,7 +692,32 @@ CREATE TABLE `t_system_versioned_invisible` (
 
 LOCK TABLES `t_system_versioned_invisible` WRITE;
 /*!40000 ALTER TABLE `t_system_versioned_invisible` DISABLE KEYS */;
+INSERT INTO `t_system_versioned_invisible` VALUES (1,'A');
 /*!40000 ALTER TABLE `t_system_versioned_invisible` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `t_system_versioned_mismatch`
+--
+
+DROP TABLE IF EXISTS `t_system_versioned_mismatch`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_system_versioned_mismatch` (
+  `id` int(11) NOT NULL,
+  `name` varchar(16) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_system_versioned_mismatch`
+--
+
+LOCK TABLES `t_system_versioned_mismatch` WRITE;
+/*!40000 ALTER TABLE `t_system_versioned_mismatch` DISABLE KEYS */;
+INSERT INTO `t_system_versioned_mismatch` VALUES (1,'A');
+/*!40000 ALTER TABLE `t_system_versioned_mismatch` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -577,6 +743,7 @@ CREATE TABLE `t_system_versioned_visible` (
 
 LOCK TABLES `t_system_versioned_visible` WRITE;
 /*!40000 ALTER TABLE `t_system_versioned_visible` DISABLE KEYS */;
+INSERT INTO `t_system_versioned_visible` VALUES (1,'A','2019-06-06 08:48:43.428435','2038-01-19 03:14:07.999999');
 /*!40000 ALTER TABLE `t_system_versioned_visible` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -618,10 +785,28 @@ SET character_set_client = utf8;
 SET character_set_client = @saved_cs_client;
 
 --
--- Current Database: `compare`
+-- Table structure for table `t_wrong_auto_increment`
 --
 
-USE `compare`;
+DROP TABLE IF EXISTS `t_wrong_auto_increment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_wrong_auto_increment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(16) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_wrong_auto_increment`
+--
+
+LOCK TABLES `t_wrong_auto_increment` WRITE;
+/*!40000 ALTER TABLE `t_wrong_auto_increment` DISABLE KEYS */;
+INSERT INTO `t_wrong_auto_increment` VALUES (1,'a');
+/*!40000 ALTER TABLE `t_wrong_auto_increment` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Final view structure for view `t_view_ok`
@@ -651,4 +836,4 @@ USE `compare`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-06-06  5:13:09
+-- Dump completed on 2019-06-06  9:21:39

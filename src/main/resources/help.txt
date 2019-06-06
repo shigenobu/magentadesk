@@ -1,3 +1,6 @@
+magentadesk - Get MariaDB Table Difference, And Reflect.
+version 0.0.6
+
 Usage:
 
     echo '${json}' \
