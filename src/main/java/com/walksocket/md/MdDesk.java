@@ -70,7 +70,7 @@ public class MdDesk {
   public List<MdOutputPartsRecord> getPartRecordsForDiff(String summaryId, MdInfoDiff baseInfo, MdInfoDiff compareInfo) throws SQLException {
     // get base columns
     List<String> baseColumns = new ArrayList<>();
-    for (MdInfoDiffColumn column : baseInfo.getInfoColumns()) {
+    for (MdInfoDiffColumn column : baseInfo.getRealColumns()) {
       baseColumns.add(
           String.format(
               "COLUMN_GET(`baseValues`, '%s' as %s) as mdb_%s",
@@ -81,7 +81,7 @@ public class MdDesk {
 
     // get compare columns
     List<String> compareColumns = new ArrayList<>();
-    for (MdInfoDiffColumn column : compareInfo.getInfoColumns()) {
+    for (MdInfoDiffColumn column : compareInfo.getRealColumns()) {
       compareColumns.add(
           String.format(
               "COLUMN_GET(`compareValues`, '%s' as %s) as mdc_%s",

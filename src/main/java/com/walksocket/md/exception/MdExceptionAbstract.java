@@ -46,14 +46,19 @@ public abstract class MdExceptionAbstract extends Exception {
     DISALLOW_SIMULTANEOUS_EXECUTION(21),
 
     /**
+     * in maintenance.
+     */
+    IN_MAINTENANCE(22),
+
+    /**
      * no exists base or compare.
      */
-    NO_EXISTS_BASE_OR_COMPARE(22),
+    NO_EXISTS_BASE_OR_COMPARE(23),
 
     /**
      * no exists diff seqs.
      */
-    NO_EXISTS_DIFF_SEQS(23),
+    NO_EXISTS_DIFF_SEQS(24),
 
     /**
      * unknown.

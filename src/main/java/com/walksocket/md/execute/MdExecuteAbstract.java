@@ -2,11 +2,15 @@ package com.walksocket.md.execute;
 
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.exception.MdExceptionDisallowSimultaneousExecution;
+import com.walksocket.md.exception.MdExceptionInMaintenance;
 import com.walksocket.md.input.MdInputAbstract;
+import com.walksocket.md.input.MdInputMaintenance;
 import com.walksocket.md.mariadb.MdMariadbConnection;
+import com.walksocket.md.mariadb.MdMariadbRecord;
 import com.walksocket.md.output.MdOutputAbstract;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * execute abstract.
@@ -64,6 +68,39 @@ public abstract class MdExecuteAbstract {
       MdLogger.error(e);
       throw new MdExceptionDisallowSimultaneousExecution(
           "Pair of baseDatabase and compareDatabase do not execute simultaneously.");
+    }
+  }
+
+  /**
+   * check maintenance.
+   * @param baseDatabase base database
+   * @param compareDatabase compare database
+   * @throws Exception several error
+   */
+  protected void checkMaintenance(String baseDatabase, String compareDatabase) throws Exception {
+    String sql;
+
+    // insert `magentadesk`.`diffMaintenance`.
+    sql = String.format(
+        "INSERT IGNORE INTO `magentadesk`.`diffMaintenance` (`baseDatabase`, `compareDatabase`) VALUES ('%s', '%s')",
+        baseDatabase,
+        compareDatabase);
+    con.execute(sql);
+
+    // check `magentadesk`.`diffMaintenance`.
+    sql = String.format(
+        "SELECT `maintenance` " +
+            "FROM `magentadesk`.`diffMaintenance` " +
+            "WHERE `baseDatabase` = '%s' and `compareDatabase` = '%s'",
+        baseDatabase,
+        compareDatabase);
+    List<MdMariadbRecord> records = con.getRecords(sql);
+    for (MdMariadbRecord record : records) {
+      String maintenance = record.get("maintenance");
+      if (maintenance.equals(MdInputMaintenance.Maintenance.ON.getMaintenance())) {
+        throw new MdExceptionInMaintenance(
+            "In maintenance, baseDatabase and compareDatabase.");
+      }
     }
   }
 }

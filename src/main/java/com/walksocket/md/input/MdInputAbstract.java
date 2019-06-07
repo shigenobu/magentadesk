@@ -24,6 +24,11 @@ public abstract class MdInputAbstract {
      * sync.
      */
     SYNC("sync"),
+
+    /**
+     * maintenance.
+     */
+    MAINTENANCE("maintenance"),
     ;
 
     /**

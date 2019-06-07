@@ -69,6 +69,9 @@ public class TestDiff {
         "incorrectDefinitionTables:t_no_primary",
         outputDiff.incorrectDefinitionTables.stream().filter(o -> o.tableName.equals("t_no_primary")).findFirst().isPresent());
     Assert.assertTrue(
+        "incorrectDefinitionTables:t_no_primary_system_versioned",
+        outputDiff.incorrectDefinitionTables.stream().filter(o -> o.tableName.equals("t_no_primary_system_versioned")).findFirst().isPresent());
+    Assert.assertTrue(
         "incorrectDefinitionTables:t_foreign_has",
         outputDiff.incorrectDefinitionTables.stream().filter(o -> o.tableName.equals("t_foreign_has")).findFirst().isPresent());
     Assert.assertTrue(
@@ -203,5 +206,35 @@ public class TestDiff {
     Assert.assertTrue(
         "matchTables:t_partition_mismatch",
         outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_partition_mismatch")).findFirst().isPresent());
+  }
+
+  @Test
+  public void test21Generated() throws Exception {
+    inputDiff.option = new MdInputMemberOption();
+    inputDiff.option.includeTableLikePatterns.add("t\\_diff\\_generated");
+    inputDiff.option.includeTableLikePatterns.add("t\\_diff\\_generated\\_stored");
+
+    MdOutputDiff outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
+    System.out.println(MdJson.toJsonStringFriendly(outputDiff));
+
+    // mismatchRecordTables
+    Assert.assertEquals(
+        2,
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_diff_generated")).findFirst().get().columns.size());
+    Assert.assertEquals(
+        2,
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_diff_generated")).findFirst().get().records.get(0).baseValues.size());
+    Assert.assertEquals(
+        2,
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_diff_generated")).findFirst().get().records.get(0).compareValues.size());
+    Assert.assertEquals(
+        2,
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_diff_generated_stored")).findFirst().get().columns.size());
+    Assert.assertEquals(
+        2,
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_diff_generated_stored")).findFirst().get().records.get(0).baseValues.size());
+    Assert.assertEquals(
+        2,
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_diff_generated_stored")).findFirst().get().records.get(0).compareValues.size());
   }
 }

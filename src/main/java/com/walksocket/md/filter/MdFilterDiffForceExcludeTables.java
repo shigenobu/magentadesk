@@ -72,9 +72,7 @@ public class MdFilterDiffForceExcludeTables extends MdFilterDiffAbstract {
       }
 
       // foreign had
-      boolean hasBaseReferenced = baseInfo.getReferencedTableNames().size() > 0;
-      boolean hasCompareReferenced = compareInfo.getReferencedTableNames().size() > 0;
-      if (hasBaseReferenced || hasCompareReferenced) {
+      if (baseInfo.hasReferenced() || compareInfo.hasReferenced()) {
         outputDiff.forceExcludeTables.add(
             new MdOutputMemberForceExcludeTable(
                 baseInfo,
@@ -88,11 +86,11 @@ public class MdFilterDiffForceExcludeTables extends MdFilterDiffAbstract {
       // trigger
       String baseTriggerHash = null;
       String compareTriggerHash = null;
-      if (baseInfo.getInfoTriggers().size() > 0) {
-        baseTriggerHash = baseInfo.getInfoTriggers().stream().map(MdInfoDiffTrigger::getHash).collect(Collectors.joining());
+      if (baseInfo.hasTrigger()) {
+        baseTriggerHash = baseInfo.getTriggerHash();
       }
-      if (compareInfo.getInfoTriggers().size() > 0) {
-        compareTriggerHash = compareInfo.getInfoTriggers().stream().map(MdInfoDiffTrigger::getHash).collect(Collectors.joining());
+      if (compareInfo.hasTrigger()) {
+        compareTriggerHash = compareInfo.getTriggerHash();
       }
       if (baseTriggerHash == null && compareTriggerHash == null) {
         continue;

@@ -38,7 +38,7 @@ public class MdFilterDiffIncorrectDefinitionTables extends MdFilterDiffAbstract 
 
       // primary check
       boolean hasPrimary = false;
-      for (MdInfoDiffColumn infoColumn : baseInfo.getInfoColumns()) {
+      for (MdInfoDiffColumn infoColumn : baseInfo.getRealColumns()) {
         if (infoColumn.isPrimary()) {
           hasPrimary = true;
           break;
@@ -56,8 +56,7 @@ public class MdFilterDiffIncorrectDefinitionTables extends MdFilterDiffAbstract 
       }
 
       // foreign check
-      boolean hasForeign = baseInfo.getInfoReferences().size() > 0;
-      if (hasForeign) {
+      if (baseInfo.hasForeignKey()) {
         outputDiff.incorrectDefinitionTables.add(
             new MdOutputMemberIncorrectDefinitionTables(
                 baseInfo,
@@ -71,8 +70,8 @@ public class MdFilterDiffIncorrectDefinitionTables extends MdFilterDiffAbstract 
       // charset check
       if (!baseInfo.getInfoTable().isValidCollation()
           || !compareInfo.getInfoTable().isValidCollation()
-          || baseInfo.getInfoColumns().stream().filter(c -> !c.isValidCollation()).findFirst().isPresent()
-          || compareInfo.getInfoColumns().stream().filter(c -> !c.isValidCollation()).findFirst().isPresent()) {
+          || baseInfo.getRealColumns().stream().filter(c -> !c.isValidCollation()).findFirst().isPresent()
+          || compareInfo.getRealColumns().stream().filter(c -> !c.isValidCollation()).findFirst().isPresent()) {
         outputDiff.incorrectDefinitionTables.add(
             new MdOutputMemberIncorrectDefinitionTables(
                 baseInfo,

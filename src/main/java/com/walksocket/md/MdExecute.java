@@ -100,6 +100,15 @@ public class MdExecute {
             ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
         con.execute(sql);
 
+        // create table `magentadesk`.`diffMaintenance`.
+        sql = "CREATE TABLE IF NOT EXISTS `magentadesk`.`diffMaintenance` (" +
+            "  `baseDatabase` varchar(64) not null," +
+            "  `compareDatabase` varchar(64) not null," +
+            "  `maintenance` enum('on', 'off') not null default 'off'," +
+            "  primary key (`baseDatabase`, `compareDatabase`)" +
+            ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+        con.execute(sql);
+
         // execute
         MdExecuteAbstract execute = null;
         MdInputAbstract.Mode mode = input.getMode();
@@ -107,6 +116,8 @@ public class MdExecute {
           execute = new MdExecuteDiff(con);
         } else if (mode == MdInputAbstract.Mode.SYNC) {
           execute = new MdExecuteSync(con);
+        } else if (mode == MdInputAbstract.Mode.MAINTENANCE) {
+          // TODO maintenance execute
         }
         MdOutputAbstract output = execute.execute(input);
 

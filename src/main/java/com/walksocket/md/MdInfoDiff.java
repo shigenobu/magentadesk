@@ -8,6 +8,7 @@ import com.walksocket.md.mariadb.MdMariadbUtils;
 
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * info for diff.
@@ -331,7 +332,7 @@ public class MdInfoDiff {
    * @return info column object list
    * @throws SQLException sql error.
    */
-  public List<MdInfoDiffColumn> getInfoColumns() throws SQLException {
+  private List<MdInfoDiffColumn> getInfoColumns() throws SQLException {
     if (infoColumns == null) {
       infoColumns = new ArrayList<>();
       String sql = String.format(
@@ -354,7 +355,7 @@ public class MdInfoDiff {
    * @return info reference object list
    * @throws SQLException sql error.
    */
-  public List<MdInfoDiffReference> getInfoReferences() throws SQLException {
+  private List<MdInfoDiffReference> getInfoReferences() throws SQLException {
     if (infoReferences == null) {
       infoReferences = new ArrayList<>();
       String sql = String.format(
@@ -377,7 +378,7 @@ public class MdInfoDiff {
    * @return info constraint object list
    * @throws SQLException sql error.
    */
-  public List<MdInfoDiffConstraint> getInfoConstraints() throws SQLException {
+  private List<MdInfoDiffConstraint> getInfoConstraints() throws SQLException {
     if (infoConstraints == null) {
       infoConstraints = new ArrayList<>();
       String sql = String.format(
@@ -400,7 +401,7 @@ public class MdInfoDiff {
    * @return info index object list
    * @throws SQLException sql error.
    */
-  public List<MdInfoDiffIndex> getInfoIndexes() throws SQLException {
+  private List<MdInfoDiffIndex> getInfoIndexes() throws SQLException {
     if (infoIndexes == null) {
       infoIndexes = new ArrayList<>();
       String sql = String.format(
@@ -423,7 +424,7 @@ public class MdInfoDiff {
    * @return info partition object list
    * @throws SQLException sql error.
    */
-  public List<MdInfoDiffPartition> getInfoPartitions() throws SQLException {
+  private List<MdInfoDiffPartition> getInfoPartitions() throws SQLException {
     if (infoPartitions == null) {
       infoPartitions = new ArrayList<>();
       String sql = String.format(
@@ -446,7 +447,7 @@ public class MdInfoDiff {
    * @return info trigger object list
    * @throws SQLException sql error.
    */
-  public List<MdInfoDiffTrigger> getInfoTriggers() throws SQLException {
+  private List<MdInfoDiffTrigger> getInfoTriggers() throws SQLException {
     if (infoTriggers == null) {
       infoTriggers = new ArrayList<>();
       String sql = String.format(
@@ -469,7 +470,7 @@ public class MdInfoDiff {
    * @return referenced table name
    * @throws SQLException sql error
    */
-  public Set<String> getReferencedTableNames() throws SQLException {
+  private Set<String> getReferencedTableNames() throws SQLException {
     if (referencedTableNames == null) {
       referencedTableNames = new HashSet<>();
       String sql;
@@ -497,7 +498,7 @@ public class MdInfoDiff {
   public List<MdInfoDiffColumn> getPrimaryColumns() throws SQLException {
     List<MdInfoDiffColumn> columns = new ArrayList<>();
     for (MdInfoDiffColumn infoColumn : getInfoColumns()) {
-      if (!infoColumn.isPrimary() || infoColumn.isGenerated()) {
+      if (!infoColumn.isPrimary()) {
         continue;
       }
       columns.add(infoColumn);
@@ -521,5 +522,41 @@ public class MdInfoDiff {
     }
 
     return columns;
+  }
+
+  /**
+   * has foreign key.
+   * @return if true, has foreign key
+   * @throws SQLException sql error
+   */
+  public boolean hasForeignKey() throws SQLException {
+    return getInfoReferences().size() > 0;
+  }
+
+  /**
+   * has trigger.
+   * @return if true, has trigger
+   * @throws SQLException sql error
+   */
+  public boolean hasTrigger() throws SQLException {
+    return getInfoTriggers().size() > 0;
+  }
+
+  /**
+   * get trigger hash.
+   * @return trigger hash
+   * @throws SQLException sql error
+   */
+  public String getTriggerHash() throws SQLException {
+    return getInfoTriggers().stream().map(MdInfoDiffTrigger::getHash).collect(Collectors.joining());
+  }
+
+  /**
+   * has referenced.
+   * @return if true, has referenced
+   * @throws SQLException sql error
+   */
+  public boolean hasReferenced() throws SQLException {
+    return getReferencedTableNames().size() > 0;
   }
 }

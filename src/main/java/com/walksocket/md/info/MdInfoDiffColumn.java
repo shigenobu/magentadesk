@@ -152,7 +152,7 @@ public class MdInfoDiffColumn implements MdInfoDiffInterface {
    * @return if primary, true
    */
   public boolean isPrimary() {
-    return !MdUtils.isNullOrEmpty(COLUMN_KEY) && COLUMN_KEY.equalsIgnoreCase("PRI");
+    return !isGenerated() && !MdUtils.isNullOrEmpty(COLUMN_KEY) && COLUMN_KEY.equalsIgnoreCase("PRI");
   }
 
   /**

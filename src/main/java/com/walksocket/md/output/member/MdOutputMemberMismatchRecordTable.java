@@ -48,7 +48,7 @@ public class MdOutputMemberMismatchRecordTable {
   public MdOutputMemberMismatchRecordTable(MdInfoDiff info, List<MdOutputPartsRecord> partsRecord) throws SQLException {
     this.tableName = info.getTableName();
     this.tableComment = info.getInfoTable().getTableComment();
-    for (MdInfoDiffColumn infoColumn : info.getInfoColumns()) {
+    for (MdInfoDiffColumn infoColumn : info.getRealColumns()) {
       this.columns.add(new MdOutputPartsColumn(infoColumn));
     }
     this.records.addAll(partsRecord);

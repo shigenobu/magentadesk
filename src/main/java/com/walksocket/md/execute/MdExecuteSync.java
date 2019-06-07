@@ -64,6 +64,10 @@ public class MdExecuteSync extends MdExecuteAbstract {
     lock(baseDatabase, compareDatabase);
 
     // -----
+    // check maintenance
+    checkMaintenance(baseDatabase, compareDatabase);
+
+    // -----
     // summaryId
     outputSync.summaryId = inputSync.summaryId;
 

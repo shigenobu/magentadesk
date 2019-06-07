@@ -36,6 +36,10 @@ public class MdExecuteDiff extends MdExecuteAbstract {
     lock(inputDiff.baseDatabase, inputDiff.compareDatabase);
 
     // -----
+    // check maintenance
+    checkMaintenance(inputDiff.baseDatabase, inputDiff.compareDatabase);
+
+    // -----
     // summaryId
     outputDiff.summaryId = MdUtils.randomString();
 
