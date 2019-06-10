@@ -1,6 +1,7 @@
 package com.walksocket.md;
 
 import com.walksocket.md.input.MdInputDiff;
+import com.walksocket.md.input.MdInputMaintenance;
 import com.walksocket.md.input.member.MdInputMemberOption;
 import com.walksocket.md.output.MdOutputDiff;
 import org.junit.*;
@@ -21,7 +22,7 @@ public class TestDiff {
   }
 
   @Before
-  public void testBefore() {
+  public void testBefore() throws Exception {
     inputDiff = new MdInputDiff();
     inputDiff.host = "127.0.0.1";
     inputDiff.port = 13306;
@@ -30,6 +31,18 @@ public class TestDiff {
     inputDiff.charset = "utf8mb4";
     inputDiff.baseDatabase = "base";
     inputDiff.compareDatabase = "compare";
+
+    // maintenance off
+    MdInputMaintenance inputMaintenance = new MdInputMaintenance();
+    inputMaintenance.host = "127.0.0.1";
+    inputMaintenance.port = 13306;
+    inputMaintenance.user = "root";
+    inputMaintenance.pass = "pass";
+    inputMaintenance.charset = "utf8mb4";
+    inputMaintenance.baseDatabase = "base";
+    inputMaintenance.compareDatabase = "compare";
+    inputMaintenance.maintenance = "off";
+    MdExecute.execute(inputMaintenance);
   }
 
   @Test

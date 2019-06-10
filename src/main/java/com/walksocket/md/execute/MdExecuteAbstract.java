@@ -7,6 +7,7 @@ import com.walksocket.md.input.MdInputAbstract;
 import com.walksocket.md.input.MdInputMaintenance;
 import com.walksocket.md.mariadb.MdMariadbConnection;
 import com.walksocket.md.mariadb.MdMariadbRecord;
+import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.output.MdOutputAbstract;
 
 import java.sql.SQLException;
@@ -50,8 +51,8 @@ public abstract class MdExecuteAbstract {
     // insert `magentadesk`.`diffLock`.
     sql = String.format(
         "INSERT IGNORE INTO `magentadesk`.`diffLock` (`baseDatabase`, `compareDatabase`) VALUES ('%s', '%s')",
-        baseDatabase,
-        compareDatabase);
+        MdMariadbUtils.quote(baseDatabase),
+        MdMariadbUtils.quote(compareDatabase));
     con.execute(sql);
 
     // lock `magentadesk`.`diffLock`.
@@ -61,8 +62,8 @@ public abstract class MdExecuteAbstract {
               "FROM `magentadesk`.`diffLock` " +
               "WHERE `baseDatabase` = '%s' and `compareDatabase` = '%s' " +
               "FOR UPDATE NOWAIT",
-          baseDatabase,
-          compareDatabase);
+          MdMariadbUtils.quote(baseDatabase),
+          MdMariadbUtils.quote(compareDatabase));
       con.getRecords(sql);
     } catch (SQLException e) {
       MdLogger.error(e);
@@ -83,8 +84,8 @@ public abstract class MdExecuteAbstract {
     // insert `magentadesk`.`diffMaintenance`.
     sql = String.format(
         "INSERT IGNORE INTO `magentadesk`.`diffMaintenance` (`baseDatabase`, `compareDatabase`) VALUES ('%s', '%s')",
-        baseDatabase,
-        compareDatabase);
+        MdMariadbUtils.quote(baseDatabase),
+        MdMariadbUtils.quote(compareDatabase));
     con.execute(sql);
 
     // check `magentadesk`.`diffMaintenance`.
@@ -92,8 +93,8 @@ public abstract class MdExecuteAbstract {
         "SELECT `maintenance` " +
             "FROM `magentadesk`.`diffMaintenance` " +
             "WHERE `baseDatabase` = '%s' and `compareDatabase` = '%s'",
-        baseDatabase,
-        compareDatabase);
+        MdMariadbUtils.quote(baseDatabase),
+        MdMariadbUtils.quote(compareDatabase));
     List<MdMariadbRecord> records = con.getRecords(sql);
     for (MdMariadbRecord record : records) {
       String maintenance = record.get("maintenance");

@@ -1,5 +1,5 @@
 magentadesk - Get MariaDB Table Difference, And Reflect.
-version 0.0.6
+version 0.0.7
 
 Usage:
 
@@ -9,7 +9,7 @@ Usage:
 
 (args)
 
-  mode        (required) diff or sync
+  mode        (required) diff, sync or maintenance
   logPath     optionally, log to file. if 'stdout', log to stdout. if 'stderr', log to stderr.
   addSeconds  optionally, modify log time. if '0', it's equal to locale en. default locale ja.
 
@@ -102,6 +102,28 @@ Usage:
           "timeout": 10
         }
       ]
+    }
+
+  mode=maintenance
+
+    {
+      // (required) connect host
+      "host":"127.0.0.1",
+      // (required) connect port
+      "port":13306,
+      // (required) connect user, need 'base' database, 'compare' database, and 'magentadesk' database privileges
+      // when connecting, use information_schema
+      "user":"root",
+      // (required) connect password
+      "pass":"pass",
+      // (required) connect charset, 'utf8' or 'utf8mb4' is allowed
+      "charset":"utf8mb4",
+      // (required) base database
+      "baseDatabase":"base",
+      // (required) compare database
+      "compareDatabase":"compare",
+      // (required) maintenance state, if true, in maintenance concerned base with compare
+      "maintenance":"(on|off)"
     }
 
 (stdout)
@@ -254,4 +276,11 @@ Usage:
       "run": false,
       // when mode=sync, output reflectedRecordTables value.
       "reflectedJsonPath": "${mdHome}/reflected_${summaryId}.json"
+    }
+
+  mode=maintenance
+
+    {
+      // maintenance result
+      "maintenance":"(on|off)"
     }

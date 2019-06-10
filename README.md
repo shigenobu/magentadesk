@@ -20,7 +20,7 @@ Below, it's simple usage.
 
 |name|value|remarks|
 |:--|:-|:---|
-|--mode|(required)diff or sync| 'diff' is get diff, 'sync' is reflected used by diff results.|
+|--mode|(required)diff, sync or maintenance|'diff' is get diff, 'sync' is reflected used by diff results, 'maintenance' is under maintenance concerned base and compare.|
 |--logPath|log written path.|when 'stdout', write out to stdout, when 'stderr', write out to stderr.|
 |--addSeconds|add seconds in log time|default is 60x60x9, it means 'ja', if 0, it means 'en'.|
 
@@ -124,6 +124,28 @@ __mode=sync__
           "timeout": 10
         }
       ]
+    }
+
+__mode=maintenance__
+
+    {
+      // (required) connect host
+      "host":"127.0.0.1",
+      // (required) connect port
+      "port":13306,
+      // (required) connect user, need 'base' database, 'compare' database, and 'magentadesk' database privileges
+      // when connecting, use information_schema
+      "user":"root",
+      // (required) connect password
+      "pass":"pass",
+      // (required) connect charset, 'utf8' or 'utf8mb4' is allowed
+      "charset":"utf8mb4",
+      // (required) base database
+      "baseDatabase":"base",
+      // (required) compare database
+      "compareDatabase":"compare",
+      // (required) maintenance state, if true, in maintenance concerned base with compare
+      "maintenance":"(on|off)"
     }
 
 [OUTPUT JSON]
@@ -277,6 +299,13 @@ __mode=sync__
       // when mode=sync, output reflectedRecordTables value.
       "reflectedJsonPath": "${mdHome}/reflected_${summaryId}.json"
     }
+    
+__mode=maintenance__
+
+    {
+      // maintenance result
+      "maintenance":"(on|off)"
+    }
 
 ### Outline
 
@@ -285,6 +314,7 @@ __mode=sync__
 * (diff and sync) create magentadesk database, and table.
 * (diff and sync) delete from diff recored passed over 3 hours since created.
 * (diff and sync) base and compare, lock execute simultaneously. （FOR UPDATE NOWAIT）
+* check maintenance state between base and compare.
 * extract target to diff table.
 * register table diff.
 
@@ -293,8 +323,16 @@ __mode=sync__
 * (diff and sync) create magentadesk database, and table.
 * (diff and sync) delete from diff recored passed over 3 hours since created.
 * (diff and sync) base and compare, lock execute simultaneously. （FOR UPDATE NOWAIT）
+* check maintenance state between base and compare.
 * sync table diff used by diff.
 * execute any commands.
+
+[mode=maintenance]  
+
+* (diff and sync) create magentadesk database, and table.
+* (diff and sync) delete from diff recored passed over 3 hours since created.
+* (diff and sync) base and compare, lock execute simultaneously. （FOR UPDATE NOWAIT）
+* set maintenance state.
 
 ### Notice
 

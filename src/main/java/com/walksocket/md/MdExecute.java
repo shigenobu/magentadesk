@@ -1,5 +1,6 @@
 package com.walksocket.md;
 
+import com.walksocket.md.exception.MdExceptionAbstract;
 import com.walksocket.md.exception.MdExceptionInvalidVersion;
 import com.walksocket.md.exception.MdExceptionUnknown;
 import com.walksocket.md.execute.*;
@@ -25,6 +26,7 @@ public class MdExecute {
     String sql;
     List<MdMariadbRecord> records;
 
+    Exception ex = new MdExceptionUnknown();
     try (MdMariadbConnection con = new MdMariadbConnection(input.getConnectionString())) {
       try {
         // begin
@@ -117,7 +119,7 @@ public class MdExecute {
         } else if (mode == MdInputAbstract.Mode.SYNC) {
           execute = new MdExecuteSync(con);
         } else if (mode == MdInputAbstract.Mode.MAINTENANCE) {
-          // TODO maintenance execute
+          execute = new MdExecuteMaintenance(con);
         }
         MdOutputAbstract output = execute.execute(input);
 
@@ -126,15 +128,17 @@ public class MdExecute {
 
         return output;
 
-      } catch (Exception e) {
+      } catch (MdExceptionAbstract e) {
         // rollback
         MdLogger.error(e);
         if (con != null) {
           con.rollback();
         }
+        ex = e;
       }
     }
 
-    throw new MdExceptionUnknown();
+    // throw
+    throw ex;
   }
 }

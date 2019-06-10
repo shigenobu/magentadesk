@@ -265,6 +265,56 @@ INSERT INTO `t_diff` VALUES (1,'a'),(3,'c');
 UNLOCK TABLES;
 
 --
+-- Table structure for table `t_diff_generated`
+--
+
+DROP TABLE IF EXISTS `t_diff_generated`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_diff_generated` (
+  `id` int(11) NOT NULL,
+  `name` varchar(16) DEFAULT NULL,
+  `age` int(11) GENERATED ALWAYS AS (`id` * 100) VIRTUAL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_diff_generated`
+--
+
+LOCK TABLES `t_diff_generated` WRITE;
+/*!40000 ALTER TABLE `t_diff_generated` DISABLE KEYS */;
+INSERT INTO `t_diff_generated` VALUES (1,'a',100),(3,'c',300);
+/*!40000 ALTER TABLE `t_diff_generated` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `t_diff_generated_stored`
+--
+
+DROP TABLE IF EXISTS `t_diff_generated_stored`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_diff_generated_stored` (
+  `id` int(11) NOT NULL,
+  `name` varchar(16) DEFAULT NULL,
+  `age` int(11) GENERATED ALWAYS AS (`id` * 100) STORED,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_diff_generated_stored`
+--
+
+LOCK TABLES `t_diff_generated_stored` WRITE;
+/*!40000 ALTER TABLE `t_diff_generated_stored` DISABLE KEYS */;
+INSERT INTO `t_diff_generated_stored` VALUES (1,'a',100),(3,'c',300);
+/*!40000 ALTER TABLE `t_diff_generated_stored` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `t_foreign_had`
 --
 
@@ -535,6 +585,28 @@ LOCK TABLES `t_no_primary` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `t_no_primary_system_versioned`
+--
+
+DROP TABLE IF EXISTS `t_no_primary_system_versioned`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_no_primary_system_versioned` (
+  `id` int(11) NOT NULL,
+  `name` varchar(16) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 WITH SYSTEM VERSIONING;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_no_primary_system_versioned`
+--
+
+LOCK TABLES `t_no_primary_system_versioned` WRITE;
+/*!40000 ALTER TABLE `t_no_primary_system_versioned` DISABLE KEYS */;
+/*!40000 ALTER TABLE `t_no_primary_system_versioned` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `t_ok`
 --
 
@@ -759,7 +831,7 @@ CREATE TABLE `t_system_versioned_visible` (
 
 LOCK TABLES `t_system_versioned_visible` WRITE;
 /*!40000 ALTER TABLE `t_system_versioned_visible` DISABLE KEYS */;
-INSERT INTO `t_system_versioned_visible` VALUES (1,'A','2019-06-06 08:48:46.379223','2038-01-19 03:14:07.999999');
+INSERT INTO `t_system_versioned_visible` VALUES (1,'A','2019-06-07 08:05:11.733125','2038-01-19 03:14:07.999999');
 /*!40000 ALTER TABLE `t_system_versioned_visible` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -852,4 +924,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-06-06  9:21:30
+-- Dump completed on 2019-06-10  8:59:19

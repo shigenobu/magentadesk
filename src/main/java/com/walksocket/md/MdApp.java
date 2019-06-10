@@ -1,8 +1,10 @@
 package com.walksocket.md;
 
 import com.walksocket.md.exception.MdExceptionAbstract;
+import com.walksocket.md.execute.MdExecuteAbstract;
 import com.walksocket.md.input.MdInputAbstract;
 import com.walksocket.md.input.MdInputDiff;
+import com.walksocket.md.input.MdInputMaintenance;
 import com.walksocket.md.input.MdInputSync;
 import com.walksocket.md.output.MdOutputAbstract;
 
@@ -84,36 +86,35 @@ public class MdApp implements AutoCloseable {
     MdExceptionAbstract.ExitCode exitCode = null;
     MdOutputAbstract output = null;
     try (MdApp app = new MdApp();) {
-      // set log
-      MdLogger.setAddSeconds(addSeconds);
-      MdLogger.open(logPath);
-      MdLogger.trace(String.format(
-          "(ENV) isDebug:%s, isPretty:%s, mdHome:%s",
-          MdEnv.isDebug(),
-          MdEnv.isPretty(),
-          MdEnv.getMdHome()));
-      MdLogger.trace(String.format("(ARGS) mode:%s", mode));
-      MdLogger.trace(String.format("(STDIN) json:%s", json));
+      try {
+        // set log
+        MdLogger.setAddSeconds(addSeconds);
+        MdLogger.open(logPath);
+        MdLogger.trace(String.format(
+            "(ENV) isDebug:%s, isPretty:%s, mdHome:%s",
+            MdEnv.isDebug(),
+            MdEnv.isPretty(),
+            MdEnv.getMdHome()));
+        MdLogger.trace(String.format("(ARGS) mode:%s", mode));
+        MdLogger.trace(String.format("(STDIN) json:%s", json));
 
-      // start
-      long start = System.currentTimeMillis();
+        // start
+        long start = System.currentTimeMillis();
 
-      // execute
-      output = app.execute(mode, json);
-      exitCode = MdExceptionAbstract.ExitCode.SUCCESS;
+        // execute
+        output = app.execute(mode, json);
+        exitCode = MdExceptionAbstract.ExitCode.SUCCESS;
 
-      // end
-      long end = System.currentTimeMillis();
-      MdLogger.trace(String.format(
-          "execution time: %s (sec)",
-          TimeUnit.MILLISECONDS.toSeconds(end - start)));
+        // end
+        long end = System.currentTimeMillis();
+        MdLogger.trace(String.format(
+            "execution time: %s (sec)",
+            TimeUnit.MILLISECONDS.toSeconds(end - start)));
 
-    } catch (MdExceptionAbstract me) {
-      exitCode = me.getExitCode();
-      MdLogger.error(me);
-    } catch (Exception e) {
-      exitCode = MdExceptionAbstract.ExitCode.ERROR;
-      MdLogger.error(e);
+      } catch (MdExceptionAbstract me) {
+        exitCode = me.getExitCode();
+        MdLogger.error(me);
+      }
     }
 
     if (output != null) {
@@ -122,6 +123,9 @@ public class MdApp implements AutoCloseable {
       } else {
         System.out.print(MdJson.toJsonString(output));
       }
+    }
+    if (exitCode == null) {
+      exitCode = MdExceptionAbstract.ExitCode.ERROR;
     }
     System.exit(exitCode.getExitCode());
   }
@@ -139,6 +143,8 @@ public class MdApp implements AutoCloseable {
       input = MdJson.toObject(json, MdInputDiff.class);
     } else if (mode.equals(MdInputAbstract.Mode.SYNC.getMode())) {
       input = MdJson.toObject(json, MdInputSync.class);
+    } else if (mode.equals(MdInputAbstract.Mode.MAINTENANCE.getMode())) {
+      input = MdJson.toObject(json, MdInputMaintenance.class);
     }
     input.validate();
     MdLogger.trace(String.format("input:%s", MdJson.toJsonStringFriendly(input)));
