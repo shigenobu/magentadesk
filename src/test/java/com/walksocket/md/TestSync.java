@@ -1,6 +1,7 @@
 package com.walksocket.md;
 
 import com.walksocket.md.bash.MdBashCommand;
+import com.walksocket.md.exception.MdExceptionInvalidInput;
 import com.walksocket.md.input.MdInputDiff;
 import com.walksocket.md.input.MdInputSync;
 import com.walksocket.md.input.member.MdInputMemberOption;
@@ -12,6 +13,7 @@ import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestSync {
@@ -76,5 +78,109 @@ public class TestSync {
     Assert.assertTrue(
         "matchTables:t_all_types",
         outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_all_types")).findFirst().isPresent());
+  }
+
+  @Test
+  public void testSyncByDiffSeq() throws Exception {
+    // diff
+    inputDiff.option = new MdInputMemberOption();
+    inputDiff.option.includeTableLikePatterns.add("t\\_diff");
+    inputDiff.validate();
+    MdOutputDiff outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
+
+    // sync
+    inputSync.summaryId = outputDiff.summaryId;
+    inputSync.diffSeqs = new ArrayList<>();
+    inputSync.diffSeqs.add(
+        outputDiff.mismatchRecordTables
+            .stream()
+            .filter(o -> o.tableName.equals("t_diff"))
+            .findFirst().get()
+            .records
+            .stream()
+            .map(o -> o.diffSeq)
+            .findFirst()
+            .get());
+    inputSync.run = true;
+    inputSync.validate();
+    MdOutputSync outputSync = (MdOutputSync) MdExecute.execute(inputSync);
+    System.out.println(MdJson.toJsonStringFriendly(outputSync));
+
+    // re diff
+    outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
+    System.out.println(MdJson.toJsonStringFriendly(outputDiff));
+
+    // mismatch
+    Assert.assertTrue(
+        "mismatchRecordTables:t_diff",
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_diff")).findFirst().isPresent());
+  }
+
+  @Test
+  public void testSyncForceByDiffSeq() throws Exception {
+    // diff
+    inputDiff.option = new MdInputMemberOption();
+    inputDiff.option.includeTableLikePatterns.add("t\\_diff");
+    inputDiff.validate();
+    MdOutputDiff outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
+
+    // sync
+    inputSync.summaryId = outputDiff.summaryId;
+    inputSync.diffSeqs = new ArrayList<>();
+    inputSync.diffSeqs.add(
+        outputDiff.mismatchRecordTables
+            .stream()
+            .filter(o -> o.tableName.equals("t_diff"))
+            .findFirst().get()
+            .records
+            .stream()
+            .filter(o -> o.baseValues.stream().allMatch(b -> b == null))
+            .map(o -> o.diffSeq)
+            .findFirst()
+            .get());
+    inputSync.run = true;
+    inputSync.force = true;
+    inputSync.validate();
+    MdOutputSync outputSync = (MdOutputSync) MdExecute.execute(inputSync);
+    System.out.println(MdJson.toJsonStringFriendly(outputSync));
+
+    // re diff
+    outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
+    System.out.println(MdJson.toJsonStringFriendly(outputDiff));
+
+    // mismatch
+    Assert.assertTrue(
+        "mismatchRecordTables:t_diff",
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_diff")).findFirst().isPresent());
+  }
+
+  @Test
+  public void testSyncFull() throws Exception {
+    // diff
+    inputDiff.option = new MdInputMemberOption();
+    inputDiff.option.ignoreAutoIncrement = true;
+    inputDiff.option.ignoreComment = true;
+    inputDiff.option.ignorePartitions = true;
+    inputDiff.option.ignoreDefaultForSequence = true;
+    inputDiff.option.includeTableLikePatterns.add("%");
+    inputDiff.validate();
+    MdOutputDiff outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
+
+    // sync
+    inputSync.summaryId = outputDiff.summaryId;
+    inputSync.run = true;
+    inputSync.force = true;
+    inputSync.validate();
+    MdOutputSync outputSync = (MdOutputSync) MdExecute.execute(inputSync);
+    System.out.println(MdJson.toJsonStringFriendly(outputSync));
+
+    // re diff
+    outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
+    System.out.println(MdJson.toJsonStringFriendly(outputDiff));
+
+    // mismatchRecordTables
+    Assert.assertTrue(
+        "mismatchRecordTables",
+        outputDiff.mismatchRecordTables.size() == 0);
   }
 }

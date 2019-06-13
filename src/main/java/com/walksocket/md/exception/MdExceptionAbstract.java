@@ -41,7 +41,7 @@ public abstract class MdExceptionAbstract extends Exception {
     INVALID_VERSION(14),
 
     /**
-     * disallow_simultaneous execution.
+     * disallow simultaneous execution.
      */
     DISALLOW_SIMULTANEOUS_EXECUTION(21),
 

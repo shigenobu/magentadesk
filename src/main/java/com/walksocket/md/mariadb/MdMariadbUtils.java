@@ -1,7 +1,5 @@
 package com.walksocket.md.mariadb;
 
-import com.walksocket.md.MdUtils;
-import com.walksocket.md.input.member.MdInputMemberOption;
 import org.apache.commons.lang3.StringUtils;
 
 import java.sql.SQLException;
@@ -167,15 +165,15 @@ public class MdMariadbUtils {
    * @return column type enum
    * @exception SQLException sql error
    */
-  public static MdMariadbColumnType getColmunType(String columnType) throws SQLException {
+  public static MdMariadbColumnType getColumnType(String columnType) throws SQLException {
     columnType = columnType.toUpperCase();
     for (Map.Entry<String, MdMariadbColumnType> entry : columnTypes.entrySet()) {
-      if (columnType.equals(entry.getKey())) {
+      if (columnType.equalsIgnoreCase(entry.getKey())) {
         return entry.getValue();
       }
     }
     for (Map.Entry<String, MdMariadbColumnType> entry : columnTypes.entrySet()) {
-      if (columnType.startsWith(entry.getKey())) {
+      if (columnType.toLowerCase().startsWith(entry.getKey().toLowerCase())) {
         return entry.getValue();
       }
     }

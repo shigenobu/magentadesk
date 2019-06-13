@@ -1,5 +1,5 @@
 magentadesk - Get MariaDB Table Difference, And Reflect.
-version 0.0.7
+version 0.1.0
 
 Usage:
 
@@ -284,3 +284,17 @@ Usage:
       // maintenance result
       "maintenance":"(on|off)"
     }
+
+(exit code)
+
+  0:  success
+  1:  error
+  11: invalid args
+  12: invalid stdin
+  13: invalid input
+  14: invalid version
+  21: disallow simultaneous execution
+  22: in maintenance
+  23: no exists base or compare
+  24: no exists diff seqs
+  99: unknown

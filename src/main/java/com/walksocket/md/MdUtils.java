@@ -65,4 +65,18 @@ public class MdUtils {
   public static String randomString() {
     return RandomStringUtils.randomAlphanumeric(32).toLowerCase();
   }
+
+  /**
+   * to hex string.
+   * @param value string
+   * @return hex string
+   */
+  public static String toHexString(String value) {
+    byte[] data = value.getBytes(StandardCharsets.UTF_8);
+    StringBuilder sb = new StringBuilder();
+    for (byte d : data) {
+      sb.append(String.format("%02X", d));
+    }
+    return sb.toString();
+  }
 }

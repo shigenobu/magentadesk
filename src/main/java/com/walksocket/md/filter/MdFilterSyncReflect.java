@@ -200,10 +200,10 @@ public class MdFilterSyncReflect extends MdFilterSyncAbstract {
       return "NULL";
     }
 
-    if (MdMariadbUtils.getColmunType(columnType) == MdMariadbUtils.MdMariadbColumnType.STRING) {
+    if (MdMariadbUtils.getColumnType(columnType) == MdMariadbUtils.MdMariadbColumnType.STRING) {
       columnValue = String.format("'%s'", MdMariadbUtils.quote(columnValue));
-    } else if (MdMariadbUtils.getColmunType(columnType) == MdMariadbUtils.MdMariadbColumnType.BINARY) {
-      columnValue = "0x" + columnValue;
+    } else if (MdMariadbUtils.getColumnType(columnType) == MdMariadbUtils.MdMariadbColumnType.BINARY) {
+      columnValue = "0x" + MdUtils.toHexString(columnValue);
     }
     return columnValue;
   }
