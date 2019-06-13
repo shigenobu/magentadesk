@@ -5,7 +5,6 @@ import com.walksocket.md.MdInfoDiff;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.info.MdInfoDiffColumn;
 import com.walksocket.md.mariadb.MdMariadbConnection;
-import com.walksocket.md.mariadb.MdMariadbRecord;
 import com.walksocket.md.output.MdOutputDiff;
 import com.walksocket.md.output.member.MdOutputMemberMatchTables;
 import com.walksocket.md.output.member.MdOutputMemberMismatchRecordTable;
@@ -71,17 +70,6 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
         continue;
       }
 
-      // if system versioned or lower and upper mixed, confirm except
-      if (getExceptRecordsCount(baseInfo, compareInfo) == 0) {
-        // add matches
-        outputDiff.matchTables.add(
-            new MdOutputMemberMatchTables(baseInfo, compareInfo));
-
-        removedBaseInfoList.add(baseInfo);
-        removedCompareInfoLIst.add(compareInfo);
-        continue;
-      }
-
       // register
       registerDiffRecords(
           outputDiff.summaryId,
@@ -94,7 +82,13 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
           baseInfo,
           compareInfo);
       if (MdUtils.isNullOrEmpty(partsRecord)) {
-        throw new RuntimeException("Error mismatch records are not detected.");
+        // add matches
+        outputDiff.matchTables.add(
+            new MdOutputMemberMatchTables(baseInfo, compareInfo));
+
+        removedBaseInfoList.add(baseInfo);
+        removedCompareInfoLIst.add(compareInfo);
+        continue;
       }
 
       // add mismatch
@@ -112,59 +106,6 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
 
     outputDiff.mismatchRecordTables.sort(Comparator.comparing(t -> t.tableName));
     outputDiff.matchTables.sort(Comparator.comparing(t -> t.tableName));
-  }
-
-  /**
-   * get except records count.
-   * @param baseInfo base info
-   * @param compareInfo compare info.
-   * @return count records what is base except compare and compare except base
-   * @throws SQLException sql error
-   */
-  private int getExceptRecordsCount(MdInfoDiff baseInfo, MdInfoDiff compareInfo) throws SQLException {
-    List<String> realColumnNames = new ArrayList<>();
-    for (MdInfoDiffColumn column : baseInfo.getRealColumns()) {
-      if (column.hasCollation()) {
-        realColumnNames.add(String.format(
-            "`%s` collate %s as cl_%s",
-            column.getColumnName(),
-            column.getBinaryCollationName(),
-            column.getColumnName()));
-      } else {
-        realColumnNames.add(String.format(
-            "`%s` as cl_%s",
-            column.getColumnName(),
-            column.getColumnName()));
-      }
-    }
-
-    int cnt = 0;
-    String sql = String.format(
-        "WITH " +
-            "b2c AS (SELECT %s FROM `%s`.`%s` EXCEPT SELECT %s FROM `%s`.`%s`), " +
-            "c2b AS (SELECT %s FROM `%s`.`%s` EXCEPT SELECT %s FROM `%s`.`%s`), " +
-            "total AS (SELECT * FROM b2c UNION SELECT * FROM c2b) " +
-            "SELECT count(*) as cnt FROM total",
-        // b2c
-        MdUtils.join(realColumnNames, ", "),
-        baseInfo.getDatabase(),
-        baseInfo.getTableName(),
-        MdUtils.join(realColumnNames, ", "),
-        compareInfo.getDatabase(),
-        compareInfo.getTableName(),
-        // c2b
-        MdUtils.join(realColumnNames, ", "),
-        compareInfo.getDatabase(),
-        compareInfo.getTableName(),
-        MdUtils.join(realColumnNames, ", "),
-        baseInfo.getDatabase(),
-        baseInfo.getTableName());
-    List<MdMariadbRecord> records = con.getRecords(sql);
-    for (MdMariadbRecord record : records) {
-      cnt = Integer.parseInt(record.get("cnt"));
-    }
-
-    return cnt;
   }
 
   /**

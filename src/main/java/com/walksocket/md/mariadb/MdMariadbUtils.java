@@ -119,7 +119,7 @@ public class MdMariadbUtils {
     dynamicTypes.put("TIME", MdMariadbDynamicType.TIME);
     dynamicTypes.put("DATETIME", MdMariadbDynamicType.DATETIME);
     dynamicTypes.put("TIMESTAMP", MdMariadbDynamicType.DATETIME);
-    dynamicTypes.put("YEAR", MdMariadbDynamicType.DATE);
+    dynamicTypes.put("YEAR", MdMariadbDynamicType.UNSIGNED);
 
     dynamicTypes.put("BINARY", MdMariadbDynamicType.BINARY);
     dynamicTypes.put("VARBINARY", MdMariadbDynamicType.BINARY);
@@ -190,16 +190,22 @@ public class MdMariadbUtils {
    */
   public static MdMariadbDynamicType getDynamicType(String columnType) {
     columnType = columnType.toUpperCase();
-    if (columnType.endsWith("UNSIGNED")) {
+    if ((
+          columnType.toLowerCase().startsWith("tinyint")
+          || columnType.toLowerCase().startsWith("smallint")
+          || columnType.toLowerCase().startsWith("mediumint")
+          || columnType.toLowerCase().startsWith("int")
+          || columnType.toLowerCase().startsWith("bigint"))
+        && columnType.toLowerCase().contains("unsigned")) {
       return MdMariadbDynamicType.UNSIGNED;
     }
     for (Map.Entry<String, MdMariadbDynamicType> entry : dynamicTypes.entrySet()) {
-      if (columnType.equals(entry.getKey())) {
+      if (columnType.equalsIgnoreCase(entry.getKey())) {
         return entry.getValue();
       }
     }
     for (Map.Entry<String, MdMariadbDynamicType> entry : dynamicTypes.entrySet()) {
-      if (columnType.startsWith(entry.getKey())) {
+      if (columnType.toLowerCase().startsWith(entry.getKey().toLowerCase())) {
         return entry.getValue();
       }
     }

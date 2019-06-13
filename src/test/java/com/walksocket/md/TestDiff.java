@@ -1,7 +1,6 @@
 package com.walksocket.md;
 
 import com.walksocket.md.input.MdInputDiff;
-import com.walksocket.md.input.MdInputMaintenance;
 import com.walksocket.md.input.member.MdInputMemberOption;
 import com.walksocket.md.output.MdOutputDiff;
 import org.junit.*;
@@ -18,6 +17,7 @@ public class TestDiff {
   public static void beforeClass() throws IOException {
     MdEnv.setDebug();
     MdEnv.setPretty();
+    MdLogger.setAddSeconds(60 * 60 * 9);
     MdLogger.open("stderr");
   }
 
@@ -31,18 +31,6 @@ public class TestDiff {
     inputDiff.charset = "utf8mb4";
     inputDiff.baseDatabase = "base";
     inputDiff.compareDatabase = "compare";
-
-    // maintenance off
-    MdInputMaintenance inputMaintenance = new MdInputMaintenance();
-    inputMaintenance.host = "127.0.0.1";
-    inputMaintenance.port = 13306;
-    inputMaintenance.user = "root";
-    inputMaintenance.pass = "pass";
-    inputMaintenance.charset = "utf8mb4";
-    inputMaintenance.baseDatabase = "base";
-    inputMaintenance.compareDatabase = "compare";
-    inputMaintenance.maintenance = "off";
-    MdExecute.execute(inputMaintenance);
   }
 
   @Test
@@ -113,6 +101,9 @@ public class TestDiff {
 
     // mismatchRecordTables
     Assert.assertTrue(
+        "mismatchRecordTables:t_all_types",
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_all_types")).findFirst().isPresent());
+    Assert.assertTrue(
         "mismatchRecordTables:t_blob_primary",
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_blob_primary")).findFirst().isPresent());
     Assert.assertTrue(
@@ -121,14 +112,14 @@ public class TestDiff {
     Assert.assertTrue(
         "mismatchRecordTables:t_diff",
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_diff")).findFirst().isPresent());
+    Assert.assertTrue(
+        "mismatchRecordTables:t_utf8_diff",
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_utf8_diff")).findFirst().isPresent());
 
     // matchTables
     Assert.assertTrue(
         "matchTables:T_ALL_UPPER",
         outputDiff.matchTables.stream().filter(o -> o.tableName.equals("T_ALL_UPPER")).findFirst().isPresent());
-    Assert.assertTrue(
-        "matchTables:t_all_types",
-        outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_all_types")).findFirst().isPresent());
     Assert.assertTrue(
         "matchTables:t_lower_UPPER",
         outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_lower_UPPER")).findFirst().isPresent());
@@ -138,6 +129,9 @@ public class TestDiff {
     Assert.assertTrue(
         "matchTables:t_system_versioned_visible",
         outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_system_versioned_visible")).findFirst().isPresent());
+    Assert.assertTrue(
+        "matchTables:t_system_versioned_not_diff",
+        outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_system_versioned_not_diff")).findFirst().isPresent());
   }
 
   @Test

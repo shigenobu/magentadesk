@@ -129,7 +129,7 @@ public class MdLogger {
     }
 
     try {
-      String msg = "[" + now() + "][" + level + "]" + message.toString();
+      String msg = "[" + now() + "][" + String.format("%010d", Thread.currentThread().getId()) + "][" + level + "]" + message.toString();
       writer.write(msg + "\n");
       writer.flush();
 

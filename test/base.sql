@@ -132,7 +132,7 @@ CREATE TABLE `t_all_types` (
 
 LOCK TABLES `t_all_types` WRITE;
 /*!40000 ALTER TABLE `t_all_types` DISABLE KEYS */;
-INSERT INTO `t_all_types` VALUES (1,127,255,010,32767,65535,00100,8388607,16777215,00001000,2147483647,4294967295,0000010000,9223372036854775807,18446744073709551615,00000000000000100000,1,2,0000000000,2.1,2.2,0000000000.2,3.1,3.2,00000000000000000000.3,'','c','varchar','tinytext','text','mediumtext','longtext','a','A','{\"json\":1}','2020-01-01','12:12:12','2020-01-01 12:12:12','2020-01-01 01:01:01',2020,'b','varbinary','tinyblob','blob','mediumblob','longblob');
+INSERT INTO `t_all_types` VALUES (1,127,255,010,32767,65535,00100,8388607,16777215,00001000,2147483647,4294967295,0000010000,9223372036854775807,18446744073709551615,00000000000000100000,1,2,0000000000,2.1,2.2,0000000000.2,3.1,3.2,00000000000000000000.3,'','c','varchar','tinytext','text','mediumtext','longtext','a','A','{\"json\":1}','2020-01-01','12:12:12','2020-01-01 12:12:12','2020-01-01 01:01:01',2020,'b','varbinary','tinyblob','blob','mediumblob','longblob'),(2,127,255,010,32767,65535,00100,8388607,16777215,00001000,2147483647,4294967295,0000010000,9223372036854775807,18446744073709551615,00000000000000100000,1,2,0000000000,2.1,2.2,0000000000.2,3.1,3.2,00000000000000000000.3,'','c','varchar','tinytext','text','mediumtext','longtext','a','A','{\"json\":1}','2020-01-01','12:12:12','2020-01-01 12:12:12','2020-01-01 01:01:01',2020,'b','varbinary','tinyblob','blob','mediumblob','longblob');
 /*!40000 ALTER TABLE `t_all_types` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -809,6 +809,30 @@ INSERT INTO `t_system_versioned_mismatch` VALUES (1,'A');
 UNLOCK TABLES;
 
 --
+-- Table structure for table `t_system_versioned_not_diff`
+--
+
+DROP TABLE IF EXISTS `t_system_versioned_not_diff`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_system_versioned_not_diff` (
+  `id` int(11) NOT NULL,
+  `name` varchar(16) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 WITH SYSTEM VERSIONING;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_system_versioned_not_diff`
+--
+
+LOCK TABLES `t_system_versioned_not_diff` WRITE;
+/*!40000 ALTER TABLE `t_system_versioned_not_diff` DISABLE KEYS */;
+INSERT INTO `t_system_versioned_not_diff` VALUES (1,'A'),(2,'B');
+/*!40000 ALTER TABLE `t_system_versioned_not_diff` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `t_system_versioned_visible`
 --
 
@@ -831,7 +855,7 @@ CREATE TABLE `t_system_versioned_visible` (
 
 LOCK TABLES `t_system_versioned_visible` WRITE;
 /*!40000 ALTER TABLE `t_system_versioned_visible` DISABLE KEYS */;
-INSERT INTO `t_system_versioned_visible` VALUES (1,'A','2019-06-07 08:05:11.733125','2038-01-19 03:14:07.999999');
+INSERT INTO `t_system_versioned_visible` VALUES (1,'A','2019-06-13 03:03:51.349798','2038-01-19 03:14:07.999999');
 /*!40000 ALTER TABLE `t_system_versioned_visible` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -856,6 +880,30 @@ CREATE TABLE `t_trigger_result` (
 LOCK TABLES `t_trigger_result` WRITE;
 /*!40000 ALTER TABLE `t_trigger_result` DISABLE KEYS */;
 /*!40000 ALTER TABLE `t_trigger_result` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `t_utf8_diff`
+--
+
+DROP TABLE IF EXISTS `t_utf8_diff`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_utf8_diff` (
+  `id` int(11) NOT NULL,
+  `name` varchar(16) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_utf8_diff`
+--
+
+LOCK TABLES `t_utf8_diff` WRITE;
+/*!40000 ALTER TABLE `t_utf8_diff` DISABLE KEYS */;
+INSERT INTO `t_utf8_diff` VALUES (1,'A'),(2,'B');
+/*!40000 ALTER TABLE `t_utf8_diff` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -924,4 +972,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-06-10  8:59:19
+-- Dump completed on 2019-06-13  3:04:26

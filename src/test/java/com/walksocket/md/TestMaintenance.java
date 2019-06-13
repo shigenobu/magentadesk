@@ -1,10 +1,8 @@
 package com.walksocket.md;
 
 import com.walksocket.md.exception.MdExceptionAbstract;
-import com.walksocket.md.execute.MdExecuteAbstract;
 import com.walksocket.md.input.MdInputDiff;
 import com.walksocket.md.input.MdInputMaintenance;
-import com.walksocket.md.input.member.MdInputMemberOption;
 import com.walksocket.md.output.MdOutputDiff;
 import com.walksocket.md.output.MdOutputMaintenance;
 import org.junit.*;
@@ -21,6 +19,7 @@ public class TestMaintenance {
   public static void beforeClass() throws IOException {
     MdEnv.setDebug();
     MdEnv.setPretty();
+    MdLogger.setAddSeconds(60 * 60 * 9);
     MdLogger.open("stderr");
   }
 
@@ -34,6 +33,13 @@ public class TestMaintenance {
     inputMaintenance.charset = "utf8mb4";
     inputMaintenance.baseDatabase = "base";
     inputMaintenance.compareDatabase = "compare";
+  }
+
+  @After
+  public void testAfter() throws Exception {
+    // maintenance off
+    inputMaintenance.maintenance = "off";
+    MdExecute.execute(inputMaintenance);
   }
 
   @Test
