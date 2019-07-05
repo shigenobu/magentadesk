@@ -51,8 +51,8 @@ public class TestSync {
 
   @After
   public void after() {
-    MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 13306 -u root -ppass base < `PWD`/test/base.sql", 300));
-    MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 13306 -u root -ppass compare < `PWD`/test/compare.sql", 300));
+    MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 13306 -u root -ppass base < `pwd`/test/base.sql", 300));
+    MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 13306 -u root -ppass compare < `pwd`/test/compare.sql", 300));
   }
 
   @Test
