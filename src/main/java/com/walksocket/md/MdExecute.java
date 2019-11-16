@@ -81,7 +81,7 @@ public class MdExecute {
         sql = "CREATE TABLE IF NOT EXISTS `magentadesk`.`diffRecord` (" +
             "  `summaryId` varchar(32) not null," +
             "  `tableName` varchar(64) not null," +
-            "  `diffSeq` bigint not null default nextval(`magentadesk`.`diffSequence`)," +
+            "  `diffSeq` bigint not null," +
             "  `baseValues` longblob," +
             "  `compareValues` longblob," +
             "  primary key (`summaryId`, `tableName`, `diffSeq`)," +

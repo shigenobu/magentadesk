@@ -171,7 +171,7 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
     }
 
     String sql = String.format(
-        "INSERT INTO `magentadesk`.`diffRecord` (`summaryId`, `tableName`, `baseValues`, `compareValues`) " +
+        "INSERT INTO `magentadesk`.`diffRecord` (`summaryId`, `tableName`, `diffSeq`, `baseValues`, `compareValues`) " +
             "WITH " +
             "md_b2c AS (" +
             "  SELECT %s FROM `%s`.`%s` EXCEPT SELECT %s FROM `%s`.`%s`" +
@@ -191,6 +191,7 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
             "SELECT " +
             "  '%s' as summaryId, " +
             "  '%s' as tableName, " +
+            "  nextval(`magentadesk`.`diffSequence`), " +
             "  COLUMN_CREATE(%s) as baseValues, " +
             "  COLUMN_CREATE(%s) as compareValues " +
             "FROM " +
