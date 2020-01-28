@@ -30,12 +30,13 @@ Below, it's simple usage.
 |:--|:---|
 |MD_ENV|if 'DEBUG', log in detail.|
 |MD_OUTPUT|if 'PRETTY', write out json result in pretty.|
+|MD_LIMIT_LENGTH|when diff and over this, returned value is to hash. default is 1000.|
 |MD_HOME|default is ${HOME}/.magentadesk. There is a temporary directory, by commands which execute in sync.|
 
 Complete sample, containis args and env.  
 
     echo '${json}' \
-      | [MD_ENV=${mdEnv}] [MD_OUTPUT=${mdOutput}] [MD_HOME=${mdHome}] \
+      | [MD_ENV=${mdEnv}] [MD_OUTPUT=${mdOutput}] [MD_LIMIT_LENGTH=${mdLimitLength}] [MD_HOME=${mdHome}] \
         java -jar magentadesk.jar --mode=${mode} [--logPath=${logPath}] [--addSeconds=${addSeconds}]
 
 

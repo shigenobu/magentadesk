@@ -7,6 +7,7 @@ import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.output.parts.MdOutputPartsColumn;
 import com.walksocket.md.output.parts.MdOutputPartsRecord;
 
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -155,6 +156,12 @@ public class MdDesk {
         String mdColumnName = entry.getKey();
         String md = mdColumnName.substring(0, 3);
         String columnValue = entry.getValue();
+
+        if (!MdUtils.isNullOrEmpty(columnValue)
+            && columnValue.getBytes(StandardCharsets.UTF_8).length > MdEnv.getLimitLength()) {
+          // if lenght over MD_LIMIT_LENGTH, column value is to hash.
+          columnValue = String.format("[HASH]%s", MdUtils.getHash(columnValue));
+        }
 
         if (md.equals("mdb")) {
           baseValues.add(columnValue);

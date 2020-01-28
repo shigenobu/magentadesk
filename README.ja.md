@@ -29,14 +29,15 @@ MariaDBの同一ホスト内の2つのデータベースの差分を取り、同
 
 |名称|説明|
 |:--|:---|
-|MD_ENV|DEBUGを指定すると、詳細なログを出力します|
-|MD_OUTPUT|PRETTYを指定すると、標準出力の結果のJSONが整形されます|
-|MD_HOME|指定しないと、${HOME}/.magentadeskとなり、ここにsync時の任意コマンド実行時の一時ファイルが格納されます|
+|MD_ENV|DEBUGを指定すると、詳細なログを出力します。|
+|MD_OUTPUT|PRETTYを指定すると、標準出力の結果のJSONが整形されます。|
+|MD_LIMIT_LENGTH|diffの実行結果の値において、このバイト数以上になると、ハッシュ化されます。デフォルト1000です。|
+|MD_HOME|指定しないと、${HOME}/.magentadeskとなり、ここにsync時の任意コマンド実行時の一時ファイルが格納されます。|
 
 引数、環境変数を考慮した形の完全なコマンド例は以下となります。  
 
     echo '${json}' \
-      | [MD_ENV=${mdEnv}] [MD_OUTPUT=${mdOutput}] [MD_HOME=${mdHome}] \
+      | [MD_ENV=${mdEnv}] [MD_OUTPUT=${mdOutput}] [MD_LIMIT_LENGTH=${mdLimitLength}] [MD_HOME=${mdHome}] \
         java -jar magentadesk.jar --mode=${mode} [--logPath=${logPath}] [--addSeconds=${addSeconds}]
 
 

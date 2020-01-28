@@ -18,6 +18,11 @@ public class MdEnv {
   private static boolean isPretty = false;
 
   /**
+   * limit length.
+   */
+  private static int limitLength = 1000;
+
+  /**
    * magentadesk home diretory.
    */
   private static String mdHome = System.getProperty("user.home") + File.separator + ".magentadesk";
@@ -31,6 +36,11 @@ public class MdEnv {
     String mdOutput = System.getenv("MD_OUTPUT");
     if (mdOutput != null && mdOutput.equals("PRETTY")) {
       isPretty = true;
+    }
+
+    String mdLimitLength = System.getenv("MD_LIMIT_LENGTH");
+    if (mdLimitLength != null && MdUtils.isNumber(mdLimitLength)) {
+      limitLength = Integer.parseInt(mdLimitLength);
     }
 
     String mdHome = System.getenv("MD_HOME");
@@ -71,6 +81,22 @@ public class MdEnv {
    */
   public static void setPretty() {
     isPretty = true;
+  }
+
+  /**
+   * get limit length.
+   * @return limit length.
+   */
+  public static int getLimitLength() {
+    return limitLength;
+  }
+
+  /**
+   * set limit length.
+   * @param limitLength limit length
+   */
+  public static void setLimitLength(int limitLength) {
+    MdEnv.limitLength = limitLength;
   }
 
   /**

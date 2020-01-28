@@ -4,7 +4,7 @@ version 0.1.0
 Usage:
 
     echo '${json}' \
-      | [MD_ENV=${mdEnv}] [MD_OUTPUT=${mdOutput}] [MD_HOME=${mdHome}] \
+      | [MD_ENV=${mdEnv}] [MD_OUTPUT=${mdOutput}] [MD_LIMIT_LENGTH=${mdLimitLength}] [MD_HOME=${mdHome}] \
         java -jar magentadesk.jar --mode=${mode} [--logPath=${logPath}] [--addSeconds=${addSeconds}]
 
 (args)
@@ -15,9 +15,10 @@ Usage:
 
 (env)
 
-  mdEnv       if 'DEBUG', log in detail.
-  mdOutput    if 'PRETTY', output json is pretty.
-  mdHome      default is '${HOME}/.magentadesk'.
+  mdEnv         if 'DEBUG', log in detail.
+  mdOutput      if 'PRETTY', output json is pretty.
+  mdLimitLength when diff and over this, returned value is to hash. default is 1000.
+  mdHome        default is '${HOME}/.magentadesk'.
 
 (stdin)
 

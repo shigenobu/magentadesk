@@ -39,13 +39,26 @@ public class MdUtils {
    * @return hashed string
    */
   public static String getHash(String src) {
+    StringBuilder builder = new StringBuilder();
     byte[] data = new byte[0];
     try {
       data = MessageDigest.getInstance("MD5").digest(src.getBytes(StandardCharsets.UTF_8));
+      for (byte d : data) {
+        builder.append(String.format("%02x", d));
+      }
     } catch (NoSuchAlgorithmException e) {
       e.printStackTrace();
     }
-    return String.format("%040x", new BigInteger(1, data));
+    return builder.toString();
+  }
+
+  /**
+   * is number.
+   * @param src string
+   * @return if number, true
+   */
+  public static boolean isNumber(String src) {
+    return src.chars().allMatch(Character::isDigit);
   }
 
   /**

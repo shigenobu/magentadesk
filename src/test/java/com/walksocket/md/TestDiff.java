@@ -17,6 +17,7 @@ public class TestDiff {
   public static void beforeClass() throws IOException {
     MdEnv.setDebug();
     MdEnv.setPretty();
+    MdEnv.setLimitLength(3);
     MdLogger.setAddSeconds(60 * 60 * 9);
     MdLogger.open("stderr");
   }
