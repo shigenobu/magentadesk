@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
@@ -36,7 +37,7 @@ public class MdFile {
       int len = 0;
       while ((len = channel.read(buffer)) >= 0) {
         baos.write(buffer.array(), 0, len);
-        buffer.clear();
+        ((Buffer) buffer).clear();
       }
       data = baos.toByteArray();
     }
