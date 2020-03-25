@@ -2,6 +2,7 @@ package com.walksocket.md.filter;
 
 import com.walksocket.md.MdDesk;
 import com.walksocket.md.MdInfoDiff;
+import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.info.MdInfoDiffColumn;
 import com.walksocket.md.mariadb.MdMariadbConnection;
@@ -9,11 +10,16 @@ import com.walksocket.md.output.MdOutputDiff;
 import com.walksocket.md.output.member.MdOutputMemberMatchTables;
 import com.walksocket.md.output.member.MdOutputMemberMismatchRecordTable;
 import com.walksocket.md.output.parts.MdOutputPartsRecord;
+import com.walksocket.md.supplier.MdSupplierInfoGetChecksum;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * filter diff mismatch record.
@@ -48,8 +54,18 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
           .get();
 
       // checksum
-      String baseChecksum = baseInfo.getChecksum();
-      String compareChecksum = compareInfo.getChecksum();
+      String baseChecksum = null;
+      String compareChecksum = null;
+      try {
+        ExecutorService service = Executors.newFixedThreadPool(2);
+        CompletableFuture<String> baseFuture = baseInfo.getChecksumFuture(service);
+        CompletableFuture<String> compareFuture = compareInfo.getChecksumFuture(service);
+        baseChecksum = baseFuture.get(600, TimeUnit.SECONDS);
+        compareChecksum = compareFuture.get(600, TimeUnit.SECONDS);
+      } catch (Exception e) {
+        MdLogger.error(e);
+        new SQLException(e);
+      }
       boolean matchChecksum = false;
       if (!MdUtils.isNullOrEmpty(baseChecksum)
           && !MdUtils.isNullOrEmpty(compareChecksum)

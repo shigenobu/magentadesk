@@ -5,9 +5,12 @@ import com.walksocket.md.input.member.MdInputMemberOption;
 import com.walksocket.md.mariadb.MdMariadbConnection;
 import com.walksocket.md.mariadb.MdMariadbRecord;
 import com.walksocket.md.mariadb.MdMariadbUtils;
+import com.walksocket.md.supplier.MdSupplierInfoGetChecksum;
 
 import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 
 /**
@@ -99,14 +102,6 @@ public class MdInfoDiff {
   private String definition;
 
   /**
-   * checksum.
-   * <pre>
-   *   CHECKSUM TABLE ...
-   * </pre>
-   */
-  private String checksum;
-
-  /**
    * information table.
    * <pre>
    *   FROM information_schema.TABLES
@@ -166,6 +161,11 @@ public class MdInfoDiff {
    * information referenced.
    */
   private Set<String> referencedTableNames = null;
+
+  /**
+   * supplier for get checksum.
+   */
+  private MdSupplierInfoGetChecksum supplier;
 
   /**
    * construtor.
@@ -288,22 +288,15 @@ public class MdInfoDiff {
   }
 
   /**
-   * get checksum
-   * @return checksum
-   * @throws SQLException sql error
+   * get future for checksum.
+   * @param service service
+   * @return future for checksum
    */
-  public String getChecksum() throws SQLException {
-    if (checksum == null) {
-      String sql = String.format(
-          "CHECKSUM TABLE `%s`.`%s`",
-          database,
-          tableName);
-      List<MdMariadbRecord> records = con.getRecords(sql);
-      for (MdMariadbRecord record : records) {
-        checksum = record.get("Checksum");
-      }
+  public CompletableFuture<String> getChecksumFuture(ExecutorService service) {
+    if (supplier == null) {
+      supplier = new MdSupplierInfoGetChecksum(con.getConnectionStrinng(), database, tableName);
     }
-    return checksum;
+    return CompletableFuture.supplyAsync(supplier, service);
   }
 
   /**

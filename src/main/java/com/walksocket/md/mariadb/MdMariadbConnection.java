@@ -37,6 +37,14 @@ public class MdMariadbConnection implements AutoCloseable {
   }
 
   /**
+   * get connection string.
+   * @return connection string
+   */
+  public String getConnectionStrinng() {
+    return connectionStrinng;
+  }
+
+  /**
    * open.
    * @throws SQLException sql error
    */
@@ -52,7 +60,7 @@ public class MdMariadbConnection implements AutoCloseable {
       con.setAutoCommit(false);
       con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
       con.setReadOnly(true);
-      MdLogger.sql(con);
+      MdLogger.sql("CONNECT:" + con);
 
     } catch (ClassNotFoundException e) {
       MdLogger.error(e);
@@ -191,5 +199,6 @@ public class MdMariadbConnection implements AutoCloseable {
       return;
     }
     con.close();
+    MdLogger.sql("DISCONNECT:" + con);
   }
 }

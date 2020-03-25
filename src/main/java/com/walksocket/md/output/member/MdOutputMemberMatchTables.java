@@ -2,9 +2,14 @@ package com.walksocket.md.output.member;
 
 import com.google.gson.annotations.Expose;
 import com.walksocket.md.MdInfoDiff;
+import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdUtils;
 
 import java.sql.SQLException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * output match.
@@ -58,7 +63,17 @@ public class MdOutputMemberMatchTables {
     this.tableComment = baseInfo.getInfoTable().getTableComment();
     this.baseTableType = baseInfo.getInfoTable().getTableType();
     this.compareTableType = compareInfo.getInfoTable().getTableType();
-    this.baseChecksum = baseInfo.getChecksum();
-    this.compareChecksum = compareInfo.getChecksum();
+
+    // checksum
+    try {
+      ExecutorService service = Executors.newFixedThreadPool(2);
+      CompletableFuture<String> baseFuture = baseInfo.getChecksumFuture(service);
+      CompletableFuture<String> compareFuture = compareInfo.getChecksumFuture(service);
+      this.baseChecksum = baseFuture.get(600, TimeUnit.SECONDS);
+      this.compareChecksum = compareFuture.get(600, TimeUnit.SECONDS);
+    } catch (Exception e) {
+      MdLogger.error(e);
+      new SQLException(e);
+    }
   }
 }
