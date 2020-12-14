@@ -3,9 +3,12 @@ package com.walksocket.md.input;
 import com.google.gson.annotations.Expose;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.exception.MdExceptionInvalidInput;
+import com.walksocket.md.input.member.MdInputMemberCondition;
 import com.walksocket.md.input.member.MdInputMemberOption;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * input diff.
@@ -29,6 +32,12 @@ public class MdInputDiff extends MdInputAbstract {
    */
   @Expose
   public MdInputMemberOption option = new MdInputMemberOption();
+
+  /**
+   * condition list.
+   */
+  @Expose
+  public List<MdInputMemberCondition> conditions = new ArrayList<>();
 
   @Override
   public Mode getMode() {
@@ -54,6 +63,10 @@ public class MdInputDiff extends MdInputAbstract {
     }
     if (option.excludeTableLikePatterns == null) {
       option.excludeTableLikePatterns = new ArrayList<>();
+    }
+
+    if (conditions == null) {
+      conditions = new ArrayList<>();
     }
   }
 }

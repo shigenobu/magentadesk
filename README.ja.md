@@ -83,7 +83,15 @@ __mode=diffのとき__
         "ignorePartitions": false,
         // trueにすると、default値にsequenceのnextval、lastvalが定義されている場合、テーブル構造比較項目の対象から外します
         "ignoreDefaultForSequence": false
-      }
+      },
+      // 比較条件
+      "conditions": [
+        {
+           // 対象テーブル名と一致したとき、比較条件として比較元／比較先で利用されます
+          "tableName":"t1",
+          "expression":"upd_date > (now() - interval 10 day)"
+        }
+      ]
     }
 
 __mode=syncのとき__

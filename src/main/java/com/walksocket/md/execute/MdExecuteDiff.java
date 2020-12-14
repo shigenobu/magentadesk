@@ -61,8 +61,16 @@ public class MdExecuteDiff extends MdExecuteAbstract {
 
     // -----
     // get table info
-    List<MdInfoDiff> baseInfoList = MdInfoDiff.createInfoList(con, inputDiff.baseDatabase, inputDiff.option);
-    List<MdInfoDiff> compareInfoList = MdInfoDiff.createInfoList(con, inputDiff.compareDatabase, inputDiff.option);
+    List<MdInfoDiff> baseInfoList = MdInfoDiff.createInfoList(
+        con,
+        inputDiff.baseDatabase,
+        inputDiff.option,
+        inputDiff.conditions);
+    List<MdInfoDiff> compareInfoList = MdInfoDiff.createInfoList(
+        con,
+        inputDiff.compareDatabase,
+        inputDiff.option,
+        inputDiff.conditions);
 
     // -----
     // filter

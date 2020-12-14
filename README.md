@@ -80,7 +80,15 @@ __mode=diff__
         "ignorePartitions": false,
         // if true, ignore column default sequence definition for table structure diff. default is false.
         "ignoreDefaultForSequence": false
-      }
+      },
+      // conditions
+      "conditions": [
+        {
+          // if setting tableName and matched, expresion is used by 'where' condition.
+          "tableName":"t1",
+          "expression":"upd_date > (now() - interval 10 day)"
+        }
+      ]
     }
 
 __mode=sync__

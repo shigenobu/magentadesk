@@ -1,6 +1,7 @@
 package com.walksocket.md;
 
 import com.walksocket.md.info.*;
+import com.walksocket.md.input.member.MdInputMemberCondition;
 import com.walksocket.md.input.member.MdInputMemberOption;
 import com.walksocket.md.mariadb.MdMariadbConnection;
 import com.walksocket.md.mariadb.MdMariadbRecord;
@@ -23,13 +24,15 @@ public class MdInfoDiff {
    * @param con mariadb connection.
    * @param database base or compare database
    * @param option input option
+   * @param conditions condtion list
    * @return listed info
    * @throws SQLException sql error
    */
   public static List<MdInfoDiff> createInfoList(
       MdMariadbConnection con,
       String database,
-      MdInputMemberOption option) throws SQLException {
+      MdInputMemberOption option,
+      List<MdInputMemberCondition> conditions) throws SQLException {
     String sql = null;
     List<MdMariadbRecord> records = null;
 
@@ -66,7 +69,18 @@ public class MdInfoDiff {
     for (MdMariadbRecord record : records) {
       String tableName = record.get("TABLE_NAME");
 
-      MdInfoDiff info = new MdInfoDiff(con, database, tableName, option);
+      MdInputMemberCondition condition = null;
+      Optional<MdInputMemberCondition> opt = conditions.stream().filter(c -> c.tableName.equals(tableName)).findFirst();
+      if (opt.isPresent()) {
+        condition = opt.get();
+      }
+
+      MdInfoDiff info = new MdInfoDiff(
+          con,
+          database,
+          tableName,
+          option,
+          condition);
       infoList.add(info);
     }
 
@@ -92,6 +106,11 @@ public class MdInfoDiff {
    * input option.
    */
   private MdInputMemberOption option;
+
+  /**
+   * input condition.
+   */
+  private MdInputMemberCondition condition;
 
   /**
    * definition.
@@ -173,17 +192,20 @@ public class MdInfoDiff {
    * @param database base or compare database
    * @param tableName table name
    * @param option input option
+   * @param condition where condition
    * @throws SQLException sql error
    */
   public MdInfoDiff(
       MdMariadbConnection con,
       String database,
       String tableName,
-      MdInputMemberOption option) throws SQLException {
+      MdInputMemberOption option,
+      MdInputMemberCondition condition) throws SQLException {
     this.con = con;
     this.database = database;
     this.tableName = tableName;
     this.option = option;
+    this.condition = condition;
   }
 
   /**
@@ -200,6 +222,22 @@ public class MdInfoDiff {
    */
   public String getTableName() {
     return tableName;
+  }
+
+  /**
+   * get where expression.
+   * @return where expression
+   */
+  public String getWhereExpression() {
+    if (condition == null) {
+      return "";
+    }
+
+    String expression = "";
+    if (!MdUtils.isNullOrEmpty(condition.expression)) {
+      expression = "WHERE " + condition.expression;
+    }
+    return expression;
   }
 
   /**

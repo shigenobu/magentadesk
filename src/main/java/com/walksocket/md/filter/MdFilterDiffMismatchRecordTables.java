@@ -190,10 +190,10 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
         "INSERT INTO `magentadesk`.`diffRecord` (`summaryId`, `tableName`, `diffSeq`, `baseValues`, `compareValues`) " +
             "WITH " +
             "md_b2c AS (" +
-            "  SELECT %s FROM `%s`.`%s` EXCEPT SELECT %s FROM `%s`.`%s`" +
+            "  SELECT %s FROM `%s`.`%s` %s EXCEPT SELECT %s FROM `%s`.`%s` %s" +
             ")," +
             "md_c2b AS (" +
-            "  SELECT %s FROM `%s`.`%s` EXCEPT SELECT %s FROM `%s`.`%s`" +
+            "  SELECT %s FROM `%s`.`%s` %s EXCEPT SELECT %s FROM `%s`.`%s` %s" +
             ")," +
             "md_left AS (" +
             "  SELECT %s, %s FROM md_b2c LEFT OUTER JOIN md_c2b ON %s" +
@@ -216,16 +216,20 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
         MdUtils.join(realColumnNames, ", "),
         baseInfo.getDatabase(),
         baseInfo.getTableName(),
+        baseInfo.getWhereExpression(),
         MdUtils.join(realColumnNames, ", "),
         compareInfo.getDatabase(),
         compareInfo.getTableName(),
+        compareInfo.getWhereExpression(),
         // md_c2b
         MdUtils.join(realColumnNames, ", "),
         compareInfo.getDatabase(),
         compareInfo.getTableName(),
+        compareInfo.getWhereExpression(),
         MdUtils.join(realColumnNames, ", "),
         baseInfo.getDatabase(),
         baseInfo.getTableName(),
+        baseInfo.getWhereExpression(),
         // md_left
         MdUtils.join(baseColumnNames, ", "),
         MdUtils.join(compareColumnNames, ", "),
