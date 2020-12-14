@@ -1,6 +1,7 @@
 package com.walksocket.md;
 
 import com.walksocket.md.input.MdInputDiff;
+import com.walksocket.md.input.member.MdInputMemberCondition;
 import com.walksocket.md.input.member.MdInputMemberOption;
 import com.walksocket.md.output.MdOutputDiff;
 import org.junit.*;
@@ -116,6 +117,9 @@ public class TestDiff {
     Assert.assertTrue(
         "mismatchRecordTables:t_utf8_diff",
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_utf8_diff")).findFirst().isPresent());
+    Assert.assertTrue(
+        "mismatchRecordTables:t_article",
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_article")).findFirst().isPresent());
 
     // matchTables
     Assert.assertTrue(
@@ -244,5 +248,41 @@ public class TestDiff {
     Assert.assertEquals(
         2,
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_diff_generated_stored")).findFirst().get().records.get(0).compareValues.size());
+  }
+
+  @Test
+  public void test31AddCondition() throws Exception {
+    inputDiff.option = new MdInputMemberOption();
+    inputDiff.option.includeTableLikePatterns.add("t_article");
+
+    // ---
+    MdInputMemberCondition c1 = new MdInputMemberCondition();
+    c1.tableName = "t_article";
+    c1.expression = "up_date > '2020-11-05'";
+    inputDiff.conditions.add(c1);
+
+    MdOutputDiff outputDiff1 = (MdOutputDiff) MdExecute.execute(inputDiff);
+    System.out.println(MdJson.toJsonStringFriendly(outputDiff1));
+
+    // mismatchRecordTables
+    Assert.assertTrue(
+        "mismatchRecordTables:t_article",
+        outputDiff1.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_article")).findFirst().isPresent());
+
+    // ---
+    inputDiff.conditions.clear();
+
+    MdInputMemberCondition c2 = new MdInputMemberCondition();
+    c2.tableName = "t_article";
+    c2.expression = "up_date > '2020-11-15'";
+    inputDiff.conditions.add(c2);
+
+    MdOutputDiff outputDiff2 = (MdOutputDiff) MdExecute.execute(inputDiff);
+    System.out.println(MdJson.toJsonStringFriendly(outputDiff2));
+
+    // matchTables
+    Assert.assertTrue(
+        "matchTables:t_article",
+        outputDiff2.matchTables.stream().filter(o -> o.tableName.equals("t_article")).findFirst().isPresent());
   }
 }

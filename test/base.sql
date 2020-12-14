@@ -1,8 +1,8 @@
--- MySQL dump 10.17  Distrib 10.3.15-MariaDB, for debian-linux-gnu (x86_64)
+-- MariaDB dump 10.17  Distrib 10.4.13-MariaDB, for Linux (x86_64)
 --
--- Host: localhost    Database: base
+-- Host: 127.0.0.1    Database: base
 -- ------------------------------------------------------
--- Server version	10.3.15-MariaDB-1:10.3.15+maria~bionic
+-- Server version	10.5.5-MariaDB-1:10.5.5+maria~focal
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,6 +14,14 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Current Database: `base`
+--
+
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `base` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
+
+USE `base`;
 
 --
 -- Table structure for table `T_ALL_UPPER`
@@ -134,6 +142,34 @@ LOCK TABLES `t_all_types` WRITE;
 /*!40000 ALTER TABLE `t_all_types` DISABLE KEYS */;
 INSERT INTO `t_all_types` VALUES (1,127,255,010,32767,65535,00100,8388607,16777215,00001000,2147483647,4294967295,0000010000,9223372036854775807,18446744073709551615,00000000000000100000,2147483647,4294967295,4294967295,-3.40282e38,3.40282e38,003.40282e38,-1.7976931348623157e308,1.7976931348623157e308,1.7976931348623157e308,'','c','varchar','tinytext','text','mediumtext','longtext','a','A','{\"json\":1}','2020-01-01','12:12:12','2020-01-01 12:12:12','2020-01-01 01:01:01',2020,'b','varbinary','tinyblob','blob','mediumblob','longblob'),(2,127,255,010,32767,65535,00100,8388607,16777215,00001000,2147483647,4294967295,0000010000,9223372036854775807,18446744073709551615,00000000000000100000,1,2,0000000000,2.1,2.2,0000000000.2,3.1,3.2,00000000000000000000.3,'','c','varchar','tinytext','text','mediumtext','longtext','a','A','{\"json\":1}','2020-01-01','12:12:12','2020-01-01 12:12:12','2020-01-01 01:01:01',2020,'b','varbinary','tinyblob','blob','mediumblob','longblob');
 /*!40000 ALTER TABLE `t_all_types` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `t_article`
+--
+
+DROP TABLE IF EXISTS `t_article`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_article` (
+  `article_id` bigint(20) unsigned NOT NULL COMMENT '記事ID',
+  `title` mediumtext NOT NULL COMMENT 'タイトル',
+  `detail` longtext NOT NULL COMMENT '詳細',
+  `in_date` datetime NOT NULL COMMENT '登録日時',
+  `up_date` datetime NOT NULL COMMENT '更新日時',
+  PRIMARY KEY (`article_id`),
+  KEY `k1` (`up_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='記事';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_article`
+--
+
+LOCK TABLES `t_article` WRITE;
+/*!40000 ALTER TABLE `t_article` DISABLE KEYS */;
+INSERT INTO `t_article` VALUES (1,'記事1','詳細詳細詳細詳細詳細詳細詳細','2020-10-01 00:00:00','2020-10-10 00:00:00'),(2,'記事2','詳細詳細詳細詳細詳細詳細詳細','2020-10-11 00:00:00','2020-10-20 00:00:00'),(3,'記事3','詳細詳細詳細詳細詳細詳細詳細','2020-10-21 00:00:00','2020-10-30 00:00:00'),(4,'記事4','詳細詳細詳細詳細詳細詳細詳細','2020-11-01 00:00:00','2020-11-10 00:00:00'),(5,'記事5','詳細詳細詳細詳細詳細詳細詳細','2020-11-11 00:00:00','2020-11-20 00:00:00');
+/*!40000 ALTER TABLE `t_article` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -855,7 +891,7 @@ CREATE TABLE `t_system_versioned_visible` (
 
 LOCK TABLES `t_system_versioned_visible` WRITE;
 /*!40000 ALTER TABLE `t_system_versioned_visible` DISABLE KEYS */;
-INSERT INTO `t_system_versioned_visible` VALUES (1,'A','2019-06-13 08:24:04.213988','2038-01-19 03:14:07.999999');
+INSERT INTO `t_system_versioned_visible` VALUES (1,'A','2020-12-14 10:17:30.342140','2038-01-19 03:14:07.999999');
 /*!40000 ALTER TABLE `t_system_versioned_visible` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -945,6 +981,12 @@ INSERT INTO `t_wrong_auto_increment` VALUES (1,'a');
 UNLOCK TABLES;
 
 --
+-- Current Database: `base`
+--
+
+USE `base`;
+
+--
 -- Final view structure for view `t_view_ok`
 --
 
@@ -972,4 +1014,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-06-13  8:24:19
+-- Dump completed on 2020-12-14 19:24:15
