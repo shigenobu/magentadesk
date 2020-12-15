@@ -120,6 +120,9 @@ public class TestDiff {
     Assert.assertTrue(
         "mismatchRecordTables:t_article",
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_article")).findFirst().isPresent());
+    Assert.assertTrue(
+        "mismatchRecordTables:t_movie",
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_movie")).findFirst().isPresent());
 
     // matchTables
     Assert.assertTrue(
@@ -254,12 +257,18 @@ public class TestDiff {
   public void test31AddCondition() throws Exception {
     inputDiff.option = new MdInputMemberOption();
     inputDiff.option.includeTableLikePatterns.add("t_article");
+    inputDiff.option.includeTableLikePatterns.add("t_movie");
 
     // ---
     MdInputMemberCondition c1 = new MdInputMemberCondition();
     c1.tableName = "t_article";
     c1.expression = "up_date > '2020-11-05'";
     inputDiff.conditions.add(c1);
+
+    MdInputMemberCondition c11 = new MdInputMemberCondition();
+    c11.tableName = "t_movie";
+    c11.expression = "up_date > '2020-11-20'";
+    inputDiff.conditions.add(c11);
 
     MdOutputDiff outputDiff1 = (MdOutputDiff) MdExecute.execute(inputDiff);
     System.out.println(MdJson.toJsonStringFriendly(outputDiff1));
@@ -268,6 +277,9 @@ public class TestDiff {
     Assert.assertTrue(
         "mismatchRecordTables:t_article",
         outputDiff1.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_article")).findFirst().isPresent());
+    Assert.assertTrue(
+        "mismatchRecordTables:t_movie",
+        outputDiff1.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_movie")).findFirst().isPresent());
 
     // ---
     inputDiff.conditions.clear();
@@ -277,6 +289,11 @@ public class TestDiff {
     c2.expression = "up_date > '2020-11-15'";
     inputDiff.conditions.add(c2);
 
+    MdInputMemberCondition c21 = new MdInputMemberCondition();
+    c21.tableName = "t_movie";
+    c21.expression = "up_date <= '2020-10-20'";
+    inputDiff.conditions.add(c21);
+
     MdOutputDiff outputDiff2 = (MdOutputDiff) MdExecute.execute(inputDiff);
     System.out.println(MdJson.toJsonStringFriendly(outputDiff2));
 
@@ -284,5 +301,8 @@ public class TestDiff {
     Assert.assertTrue(
         "matchTables:t_article",
         outputDiff2.matchTables.stream().filter(o -> o.tableName.equals("t_article")).findFirst().isPresent());
+    Assert.assertTrue(
+        "matchTables:t_movie",
+        outputDiff2.matchTables.stream().filter(o -> o.tableName.equals("t_movie")).findFirst().isPresent());
   }
 }

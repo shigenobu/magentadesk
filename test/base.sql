@@ -576,6 +576,34 @@ INSERT INTO `t_lower_UPPER` VALUES (1,'a');
 UNLOCK TABLES;
 
 --
+-- Table structure for table `t_movie`
+--
+
+DROP TABLE IF EXISTS `t_movie`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_movie` (
+  `movie_id` bigint(20) unsigned NOT NULL COMMENT '動画ID',
+  `title` mediumtext NOT NULL COMMENT 'タイトル',
+  `detail` longtext NOT NULL COMMENT '詳細',
+  `in_date` datetime NOT NULL COMMENT '登録日時',
+  `up_date` datetime NOT NULL COMMENT '更新日時',
+  PRIMARY KEY (`movie_id`),
+  KEY `k1` (`up_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='動画';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_movie`
+--
+
+LOCK TABLES `t_movie` WRITE;
+/*!40000 ALTER TABLE `t_movie` DISABLE KEYS */;
+INSERT INTO `t_movie` VALUES (1,'動画1','詳細詳細詳細詳細詳細詳細詳細','2020-10-01 00:00:00','2020-10-10 00:00:00'),(2,'動画2','詳細詳細詳細詳細詳細詳細詳細','2020-10-11 00:00:00','2020-10-20 00:00:00'),(4,'動画4','詳細詳細詳細詳細詳細詳細詳細','2020-11-01 00:00:00','2020-11-10 00:00:00'),(5,'動画5','詳細詳細詳細詳細詳細詳細詳細詳細','2020-11-11 00:00:00','2020-11-30 00:00:00');
+/*!40000 ALTER TABLE `t_movie` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `t_myisam`
 --
 
@@ -1014,4 +1042,4 @@ USE `base`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-14 19:24:15
+-- Dump completed on 2020-12-15  9:57:23

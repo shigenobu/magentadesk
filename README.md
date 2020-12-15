@@ -84,7 +84,7 @@ __mode=diff__
       // conditions
       "conditions": [
         {
-          // if setting tableName and matched, expresion is used by 'where' condition.
+          // if setting tableName is matched, expresion is used by 'where' condition.
           "tableName":"t1",
           "expression":"upd_date > (now() - interval 10 day)"
         }
