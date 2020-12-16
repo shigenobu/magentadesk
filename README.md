@@ -85,6 +85,7 @@ __mode=diff__
       "conditions": [
         {
           // if setting tableName is matched, expresion is used by 'where' condition.
+          // if setting tableName is matched, 'checksum table' query is passed and replaced a fake value.
           "tableName":"t1",
           "expression":"upd_date > (now() - interval 10 day)"
         }

@@ -1,5 +1,5 @@
 magentadesk - Get MariaDB Table Difference, And Reflect.
-version 0.2.0
+version 0.2.1
 
 Usage:
 
@@ -63,6 +63,7 @@ Usage:
       "conditions": [
         {
           // if setting tableName is matched, expresion is used by 'where' condition.
+          // if setting tableName is matched, 'checksum table' query is passed and replaced a fake value.
           "tableName":"t1",
           "expression":"upd_date > (now() - interval 10 day)"
         }

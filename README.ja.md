@@ -88,6 +88,7 @@ __mode=diffのとき__
       "conditions": [
         {
            // 対象テーブル名と一致したとき、比較条件として比較元／比較先で利用されます
+           // 対象テーブル名と一致したとき、'checksum table'のクエリーは実行されず、チェックサム値は偽の値に置換されます
           "tableName":"t1",
           "expression":"upd_date > (now() - interval 10 day)"
         }
