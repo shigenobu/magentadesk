@@ -33,7 +33,7 @@ public class MdSupplierInfoGetChecksum implements Supplier<String> {
    *   CHECKSUM TABLE ...
    * </pre>
    */
-  private String checksum;
+  protected String checksum;
 
   /**
    * constructor.

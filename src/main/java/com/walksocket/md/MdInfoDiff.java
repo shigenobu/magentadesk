@@ -7,6 +7,7 @@ import com.walksocket.md.mariadb.MdMariadbConnection;
 import com.walksocket.md.mariadb.MdMariadbRecord;
 import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.supplier.MdSupplierInfoGetChecksum;
+import com.walksocket.md.supplier.MdSupplierInfoGetChecksumFake;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -332,7 +333,11 @@ public class MdInfoDiff {
    */
   public CompletableFuture<String> getChecksumFuture(ExecutorService service) {
     if (supplier == null) {
-      supplier = new MdSupplierInfoGetChecksum(con.getConnectionStrinng(), database, tableName);
+      if (condition != null) {
+        supplier = new MdSupplierInfoGetChecksumFake(con.getConnectionStrinng(), database, tableName);
+      } else {
+        supplier = new MdSupplierInfoGetChecksum(con.getConnectionStrinng(), database, tableName);
+      }
     }
     return CompletableFuture.supplyAsync(supplier, service);
   }

@@ -304,5 +304,13 @@ public class TestDiff {
     Assert.assertTrue(
         "matchTables:t_movie",
         outputDiff2.matchTables.stream().filter(o -> o.tableName.equals("t_movie")).findFirst().isPresent());
+
+    // checksum
+    Assert.assertEquals("checksum:t_article",
+        "fake_base_t_article",
+        outputDiff2.matchTables.stream().filter(o -> o.tableName.equals("t_article")).findFirst().get().baseChecksum);
+    Assert.assertEquals("checksum:t_article",
+        "fake_compare_t_article",
+        outputDiff2.matchTables.stream().filter(o -> o.tableName.equals("t_article")).findFirst().get().compareChecksum);
   }
 }
