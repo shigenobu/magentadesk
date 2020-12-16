@@ -144,6 +144,11 @@ public class MdFilterSyncReflect extends MdFilterSyncAbstract {
       if (primaryBaseValues.size() > 0 || force) {
         Map<String, String> primaryCompareValues = desk.getPrimaryValues(primaryCompareColumns, diffSeq);
 
+        // if use condition, compare primary values may be empty, then base primary values is replaced into compare primary values.
+        if (primaryCompareValues.size() == 0) {
+          primaryCompareValues = primaryBaseValues;
+        }
+
         // -----
         // delete from compare
         if (primaryCompareValues.size() > 0) {
