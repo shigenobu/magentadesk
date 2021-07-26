@@ -183,4 +183,30 @@ public class TestSync {
         "mismatchRecordTables",
         outputDiff.mismatchRecordTables.size() == 0);
   }
+
+  @Test
+  public void testDuplicateUnique() throws Exception {
+    // diff
+    inputDiff.option = new MdInputMemberOption();
+    inputDiff.option.includeTableLikePatterns.add("t\\_dup\\_unique");
+    inputDiff.validate();
+    MdOutputDiff outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
+
+    // sync
+    inputSync.summaryId = outputDiff.summaryId;
+    inputSync.run = true;
+    inputSync.force = true;
+    inputSync.validate();
+    MdOutputSync outputSync = (MdOutputSync) MdExecute.execute(inputSync);
+    System.out.println(MdJson.toJsonStringFriendly(outputSync));
+
+    // re diff
+    outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
+    System.out.println(MdJson.toJsonStringFriendly(outputDiff));
+
+    // match
+    Assert.assertTrue(
+        "matchTables:t_dup_unique",
+        outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_dup_unique")).findFirst().isPresent());
+  }
 }

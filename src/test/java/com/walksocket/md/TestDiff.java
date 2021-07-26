@@ -123,6 +123,9 @@ public class TestDiff {
     Assert.assertTrue(
         "mismatchRecordTables:t_movie",
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_movie")).findFirst().isPresent());
+    Assert.assertTrue(
+        "mismatchRecordTables:t_dup_unique",
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_dup_unique")).findFirst().isPresent());
 
     // matchTables
     Assert.assertTrue(

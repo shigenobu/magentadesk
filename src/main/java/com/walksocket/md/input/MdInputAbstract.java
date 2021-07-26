@@ -80,7 +80,7 @@ public abstract class MdInputAbstract {
   /**
    * charset.
    * <pre>
-   *   utf8 or utf8mb4
+   *   utf8, utf8mb3 or utf8mb4
    * </pre>
    */
   @Expose

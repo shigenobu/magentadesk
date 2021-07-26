@@ -1,5 +1,5 @@
 magentadesk - Get MariaDB Table Difference, And Reflect.
-version 0.2.2
+version 0.2.3
 
 Usage:
 
@@ -34,7 +34,7 @@ Usage:
       "user":"root",
       // (required) connect password
       "pass":"pass",
-      // (required) connect charset, 'utf8' or 'utf8mb4' is allowed
+      // (required) connect charset, 'utf8', 'utf8mb3' or 'utf8mb4' is allowed
       "charset":"utf8mb4",
       // (required) base database
       "baseDatabase":"base",
@@ -82,7 +82,7 @@ Usage:
       "user":"root",
       // (required) connect password
       "pass":"pass",
-      // (required) connect charset, 'utf8' or 'utf8mb4' is allowed
+      // (required) connect charset, 'utf8', 'utf8mb3' or 'utf8mb4' is allowed
       "charset":"utf8mb4",
       // (required) diff result id
       "summaryId":"XXXXX",
@@ -126,7 +126,7 @@ Usage:
       "user":"root",
       // (required) connect password
       "pass":"pass",
-      // (required) connect charset, 'utf8' or 'utf8mb4' is allowed
+      // (required) connect charset, 'utf8', 'utf8mb3' or 'utf8mb4' is allowed
       "charset":"utf8mb4",
       // (required) base database
       "baseDatabase":"base",

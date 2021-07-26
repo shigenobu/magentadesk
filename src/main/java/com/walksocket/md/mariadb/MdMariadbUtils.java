@@ -17,6 +17,7 @@ public class MdMariadbUtils {
    */
   public enum MdMariadbCharset {
     UTF8,
+    UTF8MB3,
     UTF8MB4,
     ;
   }

@@ -132,10 +132,8 @@ public class MdFilterSyncReflect extends MdFilterSyncAbstract {
               column.columnName));
     }
 
-    for (Long diffSeq : info.getDiffSeqs()) {
-      // init
-      diffSeqReflectedMap.put(diffSeq, false);
 
+    for (Long diffSeq : info.getDiffSeqs()) {
       // -----
       // check base
       Map<String, String> primaryBaseValues = desk.getPrimaryValues(primaryBaseColumns, diffSeq);
@@ -173,6 +171,14 @@ public class MdFilterSyncReflect extends MdFilterSyncAbstract {
           diffSeqReflectedMap.put(diffSeq, true);
         }
       }
+    }
+    for (Long diffSeq : info.getDiffSeqs()) {
+      // init
+      diffSeqReflectedMap.put(diffSeq, false);
+
+      // -----
+      // check base
+      Map<String, String> primaryBaseValues = desk.getPrimaryValues(primaryBaseColumns, diffSeq);
 
       if (primaryBaseValues.size() > 0) {
         // -----

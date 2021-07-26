@@ -32,7 +32,7 @@ public class MdExecute {
         // begin
         con.begin();
 
-        // check version 10.3, 10.4, 10.5
+        // check version 10.3, 10.4, 10.5, 10.6
         String version = null;
         sql = "SELECT @@version as version";
         records = con.getRecords(sql);
@@ -42,8 +42,8 @@ public class MdExecute {
         }
         if (MdUtils.isNullOrEmpty(version)
           || !version.contains("mariadb")
-          || !(version.contains("10.3.") || version.contains("10.4.") || version.contains("10.5."))) {
-          throw new MdExceptionInvalidVersion("MariaDB 10.3, 10.4, 10.5 is required.");
+          || !(version.contains("10.3.") || version.contains("10.4.") || version.contains("10.5.") || version.contains("10.6."))) {
+          throw new MdExceptionInvalidVersion("MariaDB 10.3, 10.4, 10.5, 10.6 is required.");
         }
 
         // create database `magentadesk`.

@@ -1,8 +1,8 @@
--- MariaDB dump 10.17  Distrib 10.4.13-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.19  Distrib 10.5.11-MariaDB, for debian-linux-gnu (x86_64)
 --
 -- Host: 127.0.0.1    Database: compare
 -- ------------------------------------------------------
--- Server version	10.5.5-MariaDB-1:10.5.5+maria~focal
+-- Server version	10.5.11-MariaDB-1:10.5.11+maria~focal
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -22,6 +22,14 @@
 CREATE DATABASE /*!32312 IF NOT EXISTS*/ `compare` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 
 USE `compare`;
+
+--
+-- Sequence structure for `s_seq`
+--
+
+DROP SEQUENCE IF EXISTS `s_seq`;
+CREATE SEQUENCE `s_seq` start with 1 minvalue 1 maxvalue 9223372036854775806 increment by 1 cache 1000 nocycle ENGINE=InnoDB;
+SELECT SETVAL(`s_seq`, 1, 0);
 
 --
 -- Table structure for table `T_ALL_UPPER`
@@ -45,35 +53,6 @@ LOCK TABLES `T_ALL_UPPER` WRITE;
 /*!40000 ALTER TABLE `T_ALL_UPPER` DISABLE KEYS */;
 INSERT INTO `T_ALL_UPPER` VALUES (1,'a');
 /*!40000 ALTER TABLE `T_ALL_UPPER` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `s_seq`
---
-
-DROP TABLE IF EXISTS `s_seq`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `s_seq` (
-  `next_not_cached_value` bigint(21) NOT NULL,
-  `minimum_value` bigint(21) NOT NULL,
-  `maximum_value` bigint(21) NOT NULL,
-  `start_value` bigint(21) NOT NULL COMMENT 'start value when sequences is created or value if RESTART is used',
-  `increment` bigint(21) NOT NULL COMMENT 'increment value',
-  `cache_size` bigint(21) unsigned NOT NULL,
-  `cycle_option` tinyint(1) unsigned NOT NULL COMMENT '0 if no cycles are allowed, 1 if the sequence should begin a new cycle when maximum_value is passed',
-  `cycle_count` bigint(21) NOT NULL COMMENT 'How many cycles have been done'
-) ENGINE=InnoDB SEQUENCE=1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `s_seq`
---
-
-LOCK TABLES `s_seq` WRITE;
-/*!40000 ALTER TABLE `s_seq` DISABLE KEYS */;
-INSERT INTO `s_seq` VALUES (1,1,9223372036854775806,1,1,1000,0,0);
-/*!40000 ALTER TABLE `s_seq` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -348,6 +327,31 @@ LOCK TABLES `t_diff_generated_stored` WRITE;
 /*!40000 ALTER TABLE `t_diff_generated_stored` DISABLE KEYS */;
 INSERT INTO `t_diff_generated_stored` VALUES (1,'a',100),(2,'b',200);
 /*!40000 ALTER TABLE `t_diff_generated_stored` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `t_dup_unique`
+--
+
+DROP TABLE IF EXISTS `t_dup_unique`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_dup_unique` (
+  `id` int(11) NOT NULL,
+  `uid` varchar(16) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uid` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_dup_unique`
+--
+
+LOCK TABLES `t_dup_unique` WRITE;
+/*!40000 ALTER TABLE `t_dup_unique` DISABLE KEYS */;
+INSERT INTO `t_dup_unique` VALUES (1,'a'),(2,'b'),(3,'c');
+/*!40000 ALTER TABLE `t_dup_unique` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -804,7 +808,7 @@ CREATE TABLE `t_system_versioned` (
 
 LOCK TABLES `t_system_versioned` WRITE;
 /*!40000 ALTER TABLE `t_system_versioned` DISABLE KEYS */;
-INSERT INTO `t_system_versioned` VALUES (1,'A','2020-12-14 10:17:38.526819','2038-01-19 03:14:07.999999');
+INSERT INTO `t_system_versioned` VALUES (1,'A','2021-07-26 15:02:05.777086','2038-01-19 03:14:07.999999');
 /*!40000 ALTER TABLE `t_system_versioned` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -903,7 +907,7 @@ CREATE TABLE `t_system_versioned_visible` (
 
 LOCK TABLES `t_system_versioned_visible` WRITE;
 /*!40000 ALTER TABLE `t_system_versioned_visible` DISABLE KEYS */;
-INSERT INTO `t_system_versioned_visible` VALUES (1,'A','2020-12-14 10:17:38.607026','2038-01-19 03:14:07.999999');
+INSERT INTO `t_system_versioned_visible` VALUES (1,'A','2021-07-26 15:02:05.798975','2038-01-19 03:14:07.999999');
 /*!40000 ALTER TABLE `t_system_versioned_visible` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1026,4 +1030,4 @@ USE `compare`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-15  9:57:15
+-- Dump completed on 2021-07-27  0:07:42

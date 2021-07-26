@@ -7,7 +7,7 @@ Get diff and sync between two databases in same host created by MariaDB.
 ### System Required
 
 * over JDK 1.8
-* MariaDB 10.3, 10.4, 10.5
+* MariaDB 10.3, 10.4, 10.5, 10.6
 
 ### Usage
 
@@ -56,7 +56,7 @@ __mode=diff__
       "user":"root",
       // (required) connect password
       "pass":"pass",
-      // (required) connect charset, 'utf8' or 'utf8mb4' is allowed
+      // (required) connect charset, 'utf8', 'utf8mb3' or 'utf8mb4' is allowed
       "charset":"utf8mb4",
       // (required) base database
       "baseDatabase":"base",
@@ -104,7 +104,7 @@ __mode=sync__
       "user":"root",
       // (required) connect password
       "pass":"pass",
-      // (required) connect charset, 'utf8' or 'utf8mb4' is allowed
+      // (required) connect charset, 'utf8', 'utf8mb3' or 'utf8mb4' is allowed
       "charset":"utf8mb4",
       // (required) diff result id
       "summaryId":"XXXXX",
@@ -148,7 +148,7 @@ __mode=maintenance__
       "user":"root",
       // (required) connect password
       "pass":"pass",
-      // (required) connect charset, 'utf8' or 'utf8mb4' is allowed
+      // (required) connect charset, 'utf8', 'utf8mb3' or 'utf8mb4' is allowed
       "charset":"utf8mb4",
       // (required) base database
       "baseDatabase":"base",
