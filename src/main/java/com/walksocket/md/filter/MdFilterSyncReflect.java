@@ -91,7 +91,6 @@ public class MdFilterSyncReflect extends MdFilterSyncAbstract {
   private Map<Long, Boolean> reflectFromBaseToCompare(MdInfoSync info) throws SQLException {
     Map<Long, Boolean> diffSeqReflectedMap = new LinkedHashMap<>();
 
-    List<MdMariadbRecord> records;
     String sql = "";
 
     // -----
@@ -132,8 +131,10 @@ public class MdFilterSyncReflect extends MdFilterSyncAbstract {
               column.columnName));
     }
 
-
     for (Long diffSeq : info.getDiffSeqs()) {
+      // init
+      diffSeqReflectedMap.put(diffSeq, false);
+
       // -----
       // check base
       Map<String, String> primaryBaseValues = desk.getPrimaryValues(primaryBaseColumns, diffSeq);
@@ -168,14 +169,12 @@ public class MdFilterSyncReflect extends MdFilterSyncAbstract {
               MdUtils.join(conditions, " AND "));
           con.execute(sql);
 
+          // reflected
           diffSeqReflectedMap.put(diffSeq, true);
         }
       }
     }
     for (Long diffSeq : info.getDiffSeqs()) {
-      // init
-      diffSeqReflectedMap.put(diffSeq, false);
-
       // -----
       // check base
       Map<String, String> primaryBaseValues = desk.getPrimaryValues(primaryBaseColumns, diffSeq);
@@ -192,6 +191,7 @@ public class MdFilterSyncReflect extends MdFilterSyncAbstract {
             diffSeq);
         con.execute(sql);
 
+        // reflected
         diffSeqReflectedMap.put(diffSeq, true);
       }
     }
