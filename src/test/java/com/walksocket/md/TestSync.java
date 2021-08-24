@@ -106,6 +106,9 @@ public class TestSync {
     MdOutputSync outputSync = (MdOutputSync) MdExecute.execute(inputSync);
     System.out.println(MdJson.toJsonStringFriendly(outputSync));
 
+    // check change
+    Assert.assertTrue(outputSync.reflectedRecordTables.get(0).records.get(0).changes.get(0));
+
     // re diff
     outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
     System.out.println(MdJson.toJsonStringFriendly(outputDiff));

@@ -19,7 +19,7 @@ Below, it's simple usage.
 [args]  
 
 |name|value|remarks|
-|:--|:-|:---|
+|----|-----|-------|
 |--mode|(required)diff, sync or maintenance|'diff' is get diff, 'sync' is reflected used by diff results, 'maintenance' is under maintenance concerned base and compare.|
 |--logPath|log written path.|when 'stdout', write out to stdout, when 'stderr', write out to stderr.|
 |--addSeconds|add seconds in log time|default is 60x60x9, it means 'ja', if 0, it means 'en'.|
@@ -27,7 +27,7 @@ Below, it's simple usage.
 [env]  
 
 |name|remarks|
-|:--|:---|
+|----|-------|
 |MD_ENV|if 'DEBUG', log in detail.|
 |MD_OUTPUT|if 'PRETTY', write out json result in pretty.|
 |MD_LIMIT_LENGTH|when diff and over this, returned value is to hash. default is 1000.|
@@ -255,7 +255,8 @@ __mode=sync__
           "records": [
             {
               "diffSeq": XXX,
-              "values": []
+              "values": [],
+              "changes": []
             }
           ]
         }

@@ -1,5 +1,5 @@
 magentadesk - Get MariaDB Table Difference, And Reflect.
-version 0.2.4
+version 0.2.5
 
 Usage:
 
@@ -233,7 +233,8 @@ Usage:
           "records": [
             {
               "diffSeq": XXX,
-              "values": []
+              "values": [],
+              "changes": []
             }
           ]
         }
