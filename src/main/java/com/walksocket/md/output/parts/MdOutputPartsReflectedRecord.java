@@ -41,7 +41,13 @@ public class MdOutputPartsReflectedRecord {
       String bValue = partsRecord.baseValues.get(i);
       String cValue = partsRecord.compareValues.get(i);
 
-      if (bValue.equals(cValue)) {
+      if (bValue == null && cValue == null) {
+        changes.add(false);
+      } else if (bValue != null && cValue == null){
+        changes.add(true);
+      } else if (bValue == null && cValue != null){
+        changes.add(true);
+      } else if (bValue.equals(cValue)) {
         changes.add(false);
       } else {
         changes.add(true);
