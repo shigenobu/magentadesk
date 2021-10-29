@@ -7,15 +7,19 @@ import com.walksocket.md.bash.MdBashStdin;
 import com.walksocket.md.exception.MdExceptionNoExistsBaseOrCompare;
 import com.walksocket.md.exception.MdExceptionNoExistsDiffSeqs;
 import com.walksocket.md.filter.*;
+import com.walksocket.md.http.MdHttpClient;
+import com.walksocket.md.http.MdHttpRequest;
 import com.walksocket.md.input.MdInputAbstract;
 import com.walksocket.md.input.MdInputSync;
 import com.walksocket.md.input.member.MdInputMemberCommand;
+import com.walksocket.md.input.member.MdInputMemberHttp;
 import com.walksocket.md.mariadb.MdMariadbConnection;
 import com.walksocket.md.mariadb.MdMariadbRecord;
 import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.output.MdOutputAbstract;
 import com.walksocket.md.output.MdOutputSync;
 import com.walksocket.md.output.member.MdOutputMemberCommandResult;
+import com.walksocket.md.output.member.MdOutputMemberHttpResult;
 
 import java.io.File;
 import java.util.*;
@@ -125,7 +129,8 @@ public class MdExecuteSync extends MdExecuteAbstract {
           reflectedJsonPath,
           MdJson.toJsonString(outputSync.reflectedRecordTables));
     }
-    String stdin = MdJson.toJsonString(new MdBashStdin(inputSync.run, reflectedJsonPath));
+    String stdin = MdJson.toJsonString(new MdBashStdin(inputSync.run, reflectedJsonPath));  // for local
+    String requestJson = MdJson.toJsonString(new MdHttpRequest(inputSync.run, outputSync.reflectedRecordTables)); // for http
 
     // -----
     // execute before commit commands
@@ -134,8 +139,20 @@ public class MdExecuteSync extends MdExecuteAbstract {
       command.setStdin(stdin);
       MdBashResult result = MdBash.exec(command);
       if (result != null) {
+        MdLogger.trace(result);
         outputSync.commandResultsBeforeCommit.add(
             new MdOutputMemberCommandResult(result));
+      }
+    }
+
+    // execute before commit http callback
+    for (MdInputMemberHttp http : inputSync.httpCallbackBeforeCommit) {
+      MdHttpClient client = new MdHttpClient(http.url, http.timeout);
+      MdHttpClient.MdHttpClientResponse httpResponse = client.doPost(requestJson);
+      if (httpResponse != null) {
+        MdLogger.trace(httpResponse);
+        outputSync.httpResultsBeforeCommit.add(
+            new MdOutputMemberHttpResult(httpResponse));
       }
     }
 
@@ -152,8 +169,20 @@ public class MdExecuteSync extends MdExecuteAbstract {
       command.setStdin(stdin);
       MdBashResult result = MdBash.exec(command);
       if (result != null) {
+        MdLogger.trace(result);
         outputSync.commandResultsAfterCommit.add(
             new MdOutputMemberCommandResult(result));
+      }
+    }
+
+    // execute after commit http callback
+    for (MdInputMemberHttp http : inputSync.httpCallbackAfterCommit) {
+      MdHttpClient client = new MdHttpClient(http.url, http.timeout);
+      MdHttpClient.MdHttpClientResponse httpResponse = client.doPost(requestJson);
+      if (httpResponse != null) {
+        MdLogger.trace(httpResponse);
+        outputSync.httpResultsAfterCommit.add(
+            new MdOutputMemberHttpResult(httpResponse));
       }
     }
 

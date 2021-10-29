@@ -2,6 +2,7 @@ package com.walksocket.md.output;
 
 import com.google.gson.annotations.Expose;
 import com.walksocket.md.output.member.MdOutputMemberCommandResult;
+import com.walksocket.md.output.member.MdOutputMemberHttpResult;
 import com.walksocket.md.output.member.MdOutputMemberNotReflectedRecordTable;
 import com.walksocket.md.output.member.MdOutputMemberReflectedRecordTable;
 
@@ -36,6 +37,18 @@ public class MdOutputSync extends MdOutputAbstract {
    */
   @Expose
   public List<MdOutputMemberCommandResult> commandResultsAfterCommit = new ArrayList<>();
+
+  /**
+   * http results before commit.
+   */
+  @Expose
+  public List<MdOutputMemberHttpResult> httpResultsBeforeCommit = new ArrayList<>();
+
+  /**
+   * http results after commit.
+   */
+  @Expose
+  public List<MdOutputMemberHttpResult> httpResultsAfterCommit = new ArrayList<>();
 
   /**
    * summary id.

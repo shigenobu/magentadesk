@@ -24,4 +24,13 @@ public class MdBashResult {
    */
   @Expose
   public String output;
+
+  @Override
+  public String toString() {
+    return "MdBashResult{" +
+        "command='" + command + '\'' +
+        ", code=" + code +
+        ", output='" + output + '\'' +
+        '}';
+  }
 }

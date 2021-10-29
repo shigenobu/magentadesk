@@ -4,10 +4,14 @@ import com.walksocket.md.bash.MdBashCommand;
 import com.walksocket.md.exception.MdExceptionInvalidInput;
 import com.walksocket.md.input.MdInputDiff;
 import com.walksocket.md.input.MdInputSync;
+import com.walksocket.md.input.member.MdInputMemberCommand;
+import com.walksocket.md.input.member.MdInputMemberHttp;
 import com.walksocket.md.input.member.MdInputMemberOption;
 import com.walksocket.md.mariadb.MdMariadbConnection;
 import com.walksocket.md.output.MdOutputDiff;
 import com.walksocket.md.output.MdOutputSync;
+import com.walksocket.md.output.member.MdOutputMemberCommandResult;
+import com.walksocket.md.output.member.MdOutputMemberHttpResult;
 import org.junit.*;
 import org.junit.runners.MethodSorters;
 
@@ -211,5 +215,45 @@ public class TestSync {
     Assert.assertTrue(
         "matchTables:t_dup_unique",
         outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_dup_unique")).findFirst().isPresent());
+  }
+
+  @Test
+  public void testCommandAndHttp() throws Exception {
+    // diff
+    inputDiff.option = new MdInputMemberOption();
+    inputDiff.option.includeTableLikePatterns.add("t\\_all\\_types");
+    inputDiff.validate();
+    MdOutputDiff outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
+
+    // sync
+    inputSync.summaryId = outputDiff.summaryId;
+    inputSync.run = true;
+
+    inputSync.commandsBeforeCommit = new ArrayList<>();
+    inputSync.commandsAfterCommit = new ArrayList<>();
+    inputSync.httpCallbackBeforeCommit = new ArrayList<>();
+    inputSync.httpCallbackAfterCommit = new ArrayList<>();
+
+    inputSync.commandsBeforeCommit.add(new MdInputMemberCommand("cat", 10));
+    inputSync.commandsAfterCommit.add(new MdInputMemberCommand("jq .", 10));
+    inputSync.httpCallbackBeforeCommit.add(new MdInputMemberHttp("http://localhost:9000/before.php", 10));
+    inputSync.httpCallbackAfterCommit.add(new MdInputMemberHttp("http://localhost:9000/after.php", 10));
+    inputSync.validate();
+    System.out.println(MdJson.toJsonStringFriendly(inputSync));
+
+    MdOutputSync outputSync = (MdOutputSync) MdExecute.execute(inputSync);
+    System.out.println(MdJson.toJsonStringFriendly(outputSync));
+    for (MdOutputMemberCommandResult commandResult : outputSync.commandResultsBeforeCommit) {
+      Assert.assertEquals(0, commandResult.code);
+    }
+    for (MdOutputMemberCommandResult commandResult : outputSync.commandResultsAfterCommit) {
+      Assert.assertEquals(0, commandResult.code);
+    }
+    for (MdOutputMemberHttpResult httpResult : outputSync.httpResultsBeforeCommit) {
+      Assert.assertEquals(200, httpResult.status);
+    }
+    for (MdOutputMemberHttpResult httpResult : outputSync.httpResultsAfterCommit) {
+      Assert.assertEquals(200, httpResult.status);
+    }
   }
 }

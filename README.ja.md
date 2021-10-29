@@ -140,6 +140,24 @@ __mode=syncのとき__
           // デフォルト30秒
           "timeout": 10
         }
+      ],
+      // コミット直前に呼び出したいコールバックAPI一覧
+      "httpCallbackBeforeCommit": [
+        {
+          // (必須) コールバックURL
+          "url": "http://localhost:9000/before.php",
+          // デフォルト30秒
+          "timeout": 10
+        }
+      ],
+      // コミット直後に呼び出したいコールバックAPI一覧
+      "httpCallbackAfterCommit": [
+        {
+          // (必須) コールバックURL
+          "url": "http://localhost:9000/after.php",
+          // デフォルト30秒
+          "timeout": 10
+        }
       ]
     }
 
@@ -321,6 +339,20 @@ __mode=syncのとき__
           "output": "XXX"
         }
       ],
+      // コミット直前に実行されたAPI結果
+      "httpResultsBeforeCommit": [
+        {
+          "status": 200,
+          "body": ""
+        }
+      ],
+      // コミット直後に実行されたAPI結果
+      "httpResultsAfterCommit": [
+        {
+          "status": 200,
+          "body": ""
+        }
+      ],
       // 入力で使われたサマリーID
       "summaryId": "XXXXX"
     }
@@ -331,6 +363,18 @@ __mode=syncのとき__
 
 'run'は、入力JSONの'run'となるので、本実行かどうかをコマンド内で区別するのに利用できます。  
 'reflectedJsonPath'ファイルのJSONフォーマットは、出力JSONの'reflectedRecordTables'となります。  
+
+（コールバックAPI実行時に送信されるリクエスト）
+
+    POST {URL} HTTP/1.1
+    Host: {HOST}
+    User-Agent: magentadesk-http-client
+    Content-type: application/json; charset=UTF8
+    
+    {"run":true, "reflectedRecordTables":[]}
+
+'run'は、入力JSONの'run'となるので、本実行かどうかをコマンド内で区別するのに利用できます。  
+'reflectedRecordTables'は、出力JSONの'reflectedRecordTables'となります。
 
 __mode=maintenanceのとき__
 

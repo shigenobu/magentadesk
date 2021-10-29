@@ -1,5 +1,5 @@
 magentadesk - Get MariaDB Table Difference, And Reflect.
-version 0.2.5
+version 0.2.6
 
 Usage:
 
@@ -108,6 +108,24 @@ Usage:
         {
           // (required) command
           "command": "XXX",
+          // default is 30.
+          "timeout": 10
+        }
+      ],
+      // optionally, execute http callback just before commit.
+      "httpCallbackBeforeCommit": [
+        {
+          // (required) callback url
+          "url": "http://localhost:9000/before.php",
+          // default is 30.
+          "timeout": 10
+        }
+      ],
+      // optionally, execute http callback just after commit.
+      "httpCallbackAfterCommit": [
+        {
+          // (required) callback url
+          "url": "http://localhost:9000/after.php",
           // default is 30.
           "timeout": 10
         }
@@ -275,19 +293,45 @@ Usage:
           "output": "XXX"
         }
       ],
+      "httpResultsBeforeCommit": [
+        {
+          "status": 200,
+          "body": ""
+        }
+      ],
+      "httpResultsAfterCommit": [
+        {
+          "status": 200,
+          "body": ""
+        }
+      ],
       "summaryId": "XXXXX"
     }
 
-(called command in commandsBeforeCommit or commandsAfterCommit)
+    (called command in commandsBeforeCommit or commandsAfterCommit)
 
-  (stdin)
+      (stdin)
 
-    {
-      // when mode=sync, input run value.
-      "run": false,
-      // when mode=sync, output reflectedRecordTables value.
-      "reflectedJsonPath": "${mdHome}/reflected_${summaryId}.json"
-    }
+        {
+          // when mode=sync, input run value.
+          "run": false,
+          // when mode=sync, output reflectedRecordTables value written in file.
+          "reflectedJsonPath": "${mdHome}/reflected_${summaryId}.json"
+        }
+
+    (called http callback in httpCallbackBeforeCommit or httpCallbackAfterCommit)
+
+      (request)
+
+        {
+          // when mode=sync, input run value.
+          "run": false,
+          // when mode=sync, output reflectedRecordTables value.
+          "reflectedRecordTables": []
+        }
+
+    * request method is 'POST'.
+    * request content type is 'application/json'.
 
   mode=maintenance
 

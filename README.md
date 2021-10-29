@@ -133,6 +133,24 @@ __mode=sync__
           // default is 30.
           "timeout": 10
         }
+      ],
+      // optionally, execute http callback just before commit.
+      "httpCallbackBeforeCommit": [
+        {
+          // (required) callback url
+          "url": "http://localhost:9000/before.php",
+          // default is 30.
+          "timeout": 10
+        }
+      ],
+      // optionally, execute http callback just after commit.
+      "httpCallbackAfterCommit": [
+        {
+          // (required) callback url
+          "url": "http://localhost:9000/after.php",
+          // default is 30.
+          "timeout": 10
+        }
       ]
     }
 
@@ -297,6 +315,18 @@ __mode=sync__
           "output": "XXX"
         }
       ],
+      "httpResultsBeforeCommit": [
+        {
+          "status": 200,
+          "body": ""
+        }
+      ],
+      "httpResultsAfterCommit": [
+        {
+          "status": 200,
+          "body": ""
+        }
+      ],
       "summaryId": "XXXXX"
     }
 
@@ -307,10 +337,34 @@ __mode=sync__
     {
       // when mode=sync, input run value.
       "run": false,
-      // when mode=sync, output reflectedRecordTables value.
+      // when mode=sync, output reflectedRecordTables value written in file.
       "reflectedJsonPath": "${mdHome}/reflected_${summaryId}.json"
     }
+
+  (image)
+
+    echo '{"run":true, "reflectedJsonPath":"path_to_reflected_records.json"}' | ${command}
+
+(called http callback in httpCallbackBeforeCommit or httpCallbackAfterCommit)
+
+  (request)
+
+    {
+      // when mode=sync, input run value.
+      "run": false,
+      // when mode=sync, output reflectedRecordTables value.
+      "reflectedRecordTables": []
+    }
+
+  (image)
+
+    POST {URL} HTTP/1.1
+    Host: {HOST}
+    User-Agent: magentadesk-http-client
+    Content-type: application/json; charset=UTF8
     
+    {"run":true, "reflectedRecordTables":[]}
+
 __mode=maintenance__
 
     {

@@ -4,7 +4,9 @@ import com.google.gson.annotations.Expose;
 import com.walksocket.md.MdBash;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.exception.MdExceptionInvalidInput;
+import com.walksocket.md.http.MdHttpClient;
 import com.walksocket.md.input.member.MdInputMemberCommand;
+import com.walksocket.md.input.member.MdInputMemberHttp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +58,18 @@ public class MdInputSync extends MdInputAbstract {
   @Expose
   public List<MdInputMemberCommand> commandsAfterCommit;
 
+  /**
+   * http callback just before commit.
+   */
+  @Expose
+  public List<MdInputMemberHttp> httpCallbackBeforeCommit;
+
+  /**
+   * http callback just after commit.
+   */
+  @Expose
+  public List<MdInputMemberHttp> httpCallbackAfterCommit;
+
   @Override
   public void validate() throws MdExceptionInvalidInput {
     super.validate();
@@ -89,6 +103,30 @@ public class MdInputSync extends MdInputAbstract {
       }
       if (cmd.timeout <= 0) {
         cmd.timeout = MdBash.DEFAULT_TIMEOUT;
+      }
+    }
+
+    if (httpCallbackBeforeCommit == null) {
+      httpCallbackBeforeCommit = new ArrayList<>();
+    }
+    for (MdInputMemberHttp http : httpCallbackBeforeCommit) {
+      if (MdUtils.isNullOrEmpty(http.url)) {
+        throw new MdExceptionInvalidInput("Invalid before url.");
+      }
+      if (http.timeout <= 0) {
+        http.timeout = MdHttpClient.DEFAULT_TIMEOUT;
+      }
+    }
+
+    if (httpCallbackAfterCommit == null) {
+      httpCallbackAfterCommit = new ArrayList<>();
+    }
+    for (MdInputMemberHttp http : httpCallbackAfterCommit) {
+      if (MdUtils.isNullOrEmpty(http.url)) {
+        throw new MdExceptionInvalidInput("Invalid after url.");
+      }
+      if (http.timeout <= 0) {
+        http.timeout = MdHttpClient.DEFAULT_TIMEOUT;
       }
     }
   }

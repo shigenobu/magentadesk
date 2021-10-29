@@ -3,15 +3,15 @@ package com.walksocket.md.input.member;
 import com.google.gson.annotations.Expose;
 
 /**
- * input command.
+ * input http
  */
-public class MdInputMemberCommand {
+public class MdInputMemberHttp {
 
   /**
-   * command.
+   * url.
    */
   @Expose
-  public String command;
+  public String url;
 
   /**
    * timeout.
@@ -21,11 +21,11 @@ public class MdInputMemberCommand {
 
   /**
    * constructor.
-   * @param command command
+   * @param url command
    * @param timeout timeout
    */
-  public MdInputMemberCommand(String command, int timeout) {
-    this.command = command;
+  public MdInputMemberHttp(String url, int timeout) {
+    this.url = url;
     this.timeout = timeout;
   }
 }
