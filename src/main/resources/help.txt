@@ -1,5 +1,5 @@
 magentadesk - Get MariaDB Table Difference, And Reflect.
-version 0.2.6
+version 0.2.7
 
 Usage:
 
@@ -100,7 +100,9 @@ Usage:
           // (required) command
           "command": "XXX",
           // default is 30.
-          "timeout": 10
+          "timeout": 10,
+          // default is [0]. if not contains command result code, rollback happens.
+          "successCodeList": [0, 23]
         }
       ],
       // optionally, execute commands just after commit.
@@ -118,7 +120,9 @@ Usage:
           // (required) callback url
           "url": "http://localhost:9000/before.php",
           // default is 30.
-          "timeout": 10
+          "timeout": 10,
+          // default is [200]. if not contains http status code, rollback happens.
+          "successStatusList": [200, 201]
         }
       ],
       // optionally, execute http callback just after commit.
@@ -352,4 +356,6 @@ Usage:
   22: in maintenance
   23: no exists base or compare
   24: no exists diff seqs
+  31: not success command
+  32: not success status
   99: unknown

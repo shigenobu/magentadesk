@@ -122,7 +122,9 @@ __mode=sync__
           // (required) command
           "command": "XXX",
           // default is 30.
-          "timeout": 10
+          "timeout": 10,
+          // default is [0]. if not contains command result code, rollback happens.
+          "successCodeList": [0, 23]
         }
       ],
       // optionally, execute commands just after commit.
@@ -140,7 +142,9 @@ __mode=sync__
           // (required) callback url
           "url": "http://localhost:9000/before.php",
           // default is 30.
-          "timeout": 10
+          "timeout": 10,
+          // default is [200]. if not contains http status code, rollback happens.
+          "successStatusList": [200, 201]
         }
       ],
       // optionally, execute http callback just after commit.
@@ -341,7 +345,7 @@ __mode=sync__
       "reflectedJsonPath": "${mdHome}/reflected_${summaryId}.json"
     }
 
-  (image)
+  (really execution)
 
     echo '{"run":true, "reflectedJsonPath":"path_to_reflected_records.json"}' | ${command}
 
@@ -356,7 +360,7 @@ __mode=sync__
       "reflectedRecordTables": []
     }
 
-  (image)
+  (really execution)
 
     POST {URL} HTTP/1.1
     Host: {HOST}
@@ -371,6 +375,22 @@ __mode=maintenance__
       // maintenance result
       "maintenance":"(on|off)"
     }
+
+### Exit code
+
+* 0:  success
+* 1:  error
+* 11: invalid args
+* 12: invalid stdin
+* 13: invalid input
+* 14: invalid version
+* 21: disallow simultaneous execution
+* 22: in maintenance
+* 23: no exists base or compare
+* 24: no exists diff seqs
+* 31: not success command
+* 32: not success status
+* 99: unknown
 
 ### Outline
 

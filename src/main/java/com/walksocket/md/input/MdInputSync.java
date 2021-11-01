@@ -92,6 +92,12 @@ public class MdInputSync extends MdInputAbstract {
       if (cmd.timeout <= 0) {
         cmd.timeout = MdBash.DEFAULT_TIMEOUT;
       }
+      if (cmd.successCodeList == null) {
+        cmd.successCodeList = new ArrayList<>();
+      }
+      if (cmd.successCodeList.isEmpty()) {
+        cmd.successCodeList.add(0);     // default 0 is success.
+      }
     }
 
     if (commandsAfterCommit == null) {
@@ -115,6 +121,12 @@ public class MdInputSync extends MdInputAbstract {
       }
       if (http.timeout <= 0) {
         http.timeout = MdHttpClient.DEFAULT_TIMEOUT;
+      }
+      if (http.successStatusList == null) {
+        http.successStatusList = new ArrayList<>();
+      }
+      if (http.successStatusList.isEmpty()) {
+        http.successStatusList.add(200);     // default 200 is success.
       }
     }
 

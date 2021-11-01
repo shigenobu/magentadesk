@@ -6,6 +6,8 @@ import com.walksocket.md.bash.MdBashResult;
 import com.walksocket.md.bash.MdBashStdin;
 import com.walksocket.md.exception.MdExceptionNoExistsBaseOrCompare;
 import com.walksocket.md.exception.MdExceptionNoExistsDiffSeqs;
+import com.walksocket.md.exception.MdExceptionNotSuccessCommand;
+import com.walksocket.md.exception.MdExceptionNotSuccessStatus;
 import com.walksocket.md.filter.*;
 import com.walksocket.md.http.MdHttpClient;
 import com.walksocket.md.http.MdHttpRequest;
@@ -140,6 +142,9 @@ public class MdExecuteSync extends MdExecuteAbstract {
       MdBashResult result = MdBash.exec(command);
       if (result != null) {
         MdLogger.trace(result);
+        if (!cmd.successCodeList.contains(result.code)) {
+          throw new MdExceptionNotSuccessCommand();
+        }
         outputSync.commandResultsBeforeCommit.add(
             new MdOutputMemberCommandResult(result));
       }
@@ -151,6 +156,9 @@ public class MdExecuteSync extends MdExecuteAbstract {
       MdHttpClient.MdHttpClientResponse httpResponse = client.doPost(requestJson);
       if (httpResponse != null) {
         MdLogger.trace(httpResponse);
+        if (!http.successStatusList.contains(httpResponse.getStatus())) {
+          throw new MdExceptionNotSuccessStatus();
+        }
         outputSync.httpResultsBeforeCommit.add(
             new MdOutputMemberHttpResult(httpResponse));
       }

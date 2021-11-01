@@ -1,6 +1,7 @@
 package com.walksocket.md;
 
 import com.walksocket.md.bash.MdBashCommand;
+import com.walksocket.md.exception.MdExceptionAbstract;
 import com.walksocket.md.exception.MdExceptionInvalidInput;
 import com.walksocket.md.input.MdInputDiff;
 import com.walksocket.md.input.MdInputSync;
@@ -18,6 +19,7 @@ import org.junit.runners.MethodSorters;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestSync {
@@ -234,10 +236,10 @@ public class TestSync {
     inputSync.httpCallbackBeforeCommit = new ArrayList<>();
     inputSync.httpCallbackAfterCommit = new ArrayList<>();
 
-    inputSync.commandsBeforeCommit.add(new MdInputMemberCommand("cat", 10));
-    inputSync.commandsAfterCommit.add(new MdInputMemberCommand("jq .", 10));
-    inputSync.httpCallbackBeforeCommit.add(new MdInputMemberHttp("http://localhost:9000/before.php", 10));
-    inputSync.httpCallbackAfterCommit.add(new MdInputMemberHttp("http://localhost:9000/after.php", 10));
+    inputSync.commandsBeforeCommit.add(new MdInputMemberCommand("exit 0", 10, Arrays.asList(0)));
+    inputSync.commandsAfterCommit.add(new MdInputMemberCommand("exit 23", 10, Arrays.asList(23)));
+    inputSync.httpCallbackBeforeCommit.add(new MdInputMemberHttp("http://localhost:9000/before.php", 10, Arrays.asList(200)));
+    inputSync.httpCallbackAfterCommit.add(new MdInputMemberHttp("http://localhost:9000/after.php", 10, Arrays.asList(201)));
     inputSync.validate();
     System.out.println(MdJson.toJsonStringFriendly(inputSync));
 
@@ -247,13 +249,75 @@ public class TestSync {
       Assert.assertEquals(0, commandResult.code);
     }
     for (MdOutputMemberCommandResult commandResult : outputSync.commandResultsAfterCommit) {
-      Assert.assertEquals(0, commandResult.code);
+      Assert.assertEquals(23, commandResult.code);
     }
     for (MdOutputMemberHttpResult httpResult : outputSync.httpResultsBeforeCommit) {
       Assert.assertEquals(200, httpResult.status);
     }
     for (MdOutputMemberHttpResult httpResult : outputSync.httpResultsAfterCommit) {
-      Assert.assertEquals(200, httpResult.status);
+      Assert.assertEquals(201, httpResult.status);
+    }
+  }
+
+  @Test
+  public void testCommandError() throws Exception {
+    // diff
+    inputDiff.option = new MdInputMemberOption();
+    inputDiff.option.includeTableLikePatterns.add("t\\_all\\_types");
+    inputDiff.validate();
+    MdOutputDiff outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
+
+    // sync
+    inputSync.summaryId = outputDiff.summaryId;
+    inputSync.run = true;
+
+    inputSync.commandsBeforeCommit = new ArrayList<>();
+    inputSync.commandsAfterCommit = new ArrayList<>();
+    inputSync.httpCallbackBeforeCommit = new ArrayList<>();
+    inputSync.httpCallbackAfterCommit = new ArrayList<>();
+
+    inputSync.commandsBeforeCommit.add(new MdInputMemberCommand("exit 1", 10, Arrays.asList(0)));
+    inputSync.validate();
+    System.out.println(MdJson.toJsonStringFriendly(inputSync));
+
+    try {
+      MdOutputSync outputSync = (MdOutputSync) MdExecute.execute(inputSync);
+      System.out.println(MdJson.toJsonStringFriendly(outputSync));
+      throw new IllegalAccessException();
+    } catch (MdExceptionAbstract e) {
+      Assert.assertEquals(MdExceptionAbstract.ExitCode.NOT_SUCCESS_COMMAND, e.getExitCode());
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  public void testHttpError() throws Exception {
+    // diff
+    inputDiff.option = new MdInputMemberOption();
+    inputDiff.option.includeTableLikePatterns.add("t\\_all\\_types");
+    inputDiff.validate();
+    MdOutputDiff outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
+
+    // sync
+    inputSync.summaryId = outputDiff.summaryId;
+    inputSync.run = true;
+
+    inputSync.commandsBeforeCommit = new ArrayList<>();
+    inputSync.commandsAfterCommit = new ArrayList<>();
+    inputSync.httpCallbackBeforeCommit = new ArrayList<>();
+    inputSync.httpCallbackAfterCommit = new ArrayList<>();
+
+    inputSync.httpCallbackBeforeCommit.add(new MdInputMemberHttp("http://localhost:9000/before_error.php", 10, Arrays.asList(200)));
+    inputSync.validate();
+    System.out.println(MdJson.toJsonStringFriendly(inputSync));
+
+    try {
+      MdOutputSync outputSync = (MdOutputSync) MdExecute.execute(inputSync);
+      System.out.println(MdJson.toJsonStringFriendly(outputSync));
+      throw new IllegalAccessException();
+    } catch (MdExceptionAbstract e) {
+      Assert.assertEquals(MdExceptionAbstract.ExitCode.NOT_SUCCESS_STATUS, e.getExitCode());
+      e.printStackTrace();
     }
   }
 }
