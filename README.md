@@ -9,432 +9,59 @@ Get diff and sync between two databases in same host created by MariaDB.
 * over JDK 1.8
 * MariaDB 10.3, 10.4, 10.5, 10.6
 
-### Usage by cli (mode=diff, sync or maintenance)
+### Usage by cli
 
 When put json to stdin, get result from stdout by json.  
 Below, it's simple usage.  
+Cli document is [here](cli/README.md).  
 
-    echo '${json}' | java -jar magentadesk.jar --mode=${mode}
+    echo '${json}' | java -jar magentadesk-cli.jar --mode=${mode}
 
-### Usage by web (mode=web)
-
-No stdin, startup http server.
-Below, it's simple usage.  
-
-    java -jar magentadesk.jar --mode=${mode}
-
-[args]  
+(args)  
 
 |name|value|remarks|
 |----|-----|-------|
-|--mode|(required)diff, sync or maintenance|'diff' is get diff, 'sync' is reflected used by diff results, 'maintenance' is under maintenance concerned base and compare, 'web' is started http server.|
+|--mode|(required)diff, sync or maintenance|'diff' is get diff, 'sync' is reflected used by diff results, 'maintenance' is under maintenance concerned base and compare.|
+|--logPath|log written path.|when 'stdout', write out to stdout, when 'stderr', write out to stderr.|
+|--addSeconds|add seconds in log time|default is 60x60x9, it means 'ja', if 0, it means 'en'.|
+
+(sample)
+
+    echo '${json}' \
+      | [MD_ENV=${mdEnv}] [MD_OUTPUT=${mdOutput}] [MD_LIMIT_LENGTH=${mdLimitLength}] [MD_HOME=${mdHome}] \
+        java -jar magentadesk-cli.jar --mode=${mode} [--logPath=${logPath}] [--addSeconds=${addSeconds}]
+
+### Usage by web
+
+No stdin, startup http server.
+Below, it's simple usage.  
+Web document is [here](web/README.md).
+
+    java -jar magentadesk-web.jar
+
+(args)  
+
+|name|value|remarks|
+|----|-----|-------|
 |--logPath|log written path.|when 'stdout', write out to stdout, when 'stderr', write out to stderr.|
 |--addSeconds|add seconds in log time|default is 60x60x9, it means 'ja', if 0, it means 'en'.|
 |--webHost|listen host|default is 0.0.0.0.|
 |--webPort|listen port|default is 8710.|
 
-[env]  
+(sample)  
+
+    [MD_ENV=${mdEnv}] [MD_OUTPUT=${mdOutput}] [MD_LIMIT_LENGTH=${mdLimitLength}] [MD_HOME=${mdHome}] \
+      java -jar magentadesk-web.jar [--logPath=${logPath}] [--addSeconds=${addSeconds}] \
+        [--webHost=${webHost}] [--webPort=${webPort}]
+
+### Environment values
 
 |name|remarks|
 |----|-------|
 |MD_ENV|if 'DEBUG', log in detail.|
 |MD_OUTPUT|if 'PRETTY', write out json result in pretty.|
 |MD_LIMIT_LENGTH|when diff and over this, returned value is to hash. default is 1000.|
-|MD_HOME|default is ${HOME}/.magentadesk. There is a temporary directory, by commands which execute in sync.|
-
-Complete sample, contains args and env.  
-
-(mode=diff, sync or maintenance)  
-
-    echo '${json}' \
-      | [MD_ENV=${mdEnv}] [MD_OUTPUT=${mdOutput}] [MD_LIMIT_LENGTH=${mdLimitLength}] [MD_HOME=${mdHome}] \
-        java -jar magentadesk.jar --mode=${mode} [--logPath=${logPath}] [--addSeconds=${addSeconds}]
-
-(mode=web)  
-
-    [MD_ENV=${mdEnv}] [MD_OUTPUT=${mdOutput}] [MD_LIMIT_LENGTH=${mdLimitLength}] [MD_HOME=${mdHome}] \
-      java -jar magentadesk.jar --mode=${mode} [--logPath=${logPath}] [--addSeconds=${addSeconds}] \
-        [--webHost=${webHost}] [--webPort=${webPort}]
-
-### JSON FORMAT
-
-[INPUT JSON]
-
-__mode=diff__
-
-    {
-      // (required) connect host
-      "host":"127.0.0.1",
-      // (required) connect port
-      "port":13306,
-      // (required) connect user, need 'base' database, 'compare' database, and 'magentadesk' database privileges
-      // when connecting, use information_schema
-      "user":"root",
-      // (required) connect password
-      "pass":"pass",
-      // (required) connect charset, 'utf8', 'utf8mb3' or 'utf8mb4' is allowed
-      "charset":"utf8mb4",
-      // (required) base database
-      "baseDatabase":"base",
-      // (required) compare database
-      "compareDatabase":"compare",
-      // optionally
-      "option":{
-        // list. default is '%'. OR condition.
-        "includeTableLikePatterns": [
-          "m\\_*"
-        ],
-        // list. default is ''. AND condition.
-        "excludeTableLikePatterns": [
-          "m\\_admin\\_%"
-        ],
-        // if true, ignore auto increment value for table structure diff. default is false.
-        "ignoreAutoIncrement": false,
-        // if true, ignore table, column, index and partition comment for table structure diff. default is false.
-        "ignoreComment": false,
-        // if true, ignore partition for table structure diff. default is false.
-        "ignorePartitions": false,
-        // if true, ignore column default sequence definition for table structure diff. default is false.
-        "ignoreDefaultForSequence": false
-      },
-      // conditions
-      "conditions": [
-        {
-          // if setting tableName is matched, expresion is used by 'where' condition.
-          // if setting tableName is matched, 'checksum table' query is passed and replaced a fake value.
-          "tableName":"t1",
-          "expression":"upd_date > (now() - interval 10 day)"
-        }
-      ]
-    }
-
-__mode=sync__
-
-    {
-      // (required) connect host
-      "host":"127.0.0.1",
-      // (required) connect port
-      "port":13306,
-      // (required) connect user, need 'base' database, 'compare' database, and 'magentadesk' database privileges
-      // when connecting, use information_schema
-      "user":"root",
-      // (required) connect password
-      "pass":"pass",
-      // (required) connect charset, 'utf8', 'utf8mb3' or 'utf8mb4' is allowed
-      "charset":"utf8mb4",
-      // (required) diff result id
-      "summaryId":"XXXXX",
-      // optionally, if listed, selected diffSeqs are only reflected.
-      "diffSeqs": [],
-      // optionally, if 'true', execute sync, 'false' is dryrun. default is false.
-      "run": false,
-      // optionally, if 'true', not exists in base, but exists in compare, force to delete from compare. default is false.
-      "force": false,
-      // optionally, if 'true', delete only summary id records in complete execution, 'false' is delete base and compare concerned records. default is false.
-      "loose": false,
-      // optionally, execute commands just before commit.
-      "commandsBeforeCommit": [
-        {
-          // (required) command
-          "command": "XXX",
-          // default is 30.
-          "timeout": 10,
-          // default is [0]. if not contains command result code, rollback happens.
-          "successCodeList": [0, 23]
-        }
-      ],
-      // optionally, execute commands just after commit.
-      "commandsAfterCommit": [
-        {
-          // (required) command
-          "command": "XXX",
-          // default is 30.
-          "timeout": 10
-        }
-      ],
-      // optionally, execute http callback just before commit.
-      "httpCallbackBeforeCommit": [
-        {
-          // (required) callback url
-          "url": "http://localhost:9000/before.php",
-          // default is 30.
-          "timeout": 10,
-          // default is [200]. if not contains http status code, rollback happens.
-          "successStatusList": [200, 201]
-        }
-      ],
-      // optionally, execute http callback just after commit.
-      "httpCallbackAfterCommit": [
-        {
-          // (required) callback url
-          "url": "http://localhost:9000/after.php",
-          // default is 30.
-          "timeout": 10
-        }
-      ]
-    }
-
-__mode=maintenance__
-
-    {
-      // (required) connect host
-      "host":"127.0.0.1",
-      // (required) connect port
-      "port":13306,
-      // (required) connect user, need 'base' database, 'compare' database, and 'magentadesk' database privileges
-      // when connecting, use information_schema
-      "user":"root",
-      // (required) connect password
-      "pass":"pass",
-      // (required) connect charset, 'utf8', 'utf8mb3' or 'utf8mb4' is allowed
-      "charset":"utf8mb4",
-      // (required) base database
-      "baseDatabase":"base",
-      // (required) compare database
-      "compareDatabase":"compare",
-      // (required) maintenance state, if true, in maintenance concerned base with compare
-      "maintenance":"(on|off)"
-    }
-
-[OUTPUT JSON]
-
-__mode=diff__
-
-    {
-      "existsOnlyBaseTables": [
-        {
-          "tableName": "t1",
-          "tableComment": "",
-          "baseDefinition": "CREATE ..."
-        }
-      ],
-      "existsOnlyCompareTables": [
-        {
-          "tableName": "t1",
-          "tableComment": "",
-          "compareDefinition": "CREATE ..."
-        }
-      ],
-      "forceExcludeTables": [
-        {
-          "tableName": "t1",
-          "tableComment": "",
-          "definition": "CREATE ...",
-          "reason": "(referencedForeignKey|isView|isSequence|notInnoDB|mismatchTrigger)"
-        }
-      ],
-      "incorrectDefinitionTables": [
-        {
-          "tableName": "t1",
-          "tableComment": "",
-          "definition": "CREATE ...",
-          "reason": "(noPrimaryKey|hasForeignKey|invalidCharset)"
-        }
-      ],
-      "mismatchDefinitionTables": [
-        {
-          "tableName": "t1",
-          "tableComment": "",
-          "baseDefinition": "CREATE ...",
-          "compareDefinition": "CREATE ..."
-        }
-      ],
-      "mismatchRecordTables": [
-        {
-          "tableName": "t1",
-          "tableComment": "",
-          "columns": [
-            {
-              "columnName": "",
-              "columnType": "",
-              "columnCollation": "",
-              "columnComment": "",
-              "isPrimary": (true|false),
-            }
-          ],
-          "records": [
-            {
-              "diffSeq": XXX,
-              "baseValues": [],
-              "compareValues": []
-            }
-          ]
-        }
-      ],
-      "matchTables": [
-        {
-          "tableName": "t1",
-          "tableComment": "",
-          "baseTableType": "",
-          "compareTableType": "",
-          "baseChecksum": "",
-          "compareChecksum": ""
-        }
-      ],
-      "summaryId": "XXXXX"
-    }
-
-__mode=sync__
-
-    {
-      "reflectedRecordTables": [
-        {
-          "tableName": "t1",
-          "tableComment": "",
-          "columns": [
-            {
-              "columnName": "",
-              "columnType": "",
-              "columnCollation": "",
-              "columnComment": "",
-              "isPrimary": (true|false),
-            }
-          ],
-          "records": [
-            {
-              "diffSeq": XXX,
-              "values": [],
-              "changes": []
-            }
-          ]
-        }
-      ],
-      "notReflectedRecordTables": [
-        {
-          "tableName": "t1",
-          "tableComment": "",
-          "columns": [
-            {
-              "columnName": "",
-              "columnType": "",
-              "columnCollation": "",
-              "columnComment": "",
-              "isPrimary": (true|false),
-            }
-          ],
-          "records": [
-            {
-              "diffSeq": XXX,
-              "baseValues": [],
-              "compareValues": []
-            }
-          ]
-        }
-      ],
-      "commandResultsBeforeCommit": [
-        {
-          "command": "XXX",
-          "code": XXX,
-          "output": "XXX"
-        }
-      ],
-      "commandResultsAfterCommit": [
-        {
-          "command": "XXX",
-          "code": XXX,
-          "output": "XXX"
-        }
-      ],
-      "httpResultsBeforeCommit": [
-        {
-          "status": 200,
-          "body": ""
-        }
-      ],
-      "httpResultsAfterCommit": [
-        {
-          "status": 200,
-          "body": ""
-        }
-      ],
-      "summaryId": "XXXXX"
-    }
-
-(called command in commandsBeforeCommit or commandsAfterCommit)
-
-  (stdin)
-
-    {
-      // when mode=sync, input run value.
-      "run": false,
-      // when mode=sync, output reflectedRecordTables value written in file.
-      "reflectedJsonPath": "${mdHome}/reflected_${summaryId}.json"
-    }
-
-  (really execution)
-
-    echo '{"run":true, "reflectedJsonPath":"path_to_reflected_records.json"}' | ${command}
-
-(called http callback in httpCallbackBeforeCommit or httpCallbackAfterCommit)
-
-  (request)
-
-    {
-      // when mode=sync, input run value.
-      "run": false,
-      // when mode=sync, output reflectedRecordTables value.
-      "reflectedRecordTables": []
-    }
-
-  (really execution)
-
-    POST {URL} HTTP/1.1
-    Host: {HOST}
-    User-Agent: magentadesk-http-client
-    Content-type: application/json; charset=UTF8
-    
-    {"run":true, "reflectedRecordTables":[]}
-
-__mode=maintenance__
-
-    {
-      // maintenance result
-      "maintenance":"(on|off)"
-    }
-
-### Exit code
-
-* 0:  success
-* 1:  error
-* 11: invalid args
-* 12: invalid stdin
-* 13: invalid input
-* 14: invalid version
-* 21: disallow simultaneous execution
-* 22: in maintenance
-* 23: no exists base or compare
-* 24: no exists diff seqs
-* 31: not success code
-* 32: not success status
-* 41: error local database
-* 99: unknown
-
-### Outline
-
-[mode=diff]  
-
-* (diff and sync) create magentadesk database, and table.
-* (diff and sync) delete from diff recored passed over 3 hours since created.
-* (diff and sync) base and compare, lock execute simultaneously. （FOR UPDATE NOWAIT）
-* check maintenance state between base and compare.
-* extract target to diff table.
-* register table diff.
-
-[mode=sync]  
-
-* (diff and sync) create magentadesk database, and table.
-* (diff and sync) delete from diff recored passed over 3 hours since created.
-* (diff and sync) base and compare, lock execute simultaneously. （FOR UPDATE NOWAIT）
-* check maintenance state between base and compare.
-* sync table diff used by diff.
-* execute any commands.
-
-[mode=maintenance]  
-
-* (diff and sync) create magentadesk database, and table.
-* (diff and sync) delete from diff recored passed over 3 hours since created.
-* (diff and sync) base and compare, lock execute simultaneously. （FOR UPDATE NOWAIT）
-* set maintenance state.
+|MD_HOME|default is ${HOME}/.magentadesk. There is a home directory, by commands which execute in sync and at local database storage.|
 
 ### Notice
 

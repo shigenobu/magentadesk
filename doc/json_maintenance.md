@@ -1,6 +1,10 @@
-### mode=maintenance
+### Maintenance
 
-[INPUT JSON]
+(INPUT)
+
+* cli: input mode=maintenance
+* web: request /api/maintenance/reserve.json
+
 
     {
       // (required) connect host
@@ -22,7 +26,11 @@
       "maintenance":"(on|off)"
     }
 
-[OUTPUT JSON]
+(OUTPUT)
+
+* cli: output mode=maintenance
+* web: response 200 /api/maintenance/check.json
+
 
     {
       // maintenance result

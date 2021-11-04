@@ -1,6 +1,10 @@
-### mode=sync
+### Sync
 
-[INPUT JSON]
+(INPUT)
+
+* cli: input mode=sync
+* web: request /api/sync/reserve.json
+
 
     {
       // (required) connect host
@@ -66,7 +70,11 @@
       ]
     }
 
-[OUTPUT JSON]
+(OUTPUT)
+
+* cli: output mode=sync
+* web: response 200 /api/sync/check.json
+
 
     {
       "reflectedRecordTables": [
@@ -141,3 +149,40 @@
       ],
       "summaryId": "XXXXX"
     }
+
+---
+
+##### called command in commandsBeforeCommit or commandsAfterCommit
+
+(stdin)
+
+    {
+      // when mode=sync, input run value.
+      "run": false,
+      // when mode=sync, output reflectedRecordTables value written in file.
+      "reflectedJsonPath": "${mdHome}/reflected_${summaryId}.json"
+    }
+
+(really execution)
+
+    echo '{"run":true, "reflectedJsonPath":"path_to_reflected_records.json"}' | ${command}
+
+##### called http callback in httpCallbackBeforeCommit or httpCallbackAfterCommit
+
+(request)
+
+    {
+      // when mode=sync, input run value.
+      "run": false,
+      // when mode=sync, output reflectedRecordTables value.
+      "reflectedRecordTables": []
+    }
+
+(really execution)
+
+    POST {URL} HTTP/1.1
+    Host: {HOST}
+    User-Agent: magentadesk-http-client
+    Content-type: application/json; charset=UTF8
+    
+    {"run":true, "reflectedRecordTables":[]}

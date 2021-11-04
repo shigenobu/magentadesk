@@ -14,10 +14,11 @@ MariaDBの同一ホスト内の2つのデータベースの差分を取り、同
 標準入力にて、所定フォーマットのJSON文字列を渡すと、  
 標準出力にて、結果のJSONが取得できます。  
 以下は最も単純なコマンド例となります。  
+CLI版のドキュメントは[こちら](cli/README.md)。  
 
-    echo '${json}' | java -jar magentadesk.jar --mode=${mode}
+    echo '${json}' | java -jar magentadesk-cli.jar --mode=${mode}
 
-[引数]  
+(引数)  
 
 |名称|値|説明|
 |---|---|---|
@@ -25,7 +26,22 @@ MariaDBの同一ホスト内の2つのデータベースの差分を取り、同
 |--logPath|ログを出力するファイルパス|stdoutとすると標準出力へ、stderrとすると標準エラー出力に出力します|
 |--addSeconds|ログに記載される時刻を補正する数字|デフォルトは60x60x9、つまり日本時間となります|
 
-[環境変数]  
+### WEB
+
+標準入力不要で、HTTPサーバが立ち上がります。  
+以下は最も単純なコマンド例となります。  
+WEB版のドキュメントは[こちら](web/README.md)。
+
+    java -jar magentadesk-web.jar
+
+|名称|値|説明|
+|---|---|---|
+|--logPath|ログを出力するファイルパス|stdoutとすると標準出力へ、stderrとすると標準エラー出力に出力します。|
+|--addSeconds|ログに記載される時刻を補正する数字|デフォルトは60x60x9、つまり日本時間となります。|
+|--webHost|待受ホスト|デフォルは0.0.0.0。|
+|--webPort|待受ポート|デフォルは8710。|
+
+### 環境変数  
 
 |名称|説明|
 |---|---|
@@ -34,13 +50,7 @@ MariaDBの同一ホスト内の2つのデータベースの差分を取り、同
 |MD_LIMIT_LENGTH|diffの実行結果の値において、このバイト数以上になると、ハッシュ化されます。デフォルト1000です。|
 |MD_HOME|指定しないと、${HOME}/.magentadeskとなり、ここにsync時の任意コマンド実行時の一時ファイルが格納されます。|
 
-引数、環境変数を考慮した形の完全なコマンド例は以下となります。  
-
-    echo '${json}' \
-      | [MD_ENV=${mdEnv}] [MD_OUTPUT=${mdOutput}] [MD_LIMIT_LENGTH=${mdLimitLength}] [MD_HOME=${mdHome}] \
-        java -jar magentadesk.jar --mode=${mode} [--logPath=${logPath}] [--addSeconds=${addSeconds}]
-
-
+<!--
 ### JSONフォーマット
 
 [入力JSON]
@@ -437,4 +447,4 @@ __mode=maintenanceのとき__
 * 大量レコード（100万以上）あると、差分抽出に時間がかかります
 * 主にマスターデータといった類のものが対象となることを想定しています
 
-
+-->

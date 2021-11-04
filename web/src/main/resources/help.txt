@@ -1,0 +1,39 @@
+magentadesk for web - Get MariaDB Table Difference, And Reflect.
+version 0.3.0
+
+Usage:
+
+    [MD_ENV=${mdEnv}] [MD_OUTPUT=${mdOutput}] [MD_LIMIT_LENGTH=${mdLimitLength}] [MD_HOME=${mdHome}] \
+      java -jar magentadesk-web.jar [--logPath=${logPath}] [--addSeconds=${addSeconds}] \
+        [--webHost=${webHost}] [--webPort=${webPort}]
+
+(args)
+
+  logPath     optionally, log to file. if 'stdout', log to stdout. if 'stderr', log to stderr.
+  addSeconds  optionally, modify log time. if '0', it's equal to locale en. default locale is ja.
+  webHost     optionally, used only when mode is equal to 'web'. default is 0.0.0.0.
+  webPort     optionally, used only when mode is equal to 'web'. default is 8710.
+
+(env)
+
+  mdEnv         if 'DEBUG', log in detail.
+  mdOutput      if 'PRETTY', output json is pretty.
+  mdLimitLength when diff and over this, returned value is to hash. default is 1000.
+  mdHome        default is '${HOME}/.magentadesk'.
+
+(exit code)
+
+  0:  success
+  1:  error
+  11: invalid args
+  12: invalid stdin
+  13: invalid input
+  14: invalid version
+  21: disallow simultaneous execution
+  22: in maintenance
+  23: no exists base or compare
+  24: no exists diff seqs
+  31: not success code
+  32: not success status
+  41: error local database
+  99: unknown

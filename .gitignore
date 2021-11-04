@@ -25,6 +25,8 @@ Thumbs.db
 
 # Maven
 target
+cli/target
+web/target
 
 # Build
 out
@@ -36,4 +38,3 @@ bin
 *.swp
 *.bak
 .checkstyle
-memo/
