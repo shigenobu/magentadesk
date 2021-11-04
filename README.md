@@ -9,20 +9,29 @@ Get diff and sync between two databases in same host created by MariaDB.
 * over JDK 1.8
 * MariaDB 10.3, 10.4, 10.5, 10.6
 
-### Usage
+### Usage by cli (mode=diff, sync or maintenance)
 
 When put json to stdin, get result from stdout by json.  
 Below, it's simple usage.  
 
     echo '${json}' | java -jar magentadesk.jar --mode=${mode}
 
+### Usage by web (mode=web)
+
+No stdin, startup http server.
+Below, it's simple usage.  
+
+    java -jar magentadesk.jar --mode=${mode}
+
 [args]  
 
 |name|value|remarks|
 |----|-----|-------|
-|--mode|(required)diff, sync or maintenance|'diff' is get diff, 'sync' is reflected used by diff results, 'maintenance' is under maintenance concerned base and compare.|
+|--mode|(required)diff, sync or maintenance|'diff' is get diff, 'sync' is reflected used by diff results, 'maintenance' is under maintenance concerned base and compare, 'web' is started http server.|
 |--logPath|log written path.|when 'stdout', write out to stdout, when 'stderr', write out to stderr.|
 |--addSeconds|add seconds in log time|default is 60x60x9, it means 'ja', if 0, it means 'en'.|
+|--webHost|listen host|default is 0.0.0.0.|
+|--webPort|listen port|default is 8710.|
 
 [env]  
 
@@ -33,12 +42,19 @@ Below, it's simple usage.
 |MD_LIMIT_LENGTH|when diff and over this, returned value is to hash. default is 1000.|
 |MD_HOME|default is ${HOME}/.magentadesk. There is a temporary directory, by commands which execute in sync.|
 
-Complete sample, containis args and env.  
+Complete sample, contains args and env.  
+
+(mode=diff, sync or maintenance)  
 
     echo '${json}' \
       | [MD_ENV=${mdEnv}] [MD_OUTPUT=${mdOutput}] [MD_LIMIT_LENGTH=${mdLimitLength}] [MD_HOME=${mdHome}] \
         java -jar magentadesk.jar --mode=${mode} [--logPath=${logPath}] [--addSeconds=${addSeconds}]
 
+(mode=web)  
+
+    [MD_ENV=${mdEnv}] [MD_OUTPUT=${mdOutput}] [MD_LIMIT_LENGTH=${mdLimitLength}] [MD_HOME=${mdHome}] \
+      java -jar magentadesk.jar --mode=${mode} [--logPath=${logPath}] [--addSeconds=${addSeconds}] \
+        [--webHost=${webHost}] [--webPort=${webPort}]
 
 ### JSON FORMAT
 
@@ -390,6 +406,7 @@ __mode=maintenance__
 * 24: no exists diff seqs
 * 31: not success code
 * 32: not success status
+* 41: error local database
 * 99: unknown
 
 ### Outline

@@ -11,6 +11,7 @@ import com.walksocket.md.sqlite.MdSqliteConnection;
 import com.walksocket.md.sqlite.MdSqliteUtils;
 import com.walksocket.md.web.MdWebQueue;
 import com.walksocket.md.web.MdWebQueueMessage;
+import com.walksocket.md.web.MdWebState;
 
 import java.util.List;
 
@@ -67,21 +68,29 @@ public class MdWebServiceProcessing implements Runnable {
       if (output == null) {
         // processing -> error
         sql = String.format(
-            "update execution set state = 'error' where executionId = '%s'",
+            "UPDATE execution " +
+                "SET state = '%s' " +
+                "WHERE executionId = '%s'",
+            MdSqliteUtils.quote(MdWebState.ERROR.getState()),
             MdSqliteUtils.quote(message.executionId)
         );
         con.execute(sql);
       } else {
         // processing -> complete
         sql = String.format(
-            "update execution set state = 'complete', output = '%s' where executionId = '%s'",
+            "UPDATE execution " +
+                "SET state = '%s', output = '%s' " +
+                "WHERE executionId = '%s'",
+            MdSqliteUtils.quote(MdWebState.COMPLETE.getState()),
             MdSqliteUtils.quote(MdJson.toJsonString(output)),
             MdSqliteUtils.quote(message.executionId)
         );
+        con.execute(sql);
       }
 
       // commit
       con.commit();
+
     } catch (Exception e) {
       MdLogger.error(e);
     }

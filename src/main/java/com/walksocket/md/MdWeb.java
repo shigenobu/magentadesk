@@ -1,8 +1,10 @@
 package com.walksocket.md;
 
 import com.sun.net.httpserver.HttpServer;
+import com.walksocket.md.exception.MdExceptionErrorLocalDatabase;
 import com.walksocket.md.sqlite.MdSqliteConnection;
-import com.walksocket.md.web.endpoint.MdWebEndpointApiDiffReserve;
+import com.walksocket.md.web.endpoint.MdWebEndpointApiCheck;
+import com.walksocket.md.web.endpoint.MdWebEndpointApiReserve;
 import com.walksocket.md.web.MdWebQueue;
 import com.walksocket.md.web.service.MdWebServiceProcessing;
 import com.walksocket.md.web.service.MdWebServiceReserved;
@@ -67,6 +69,9 @@ public class MdWeb implements AutoCloseable {
     try (MdSqliteConnection con = new MdSqliteConnection()) {
       String sql = "";
 
+      // begin
+      con.begin();
+
       // create table execution
       sql = "create table if not exists execution (\n" +
           "  executionId text,\n" +
@@ -82,6 +87,12 @@ public class MdWeb implements AutoCloseable {
       // create index on execution.created
       sql = "create index if not exists execution_idx01 on execution (created)";
       con.execute(sql);
+
+      // commit
+      con.commit();
+    } catch (Exception e) {
+      MdLogger.error(e);
+      throw new MdExceptionErrorLocalDatabase();
     }
 
     // create queue
@@ -113,7 +124,12 @@ public class MdWeb implements AutoCloseable {
 
           // -----
           // endpoints
-          server.createContext("/api/diff/reserve.json", new MdWebEndpointApiDiffReserve());
+          server.createContext("/api/diff/reserve.json", new MdWebEndpointApiReserve());
+          server.createContext("/api/diff/check.json", new MdWebEndpointApiCheck());
+          server.createContext("/api/sync/reserve.json", new MdWebEndpointApiReserve());
+          server.createContext("/api/sync/check.json", new MdWebEndpointApiCheck());
+          server.createContext("/api/maintenance/reserve.json", new MdWebEndpointApiReserve());
+          server.createContext("/api/maintenance/check.json", new MdWebEndpointApiCheck());
           // -----
 
           server.start();

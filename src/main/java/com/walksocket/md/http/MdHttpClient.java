@@ -11,10 +11,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.security.cert.CertificateException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * http client.
@@ -47,6 +44,11 @@ public class MdHttpClient {
   private int timeout;
 
   /**
+   * headers.
+   */
+  private Map<String, String> headers = new LinkedHashMap<>();
+
+  /**
    * constructor.
    * @param url url
    * @param timeout timeout seconds
@@ -57,6 +59,17 @@ public class MdHttpClient {
   }
 
   /**
+   * set header.
+   * @param name name
+   * @param value value
+   * @return this
+   */
+  public MdHttpClient setHeader(String name, String value) {
+    headers.put(name, value);
+    return this;
+  }
+
+  /**
    * do post
    * @param body body string.
    * @return response
@@ -64,7 +77,7 @@ public class MdHttpClient {
   public MdHttpClientResponse doPost(String body) {
     String responseEncoding = null;
     int responseStatus = 0;
-    Map<String, List<String>> responseHeaders = new LinkedHashMap<String, List<String>>();
+    Map<String, List<String>> responseHeaders = new LinkedHashMap<>();
     byte[] responseBody = null;
 
     HttpURLConnection con = null;
@@ -81,6 +94,9 @@ public class MdHttpClient {
       con.setRequestMethod("POST");
       con.setRequestProperty("Content-type", "application/json; charset=UTF8");
       con.addRequestProperty("User-Agent", USER_AGENT);
+      for (Map.Entry<String, String> header : headers.entrySet()) {
+        con.addRequestProperty(header.getKey(), header.getValue());
+      }
 
       // body
       osw = new OutputStreamWriter(con.getOutputStream());
@@ -204,7 +220,7 @@ public class MdHttpClient {
     try {
       int len = (int) con.getContentLengthLong();
       if (len >= 0) {
-        if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+        if (con.getResponseCode() < 400) {
           stream = new DataInputStream(con.getInputStream());
         } else {
           stream = new DataInputStream(con.getErrorStream());
@@ -212,7 +228,7 @@ public class MdHttpClient {
         responseBody = new byte[len];
         stream.readFully(responseBody, 0, len);
       } else {
-        if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+        if (con.getResponseCode() < 400) {
           channel = Channels.newChannel(con.getInputStream());
         } else {
           channel = Channels.newChannel(con.getErrorStream());
@@ -280,7 +296,12 @@ public class MdHttpClient {
     /**
      * headers.
      */
-    private Map<String, List<String>> headers;
+    private Map<String, List<String>> headers = new LinkedHashMap<>();
+
+    /**
+     * lower headers.
+     */
+    private Map<String, List<String>> lowerHeaders = new LinkedHashMap<>();
 
     /**
      * body.
@@ -298,7 +319,14 @@ public class MdHttpClient {
                           Map<String, List<String>> headers, byte[] body) {
       this.encoding = encoding;
       this.status = status;
-      this.headers = headers;
+      if (headers != null) {
+        this.headers = headers;
+        for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
+          if (entry.getKey() != null && entry.getValue() != null) {
+            this.lowerHeaders.put(entry.getKey().toLowerCase(Locale.ROOT), entry.getValue());
+          }
+        }
+      }
       this.body = body;
     }
 
@@ -307,7 +335,7 @@ public class MdHttpClient {
      * @return if 200 is true, else false
      */
     public boolean isSuccessful() {
-      if (status == HttpURLConnection.HTTP_OK) {
+      if (status < 400) {
         return true;
       }
       return false;
@@ -322,25 +350,27 @@ public class MdHttpClient {
     }
 
     /**
-     * get header.
+     * get header in case ignore.
      * @param name header name
      * @return header value
      */
     public String getHeader(String name) {
-      if (headers != null && headers.containsKey(name) && headers.get(name).size() > 0) {
-        return headers.get(name).get(0);
+      List<String> headers = getHeaders(name);
+      if (!headers.isEmpty()) {
+        return headers.get(0);
       }
       return "";
     }
 
     /**
-     * get headers.
+     * get headers in case ignore.
      * @param name header name
      * @return header values
      */
     public List<String> getHeaders(String name) {
-      if (headers != null && headers.containsKey(name)) {
-        return headers.get(name);
+      name = name.toLowerCase(Locale.ROOT); // to lower
+      if (lowerHeaders.containsKey(name)) {
+        return lowerHeaders.get(name);
       }
       return new ArrayList<String>();
     }

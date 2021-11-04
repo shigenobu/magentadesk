@@ -18,7 +18,7 @@ public class MdSqliteConnection extends MdDbConnection {
    * constructor.
    */
   public MdSqliteConnection() {
-    this.connectionString = "jdbc:sqlite:" + new File(MdEnv.getMdHome(), "magentadesk").getAbsolutePath();
+    this.connectionString = "jdbc:sqlite:" + new File(MdEnv.getMdHome(), "magentadesk.db").getAbsolutePath();
   }
 
   /**
@@ -36,7 +36,6 @@ public class MdSqliteConnection extends MdDbConnection {
       con = DriverManager.getConnection(connectionString);
       con.setAutoCommit(false);
       con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-      con.setReadOnly(true);
       MdLogger.sql("CONNECT:" + con);
 
     } catch (ClassNotFoundException e) {

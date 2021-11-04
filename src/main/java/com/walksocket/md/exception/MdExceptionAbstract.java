@@ -71,6 +71,11 @@ public abstract class MdExceptionAbstract extends Exception {
     NOT_SUCCESS_STATUS(32),
 
     /**
+     * error local database.
+     */
+    ERROR_LOCAL_DATABASE(41),
+
+    /**
      * unknown.
      */
     UNKNOWN(99)

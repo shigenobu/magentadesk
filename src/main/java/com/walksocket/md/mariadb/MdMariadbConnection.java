@@ -35,7 +35,6 @@ public class MdMariadbConnection extends MdDbConnection {
       con = DriverManager.getConnection(connectionString);
       con.setAutoCommit(false);
       con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-      con.setReadOnly(true);
       MdLogger.sql("CONNECT:" + con);
 
     } catch (ClassNotFoundException e) {
