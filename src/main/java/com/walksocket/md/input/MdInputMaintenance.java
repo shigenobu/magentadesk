@@ -1,6 +1,7 @@
 package com.walksocket.md.input;
 
 import com.google.gson.annotations.Expose;
+import com.walksocket.md.MdMode;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.exception.MdExceptionInvalidInput;
 
@@ -68,8 +69,8 @@ public class MdInputMaintenance extends MdInputAbstract {
   public String maintenance;
 
   @Override
-  public Mode getMode() {
-    return Mode.MAINTENANCE;
+  public MdMode getMode() {
+    return MdMode.MAINTENANCE;
   }
 
   @Override

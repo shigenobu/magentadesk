@@ -26,6 +26,12 @@
         <artifactId>mariadb-java-client</artifactId>
         <version>2.4.1</version>
       </dependency>
+      <!-- sqlite -->
+      <dependency>
+        <groupId>org.xerial</groupId>
+        <artifactId>sqlite-jdbc</artifactId>
+        <version>3.36.0.3</version>
+      </dependency>
       <!-- gson -->
       <dependency>
         <groupId>com.google.code.gson</groupId>
@@ -56,6 +62,11 @@
     <dependency>
       <groupId>org.mariadb.jdbc</groupId>
       <artifactId>mariadb-java-client</artifactId>
+    </dependency>
+    <!-- sqlite -->
+    <dependency>
+      <groupId>org.xerial</groupId>
+      <artifactId>sqlite-jdbc</artifactId>
     </dependency>
     <!-- gson -->
     <dependency>

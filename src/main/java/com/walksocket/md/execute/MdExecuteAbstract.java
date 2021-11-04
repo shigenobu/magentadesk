@@ -6,7 +6,7 @@ import com.walksocket.md.exception.MdExceptionInMaintenance;
 import com.walksocket.md.input.MdInputAbstract;
 import com.walksocket.md.input.MdInputMaintenance;
 import com.walksocket.md.mariadb.MdMariadbConnection;
-import com.walksocket.md.mariadb.MdMariadbRecord;
+import com.walksocket.md.db.MdDbRecord;
 import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.output.MdOutputAbstract;
 
@@ -95,8 +95,8 @@ public abstract class MdExecuteAbstract {
             "WHERE `baseDatabase` = '%s' and `compareDatabase` = '%s'",
         MdMariadbUtils.quote(baseDatabase),
         MdMariadbUtils.quote(compareDatabase));
-    List<MdMariadbRecord> records = con.getRecords(sql);
-    for (MdMariadbRecord record : records) {
+    List<MdDbRecord> records = con.getRecords(sql);
+    for (MdDbRecord record : records) {
       String maintenance = record.get("maintenance");
       if (maintenance.equals(MdInputMaintenance.Maintenance.ON.getMaintenance())) {
         throw new MdExceptionInMaintenance(

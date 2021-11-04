@@ -2,7 +2,7 @@ package com.walksocket.md.supplier;
 
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.mariadb.MdMariadbConnection;
-import com.walksocket.md.mariadb.MdMariadbRecord;
+import com.walksocket.md.db.MdDbRecord;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -55,8 +55,8 @@ public class MdSupplierInfoGetChecksum implements Supplier<String> {
             "CHECKSUM TABLE `%s`.`%s`",
             database,
             tableName);
-        List<MdMariadbRecord> records = con.getRecords(sql);
-        for (MdMariadbRecord record : records) {
+        List<MdDbRecord> records = con.getRecords(sql);
+        for (MdDbRecord record : records) {
           checksum = record.get("Checksum");
         }
       } catch (Exception e) {

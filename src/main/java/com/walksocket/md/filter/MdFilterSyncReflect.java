@@ -4,7 +4,6 @@ import com.walksocket.md.MdDesk;
 import com.walksocket.md.MdInfoSync;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.mariadb.MdMariadbConnection;
-import com.walksocket.md.mariadb.MdMariadbRecord;
 import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.output.MdOutputSync;
 import com.walksocket.md.output.member.MdOutputMemberNotReflectedRecordTable;

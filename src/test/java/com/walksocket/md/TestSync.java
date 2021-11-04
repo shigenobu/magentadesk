@@ -2,13 +2,11 @@ package com.walksocket.md;
 
 import com.walksocket.md.bash.MdBashCommand;
 import com.walksocket.md.exception.MdExceptionAbstract;
-import com.walksocket.md.exception.MdExceptionInvalidInput;
 import com.walksocket.md.input.MdInputDiff;
 import com.walksocket.md.input.MdInputSync;
 import com.walksocket.md.input.member.MdInputMemberCommand;
 import com.walksocket.md.input.member.MdInputMemberHttp;
 import com.walksocket.md.input.member.MdInputMemberOption;
-import com.walksocket.md.mariadb.MdMariadbConnection;
 import com.walksocket.md.output.MdOutputDiff;
 import com.walksocket.md.output.MdOutputSync;
 import com.walksocket.md.output.member.MdOutputMemberCommandResult;
@@ -17,7 +15,6 @@ import org.junit.*;
 import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -32,7 +29,7 @@ public class TestSync {
   public static void beforeClass() throws IOException {
     MdEnv.setDebug();
     MdEnv.setPretty();
-    MdLogger.setAddSeconds(60 * 60 * 9);
+    MdDate.init(60 * 60 * 9);
     MdLogger.open("stderr");
   }
 
@@ -57,8 +54,8 @@ public class TestSync {
 
   @After
   public void after() {
-    MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 13306 -u root -ppass base < `pwd`/test/base.sql", 300));
-    MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 13306 -u root -ppass compare < `pwd`/test/compare.sql", 300));
+    MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 13306 -u root -ppass base < `pwd`/test/mariadb/base.sql", 300));
+    MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 13306 -u root -ppass compare < `pwd`/test/mariadb/compare.sql", 300));
   }
 
   @Test
@@ -285,7 +282,7 @@ public class TestSync {
       System.out.println(MdJson.toJsonStringFriendly(outputSync));
       throw new IllegalAccessException();
     } catch (MdExceptionAbstract e) {
-      Assert.assertEquals(MdExceptionAbstract.ExitCode.NOT_SUCCESS_COMMAND, e.getExitCode());
+      Assert.assertEquals(MdExceptionAbstract.ExitCode.NOT_SUCCESS_CODE, e.getExitCode());
       e.printStackTrace();
     }
   }

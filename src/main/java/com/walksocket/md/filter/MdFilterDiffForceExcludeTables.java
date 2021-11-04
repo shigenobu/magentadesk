@@ -1,14 +1,14 @@
 package com.walksocket.md.filter;
 
 import com.walksocket.md.MdInfoDiff;
-import com.walksocket.md.info.MdInfoDiffTrigger;
 import com.walksocket.md.mariadb.MdMariadbConnection;
 import com.walksocket.md.output.MdOutputDiff;
 import com.walksocket.md.output.member.MdOutputMemberForceExcludeTable;
 
 import java.sql.SQLException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * filter diff force exclude.

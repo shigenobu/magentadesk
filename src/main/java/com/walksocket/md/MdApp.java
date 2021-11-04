@@ -1,7 +1,6 @@
 package com.walksocket.md;
 
 import com.walksocket.md.exception.MdExceptionAbstract;
-import com.walksocket.md.execute.MdExecuteAbstract;
 import com.walksocket.md.input.MdInputAbstract;
 import com.walksocket.md.input.MdInputDiff;
 import com.walksocket.md.input.MdInputMaintenance;
@@ -35,6 +34,16 @@ public class MdApp implements AutoCloseable {
   private static final String ARG_ADD_SECONDS = "--addSeconds=";
 
   /**
+   * arg web host.
+   */
+  private static final String ARG_WEB_HOST = "--webHost=";
+
+  /**
+   * arg web port.
+   */
+  private static final String ARG_WEB_PORT = "--webPort=";
+
+  /**
    * main.
    * @param args args
    * @throws Exception error
@@ -50,6 +59,8 @@ public class MdApp implements AutoCloseable {
     String mode = null;
     String logPath = null;
     long addSeconds  = 60 * 60 * 9;
+    String webHost = "0.0.0.0";
+    int webPort = 8710;
     for (String arg : args) {
       if (arg.startsWith(ARG_MODE)) {
         mode = arg.substring(ARG_MODE.length());
@@ -60,13 +71,19 @@ public class MdApp implements AutoCloseable {
       if (arg.startsWith(ARG_ADD_SECONDS)) {
         addSeconds = Long.parseLong(arg.substring(ARG_ADD_SECONDS.length()));
       }
+      if (arg.startsWith(ARG_WEB_HOST)) {
+        webHost = arg.substring(ARG_WEB_HOST.length());
+      }
+      if (arg.startsWith(ARG_WEB_PORT)) {
+        webPort = Integer.parseInt(arg.substring(ARG_WEB_PORT.length()));
+      }
     }
     if (mode == null) {
       System.err.println("Arg 'mode' is required.");
       System.exit(MdExceptionAbstract.ExitCode.INVALID_ARGS.getExitCode());
     }
     String finalMode = mode;
-    Optional<MdInputAbstract.Mode> opt = Arrays.asList(MdInputAbstract.Mode.values())
+    Optional<MdMode> opt = Arrays.asList(MdMode.values())
         .stream()
         .filter(elem -> finalMode.compareTo(elem.getMode()) == 0)
         .findFirst();
@@ -75,81 +92,55 @@ public class MdApp implements AutoCloseable {
       System.exit(MdExceptionAbstract.ExitCode.INVALID_ARGS.getExitCode());
     }
 
-    // read stdin
-    String json = MdFile.readString(System.in);
-    if (MdUtils.isNullOrEmpty(json)) {
-      System.err.println("Stdin json is required.");
-      System.exit(MdExceptionAbstract.ExitCode.INVALID_STDIN.getExitCode());
-    }
+    // init date
+    MdDate.init(addSeconds);
 
     // execute
-    MdExceptionAbstract.ExitCode exitCode = null;
-    MdOutputAbstract output = null;
-    try (MdApp app = new MdApp();) {
-      try {
-        // set log
-        MdLogger.setAddSeconds(addSeconds);
-        MdLogger.open(logPath);
-        MdLogger.trace(String.format(
-            "(ENV) isDebug:%s, isPretty:%s, mdHome:%s",
-            MdEnv.isDebug(),
-            MdEnv.isPretty(),
-            MdEnv.getMdHome()));
-        MdLogger.trace(String.format("(ARGS) mode:%s", mode));
-        MdLogger.trace(String.format("(STDIN) json:%s", json));
+    MdExceptionAbstract.ExitCode exitCode = MdExceptionAbstract.ExitCode.ERROR;
+    try (MdApp app = new MdApp()) {
+      // set log
+      MdLogger.open(logPath);
+      MdLogger.trace(String.format(
+          "(ENV) isDebug:%s, isPretty:%s, mdHome:%s",
+          MdEnv.isDebug(),
+          MdEnv.isPretty(),
+          MdEnv.getMdHome()));
+      MdLogger.trace(String.format("(ARGS) mode:%s", mode));
+      MdLogger.trace(String.format("(ARGS) logPath:%s", logPath));
+      MdLogger.trace(String.format("(ARGS) addSeconds:%s", addSeconds));
 
-        // start
-        long start = System.currentTimeMillis();
+      if (mode.equals(MdMode.WEB.getMode())) {
+        // -----
+        // web
+        // -----
+        MdLogger.trace(String.format("(ARGS) webHost:%s", webHost));
+        MdLogger.trace(String.format("(ARGS) webPort:%s", webPort));
 
         // execute
-        output = app.execute(mode, json);
-        exitCode = MdExceptionAbstract.ExitCode.SUCCESS;
-
-        // end
-        long end = System.currentTimeMillis();
-        MdLogger.trace(String.format(
-            "execution time: %s (sec)",
-            TimeUnit.MILLISECONDS.toSeconds(end - start)));
-
-      } catch (MdExceptionAbstract me) {
-        exitCode = me.getExitCode();
-        MdLogger.error(me);
-      }
-    }
-
-    if (output != null) {
-      if (MdEnv.isPretty()) {
-        System.out.print(MdJson.toJsonStringFriendly(output));
+        exitCode = MdAppWeb.execute(webHost, webPort);
       } else {
-        System.out.print(MdJson.toJsonString(output));
+        // -----
+        // cli(diff,sync,maintenance)
+        // -----
+        // read stdin
+        String json = MdFile.readString(System.in);
+        if (MdUtils.isNullOrEmpty(json)) {
+          System.err.println("Stdin json is required.");
+          System.exit(MdExceptionAbstract.ExitCode.INVALID_STDIN.getExitCode());
+        }
+        MdLogger.trace(String.format("(STDIN) json:%s", json));
+
+        // execute
+        exitCode = MdAppCli.execute(mode, json);
       }
+    } catch (MdExceptionAbstract me) {
+      exitCode = me.getExitCode();
+      MdLogger.error(me);
+    } catch (Exception e) {
+      MdLogger.error(e);
     }
-    if (exitCode == null) {
-      exitCode = MdExceptionAbstract.ExitCode.ERROR;
-    }
+
     System.exit(exitCode.getExitCode());
-  }
-
-  /**
-   * execute.
-   * @param mode mode
-   * @param json json
-   * @return output object
-   * @throws Exception several error
-   */
-  private MdOutputAbstract execute(String mode, String json) throws Exception {
-    MdInputAbstract input = null;
-    if (mode.equals(MdInputAbstract.Mode.DIFF.getMode())) {
-      input = MdJson.toObject(json, MdInputDiff.class);
-    } else if (mode.equals(MdInputAbstract.Mode.SYNC.getMode())) {
-      input = MdJson.toObject(json, MdInputSync.class);
-    } else if (mode.equals(MdInputAbstract.Mode.MAINTENANCE.getMode())) {
-      input = MdJson.toObject(json, MdInputMaintenance.class);
-    }
-    input.validate();
-    MdLogger.trace(String.format("input:%s", MdJson.toJsonStringFriendly(input)));
-
-    return MdExecute.execute(input);
   }
 
   /**

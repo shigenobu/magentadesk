@@ -4,7 +4,7 @@ import com.walksocket.md.info.*;
 import com.walksocket.md.input.member.MdInputMemberCondition;
 import com.walksocket.md.input.member.MdInputMemberOption;
 import com.walksocket.md.mariadb.MdMariadbConnection;
-import com.walksocket.md.mariadb.MdMariadbRecord;
+import com.walksocket.md.db.MdDbRecord;
 import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.supplier.MdSupplierInfoGetChecksum;
 import com.walksocket.md.supplier.MdSupplierInfoGetChecksumFake;
@@ -35,7 +35,7 @@ public class MdInfoDiff {
       MdInputMemberOption option,
       List<MdInputMemberCondition> conditions) throws SQLException {
     String sql = null;
-    List<MdMariadbRecord> records = null;
+    List<MdDbRecord> records = null;
 
     List<MdInfoDiff> infoList = new ArrayList<>();
 
@@ -67,7 +67,7 @@ public class MdInfoDiff {
         MdUtils.join(likeSqlPatterns, " OR "),
         MdUtils.join(notLikeSqlPatterns, " AND "));
     records = con.getRecords(sql);
-    for (MdMariadbRecord record : records) {
+    for (MdDbRecord record : records) {
       String tableName = record.get("TABLE_NAME");
 
       MdInputMemberCondition condition = null;
@@ -262,8 +262,8 @@ public class MdInfoDiff {
           type,
           database,
           tableName);
-      List<MdMariadbRecord> records = con.getRecords(sql);
-      for (MdMariadbRecord record : records) {
+      List<MdDbRecord> records = con.getRecords(sql);
+      for (MdDbRecord record : records) {
         if (type.equals("TABLE")
             || type.equals("SEQUENCE")) {
           definition = record.get("Create Table");
@@ -334,9 +334,9 @@ public class MdInfoDiff {
   public CompletableFuture<String> getChecksumFuture(ExecutorService service) {
     if (supplier == null) {
       if (condition != null) {
-        supplier = new MdSupplierInfoGetChecksumFake(con.getConnectionStrinng(), database, tableName);
+        supplier = new MdSupplierInfoGetChecksumFake(con.getConnectionString(), database, tableName);
       } else {
-        supplier = new MdSupplierInfoGetChecksum(con.getConnectionStrinng(), database, tableName);
+        supplier = new MdSupplierInfoGetChecksum(con.getConnectionString(), database, tableName);
       }
     }
     return CompletableFuture.supplyAsync(supplier, service);
@@ -355,8 +355,8 @@ public class MdInfoDiff {
               "WHERE table_schema = '%s' and table_name = '%s'",
           database,
           tableName);
-      List<MdMariadbRecord> records = con.getRecords(sql);
-      for (MdMariadbRecord record : records) {
+      List<MdDbRecord> records = con.getRecords(sql);
+      for (MdDbRecord record : records) {
         infoTable = new MdInfoDiffTable(record, option);
       }
     }
@@ -378,8 +378,8 @@ public class MdInfoDiff {
               "ORDER BY ordinal_position",
           database,
           tableName);
-      List<MdMariadbRecord> records = con.getRecords(sql);
-      for (MdMariadbRecord record : records) {
+      List<MdDbRecord> records = con.getRecords(sql);
+      for (MdDbRecord record : records) {
         infoColumns.add(new MdInfoDiffColumn(record, option));
       }
     }
@@ -401,8 +401,8 @@ public class MdInfoDiff {
               "ORDER BY constraint_name",
           database,
           tableName);
-      List<MdMariadbRecord> records = con.getRecords(sql);
-      for (MdMariadbRecord record : records) {
+      List<MdDbRecord> records = con.getRecords(sql);
+      for (MdDbRecord record : records) {
         infoReferences.add(new MdInfoDiffReference(record));
       }
     }
@@ -424,8 +424,8 @@ public class MdInfoDiff {
               "ORDER BY constraint_name",
           database,
           tableName);
-      List<MdMariadbRecord> records = con.getRecords(sql);
-      for (MdMariadbRecord record : records) {
+      List<MdDbRecord> records = con.getRecords(sql);
+      for (MdDbRecord record : records) {
         infoConstraints.add(new MdInfoDiffConstraint(record));
       }
     }
@@ -447,8 +447,8 @@ public class MdInfoDiff {
               "ORDER BY index_name, seq_in_index",
           database,
           tableName);
-      List<MdMariadbRecord> records = con.getRecords(sql);
-      for (MdMariadbRecord record : records) {
+      List<MdDbRecord> records = con.getRecords(sql);
+      for (MdDbRecord record : records) {
         infoIndexes.add(new MdInfoDiffIndex(record, option));
       }
     }
@@ -470,8 +470,8 @@ public class MdInfoDiff {
               "ORDER BY partition_ordinal_position",
           database,
           tableName);
-      List<MdMariadbRecord> records = con.getRecords(sql);
-      for (MdMariadbRecord record : records) {
+      List<MdDbRecord> records = con.getRecords(sql);
+      for (MdDbRecord record : records) {
         infoPartitions.add(new MdInfoDiffPartition(record, option));
       }
     }
@@ -493,8 +493,8 @@ public class MdInfoDiff {
               "ORDER BY event_manipulation, action_order",
           database,
           tableName);
-      List<MdMariadbRecord> records = con.getRecords(sql);
-      for (MdMariadbRecord record : records) {
+      List<MdDbRecord> records = con.getRecords(sql);
+      for (MdDbRecord record : records) {
         infoTriggers.add(new MdInfoDiffTrigger(record));
       }
     }
@@ -510,7 +510,7 @@ public class MdInfoDiff {
     if (referencedTableNames == null) {
       referencedTableNames = new HashSet<>();
       String sql;
-      List<MdMariadbRecord> records;
+      List<MdDbRecord> records;
 
       sql = String.format(
           "SELECT * " +
@@ -519,7 +519,7 @@ public class MdInfoDiff {
           database,
           tableName);
       records = con.getRecords(sql);
-      for (MdMariadbRecord record : records) {
+      for (MdDbRecord record : records) {
         referencedTableNames.add(record.get("REFERENCED_TABLE_NAME"));
       }
     }

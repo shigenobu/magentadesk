@@ -2,7 +2,6 @@ package com.walksocket.md.output.parts;
 
 import com.google.gson.annotations.Expose;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

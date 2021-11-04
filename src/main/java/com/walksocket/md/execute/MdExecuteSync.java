@@ -6,7 +6,7 @@ import com.walksocket.md.bash.MdBashResult;
 import com.walksocket.md.bash.MdBashStdin;
 import com.walksocket.md.exception.MdExceptionNoExistsBaseOrCompare;
 import com.walksocket.md.exception.MdExceptionNoExistsDiffSeqs;
-import com.walksocket.md.exception.MdExceptionNotSuccessCommand;
+import com.walksocket.md.exception.MdExceptionNotSuccessCode;
 import com.walksocket.md.exception.MdExceptionNotSuccessStatus;
 import com.walksocket.md.filter.*;
 import com.walksocket.md.http.MdHttpClient;
@@ -16,7 +16,7 @@ import com.walksocket.md.input.MdInputSync;
 import com.walksocket.md.input.member.MdInputMemberCommand;
 import com.walksocket.md.input.member.MdInputMemberHttp;
 import com.walksocket.md.mariadb.MdMariadbConnection;
-import com.walksocket.md.mariadb.MdMariadbRecord;
+import com.walksocket.md.db.MdDbRecord;
 import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.output.MdOutputAbstract;
 import com.walksocket.md.output.MdOutputSync;
@@ -44,7 +44,7 @@ public class MdExecuteSync extends MdExecuteAbstract {
     MdInputSync inputSync = (MdInputSync) input;
     MdOutputSync outputSync = new MdOutputSync();
     String sql;
-    List<MdMariadbRecord> records;
+    List<MdDbRecord> records;
 
     // -----
     // read diffSummary
@@ -57,7 +57,7 @@ public class MdExecuteSync extends MdExecuteAbstract {
             "WHERE `summaryId` = '%s'",
         MdMariadbUtils.quote(inputSync.summaryId));
     records = con.getRecords(sql);
-    for (MdMariadbRecord record : records) {
+    for (MdDbRecord record : records) {
       baseDatabase = record.get("baseDatabase");
       compareDatabase = record.get("compareDatabase");
     }
@@ -86,7 +86,7 @@ public class MdExecuteSync extends MdExecuteAbstract {
       sql = String.format("SELECT `diffSeq` FROM `magentadesk`.`diffRecord` WHERE `summaryId` = '%s'",
           MdMariadbUtils.quote(inputSync.summaryId));
       records = con.getRecords(sql);
-      for (MdMariadbRecord record : records) {
+      for (MdDbRecord record : records) {
         long diffSeq = Long.parseLong(record.get("diffSeq"));
         inputSync.diffSeqs.add(diffSeq);
       }
@@ -143,7 +143,7 @@ public class MdExecuteSync extends MdExecuteAbstract {
       if (result != null) {
         MdLogger.trace(result);
         if (!cmd.successCodeList.contains(result.code)) {
-          throw new MdExceptionNotSuccessCommand();
+          throw new MdExceptionNotSuccessCode();
         }
         outputSync.commandResultsBeforeCommit.add(
             new MdOutputMemberCommandResult(result));

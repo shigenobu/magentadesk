@@ -3,26 +3,12 @@ package com.walksocket.md;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
 import java.util.function.Supplier;
 
 /**
  * logger.
  */
 public class MdLogger {
-
-  static {
-    // default locale en
-    Locale.setDefault(Locale.ENGLISH);
-  }
-
-  /**
-   * add seconds for now.
-   */
-  private static long addSeconds;
 
   /**
    * stdout pattern.
@@ -38,14 +24,6 @@ public class MdLogger {
    * log writer.
    */
   private static OutputStreamWriter writer;
-
-  /**
-   * set add seconds.
-   * @param addSeconds add seconds
-   */
-  public static void setAddSeconds(long addSeconds) {
-    MdLogger.addSeconds = addSeconds;
-  }
 
   /**
    * open logger.
@@ -129,7 +107,7 @@ public class MdLogger {
     }
 
     try {
-      String msg = "[" + now() + "][" + String.format("%010d", Thread.currentThread().getId()) + "][" + level + "]" + message.toString();
+      String msg = "[" + MdDate.now() + "][" + String.format("%010d", Thread.currentThread().getId()) + "][" + level + "]" + message.toString();
       writer.write(msg + "\n");
       writer.flush();
 
@@ -148,17 +126,5 @@ public class MdLogger {
       }
     } catch (Exception e) {
     }
-  }
-
-  /**
-   * now.
-   * @return now
-   */
-  private static String now() {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-    sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-    Date date = new Date();
-    date.setTime(date.getTime() + addSeconds * 1000);
-    return sdf.format(date);
   }
 }

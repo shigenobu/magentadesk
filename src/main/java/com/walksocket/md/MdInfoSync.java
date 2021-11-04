@@ -2,7 +2,7 @@ package com.walksocket.md;
 
 import com.walksocket.md.input.MdInputSync;
 import com.walksocket.md.mariadb.MdMariadbConnection;
-import com.walksocket.md.mariadb.MdMariadbRecord;
+import com.walksocket.md.db.MdDbRecord;
 import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.output.parts.MdOutputPartsColumn;
 
@@ -29,7 +29,7 @@ public class MdInfoSync {
       String compareDatabase,
       MdInputSync inputSync) throws SQLException {
     String sql;
-    List<MdMariadbRecord> records;
+    List<MdDbRecord> records;
 
     List<MdInfoSync> infoList = new ArrayList<>();
 
@@ -39,7 +39,7 @@ public class MdInfoSync {
             "WHERE `summaryId` = '%s'",
         MdMariadbUtils.quote(inputSync.summaryId));
     records = con.getRecords(sql);
-    for (MdMariadbRecord record : records) {
+    for (MdDbRecord record : records) {
       String tableName = record.get("tableName");
       String tableComment = record.get("tableComment");
       MdOutputPartsColumn[] columns = MdJson.toObject(record.get("columns"), MdOutputPartsColumn[].class);
@@ -59,7 +59,7 @@ public class MdInfoSync {
             "WHERE `diffSeq` in (%s)",
         MdUtils.join(inputSync.diffSeqs, ", "));
     records = con.getRecords(sql);
-    for (MdMariadbRecord record : records) {
+    for (MdDbRecord record : records) {
       long diffSeq = Long.parseLong(record.get("diffSeq"));
       String tableName = record.get("tableName");
 

@@ -3,7 +3,6 @@ package com.walksocket.md.output.member;
 import com.google.gson.annotations.Expose;
 import com.walksocket.md.MdInfoDiff;
 import com.walksocket.md.MdLogger;
-import com.walksocket.md.MdUtils;
 
 import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;

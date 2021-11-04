@@ -47,7 +47,7 @@ public class MdUtils {
         builder.append(String.format("%02x", d));
       }
     } catch (NoSuchAlgorithmException e) {
-      e.printStackTrace();
+      MdLogger.error(e);
     }
     return builder.toString();
   }

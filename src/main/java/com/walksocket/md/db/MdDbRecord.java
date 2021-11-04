@@ -1,6 +1,4 @@
-package com.walksocket.md.mariadb;
-
-import com.google.gson.Gson;
+package com.walksocket.md.db;
 
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
@@ -8,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * mariadb record.
+ * db record.
  */
-public class MdMariadbRecord {
+public class MdDbRecord {
 
   /**
    * params.
@@ -21,7 +19,7 @@ public class MdMariadbRecord {
    * constructor.
    * @param record record
    */
-  public MdMariadbRecord(List<Map<String, String>> record) {
+  public MdDbRecord(List<Map<String, String>> record) {
     record.forEach(pair -> {
       pair.forEach((columnName, columnValue) -> {
         params.put(columnName.toLowerCase(), columnValue);

@@ -2,7 +2,7 @@ package com.walksocket.md;
 
 import com.walksocket.md.info.MdInfoDiffColumn;
 import com.walksocket.md.mariadb.MdMariadbConnection;
-import com.walksocket.md.mariadb.MdMariadbRecord;
+import com.walksocket.md.db.MdDbRecord;
 import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.output.parts.MdOutputPartsColumn;
 import com.walksocket.md.output.parts.MdOutputPartsRecord;
@@ -40,7 +40,7 @@ public class MdDesk {
    * @throws SQLException sql error
    */
   public Map<String, String> getPrimaryValues(List<String> primaryColumns, long diffSeq) throws SQLException {
-    List<MdMariadbRecord> records;
+    List<MdDbRecord> records;
     String sql = "";
 
     Map<String, String> primaryValues = new LinkedHashMap<>();
@@ -49,7 +49,7 @@ public class MdDesk {
         MdUtils.join(primaryColumns, ", "),
         diffSeq);
     records = con.getRecords(sql);
-    for (MdMariadbRecord record : records) {
+    for (MdDbRecord record : records) {
       for (Map.Entry<String, String> entry : record.getAll().entrySet()) {
         if (entry.getValue() != null) {
           primaryValues.put(entry.getKey(), entry.getValue());
@@ -146,8 +146,8 @@ public class MdDesk {
   private List<MdOutputPartsRecord> getPartRecords(String sql) throws SQLException {
     List<MdOutputPartsRecord> partsRecords = new ArrayList<>();
 
-    List<MdMariadbRecord> records = con.getRecords(sql);
-    for (MdMariadbRecord record : records) {
+    List<MdDbRecord> records = con.getRecords(sql);
+    for (MdDbRecord record : records) {
       long diffSeq = Long.parseLong(record.get("diffSeq"));
 
       List<String> baseValues = new ArrayList<>();

@@ -61,9 +61,9 @@ public abstract class MdExceptionAbstract extends Exception {
     NO_EXISTS_DIFF_SEQS(24),
 
     /**
-     * not success command.
+     * not success code.
      */
-    NOT_SUCCESS_COMMAND(31),
+    NOT_SUCCESS_CODE(31),
 
     /**
      * not success status.

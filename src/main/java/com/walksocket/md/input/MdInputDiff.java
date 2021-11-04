@@ -1,12 +1,12 @@
 package com.walksocket.md.input;
 
 import com.google.gson.annotations.Expose;
+import com.walksocket.md.MdMode;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.exception.MdExceptionInvalidInput;
 import com.walksocket.md.input.member.MdInputMemberCondition;
 import com.walksocket.md.input.member.MdInputMemberOption;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,8 +40,8 @@ public class MdInputDiff extends MdInputAbstract {
   public List<MdInputMemberCondition> conditions = new ArrayList<>();
 
   @Override
-  public Mode getMode() {
-    return MdInputAbstract.Mode.DIFF;
+  public MdMode getMode() {
+    return MdMode.DIFF;
   }
 
   @Override

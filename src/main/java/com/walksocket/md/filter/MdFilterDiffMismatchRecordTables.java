@@ -10,7 +10,6 @@ import com.walksocket.md.output.MdOutputDiff;
 import com.walksocket.md.output.member.MdOutputMemberMatchTables;
 import com.walksocket.md.output.member.MdOutputMemberMismatchRecordTable;
 import com.walksocket.md.output.parts.MdOutputPartsRecord;
-import com.walksocket.md.supplier.MdSupplierInfoGetChecksum;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

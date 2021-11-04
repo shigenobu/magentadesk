@@ -3,7 +3,7 @@ package com.walksocket.md.info;
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.input.member.MdInputMemberOption;
-import com.walksocket.md.mariadb.MdMariadbRecord;
+import com.walksocket.md.db.MdDbRecord;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -70,7 +70,7 @@ public class MdInfoDiffIndex implements MdInfoDiffInterface {
    * @param option input option
    * @throws SQLException sql error
    */
-  public MdInfoDiffIndex(MdMariadbRecord record, MdInputMemberOption option) throws SQLException {
+  public MdInfoDiffIndex(MdDbRecord record, MdInputMemberOption option) throws SQLException {
     this.TABLE_NAME = record.get("TABLE_NAME");
     this.NON_UNIQUE = record.get("NON_UNIQUE");
     this.INDEX_NAME = record.get("INDEX_NAME");

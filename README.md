@@ -388,7 +388,7 @@ __mode=maintenance__
 * 22: in maintenance
 * 23: no exists base or compare
 * 24: no exists diff seqs
-* 31: not success command
+* 31: not success code
 * 32: not success status
 * 99: unknown
 

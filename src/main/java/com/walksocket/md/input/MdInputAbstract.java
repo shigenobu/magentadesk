@@ -1,6 +1,7 @@
 package com.walksocket.md.input;
 
 import com.google.gson.annotations.Expose;
+import com.walksocket.md.MdMode;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.exception.MdExceptionInvalidInput;
 import com.walksocket.md.mariadb.MdMariadbUtils;
@@ -9,49 +10,6 @@ import com.walksocket.md.mariadb.MdMariadbUtils;
  * input abstract.
  */
 public abstract class MdInputAbstract {
-
-  /**
-   * mode enum.
-   */
-  public enum Mode {
-
-    /**
-     * diff.
-     */
-    DIFF("diff"),
-
-    /**
-     * sync.
-     */
-    SYNC("sync"),
-
-    /**
-     * maintenance.
-     */
-    MAINTENANCE("maintenance"),
-    ;
-
-    /**
-     * mode.
-     */
-    private String mode;
-
-    /**
-     * constructor.
-     * @param mode mode
-     */
-    Mode(String mode) {
-      this.mode = mode;
-    }
-
-    /**
-     * get mode.
-     * @return mode
-     */
-    public String getMode() {
-      return mode;
-    }
-  }
 
   /**
    * host.
@@ -134,5 +92,5 @@ public abstract class MdInputAbstract {
    * get mode.
    * @return mode enum.
    */
-  public abstract Mode getMode();
+  public abstract MdMode getMode();
 }

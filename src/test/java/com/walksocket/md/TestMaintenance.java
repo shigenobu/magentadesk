@@ -19,7 +19,7 @@ public class TestMaintenance {
   public static void beforeClass() throws IOException {
     MdEnv.setDebug();
     MdEnv.setPretty();
-    MdLogger.setAddSeconds(60 * 60 * 9);
+    MdDate.init(60 * 60 * 9);
     MdLogger.open("stderr");
   }
 

@@ -19,7 +19,7 @@ public class TestDiff {
     MdEnv.setDebug();
     MdEnv.setPretty();
     MdEnv.setLimitLength(3);
-    MdLogger.setAddSeconds(60 * 60 * 9);
+    MdDate.init(60 * 60 * 9);
     MdLogger.open("stderr");
   }
 

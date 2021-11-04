@@ -3,7 +3,7 @@ package com.walksocket.md.info;
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.input.member.MdInputMemberOption;
-import com.walksocket.md.mariadb.MdMariadbRecord;
+import com.walksocket.md.db.MdDbRecord;
 import com.walksocket.md.mariadb.MdMariadbUtils;
 
 import java.sql.SQLException;
@@ -61,7 +61,7 @@ public class MdInfoDiffTable implements MdInfoDiffInterface {
    * @param option input option
    * @throws SQLException sql error
    */
-  public MdInfoDiffTable(MdMariadbRecord record, MdInputMemberOption option) throws SQLException {
+  public MdInfoDiffTable(MdDbRecord record, MdInputMemberOption option) throws SQLException {
     this.TABLE_NAME = record.get("TABLE_NAME");
     this.TABLE_TYPE = record.get("TABLE_TYPE");
     this.ENGINE = record.get("ENGINE");

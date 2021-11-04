@@ -1,7 +1,7 @@
 package com.walksocket.md.info;
 
 import com.walksocket.md.MdUtils;
-import com.walksocket.md.mariadb.MdMariadbRecord;
+import com.walksocket.md.db.MdDbRecord;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class MdInfoDiffConstraint implements MdInfoDiffInterface {
    * @param record record
    * @throws SQLException sql error
    */
-  public MdInfoDiffConstraint(MdMariadbRecord record) throws SQLException {
+  public MdInfoDiffConstraint(MdDbRecord record) throws SQLException {
     this.CONSTRAINT_NAME = record.get("CONSTRAINT_NAME");
     this.CHECK_CLAUSE = record.get("CHECK_CLAUSE");
   }

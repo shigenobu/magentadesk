@@ -3,7 +3,7 @@ package com.walksocket.md.info;
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.input.member.MdInputMemberOption;
-import com.walksocket.md.mariadb.MdMariadbRecord;
+import com.walksocket.md.db.MdDbRecord;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -75,7 +75,7 @@ public class MdInfoDiffPartition implements MdInfoDiffInterface {
    * @param option input option
    * @throws SQLException sql error
    */
-  public MdInfoDiffPartition(MdMariadbRecord record, MdInputMemberOption option) throws SQLException {
+  public MdInfoDiffPartition(MdDbRecord record, MdInputMemberOption option) throws SQLException {
     this.TABLE_NAME = record.get("TABLE_NAME");
     this.PARTITION_NAME = record.get("PARTITION_NAME");
     this.SUBPARTITION_NAME = record.get("SUBPARTITION_NAME");

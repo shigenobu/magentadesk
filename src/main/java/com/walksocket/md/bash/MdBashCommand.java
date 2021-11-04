@@ -1,8 +1,5 @@
 package com.walksocket.md.bash;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 /**
  * command.
  */

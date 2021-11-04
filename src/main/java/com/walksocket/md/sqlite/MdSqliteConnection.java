@@ -1,23 +1,24 @@
-package com.walksocket.md.mariadb;
+package com.walksocket.md.sqlite;
 
+import com.walksocket.md.MdEnv;
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.db.MdDbConnection;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * mariadb connection.
+ * sqlite connection.
  */
-public class MdMariadbConnection extends MdDbConnection {
+public class MdSqliteConnection extends MdDbConnection {
 
   /**
    * constructor.
-   * @param connectionString connection string.
    */
-  public MdMariadbConnection(String connectionString) {
-    this.connectionString = connectionString;
+  public MdSqliteConnection() {
+    this.connectionString = "jdbc:sqlite:" + new File(MdEnv.getMdHome(), "magentadesk").getAbsolutePath();
   }
 
   /**
@@ -31,10 +32,10 @@ public class MdMariadbConnection extends MdDbConnection {
 
     MdLogger.sql(connectionString);
     try {
-      Class.forName("org.mariadb.jdbc.Driver");
+      Class.forName("org.sqlite.JDBC");
       con = DriverManager.getConnection(connectionString);
       con.setAutoCommit(false);
-      con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+      con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
       con.setReadOnly(true);
       MdLogger.sql("CONNECT:" + con);
 

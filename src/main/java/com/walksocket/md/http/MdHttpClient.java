@@ -1,12 +1,10 @@
 package com.walksocket.md.http;
 
-import com.walksocket.md.MdJson;
 import com.walksocket.md.MdLogger;
 
 import javax.net.ssl.*;
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;

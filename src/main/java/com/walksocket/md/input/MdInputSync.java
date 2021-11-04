@@ -2,6 +2,7 @@ package com.walksocket.md.input;
 
 import com.google.gson.annotations.Expose;
 import com.walksocket.md.MdBash;
+import com.walksocket.md.MdMode;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.exception.MdExceptionInvalidInput;
 import com.walksocket.md.http.MdHttpClient;
@@ -144,7 +145,7 @@ public class MdInputSync extends MdInputAbstract {
   }
 
   @Override
-  public Mode getMode() {
-    return MdInputAbstract.Mode.SYNC;
+  public MdMode getMode() {
+    return MdMode.SYNC;
   }
 }

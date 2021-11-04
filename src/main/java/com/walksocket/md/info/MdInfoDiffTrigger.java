@@ -1,7 +1,7 @@
 package com.walksocket.md.info;
 
 import com.walksocket.md.MdUtils;
-import com.walksocket.md.mariadb.MdMariadbRecord;
+import com.walksocket.md.db.MdDbRecord;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -57,7 +57,7 @@ public class MdInfoDiffTrigger implements MdInfoDiffInterface {
    * @param record record
    * @throws SQLException sql error
    */
-  public MdInfoDiffTrigger(MdMariadbRecord record) throws SQLException {
+  public MdInfoDiffTrigger(MdDbRecord record) throws SQLException {
     this.TRIGGER_NAME = record.get("TRIGGER_NAME");
     this.EVENT_MANIPULATION = record.get("EVENT_MANIPULATION");
     this.ACTION_ORDER = record.get("ACTION_ORDER");
