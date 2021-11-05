@@ -2,9 +2,8 @@
 
 (INPUT)
 
-* cli: input mode=sync
-* web: request /api/sync/reserve.json
-
+cli: input mode=sync  
+web: request /api/sync/reserve.json
 
     {
       // (required) connect host
@@ -72,9 +71,8 @@
 
 (OUTPUT)
 
-* cli: output mode=sync
-* web: response 200 /api/sync/check.json
-
+cli: output mode=sync  
+web: response 200 /api/sync/check.json  
 
     {
       "reflectedRecordTables": [
