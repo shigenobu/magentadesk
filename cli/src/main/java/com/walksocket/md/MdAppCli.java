@@ -140,6 +140,7 @@ public class MdAppCli implements AutoCloseable {
     }
     input.validate();
     MdLogger.trace(String.format("input:%s", MdJson.toJsonStringFriendly(input)));
+    output = MdExecute.execute(input);
     exitCode = MdExceptionAbstract.ExitCode.SUCCESS;
 
     // end
