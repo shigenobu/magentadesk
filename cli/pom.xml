@@ -22,7 +22,7 @@
   <!-- build -->
   <build>
     <!-- finalName -->
-    <finalName>magentadesk-cli-${version}</finalName>
+    <finalName>magentadesk-cli-${project.version}</finalName>
 
     <!-- plugins -->
     <plugins>
@@ -36,7 +36,7 @@
           </descriptorRefs>
           <archive>
             <manifest>
-              <mainClass>com.walksocket.md.cli.MdApp</mainClass>
+              <mainClass>com.walksocket.md.MdAppCli</mainClass>
             </manifest>
           </archive>
         </configuration>
