@@ -2,9 +2,8 @@
 
 (INPUT)
 
-* cli: input mode=maintenance
-* web: request /api/maintenance/reserve.json
-
+cli: input mode=maintenance  
+web: request /api/maintenance/reserve.json  
 
     {
       // (required) connect host
@@ -28,8 +27,8 @@
 
 (OUTPUT)
 
-* cli: output mode=maintenance
-* web: response 200 /api/maintenance/check.json
+cli: output mode=maintenance  
+web: response 200 /api/maintenance/check.json  
 
 
     {

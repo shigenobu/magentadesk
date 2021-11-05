@@ -2,9 +2,8 @@
 
 (INPUT)  
 
-* cli: input mode=diff
-* web: request /api/diff/reserve.json
-
+cli: input mode=diff  
+web: request /api/diff/reserve.json
 
     {
       // (required) connect host
@@ -54,9 +53,8 @@
 
 (OUTPUT)  
 
-* cli: output mode=diff
-* web: response 200 /api/diff/check.json
-
+cli: output mode=diff  
+web: response 200 /api/diff/check.json  
 
     {
       "existsOnlyBaseTables": [

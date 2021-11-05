@@ -2,9 +2,8 @@
 
 (入力)  
 
-* cli: input mode=diff
-* web: request /api/diff/reserve.json
-
+cli: input mode=diff  
+web: request /api/diff/reserve.json  
 
     {
       // ----- 共通 -----
@@ -56,9 +55,8 @@
 
 (OUTPUT)  
 
-* cli: output mode=diff
-* web: response 200 /api/diff/check.json
-
+cli: output mode=diff  
+web: response 200 /api/diff/check.json  
 
     {
       // 比較元にのみ存在するテーブルで、データ差分比較対象外となる

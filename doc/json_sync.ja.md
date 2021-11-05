@@ -2,9 +2,8 @@
 
 (INPUT)
 
-* cli: input mode=sync
-* web: request /api/sync/reserve.json
-
+cli: input mode=sync  
+web: request /api/sync/reserve.json  
 
     {
       // ----- 共通 -----
@@ -76,8 +75,8 @@
 
 (OUTPUT)
 
-* cli: output mode=sync
-* web: response 200 /api/sync/check.json
+cli: output mode=sync  
+web: response 200 /api/sync/check.json  
 
 
     {
