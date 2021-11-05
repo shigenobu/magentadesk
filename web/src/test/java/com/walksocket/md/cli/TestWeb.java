@@ -72,8 +72,8 @@ public class TestWeb {
 
   @After
   public void after() {
-    MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 13306 -u root -ppass base < ../test/mariadb/base.sql", 300));
-    MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 13306 -u root -ppass compare < ../test/mariadb/compare.sql", 300));
+    MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 13306 -u root -ppass < ../docker/mysql/init/1_base.sql", 300));
+    MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 13306 -u root -ppass < ../docker/mysql/init/2_compare.sql", 300));
   }
 
   @Test
