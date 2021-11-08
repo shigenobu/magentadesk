@@ -1,4 +1,4 @@
-package com.walksocket.md.web.endpoint;
+package com.walksocket.md.api.endpoint;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.walksocket.md.*;
@@ -9,15 +9,15 @@ import com.walksocket.md.input.MdInputMaintenance;
 import com.walksocket.md.input.MdInputSync;
 import com.walksocket.md.sqlite.MdSqliteConnection;
 import com.walksocket.md.sqlite.MdSqliteUtils;
-import com.walksocket.md.web.MdWebState;
-import com.walksocket.md.web.MdWebStatus;
+import com.walksocket.md.api.MdApiState;
+import com.walksocket.md.api.MdApiStatus;
 
 import java.io.IOException;
 
 /**
- * web endpoint api reserve.
+ * api endpoint reserve.
  */
-public class MdWebEndpointApiReserve extends MdWebEndpointAbstract {
+public class MdApiEndpointReserve extends MdApiEndpointAbstract {
 
   @Override
   public void handle(HttpExchange exchange) throws IOException {
@@ -26,7 +26,7 @@ public class MdWebEndpointApiReserve extends MdWebEndpointAbstract {
     // method check
     if (!isPost(exchange)) {
       // method not allowed
-      sendOther(exchange, MdWebStatus.METHOD_NOT_ALLOWED);
+      sendOther(exchange, MdApiStatus.METHOD_NOT_ALLOWED);
       return;
     }
 
@@ -49,7 +49,7 @@ public class MdWebEndpointApiReserve extends MdWebEndpointAbstract {
     }
     if (input == null) {
       // bad request
-      sendOther(exchange, MdWebStatus.BAD_REQUEST);
+      sendOther(exchange, MdApiStatus.BAD_REQUEST);
       return;
     }
 
@@ -58,7 +58,7 @@ public class MdWebEndpointApiReserve extends MdWebEndpointAbstract {
       input.validate();
     } catch (MdExceptionAbstract me) {
       // bad request
-      sendOther(exchange, MdWebStatus.BAD_REQUEST);
+      sendOther(exchange, MdApiStatus.BAD_REQUEST);
       return;
     }
 
@@ -78,7 +78,7 @@ public class MdWebEndpointApiReserve extends MdWebEndpointAbstract {
               "('%s', '%s', '%s', '%s', null, %s)",
           MdSqliteUtils.quote(executionId),
           MdSqliteUtils.quote(mdMode.getMode()),
-          MdSqliteUtils.quote(MdWebState.RESERVED.getState()),
+          MdSqliteUtils.quote(MdApiState.RESERVED.getState()),
           MdSqliteUtils.quote(MdJson.toJsonString(input)),
           MdDate.timestamp());
       con.execute(sql);
@@ -90,7 +90,7 @@ public class MdWebEndpointApiReserve extends MdWebEndpointAbstract {
       MdLogger.error(e);
 
       // error
-      sendOther(exchange, MdWebStatus.INTERNAL_SERVER_ERROR);
+      sendOther(exchange, MdApiStatus.INTERNAL_SERVER_ERROR);
       return;
     }
 

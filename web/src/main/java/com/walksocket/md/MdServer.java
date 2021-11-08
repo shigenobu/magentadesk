@@ -3,11 +3,11 @@ package com.walksocket.md;
 import com.sun.net.httpserver.HttpServer;
 import com.walksocket.md.exception.MdExceptionErrorLocalDatabase;
 import com.walksocket.md.sqlite.MdSqliteConnection;
-import com.walksocket.md.web.MdWebQueue;
-import com.walksocket.md.web.endpoint.MdWebEndpointApiCheck;
-import com.walksocket.md.web.endpoint.MdWebEndpointApiReserve;
-import com.walksocket.md.web.service.MdWebServiceProcessing;
-import com.walksocket.md.web.service.MdWebServiceReserved;
+import com.walksocket.md.api.MdApiQueue;
+import com.walksocket.md.api.endpoint.MdApiEndpointCheck;
+import com.walksocket.md.api.endpoint.MdApiEndpointReserve;
+import com.walksocket.md.api.service.MdApiServiceProcessing;
+import com.walksocket.md.api.service.MdApiServiceReserved;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -17,9 +17,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * web.
+ * server.
  */
-public class MdWeb implements AutoCloseable {
+public class MdServer implements AutoCloseable {
 
   /**
    * host.
@@ -56,7 +56,7 @@ public class MdWeb implements AutoCloseable {
    * @param host host
    * @param port port
    */
-  public MdWeb(String host, int port) {
+  public MdServer(String host, int port) {
     this.host = host;
     this.port = port;
   }
@@ -96,12 +96,12 @@ public class MdWeb implements AutoCloseable {
     }
 
     // create queue
-    MdWebQueue queue = new MdWebQueue();
+    MdApiQueue queue = new MdApiQueue();
 
     // init reserved message service
     serviceMessageReserved = Executors.newSingleThreadScheduledExecutor();
     serviceMessageReserved.scheduleAtFixedRate(
-        new MdWebServiceReserved(queue),
+        new MdApiServiceReserved(queue),
         0,
         5,
         TimeUnit.SECONDS);
@@ -109,7 +109,7 @@ public class MdWeb implements AutoCloseable {
     // init processing message service
     serviceMessageProcessing = Executors.newSingleThreadScheduledExecutor();
     serviceMessageProcessing.scheduleAtFixedRate(
-        new MdWebServiceProcessing(queue),
+        new MdApiServiceProcessing(queue),
         0,
         5,
         TimeUnit.SECONDS);
@@ -124,12 +124,12 @@ public class MdWeb implements AutoCloseable {
 
           // -----
           // endpoints
-          server.createContext("/api/diff/reserve.json", new MdWebEndpointApiReserve());
-          server.createContext("/api/diff/check.json", new MdWebEndpointApiCheck());
-          server.createContext("/api/sync/reserve.json", new MdWebEndpointApiReserve());
-          server.createContext("/api/sync/check.json", new MdWebEndpointApiCheck());
-          server.createContext("/api/maintenance/reserve.json", new MdWebEndpointApiReserve());
-          server.createContext("/api/maintenance/check.json", new MdWebEndpointApiCheck());
+          server.createContext("/api/diff/reserve.json", new MdApiEndpointReserve());
+          server.createContext("/api/diff/check.json", new MdApiEndpointCheck());
+          server.createContext("/api/sync/reserve.json", new MdApiEndpointReserve());
+          server.createContext("/api/sync/check.json", new MdApiEndpointCheck());
+          server.createContext("/api/maintenance/reserve.json", new MdApiEndpointReserve());
+          server.createContext("/api/maintenance/check.json", new MdApiEndpointCheck());
           // -----
 
           server.start();

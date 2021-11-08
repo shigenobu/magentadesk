@@ -97,9 +97,9 @@ public class MdAppWeb implements AutoCloseable {
   public static MdExceptionAbstract.ExitCode execute(String host, int port) throws Exception {
     // start server
     MdExceptionAbstract.ExitCode exitCode = MdExceptionAbstract.ExitCode.SUCCESS;
-    try (MdWeb web = new MdWeb(host, port)) {
-      web.start();
-      web.waitFor();
+    try (MdServer server = new MdServer(host, port)) {
+      server.start();
+      server.waitFor();
     }
     return exitCode;
   }

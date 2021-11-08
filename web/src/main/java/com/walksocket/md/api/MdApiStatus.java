@@ -1,9 +1,9 @@
-package com.walksocket.md.web;
+package com.walksocket.md.api;
 
 /**
- * web status.
+ * api status.
  */
-public enum MdWebStatus {
+public enum MdApiStatus {
 
   /**
    * ok when complete.
@@ -56,7 +56,7 @@ public enum MdWebStatus {
    * @param status status
    * @param message message
    */
-  MdWebStatus(int status, String message) {
+  MdApiStatus(int status, String message) {
     this.status = status;
     this.message = message;
   }

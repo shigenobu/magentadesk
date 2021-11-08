@@ -1,9 +1,9 @@
-package com.walksocket.md.web;
+package com.walksocket.md.api;
 
 /**
- * queue message.
+ * api queue message.
  */
-public class MdWebQueueMessage {
+public class MdApiQueueMessage {
 
   /**
    * executionId.

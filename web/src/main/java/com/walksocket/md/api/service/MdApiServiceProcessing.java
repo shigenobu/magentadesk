@@ -1,4 +1,4 @@
-package com.walksocket.md.web.service;
+package com.walksocket.md.api.service;
 
 import com.walksocket.md.MdExecute;
 import com.walksocket.md.MdJson;
@@ -11,25 +11,25 @@ import com.walksocket.md.input.MdInputSync;
 import com.walksocket.md.output.MdOutputAbstract;
 import com.walksocket.md.sqlite.MdSqliteConnection;
 import com.walksocket.md.sqlite.MdSqliteUtils;
-import com.walksocket.md.web.MdWebQueue;
-import com.walksocket.md.web.MdWebQueueMessage;
-import com.walksocket.md.web.MdWebState;
+import com.walksocket.md.api.MdApiQueue;
+import com.walksocket.md.api.MdApiQueueMessage;
+import com.walksocket.md.api.MdApiState;
 
 /**
- * service processing.
+ * api service processing.
  */
-public class MdWebServiceProcessing implements Runnable {
+public class MdApiServiceProcessing implements Runnable {
 
   /**
    * queue.
    */
-  private MdWebQueue queue;
+  private MdApiQueue queue;
 
   /**
    * constructor.
    * @param queue queue
    */
-  public MdWebServiceProcessing(MdWebQueue queue) {
+  public MdApiServiceProcessing(MdApiQueue queue) {
     this.queue = queue;
   }
 
@@ -39,7 +39,7 @@ public class MdWebServiceProcessing implements Runnable {
   @Override
   public void run() {
     MdLogger.trace("start MdWebServiceProcessing");
-    MdWebQueueMessage message = null;
+    MdApiQueueMessage message = null;
     if ((message = queue.poll()) == null) {
       return;
     }
@@ -72,7 +72,7 @@ public class MdWebServiceProcessing implements Runnable {
             "UPDATE execution " +
                 "SET state = '%s' " +
                 "WHERE executionId = '%s'",
-            MdSqliteUtils.quote(MdWebState.ERROR.getState()),
+            MdSqliteUtils.quote(MdApiState.ERROR.getState()),
             MdSqliteUtils.quote(message.executionId)
         );
         con.execute(sql);
@@ -82,7 +82,7 @@ public class MdWebServiceProcessing implements Runnable {
             "UPDATE execution " +
                 "SET state = '%s', output = '%s' " +
                 "WHERE executionId = '%s'",
-            MdSqliteUtils.quote(MdWebState.COMPLETE.getState()),
+            MdSqliteUtils.quote(MdApiState.COMPLETE.getState()),
             MdSqliteUtils.quote(MdJson.toJsonString(output)),
             MdSqliteUtils.quote(message.executionId)
         );

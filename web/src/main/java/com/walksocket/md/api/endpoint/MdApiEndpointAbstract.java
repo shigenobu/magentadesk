@@ -1,4 +1,4 @@
-package com.walksocket.md.web.endpoint;
+package com.walksocket.md.api.endpoint;
 
 import com.google.gson.annotations.Expose;
 import com.sun.net.httpserver.HttpExchange;
@@ -7,16 +7,16 @@ import com.walksocket.md.MdJson;
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdMode;
 import com.walksocket.md.output.MdOutputAbstract;
-import com.walksocket.md.web.MdWebStatus;
+import com.walksocket.md.api.MdApiStatus;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
 /**
- * web endpoint abstract.
+ * api endpoint abstract.
  */
-abstract public class MdWebEndpointAbstract implements HttpHandler {
+abstract public class MdApiEndpointAbstract implements HttpHandler {
 
   /**
    * header x-execution-id.
@@ -60,8 +60,8 @@ abstract public class MdWebEndpointAbstract implements HttpHandler {
     MdLogger.trace(String.format("%s: %s", HEADER_EXECUTION_ID, executionId));
     sendJson(
         exchange,
-        MdWebStatus.ACCEPTED.getStatus(),
-        new MdWebResponseMessage(MdWebStatus.ACCEPTED));
+        MdApiStatus.ACCEPTED.getStatus(),
+        new MdWebResponseMessage(MdApiStatus.ACCEPTED));
   }
 
   /**
@@ -75,7 +75,7 @@ abstract public class MdWebEndpointAbstract implements HttpHandler {
     MdLogger.trace(String.format("%s: %s", HEADER_EXECUTION_ID, executionId));
     sendJson(
         exchange,
-        MdWebStatus.NO_CONTENT.getStatus(),
+        MdApiStatus.NO_CONTENT.getStatus(),
         null);
   }
 
@@ -88,7 +88,7 @@ abstract public class MdWebEndpointAbstract implements HttpHandler {
   protected void sendComplete(HttpExchange exchange, MdOutputAbstract output) throws IOException {
     sendJson(
         exchange,
-        MdWebStatus.OK.getStatus(),
+        MdApiStatus.OK.getStatus(),
         output);
   }
 
@@ -98,7 +98,7 @@ abstract public class MdWebEndpointAbstract implements HttpHandler {
    * @param status status
    * @throws IOException error
    */
-  protected void sendOther(HttpExchange exchange, MdWebStatus status) throws IOException {
+  protected void sendOther(HttpExchange exchange, MdApiStatus status) throws IOException {
     sendJson(
         exchange,
         status.getStatus(),
@@ -163,7 +163,7 @@ abstract public class MdWebEndpointAbstract implements HttpHandler {
      * constructor.
      * @param status status
      */
-    public MdWebResponseMessage(MdWebStatus status) {
+    public MdWebResponseMessage(MdApiStatus status) {
       this.status = status.getStatus();
       this.message = status.getMessage();
     }

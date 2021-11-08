@@ -9,14 +9,14 @@ import com.walksocket.md.input.member.MdInputMemberOption;
 import com.walksocket.md.output.MdOutputDiff;
 import com.walksocket.md.output.MdOutputMaintenance;
 import com.walksocket.md.output.MdOutputSync;
-import com.walksocket.md.web.endpoint.MdWebEndpointAbstract;
+import com.walksocket.md.api.endpoint.MdApiEndpointAbstract;
 import org.junit.*;
 
 import java.util.Arrays;
 
 public class TestWeb {
 
-  private static MdWeb web;
+  private static MdServer server;
 
   private MdInputDiff inputDiff;
 
@@ -32,14 +32,14 @@ public class TestWeb {
     MdDate.init(60 * 60 * 9);
     MdLogger.open("stdout");
 
-    web = new MdWeb("0.0.0.0", 8710);
-    web.start();
+    server = new MdServer("0.0.0.0", 8710);
+    server.start();
     Thread.sleep(1000);
   }
 
   @AfterClass
   public static void afterClass() {
-    web.shutdown();
+    server.shutdown();
   }
 
   @Before
@@ -86,12 +86,12 @@ public class TestWeb {
     MdHttpClient clientDiffReserve = new MdHttpClient("http://localhost:8710/api/diff/reserve.json", 1);
     MdHttpClient.MdHttpClientResponse responseDiffReserve = clientDiffReserve.doPost(MdJson.toJsonString(inputDiff));
     MdLogger.trace(responseDiffReserve);
-    String executionIdDiffReserve = responseDiffReserve.getHeader(MdWebEndpointAbstract.HEADER_EXECUTION_ID);
+    String executionIdDiffReserve = responseDiffReserve.getHeader(MdApiEndpointAbstract.HEADER_EXECUTION_ID);
 
     MdOutputDiff outputDiff = null;
     for (int i = 0; i < 10; i++) {
       MdHttpClient clientDiffCheck = new MdHttpClient("http://localhost:8710/api/diff/check.json", 1);
-      clientDiffCheck.setHeader(MdWebEndpointAbstract.HEADER_EXECUTION_ID, executionIdDiffReserve);
+      clientDiffCheck.setHeader(MdApiEndpointAbstract.HEADER_EXECUTION_ID, executionIdDiffReserve);
       MdHttpClient.MdHttpClientResponse responseDiffCheck = clientDiffCheck.doPost(null);
       MdLogger.trace(responseDiffCheck);
       if (responseDiffCheck.getStatus() == 200) {
@@ -113,12 +113,12 @@ public class TestWeb {
     MdHttpClient clientSyncReserve = new MdHttpClient("http://localhost:8710/api/sync/reserve.json", 1);
     MdHttpClient.MdHttpClientResponse responseSyncReserve = clientSyncReserve.doPost(MdJson.toJsonString(inputSync));
     MdLogger.trace(responseSyncReserve);
-    String executionIdSyncReserve = responseSyncReserve.getHeader(MdWebEndpointAbstract.HEADER_EXECUTION_ID);
+    String executionIdSyncReserve = responseSyncReserve.getHeader(MdApiEndpointAbstract.HEADER_EXECUTION_ID);
 
     MdOutputSync outputSync = null;
     for (int i = 0; i < 10; i++) {
       MdHttpClient clientSyncCheck = new MdHttpClient("http://localhost:8710/api/sync/check.json", 1);
-      clientSyncCheck.setHeader(MdWebEndpointAbstract.HEADER_EXECUTION_ID, executionIdSyncReserve);
+      clientSyncCheck.setHeader(MdApiEndpointAbstract.HEADER_EXECUTION_ID, executionIdSyncReserve);
       MdHttpClient.MdHttpClientResponse responseSyncCheck = clientSyncCheck.doPost(null);
       MdLogger.trace(responseSyncCheck);
       if (responseSyncCheck.getStatus() == 200) {
@@ -141,12 +141,12 @@ public class TestWeb {
       MdHttpClient clientMaintenanceReserve = new MdHttpClient("http://localhost:8710/api/maintenance/reserve.json", 1);
       MdHttpClient.MdHttpClientResponse responseMaintenanceReserve = clientMaintenanceReserve.doPost(MdJson.toJsonString(inputMaintenance));
       MdLogger.trace(responseMaintenanceReserve);
-      String executionIdDiffReserve = responseMaintenanceReserve.getHeader(MdWebEndpointAbstract.HEADER_EXECUTION_ID);
+      String executionIdDiffReserve = responseMaintenanceReserve.getHeader(MdApiEndpointAbstract.HEADER_EXECUTION_ID);
 
       MdOutputMaintenance outputMaintenance = null;
       for (int i = 0; i < 10; i++) {
         MdHttpClient clientMaintenanceCheck = new MdHttpClient("http://localhost:8710/api/maintenance/check.json", 1);
-        clientMaintenanceCheck.setHeader(MdWebEndpointAbstract.HEADER_EXECUTION_ID, executionIdDiffReserve);
+        clientMaintenanceCheck.setHeader(MdApiEndpointAbstract.HEADER_EXECUTION_ID, executionIdDiffReserve);
         MdHttpClient.MdHttpClientResponse responseMaintenanceCheck = clientMaintenanceCheck.doPost(null);
         MdLogger.trace(responseMaintenanceCheck);
         if (responseMaintenanceCheck.getStatus() == 200) {

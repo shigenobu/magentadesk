@@ -1,31 +1,31 @@
-package com.walksocket.md.web.service;
+package com.walksocket.md.api.service;
 
 import com.walksocket.md.MdDate;
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.db.MdDbRecord;
 import com.walksocket.md.sqlite.MdSqliteConnection;
 import com.walksocket.md.sqlite.MdSqliteUtils;
-import com.walksocket.md.web.MdWebQueue;
-import com.walksocket.md.web.MdWebQueueMessage;
-import com.walksocket.md.web.MdWebState;
+import com.walksocket.md.api.MdApiQueue;
+import com.walksocket.md.api.MdApiQueueMessage;
+import com.walksocket.md.api.MdApiState;
 
 import java.util.List;
 
 /**
- * service reserved.
+ * api service reserved.
  */
-public class MdWebServiceReserved implements Runnable {
+public class MdApiServiceReserved implements Runnable {
 
   /**
    * queue.
    */
-  private MdWebQueue queue;
+  private MdApiQueue queue;
 
   /**
    * constructor.
    * @param queue queue
    */
-  public MdWebServiceReserved(MdWebQueue queue) {
+  public MdApiServiceReserved(MdApiQueue queue) {
     this.queue = queue;
   }
 
@@ -55,7 +55,7 @@ public class MdWebServiceReserved implements Runnable {
               "FROM execution " +
               "WHERE created >= %s and state = '%s' ORDER BY created asc LIMIT 1",
           MdDate.timestamp() - 60 * 60,
-          MdSqliteUtils.quote(MdWebState.RESERVED.getState())
+          MdSqliteUtils.quote(MdApiState.RESERVED.getState())
       );
       List<MdDbRecord> records = con.getRecords(sql);
       if (records.isEmpty()) {
@@ -72,7 +72,7 @@ public class MdWebServiceReserved implements Runnable {
           "UPDATE execution " +
               "SET state = '%s' " +
               "WHERE executionId = '%s'",
-          MdSqliteUtils.quote(MdWebState.PROCESSING.getState()),
+          MdSqliteUtils.quote(MdApiState.PROCESSING.getState()),
           MdSqliteUtils.quote(executionId)
       );
       con.execute(sql);
@@ -81,7 +81,7 @@ public class MdWebServiceReserved implements Runnable {
       con.commit();
 
       // message into queue
-      MdWebQueueMessage messageInput = new MdWebQueueMessage();
+      MdApiQueueMessage messageInput = new MdApiQueueMessage();
       messageInput.executionId = executionId;
       messageInput.mode = mode;
       messageInput.input = input;
