@@ -3,6 +3,7 @@ package com.walksocket.md.api.endpoint;
 import com.google.gson.annotations.Expose;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import com.walksocket.md.MdEnv;
 import com.walksocket.md.MdJson;
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdMode;
@@ -116,7 +117,11 @@ abstract public class MdApiEndpointAbstract implements HttpHandler {
     String json = "";
     int len = 0;
     if (obj != null) {
-      json = MdJson.toJsonString(obj);
+      if (MdEnv.isPretty()) {
+        json = MdJson.toJsonStringFriendly(obj);
+      } else {
+        json = MdJson.toJsonString(obj);
+      }
       len = json.getBytes(StandardCharsets.UTF_8).length;
     }
     exchange.getResponseHeaders().set("Content-Length", String.valueOf(len));
