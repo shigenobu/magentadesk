@@ -25,10 +25,21 @@ public class MdFile {
   /**
    * read string from input stream.
    * @param in input stream
-   * @return stdin
+   * @return string
    * @throws IOException close error
    */
   public static String readString(InputStream in) throws IOException {
+    byte[] data = readByteArray(in);
+    return new String(data, StandardCharsets.UTF_8);
+  }
+
+  /**
+   * read byte from input stream.
+   * @param in input stream
+   * @return byte array
+   * @throws IOException close error
+   */
+  public static byte[] readByteArray(InputStream in) throws IOException {
     byte[] data;
     try (ReadableByteChannel channel = Channels.newChannel(in);
          ByteArrayOutputStream baos = new ByteArrayOutputStream();) {
@@ -41,7 +52,7 @@ public class MdFile {
       }
       data = baos.toByteArray();
     }
-    return new String(data, StandardCharsets.UTF_8);
+    return data;
   }
 
   /**

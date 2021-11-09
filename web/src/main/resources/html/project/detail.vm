@@ -1,0 +1,25 @@
+<div class="page-title">
+    <h1>PROJECT DETAIL</h1>
+</div>
+
+<div class="page-content">
+    <table class="input">
+        <tr>
+            <td>projectId</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>projectName</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>preset list</td>
+            <td>
+
+            </td>
+        </tr>
+    </table>
+    <table class="list">
+
+    </table>
+</div>

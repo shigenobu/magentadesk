@@ -1,0 +1,131 @@
+/* list */
+table.list {
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+table.list thead td {
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 10px 5px 10px;
+    background-color: black;
+    color: white;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 28px;
+    z-index: 1;
+}
+table.list tbody td {
+    background-color: ghostwhite;
+    padding: 5px 10px 5px 10px;
+}
+
+/* sort */
+table.list thead td {
+    white-space: nowrap;
+}
+table.list tbody tr:hover > td {
+    background-color: darksalmon;
+}
+table.list tbody td {
+    max-width: 180px;
+    white-space: nowrap;
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+@media screen and (min-width: 960px) {
+    table.list tbody td {
+        max-width: 360px;
+    }
+}
+table.list tbody td:nth-child(n + 2) {
+    min-width: 50px;
+}
+table.list tbody td:nth-child(n + 2):hover {
+    white-space: normal;
+    overflow: scroll;
+    text-overflow: unset;
+}
+table.list tbody td.strong {
+    background-color: #fffa90;
+}
+
+/* input */
+table.input {
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+table.input tbody td:nth-child(1) {
+    text-align: left;
+    font-weight: bold;
+    padding: 5px 10px 5px 10px;
+    background-color: black;
+    color: white;
+    min-width: 150px;
+}
+table.input tbody td {
+    background-color: ghostwhite;
+    padding: 5px 10px 5px 10px;
+}
+table.input label {
+    display: inline-block;
+    white-space: nowrap;
+}
+table.input input[type=text] {
+    min-width: 600px;
+}
+table.input input[type=number] {
+    min-width: 150px;
+}
+table.input input[type=radio] {
+    margin-right: 4px;
+    margin-left: 10px;
+}
+table.input input[type=checkbox] {
+    margin-right: 4px;
+    margin-left: 10px;
+}
+table.input select {
+    min-width: 150px;
+}
+table.input input:read-only {
+    background-color: #e0e0e0;
+}
+table.input input:-moz-read-only {
+    background-color: #e0e0e0;
+}
+table.input textarea {
+    min-width: 600px;
+    min-height: 100px;
+    resize: vertical;
+}
+table.input textarea:read-only {
+    background-color: #e0e0e0;
+}
+table.input textarea:-moz-read-only {
+    background-color: #e0e0e0;
+}
+table.input ul {
+    border: #82878c 1px dotted;
+    list-style-type: none;
+    margin: 2px;
+    padding: 2px;
+}
+@media screen and (min-width: 960px) {
+    table.input tbody td:nth-child(1) {
+        min-width: 200px;
+    }
+    table.input input[type=text] {
+        min-width: 800px;
+    }
+    table.input input[type=number] {
+        min-width: 200px;
+    }
+    table.input select {
+        min-width: 200px;
+    }
+    table.input textarea {
+        min-width: 800px;
+        min-height: 100px;
+    }
+}

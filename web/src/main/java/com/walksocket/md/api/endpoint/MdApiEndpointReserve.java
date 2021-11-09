@@ -21,7 +21,7 @@ public class MdApiEndpointReserve extends MdApiEndpointAbstract {
 
   @Override
   public void handle(HttpExchange exchange) throws IOException {
-    MdLogger.trace(exchange.getRequestURI());
+    MdLogger.trace(getClass().getSimpleName() + ":" + exchange.getRequestURI());
 
     // method check
     if (!isPost(exchange)) {

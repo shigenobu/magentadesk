@@ -142,7 +142,7 @@ abstract public class MdApiEndpointAbstract implements HttpHandler {
     OutputStream os = exchange.getResponseBody();
     if (!json.equals("")) {
       MdLogger.trace(json);
-      os.write(json.getBytes());
+      os.write(json.getBytes(StandardCharsets.UTF_8));
     }
     os.close();
   }

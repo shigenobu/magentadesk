@@ -1,0 +1,130 @@
+/* add */
+a.btn-add, input.btn-add {
+    display: inline-block;
+    max-width: 180px;
+    text-align: left;
+    border: 2px solid brown;
+    font-size: 12px;
+    color: brown;
+    background-color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: .4s;
+    cursor: pointer;
+}
+a.btn-add:hover, input.btn-add:hover {
+    background-color: brown;
+    border-color: brown;
+    color: #FFF;
+}
+
+/* edit */
+a.btn-edit {
+    display: inline-block;
+    max-width: 180px;
+    text-align: left;
+    border: 2px solid darkblue;
+    font-size: 12px;
+    color: darkblue;
+    background-color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: .4s;
+    cursor: pointer;
+}
+a.btn-edit:hover {
+    background-color: darkblue;
+    border-color: darkblue;
+    color: #FFF;
+}
+
+/* back */
+a.btn-back {
+    display: inline-block;
+    max-width: 180px;
+    text-align: left;
+    border: 2px solid cyan;
+    font-size: 12px;
+    color: cyan;
+    background-color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: .4s;
+    cursor: pointer;
+}
+a.btn-back:hover {
+    background-color: cyan;
+    border-color: cyan;
+    color: #FFF;
+}
+
+/* remove */
+a.btn-remove {
+    display: inline-block;
+    max-width: 180px;
+    text-align: left;
+    border: 2px solid mediumvioletred;
+    font-size: 12px;
+    color: mediumvioletred;
+    background-color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: .4s;
+    cursor: pointer;
+}
+a.btn-remove:hover {
+    background-color: #ce4a9c;
+    border-color: #ce4a9c;
+    color: #FFF;
+}
+
+/* execution */
+input.btn-execution {
+    display: inline-block;
+    max-width: 180px;
+    text-align: left;
+    border: 2px solid #c77715;
+    font-size: 12px;
+    color: #c77715;
+    background-color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: .4s;
+    cursor: pointer;
+}
+input.btn-execution:hover {
+    background-color: #c77715;
+    border-color: #c77715;
+    color: #FFF;
+}
+
+/* save */
+input.btn-save {
+    display: inline-block;
+    max-width: 180px;
+    text-align: left;
+    border: 2px solid navy;
+    font-size: 12px;
+    color: navy;
+    background-color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: .4s;
+}
+input.btn-save:hover {
+    background-color: navy;
+    border-color: navy;
+    color: #FFF;
+}

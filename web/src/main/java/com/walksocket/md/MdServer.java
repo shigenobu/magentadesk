@@ -2,6 +2,8 @@ package com.walksocket.md;
 
 import com.sun.net.httpserver.HttpServer;
 import com.walksocket.md.exception.MdExceptionErrorLocalDatabase;
+import com.walksocket.md.html.endpoint.MdHtmlEndpointAsset;
+import com.walksocket.md.html.endpoint.MdHtmlEndpointIndex;
 import com.walksocket.md.sqlite.MdSqliteConnection;
 import com.walksocket.md.api.MdApiQueue;
 import com.walksocket.md.api.endpoint.MdApiEndpointCheck;
@@ -124,12 +126,18 @@ public class MdServer implements AutoCloseable {
 
           // -----
           // endpoints
+          // api
           server.createContext("/api/diff/reserve.json", new MdApiEndpointReserve());
           server.createContext("/api/diff/check.json", new MdApiEndpointCheck());
           server.createContext("/api/sync/reserve.json", new MdApiEndpointReserve());
           server.createContext("/api/sync/check.json", new MdApiEndpointCheck());
           server.createContext("/api/maintenance/reserve.json", new MdApiEndpointReserve());
           server.createContext("/api/maintenance/check.json", new MdApiEndpointCheck());
+
+          // html
+          server.createContext("/favicon.ico", new MdHtmlEndpointAsset());
+          server.createContext("/asset/", new MdHtmlEndpointAsset());
+          server.createContext("/", new MdHtmlEndpointIndex());
           // -----
 
           server.start();
@@ -152,6 +160,20 @@ public class MdServer implements AutoCloseable {
     } catch (InterruptedException e) {
       MdLogger.error(e);
     }
+  }
+
+  /**
+   * stop message service.
+   */
+  public void stopMessageService() {
+    if (serviceMessageReserved != null) {
+      serviceMessageReserved.shutdownNow();
+    }
+    serviceMessageReserved = null;
+    if (serviceMessageProcessing != null) {
+      serviceMessageProcessing.shutdownNow();
+    }
+    serviceMessageProcessing = null;
   }
 
   /**

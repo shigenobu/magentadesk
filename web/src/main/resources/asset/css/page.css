@@ -1,0 +1,32 @@
+/* page title */
+div.page-title {
+    margin: 5px;
+}
+
+/* page content */
+div.page-content {
+    margin: 5px;
+    padding-bottom: 30px;
+}
+div.page-content hr {
+    margin: 5px 0px 5px 0px;
+    height: 1px;
+    border: none;
+    background-color: #999999;
+}
+
+/* page button */
+div.page-buttons {
+    display: flex;
+    margin-right: 10px;
+}
+div.page-buttons > * {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+div.page-buttons > a {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 100px;
+}
