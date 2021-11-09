@@ -15,77 +15,91 @@
                     <div><input type="text"></div>
                 </td>
             </tr>
+            <tr>
+                <td>explanation</td>
+                <td>
+                    <div><textarea></textarea></div>
+                </td>
+            </tr>
+            <tr>
+                <td>includeTableLikePatterns</td>
+                <td>
+                    <div><input type="text"></div>
+                    <div><input type="text"></div>
+                    <div><input type="text"></div>
+                    <div><input type="text"></div>
+                    <div><input type="text"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>excludeTableLikePatterns</td>
+                <td>
+                    <div><input type="text"></div>
+                    <div><input type="text"></div>
+                    <div><input type="text"></div>
+                    <div><input type="text"></div>
+                    <div><input type="text"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>ignoreAutoIncrement</td>
+                <td>
+                    <label><input type="radio">false</label>
+                    <label><input type="radio">true</label>
+                </td>
+            </tr>
+            <tr>
+                <td>ignoreComment</td>
+                <td>
+                    <label><input type="radio">false</label>
+                    <label><input type="radio">true</label>
+                </td>
+            </tr>
+            <tr>
+                <td>ignorePartitions</td>
+                <td>
+                    <label><input type="radio">false</label>
+                    <label><input type="radio">true</label>
+                </td>
+            </tr>
+            <tr>
+                <td>ignoreDefaultForSequence</td>
+                <td>
+                    <label><input type="radio">false</label>
+                    <label><input type="radio">true</label>
+                </td>
+            </tr>
+            <tr>
+                <td>conditions (tableName / expression)</td>
+                <td>
+                    <div><input type="text"> / <input type="text"></div>
+                    <div><input type="text"> / <input type="text"></div>
+                    <div><input type="text"> / <input type="text"></div>
+                    <div><input type="text"> / <input type="text"></div>
+                    <div><input type="text"> / <input type="text"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>relation from (table / columns)</td>
+                <td>
+                    <div><input type="text"></div>
+                    <div><input type="text"></div>
+                    <div><input type="text"></div>
+                    <div><input type="text"></div>
+                    <div><input type="text"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>relation to (table / columns)</td>
+                <td>
+                    <div><input type="text"></div>
+                    <div><input type="text"></div>
+                    <div><input type="text"></div>
+                    <div><input type="text"></div>
+                    <div><input type="text"></div>
+                </td>
+            </tr>
         </table>
-
-        <fieldset>
-            <legend>option</legend>
-            <table class="input">
-                <tr>
-                    <td>includeTableLikePatterns</td>
-                    <td>
-                        <div><input type="text"></div>
-                        <div><input type="text"></div>
-                        <div><input type="text"></div>
-                        <div><input type="text"></div>
-                        <div><input type="text"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>excludeTableLikePatterns</td>
-                    <td>
-                        <div><input type="text"></div>
-                        <div><input type="text"></div>
-                        <div><input type="text"></div>
-                        <div><input type="text"></div>
-                        <div><input type="text"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>ignoreAutoIncrement</td>
-                    <td>
-                        <label><input type="radio">false</label>
-                        <label><input type="radio">true</label>
-                    </td>
-                </tr>
-                <tr>
-                    <td>ignoreComment</td>
-                    <td>
-                        <label><input type="radio">false</label>
-                        <label><input type="radio">true</label>
-                    </td>
-                </tr>
-                <tr>
-                    <td>ignorePartitions</td>
-                    <td>
-                        <label><input type="radio">false</label>
-                        <label><input type="radio">true</label>
-                    </td>
-                </tr>
-                <tr>
-                    <td>ignoreDefaultForSequence</td>
-                    <td>
-                        <label><input type="radio">false</label>
-                        <label><input type="radio">true</label>
-                    </td>
-                </tr>
-            </table>
-        </fieldset>
-
-        <fieldset>
-            <legend>conditions</legend>
-            <table class="input">
-                <tr>
-                    <td>tableName / expression</td>
-                    <td>
-                        <div><input type="text"><input type="text"></div>
-                        <div><input type="text"><input type="text"></div>
-                        <div><input type="text"><input type="text"></div>
-                        <div><input type="text"><input type="text"></div>
-                        <div><input type="text"><input type="text"></div>
-                    </td>
-                </tr>
-            </table>
-        </fieldset>
 
         <div class="page-buttons">
             <input type="submit" class="btn-save" value="SAVE">

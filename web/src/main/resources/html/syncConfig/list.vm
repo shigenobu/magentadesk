@@ -1,24 +1,24 @@
 <div class="page-title">
-    <h1>DIFF CONFIG LIST</h1>
+    <h1>SYNC CONFIG LIST</h1>
 </div>
 
 <div class="page-content">
     <div class="page-buttons">
-        <a href="/diffConfig/edit/" class="btn-add">NEW DIFF CONFIG</a>
+        <a href="/syncConfig/edit/" class="btn-add">NEW SYNC CONFIG</a>
     </div>
 
     <table class="list">
         <thead>
         <tr>
             <td>-</td>
-            <td>diffConfigId</td>
+            <td>syncConfigId</td>
             <td>title</td>
         </tr>
         </thead>
         <tbody>
         <tr>
             <td>
-                <a href="/diffConfig/edit/?diffConfigId=1" class="btn-edit">EDIT</a>
+                <a href="/syncConfig/edit/?syncConfigId=1" class="btn-edit">EDIT</a>
             </td>
             <td>1</td>
             <td>aaa</td>

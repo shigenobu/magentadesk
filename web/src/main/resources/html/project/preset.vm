@@ -1,0 +1,48 @@
+<div class="page-title">
+    <h1>PROJECT PRESET</h1>
+</div>
+
+<div class="page-content">
+    <table class="input">
+        <tr>
+            <td>projectId</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>title</td>
+            <td>
+                <div><input type="text"></div>
+            </td>
+        </tr>
+        <tr>
+            <td>explanation</td>
+            <td>
+                <div><input type="text"></div>
+            </td>
+        </tr>
+    </table>
+
+    <table class="list">
+        <thead>
+            <tr>
+                <td>presetId</td>
+                <td>title</td>
+                <td>diffConfigId</td>
+                <td>syncConfigId</td>
+                <td>-</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>news</td>
+                <td>1</td>
+                <td>1</td>
+                <td>
+                    <a class="btn-json">JSON</a>
+                    <a class="btn-execute">EXECUTE</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

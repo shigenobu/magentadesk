@@ -1,0 +1,42 @@
+<div class="page-title">
+    <h1>PRESET EDIT</h1>
+</div>
+
+<div class="page-content">
+    <form>
+        <table class="input">
+            <tr>
+                <td>id</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>title</td>
+                <td>
+                    <div><input type="text"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>explanation</td>
+                <td>
+                    <div><input type="text"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>diffConfig</td>
+                <td>
+                    <div>
+                        <select></select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>syncConfig</td>
+                <td>
+                    <div>
+                        <select></select>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>

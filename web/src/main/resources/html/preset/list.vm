@@ -1,27 +1,31 @@
 <div class="page-title">
-    <h1>DIFF CONFIG LIST</h1>
+    <h1>PRESET LIST</h1>
 </div>
 
 <div class="page-content">
     <div class="page-buttons">
-        <a href="/diffConfig/edit/" class="btn-add">NEW DIFF CONFIG</a>
+        <a href="/preset/edit/" class="btn-add">NEW PRESET</a>
     </div>
 
     <table class="list">
         <thead>
         <tr>
             <td>-</td>
-            <td>diffConfigId</td>
+            <td>presetId</td>
             <td>title</td>
+            <td>diffConfigId</td>
+            <td>syncConfigId</td>
         </tr>
         </thead>
         <tbody>
         <tr>
             <td>
-                <a href="/diffConfig/edit/?diffConfigId=1" class="btn-edit">EDIT</a>
+                <a href="/preset/edit/?presetId=1" class="btn-edit">EDIT</a>
             </td>
             <td>1</td>
             <td>aaa</td>
+            <td>1</td>
+            <td>1</td>
         </tr>
         </tbody>
     </table>

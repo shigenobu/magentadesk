@@ -24,11 +24,19 @@ abstract public class MdHtmlEndpointAbstract implements HttpHandler {
     MdTemplate layout = new MdTemplate("/home/furuta/02-development/idea/magentadesk/web/src/main/resources", "html/layout.vm");
     layout.assign("content", html);
 
-    render(exchange, layout.render());
+    render(exchange, 200, layout.render());
   }
 
-  protected void render(HttpExchange exchange, String data) throws IOException {
-    int status = 200;
+  protected void renderOk(HttpExchange exchange, String data) throws IOException {
+    render(exchange, 200, data);
+  }
+
+  protected void renderNotFound(HttpExchange exchange) throws IOException {
+    String data = "<h1>404 Not Found</h1>";
+    render(exchange, 404, data);
+  }
+
+  private void render(HttpExchange exchange, int status, String data) throws IOException {
     int len = data.getBytes(StandardCharsets.UTF_8).length;
     exchange.getResponseHeaders().set("Content-Length", String.valueOf(len));
     exchange.getResponseHeaders().set("Content-Type", "text/html");

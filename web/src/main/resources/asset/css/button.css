@@ -42,6 +42,50 @@ a.btn-edit:hover {
     color: #FFF;
 }
 
+/* detail */
+a.btn-detail {
+    display: inline-block;
+    max-width: 180px;
+    text-align: left;
+    border: 2px solid cadetblue;
+    font-size: 12px;
+    color: cadetblue;
+    background-color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: .4s;
+    cursor: pointer;
+}
+a.btn-detail:hover {
+    background-color: cadetblue;
+    border-color: cadetblue;
+    color: #FFF;
+}
+
+/* preset */
+a.btn-preset {
+    display: inline-block;
+    max-width: 180px;
+    text-align: left;
+    border: 2px solid forestgreen;
+    font-size: 12px;
+    color: forestgreen;
+    background-color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: .4s;
+    cursor: pointer;
+}
+a.btn-preset:hover {
+    background-color: forestgreen;
+    border-color: forestgreen;
+    color: #FFF;
+}
+
 /* back */
 a.btn-back {
     display: inline-block;
@@ -86,8 +130,30 @@ a.btn-remove:hover {
     color: #FFF;
 }
 
-/* execution */
-input.btn-execution {
+/* json */
+a.btn-json {
+    display: inline-block;
+    max-width: 180px;
+    text-align: left;
+    border: 2px solid darkgray;
+    font-size: 12px;
+    color: darkgray;
+    background-color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: .4s;
+    cursor: pointer;
+}
+a.btn-json:hover {
+    background-color: darkgray;
+    border-color: darkgray;
+    color: #FFF;
+}
+
+/* execute */
+a.btn-execute {
     display: inline-block;
     max-width: 180px;
     text-align: left;
@@ -102,7 +168,7 @@ input.btn-execution {
     transition: .4s;
     cursor: pointer;
 }
-input.btn-execution:hover {
+a.btn-execute:hover {
     background-color: #c77715;
     border-color: #c77715;
     color: #FFF;

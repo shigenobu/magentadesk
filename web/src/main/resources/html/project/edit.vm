@@ -10,15 +10,94 @@
                 <td></td>
             </tr>
             <tr>
-                <td>projectName</td>
-                <td></td>
+                <td>title</td>
+                <td>
+                    <div><input type="text"></div>
+                </td>
             </tr>
             <tr>
-                <td>preset list</td>
+                <td>explanation</td>
                 <td>
-
+                    <div><input type="text"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>host</td>
+                <td>
+                    <div><input type="text"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>port</td>
+                <td>
+                    <div><input type="text"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>charset</td>
+                <td>
+                    <div><input type="text"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>baseDatabase</td>
+                <td>
+                    <div><input type="text"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>compareDatabase</td>
+                <td>
+                    <div><input type="text"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>presetList</td>
+                <td>
+                    <div>
+                        <input type="number">
+                        <select></select>
+                    </div>
+                    <div>
+                        <input type="number">
+                        <select></select>
+                    </div>
+                    <div>
+                        <input type="number">
+                        <select></select>
+                    </div>
+                    <div>
+                        <input type="number">
+                        <select></select>
+                    </div>
+                    <div>
+                        <input type="number">
+                        <select></select>
+                    </div>
+                    <div>
+                        <input type="number">
+                        <select></select>
+                    </div>
+                    <div>
+                        <input type="number">
+                        <select></select>
+                    </div>
+                    <div>
+                        <input type="number">
+                        <select></select>
+                    </div>
+                    <div>
+                        <input type="number">
+                        <select></select>
+                    </div>
                 </td>
             </tr>
         </table>
+
+        <div class="page-buttons">
+            <input type="submit" class="btn-save" value="SAVE">
+            <a class="btn-back">BACK</a>
+            <a class="btn-remove">REMOVE</a>
+        </div>
     </form>
 </div>
