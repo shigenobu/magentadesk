@@ -7,6 +7,8 @@ import com.walksocket.md.input.MdInputAbstract;
 import com.walksocket.md.input.MdInputDiff;
 import com.walksocket.md.input.MdInputMaintenance;
 import com.walksocket.md.input.MdInputSync;
+import com.walksocket.md.server.MdServerRequest;
+import com.walksocket.md.server.MdServerResponse;
 import com.walksocket.md.sqlite.MdSqliteConnection;
 import com.walksocket.md.sqlite.MdSqliteUtils;
 import com.walksocket.md.api.MdApiState;
@@ -21,20 +23,26 @@ public class MdApiEndpointReserve extends MdApiEndpointAbstract {
 
   @Override
   public void handle(HttpExchange exchange) throws IOException {
-    MdLogger.trace(getClass().getSimpleName() + ":" + exchange.getRequestURI());
+    init(exchange);
+    MdLogger.trace(getClass().getSimpleName() + ":" + request.getPath());
 
     // method check
-    if (!isPost(exchange)) {
+    if (!request.isPost()) {
       // method not allowed
-      sendOther(exchange, MdApiStatus.METHOD_NOT_ALLOWED);
+      sendOther(MdApiStatus.METHOD_NOT_ALLOWED);
       return;
     }
 
     // get mode
-    MdMode mdMode = getMode(exchange);
+    MdMode mdMode = getMode();
+    if (mdMode == null) {
+      // not found
+      sendOther(MdApiStatus.NOT_FOUND);
+      return;
+    }
 
     // make input
-    String inputJson = MdFile.readString(exchange.getRequestBody());
+    String inputJson = request.getRawBody();
     MdInputAbstract input = null;
     try {
       if (mdMode == MdMode.DIFF) {
@@ -49,7 +57,7 @@ public class MdApiEndpointReserve extends MdApiEndpointAbstract {
     }
     if (input == null) {
       // bad request
-      sendOther(exchange, MdApiStatus.BAD_REQUEST);
+      sendOther(MdApiStatus.BAD_REQUEST);
       return;
     }
 
@@ -58,7 +66,7 @@ public class MdApiEndpointReserve extends MdApiEndpointAbstract {
       input.validate();
     } catch (MdExceptionAbstract me) {
       // bad request
-      sendOther(exchange, MdApiStatus.BAD_REQUEST);
+      sendOther(MdApiStatus.BAD_REQUEST);
       return;
     }
 
@@ -90,12 +98,12 @@ public class MdApiEndpointReserve extends MdApiEndpointAbstract {
       MdLogger.error(e);
 
       // error
-      sendOther(exchange, MdApiStatus.INTERNAL_SERVER_ERROR);
+      sendOther(MdApiStatus.INTERNAL_SERVER_ERROR);
       return;
     }
 
     // accepted
-    sendReserved(exchange, executionId);
+    sendReserved(executionId);
     return;
   }
 }

@@ -1,8 +1,6 @@
 package com.walksocket.md;
 
-import com.walksocket.md.input.MdInputDiff;
-import com.walksocket.md.input.MdInputMaintenance;
-import com.walksocket.md.input.MdInputSync;
+import com.walksocket.md.html.endpoint.MdHtmlEndpointAbstract;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -10,12 +8,6 @@ import org.junit.Test;
 public class TestWebForever {
 
   private static MdServer server;
-
-  private MdInputDiff inputDiff;
-
-  private MdInputSync inputSync;
-
-  private MdInputMaintenance inputMaintenance;
 
   @BeforeClass
   public static void beforeClass() throws Exception {
@@ -37,6 +29,7 @@ public class TestWebForever {
 
   @Test
   public void testForever() {
+    MdHtmlEndpointAbstract.setBasePath("src/main/resources");
     server.stopMessageService();
     server.waitFor();
   }

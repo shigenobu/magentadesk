@@ -2,34 +2,38 @@ package com.walksocket.md.html.endpoint;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.walksocket.md.MdLogger;
+import com.walksocket.md.MdTemplate;
 
 import java.io.IOException;
 
 public class MdHtmlEndpointDiffConfig extends MdHtmlEndpointAbstract {
   @Override
   public void handle(HttpExchange exchange) throws IOException {
-    MdLogger.trace(getClass().getSimpleName() + ":" + exchange.getRequestURI());
+    init(exchange);
+    MdLogger.trace(getClass().getSimpleName() + ":" + request.getPath());
 
-    String path = exchange.getRequestURI().getPath();
+    String path = request.getPath();
     if (path.equals("/diffConfig/list/")) {
-      list(exchange);
+      list();
       return;
     } else if (path.equals("/diffConfig/edit/")) {
-      edit(exchange);
+      edit();
       return;
     } else if (path.equals("/diffConfig/save/")) {
 
     } else if (path.equals("/diffConfig/remove/")) {
 
     }
-    renderNotFound(exchange);
+    renderNotFound();
   }
 
-  private void list(HttpExchange exchange) throws IOException {
-    renderWithLayout(exchange, "html/diffConfig/list.vm");
+  private void list() throws IOException {
+    MdTemplate template = createTemplate("html/diffConfig/list.vm");
+    renderWithLayout(template);
   }
 
-  private void edit(HttpExchange exchange) throws IOException {
-    renderWithLayout(exchange, "html/diffConfig/edit.vm");
+  private void edit() throws IOException {
+    MdTemplate template = createTemplate("html/diffConfig/edit.vm");
+    renderWithLayout(template);
   }
 }

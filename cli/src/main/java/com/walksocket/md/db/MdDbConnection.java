@@ -1,6 +1,7 @@
 package com.walksocket.md.db;
 
 import com.walksocket.md.MdLogger;
+import com.walksocket.md.MdUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -164,6 +165,20 @@ abstract public class MdDbConnection implements AutoCloseable {
     }
 
     return records;
+  }
+
+  /**
+   * get record.
+   * @param sql sql
+   * @return record
+   * @throws SQLException sql error
+   */
+  public MdDbRecord getRecord(String sql) throws SQLException {
+    List<MdDbRecord> records = getRecords(sql);
+    if (!MdUtils.isNullOrEmpty(records)) {
+      return records.get(0);
+    }
+    return new MdDbRecord();
   }
 
   @Override

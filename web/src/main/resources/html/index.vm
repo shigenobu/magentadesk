@@ -1,7 +1,8 @@
 <div class="page-content">
-    <div class="hbox">
-        <div></div>
-    </div>
 
+    <a href="/diffConfig/list/">diffConfig</a>
+    <a href="/syncConfig/list/">syncConfig</a>
+    <a href="/preset/list/">preset</a>
+    <a href="/project/list/">project</a>
 
 </div>

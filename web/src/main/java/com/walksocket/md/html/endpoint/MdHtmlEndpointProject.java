@@ -2,41 +2,46 @@ package com.walksocket.md.html.endpoint;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.walksocket.md.MdLogger;
+import com.walksocket.md.MdTemplate;
 
 import java.io.IOException;
 
 public class MdHtmlEndpointProject extends MdHtmlEndpointAbstract {
   @Override
   public void handle(HttpExchange exchange) throws IOException {
-    MdLogger.trace(getClass().getSimpleName() + ":" + exchange.getRequestURI());
+    init(exchange);
+    MdLogger.trace(getClass().getSimpleName() + ":" + request.getPath());
 
-    String path = exchange.getRequestURI().getPath();
+    String path = request.getPath();
     if (path.equals("/project/list/")) {
-      list(exchange);
+      list();
       return;
     } else if (path.equals("/project/edit/")) {
-      edit(exchange);
+      edit();
       return;
     } else if (path.equals("/project/save/")) {
 
     } else if (path.equals("/project/remove/")) {
 
     } else if (path.equals("/project/preset/")) {
-      preset(exchange);
+      preset();
       return;
     }
-    renderNotFound(exchange);
+    renderNotFound();
   }
 
-  private void list(HttpExchange exchange) throws IOException {
-    renderWithLayout(exchange, "html/project/list.vm");
+  private void list() throws IOException {
+    MdTemplate template = createTemplate("html/project/list.vm");
+    renderWithLayout(template);
   }
 
-  private void edit(HttpExchange exchange) throws IOException {
-    renderWithLayout(exchange, "html/project/edit.vm");
+  private void edit() throws IOException {
+    MdTemplate template = createTemplate("html/project/edit.vm");
+    renderWithLayout(template);
   }
 
-  private void preset(HttpExchange exchange) throws IOException {
-    renderWithLayout(exchange, "html/project/preset.vm");
+  private void preset() throws IOException {
+    MdTemplate template = createTemplate("html/project/preset.vm");
+    renderWithLayout(template);
   }
 }

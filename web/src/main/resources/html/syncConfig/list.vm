@@ -13,16 +13,27 @@
             <td>-</td>
             <td>syncConfigId</td>
             <td>title</td>
+            <td>explanation</td>
+            <td>commandsBeforeCommitCount</td>
+            <td>commandsAfterCommitCount</td>
+            <td>httpCallbackBeforeCommitCount</td>
+            <td>httpCallbackAfterCommitCount</td>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>
-                <a href="/syncConfig/edit/?syncConfigId=1" class="btn-edit">EDIT</a>
-            </td>
-            <td>1</td>
-            <td>aaa</td>
-        </tr>
+            #foreach($record in $records)
+                <tr>
+                    <td>
+                        <a href="/syncConfig/edit/?syncConfigId=${record.get("syncConfigId")}" class="btn-edit">EDIT</a>
+                    </td>
+                    <td>${record.get("title")}</td>
+                    <td>${record.get("explanation")}</td>
+                    <td>${record.get("commandsBeforeCommitCount")}</td>
+                    <td>${record.get("commandsAfterCommitCount")}</td>
+                    <td>${record.get("httpCallbackBeforeCommitCount")}</td>
+                    <td>${record.get("httpCallbackAfterCommitCount")}</td>
+                </tr>
+            #end
         </tbody>
     </table>
 </div>

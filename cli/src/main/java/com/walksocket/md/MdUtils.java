@@ -8,6 +8,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * utils.
@@ -24,11 +25,38 @@ public class MdUtils {
   }
 
   /**
-   * is null or empty for collection.
-   * @param src collection
+   * is null or empty for array.
+   * @param src array
    * @return if null or empty, true
    */
-  public static boolean isNullOrEmpty(Collection src) {
+  public static boolean isNullOrEmpty(byte[] src) {
+    return src == null || src.length == 0;
+  }
+
+  /**
+   * is null or empty for array.
+   * @param src array
+   * @return if null or empty, true
+   */
+  public static boolean isNullOrEmpty(Object[] src) {
+    return src == null || src.length == 0;
+  }
+
+  /**
+   * is null or empty for list.
+   * @param src list
+   * @return if null or empty, true
+   */
+  public static boolean isNullOrEmpty(List src) {
+    return src == null || src.size() == 0;
+  }
+
+  /**
+   * is null or empty for map.
+   * @param src map
+   * @return if null or empty, true
+   */
+  public static boolean isNullOrEmpty(Map src) {
     return src == null || src.size() == 0;
   }
 

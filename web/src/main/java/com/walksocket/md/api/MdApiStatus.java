@@ -26,6 +26,11 @@ public enum MdApiStatus {
   BAD_REQUEST(400, "Bad Request"),
 
   /**
+   * not found when mode is null.
+   */
+  NOT_FOUND(404, "Not Found"),
+
+  /**
    * method not allowed when method is not POST.
    */
   METHOD_NOT_ALLOWED(405, "Method Not Allowed"),

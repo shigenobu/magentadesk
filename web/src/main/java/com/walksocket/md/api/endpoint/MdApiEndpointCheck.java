@@ -5,14 +5,14 @@ import com.walksocket.md.MdJson;
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdMode;
 import com.walksocket.md.MdUtils;
+import com.walksocket.md.api.MdApiState;
+import com.walksocket.md.api.MdApiStatus;
 import com.walksocket.md.db.MdDbRecord;
 import com.walksocket.md.output.MdOutputDiff;
 import com.walksocket.md.output.MdOutputMaintenance;
 import com.walksocket.md.output.MdOutputSync;
 import com.walksocket.md.sqlite.MdSqliteConnection;
 import com.walksocket.md.sqlite.MdSqliteUtils;
-import com.walksocket.md.api.MdApiState;
-import com.walksocket.md.api.MdApiStatus;
 
 import java.io.IOException;
 import java.util.List;
@@ -24,26 +24,31 @@ public class MdApiEndpointCheck extends MdApiEndpointAbstract {
 
   @Override
   public void handle(HttpExchange exchange) throws IOException {
-    MdLogger.trace(getClass().getSimpleName() + ":" + exchange.getRequestURI());
+    init(exchange);
+    MdLogger.trace(getClass().getSimpleName() + ":" + request.getPath());
 
     // method check
-    if (!isPost(exchange)) {
+    if (!request.isPost()) {
       // method not allowed
-      sendOther(exchange, MdApiStatus.METHOD_NOT_ALLOWED);
+      sendOther(MdApiStatus.METHOD_NOT_ALLOWED);
       return;
     }
 
     // get mode
-    MdMode mdMode = getMode(exchange);
-
-    // get execution id
-    List<String> executionIds = exchange.getRequestHeaders().get(HEADER_EXECUTION_ID);
-    if (MdUtils.isNullOrEmpty(executionIds) || executionIds.get(0).equals("")) {
-      // bad request
-      sendOther(exchange, MdApiStatus.BAD_REQUEST);
+    MdMode mdMode = getMode();
+    if (mdMode == null) {
+      // not found
+      sendOther(MdApiStatus.NOT_FOUND);
       return;
     }
-    String executionId = executionIds.get(0);
+
+    // get execution id
+    String executionId = request.getHeader(HEADER_EXECUTION_ID);
+    if (MdUtils.isNullOrEmpty(executionId)) {
+      // bad request
+      sendOther(MdApiStatus.BAD_REQUEST);
+      return;
+    }
 
     // select
     try (MdSqliteConnection con = new MdSqliteConnection()) {
@@ -59,7 +64,7 @@ public class MdApiEndpointCheck extends MdApiEndpointAbstract {
       List<MdDbRecord> records = con.getRecords(sql);
       if (records.isEmpty()) {
         // conflict
-        sendOther(exchange, MdApiStatus.CONFLICT);
+        sendOther(MdApiStatus.CONFLICT);
         return;
       }
       String mode = records.get(0).get("mode");
@@ -67,22 +72,22 @@ public class MdApiEndpointCheck extends MdApiEndpointAbstract {
       String output = records.get(0).get("output");
       if (!mode.equals(mdMode.getMode())) {
         // conflict
-        sendOther(exchange, MdApiStatus.CONFLICT);
+        sendOther(MdApiStatus.CONFLICT);
         return;
       }
 
       if (state.equals(MdApiState.RESERVED.getState()) || state.equals(MdApiState.PROCESSING.getState())) {
         // no content
-        sendProcessing(exchange, executionId);
+        sendProcessing(executionId);
         return;
       } else if (state.equals(MdApiState.COMPLETE.getState()) && output != null) {
         // ok
         if (mdMode == MdMode.DIFF) {
-          sendComplete(exchange, MdJson.toObject(output, MdOutputDiff.class));
+          sendComplete(MdJson.toObject(output, MdOutputDiff.class));
         } else if (mdMode == MdMode.SYNC) {
-          sendComplete(exchange, MdJson.toObject(output, MdOutputSync.class));
+          sendComplete(MdJson.toObject(output, MdOutputSync.class));
         } else if (mdMode == MdMode.MAINTENANCE) {
-          sendComplete(exchange, MdJson.toObject(output, MdOutputMaintenance.class));
+          sendComplete(MdJson.toObject(output, MdOutputMaintenance.class));
         }
         return;
       }
@@ -95,7 +100,7 @@ public class MdApiEndpointCheck extends MdApiEndpointAbstract {
     }
 
     // error
-    sendOther(exchange, MdApiStatus.INTERNAL_SERVER_ERROR);
+    sendOther(MdApiStatus.INTERNAL_SERVER_ERROR);
     return;
   }
 }

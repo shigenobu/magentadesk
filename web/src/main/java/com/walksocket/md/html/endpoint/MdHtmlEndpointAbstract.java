@@ -4,8 +4,10 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdTemplate;
+import com.walksocket.md.MdUtils;
+import com.walksocket.md.server.MdServerRequest;
+import com.walksocket.md.server.MdServerResponse;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -15,49 +17,56 @@ import java.nio.charset.StandardCharsets;
  */
 abstract public class MdHtmlEndpointAbstract implements HttpHandler {
 
-  protected void renderWithLayout(HttpExchange exchange, String path) throws IOException {
-//    MdTemplate template = new MdTemplate(path);
-    MdTemplate template = new MdTemplate("/home/furuta/02-development/idea/magentadesk/web/src/main/resources", path);
-    String html = template.render();
+  private static String basePath;
 
-//    MdTemplate layout = new MdTemplate("html/layout.vm");
-    MdTemplate layout = new MdTemplate("/home/furuta/02-development/idea/magentadesk/web/src/main/resources", "html/layout.vm");
-    layout.assign("content", html);
-
-    render(exchange, 200, layout.render());
+  public static void setBasePath(String basePath) {
+    MdHtmlEndpointAbstract.basePath = basePath;
   }
 
-  protected void renderOk(HttpExchange exchange, String data) throws IOException {
-    render(exchange, 200, data);
+  protected MdTemplate createTemplate(String path) {
+    if (MdUtils.isNullOrEmpty(basePath)) {
+      return new MdTemplate(path);
+    }
+    return new MdTemplate(basePath, path);
   }
 
-  protected void renderNotFound(HttpExchange exchange) throws IOException {
+  /**
+   * request.
+   */
+  protected MdServerRequest request;
+
+  /**
+   * response.
+   */
+  protected MdServerResponse response;
+
+  /**
+   * init.
+   * @param exchange exchange
+   */
+  protected void init(HttpExchange exchange) {
+    request = new MdServerRequest(exchange);
+    response = new MdServerResponse(exchange);
+  }
+
+  protected void render(MdTemplate template) throws IOException {
+    sendResponse(200, template.render());
+  }
+
+  protected void renderWithLayout(MdTemplate template) throws IOException {
+    MdTemplate layout = createTemplate("html/layout.vm");
+    layout.assign("content", template.render());
+    sendResponse(200, layout.render());
+  }
+
+  protected void renderNotFound() throws IOException {
     String data = "<h1>404 Not Found</h1>";
-    render(exchange, 404, data);
+    sendResponse(404, data);
   }
 
-  private void render(HttpExchange exchange, int status, String data) throws IOException {
-    int len = data.getBytes(StandardCharsets.UTF_8).length;
-    exchange.getResponseHeaders().set("Content-Length", String.valueOf(len));
-    exchange.getResponseHeaders().set("Content-Type", "text/html");
-    exchange.getResponseHeaders().set("Connection", "close");
-
-    if (!data.equals("")) {
-      exchange.sendResponseHeaders(status, len);
-    } else {
-      exchange.sendResponseHeaders(status, -1);
-    }
-
-    MdLogger.trace(String.format("%s", status));
-    MdLogger.trace(String.format("Content-Length: %s", len));
-    MdLogger.trace(String.format("Content-Type: %s", "text/html"));
-    MdLogger.trace(String.format("Connection: %s", "close"));
-
-    OutputStream os = exchange.getResponseBody();
-    if (!data.equals("")) {
-      MdLogger.trace(data);
-      os.write(data.getBytes(StandardCharsets.UTF_8));
-    }
-    os.close();
+  private void sendResponse(int status, String data) throws IOException {
+    response.setStatus(status);
+    response.setContentType("text/html");
+    response.send(data);
   }
 }

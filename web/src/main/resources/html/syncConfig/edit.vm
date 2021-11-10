@@ -7,18 +7,25 @@
         <table class="input">
             <tr>
                 <td>syncConfigId</td>
-                <td></td>
+                <td>
+                    <div>
+                        <p>${record.getOrEmpty("syncConfigId")}</p>
+                        #if(!$record.getOrEmpty("syncConfigId").equals(""))
+                            <input type="hidden" name="syncConfigId" value="${record.get("syncConfigId")}" />
+                        #end
+                    </div>
+                </td>
             </tr>
             <tr>
                 <td>title</td>
                 <td>
-                    <div><input type="text"></div>
+                    <div><input type="text" name="title" value="${record.getOrEmpty("title")}"></div>
                 </td>
             </tr>
             <tr>
                 <td>explanation</td>
                 <td>
-                    <div><textarea></textarea></div>
+                    <div><textarea name="explanation">${MdTemplateUtils.nonEscape($record.getOrEmpty("explanation"))}</textarea></div>
                 </td>
             </tr>
             <tr>
