@@ -7,16 +7,18 @@ import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MdServerRequest {
 
   private HttpExchange exchange;
 
   private Map<String, List<String>> headers;
+
+  /**
+   * lower headers.
+   */
+  private Map<String, List<String>> lowerHeaders = new LinkedHashMap<>();
 
   private Map<String, List<String>> queryParams;
 
@@ -27,7 +29,7 @@ public class MdServerRequest {
   }
 
   private void parseHeader() {
-    if (!MdUtils.isNullOrEmpty(headers)) {
+    if (headers != null) {
       return;
     }
 
@@ -37,27 +39,31 @@ public class MdServerRequest {
       return;
     }
     for (Map.Entry<String, List<String>> pair : pairs.entrySet()) {
-      queryParams.put(pair.getKey(), pair.getValue());
+      headers.put(pair.getKey(), pair.getValue());
+      lowerHeaders.put(pair.getKey().toLowerCase(Locale.ROOT), pair.getValue());
     }
   }
 
   private void parseQuery() {
-    if (!MdUtils.isNullOrEmpty(queryParams)) {
+    if (queryParams != null) {
       return;
     }
 
     queryParams = new HashMap<>();
-    String[] pairs = exchange.getRequestURI().getRawQuery().split("&");
-    if (MdUtils.isNullOrEmpty(pairs)) {
+    if (MdUtils.isNullOrEmpty(exchange.getRequestURI().getRawQuery())) {
       return;
     }
+    String[] pairs = exchange.getRequestURI().getRawQuery().split("&");
     for (String pair : pairs) {
       String[] kv = pair.split("=");
       if (MdUtils.isNullOrEmpty(kv)) {
         continue;
       }
       String k = kv[0];
-      String v = kv[1];
+      String v = "";
+      if (kv.length > 1) {
+        v = kv[1];
+      }
 
       if (!queryParams.containsKey(k)) {
         queryParams.put(k, new ArrayList<>());
@@ -71,11 +77,11 @@ public class MdServerRequest {
       return;
     }
 
-    queryParams = new HashMap<>();
-    String[] pairs = new String[0];
+    bodyParams = new HashMap<>();
+    String[] pairs = null;
     try {
       pairs = MdFile.readString(exchange.getRequestBody()).split("&");
-    } catch (IOException e) {
+    } catch (Exception e) {
       MdLogger.error(e);
     }
     if (MdUtils.isNullOrEmpty(pairs)) {
@@ -133,27 +139,28 @@ public class MdServerRequest {
   }
 
   public String getHeader(String name) {
-    parseHeader();
-    if (!headers.containsKey(name)) {
+    List<String> values = getHeaders(name);
+    if (MdUtils.isNullOrEmpty(values)) {
       return "";
     }
-    return headers.get(name).get(0);
+    return values.get(0);
   }
 
   public List<String> getHeaders(String name) {
-    parseQuery();
-    if (!headers.containsKey(name)) {
+    parseHeader();
+    name = name.toLowerCase(Locale.ROOT); // to lower
+    if (!lowerHeaders.containsKey(name)) {
       return new ArrayList<>();
     }
-    return headers.get(name);
+    return lowerHeaders.get(name);
   }
 
   public String getQueryParam(String name) {
-    parseQuery();
-    if (!queryParams.containsKey(name)) {
+    List<String> values = getQueryParams(name);
+    if (MdUtils.isNullOrEmpty(values)) {
       return "";
     }
-    return queryParams.get(name).get(0);
+    return values.get(0);
   }
 
   public List<String> getQueryParams(String name) {
@@ -165,11 +172,11 @@ public class MdServerRequest {
   }
 
   public String getBodyParam(String name) {
-    parseBody();
-    if (!bodyParams.containsKey(name)) {
+    List<String> values = getBodyParams(name);
+    if (MdUtils.isNullOrEmpty(values)) {
       return "";
     }
-    return bodyParams.get(name).get(0);
+    return values.get(0);
   }
 
   public List<String> getBodyParams(String name) {

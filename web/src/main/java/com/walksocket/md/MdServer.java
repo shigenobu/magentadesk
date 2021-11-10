@@ -89,7 +89,7 @@ public class MdServer implements AutoCloseable {
     serviceMessageReserved = Executors.newSingleThreadScheduledExecutor();
     serviceMessageReserved.scheduleAtFixedRate(
         new MdApiServiceReserved(queue),
-        0,
+        5,
         5,
         TimeUnit.SECONDS);
 
@@ -97,7 +97,7 @@ public class MdServer implements AutoCloseable {
     serviceMessageProcessing = Executors.newSingleThreadScheduledExecutor();
     serviceMessageProcessing.scheduleAtFixedRate(
         new MdApiServiceProcessing(queue),
-        0,
+        5,
         5,
         TimeUnit.SECONDS);
 

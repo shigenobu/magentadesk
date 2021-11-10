@@ -56,6 +56,7 @@ public class MdLogger {
     if (writer != null) {
       writer.close();
     }
+    writer = null;
   }
 
   /**

@@ -70,16 +70,17 @@ public class MdServerResponse {
       setContentLength(len);
     }
 
+    // header
+    for (Map.Entry<String, String> entry : headers.entrySet()) {
+      exchange.getResponseHeaders().set(entry.getKey(), entry.getValue());
+      MdLogger.trace(String.format("%s: %s", entry.getKey(), entry.getValue()));
+    }
+
     // status
     if (len > 0) {
       exchange.sendResponseHeaders(status, len);
     } else {
       exchange.sendResponseHeaders(status, -1);
-    }
-
-    // header
-    for (Map.Entry<String, String> entry : headers.entrySet()) {
-      exchange.getRequestHeaders().set(entry.getKey(), entry.getValue());
     }
 
     // body
