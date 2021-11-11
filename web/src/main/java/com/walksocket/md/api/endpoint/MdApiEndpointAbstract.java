@@ -44,17 +44,6 @@ abstract public class MdApiEndpointAbstract extends MdEndpointAbstract {
     }
   }
 
-  @Override
-  public void last(MdServerRequest request, MdServerResponse response) {
-    try {
-      if (!response.isSentResponse()) {
-        sendOther(response, MdApiStatus.INTERNAL_SERVER_ERROR);
-      }
-    } catch (IOException e) {
-      MdLogger.error(e);
-    }
-  }
-
   /**
    * send reserved.
    * @throws IOException error
@@ -118,7 +107,7 @@ abstract public class MdApiEndpointAbstract extends MdEndpointAbstract {
     }
     response.setStatus(status.getStatus());
     response.setContentType("application/json; encoding=UTF8");
-    response.send(json);
+    response.setBody(json);
   }
 
   /**

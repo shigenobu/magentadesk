@@ -1,47 +1,48 @@
 package com.walksocket.md.html.endpoint;
 
-import com.sun.net.httpserver.HttpExchange;
-import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdTemplate;
+import com.walksocket.md.html.MdHtmlStatus;
+import com.walksocket.md.server.MdServerRequest;
+import com.walksocket.md.server.MdServerResponse;
+import com.walksocket.md.sqlite.MdSqliteConnection;
 
 import java.io.IOException;
 
+/**
+ * html endpoint project.
+ */
 public class MdHtmlEndpointProject extends MdHtmlEndpointAbstract {
-  @Override
-  public void handle(HttpExchange exchange) throws IOException {
-    init(exchange);
-    MdLogger.trace(getClass().getSimpleName() + ":" + request.getPath());
 
+  @Override
+  public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws Exception {
     String path = request.getPath();
     if (path.equals("/project/list/")) {
-      list();
+      list(request, response, con);
       return;
     } else if (path.equals("/project/edit/")) {
-      edit();
+      edit(request, response, con);
       return;
     } else if (path.equals("/project/save/")) {
 
     } else if (path.equals("/project/remove/")) {
 
-    } else if (path.equals("/project/preset/")) {
-      preset();
-      return;
     }
-    renderNotFound();
+    renderOtherWithLayout(response, MdHtmlStatus.NOT_FOUND);
   }
 
-  private void list() throws IOException {
+  private void list(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws IOException {
+    // template
     MdTemplate template = createTemplate("html/project/list.vm");
-    renderWithLayout(template);
+
+    // render
+    renderOkWithLayout(response, template);
   }
 
-  private void edit() throws IOException {
+  private void edit(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws IOException {
+    // template
     MdTemplate template = createTemplate("html/project/edit.vm");
-    renderWithLayout(template);
-  }
 
-  private void preset() throws IOException {
-    MdTemplate template = createTemplate("html/project/preset.vm");
-    renderWithLayout(template);
+    // render
+    renderOkWithLayout(response, template);
   }
 }

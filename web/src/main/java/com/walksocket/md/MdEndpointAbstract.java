@@ -23,14 +23,8 @@ abstract public class MdEndpointAbstract implements HttpHandler {
       // begin
       con.begin();
 
-      // pre action
-      preAction(request, response, con);
-
       // action
       action(request, response, con);
-
-      // post action
-      postAction(request, response, con);
 
       // commit
       con.commit();
@@ -42,18 +36,8 @@ abstract public class MdEndpointAbstract implements HttpHandler {
       error(request, response);
     }
 
-    // last
-    last(request, response);
-  }
-
-  /**
-   * preAction.
-   * @param request request
-   * @param response response
-   * @param con sqlite connection
-   * @throws Exception error
-   */
-  public void preAction(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) {
+    // send response
+    response.send();
   }
 
   /**
@@ -66,26 +50,9 @@ abstract public class MdEndpointAbstract implements HttpHandler {
   abstract public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws Exception;
 
   /**
-   * postAction.
-   * @param request request
-   * @param response response
-   * @param con sqlite connection
-   * @throws Exception error
-   */
-  public void postAction(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) {
-  }
-
-  /**
    * error.
    * @param request request
    * @param response response
    */
   abstract public void error(MdServerRequest request, MdServerResponse response);
-
-  /**
-   * last.
-   * @param request request
-   * @param response response
-   */
-  abstract public void last(MdServerRequest request, MdServerResponse response);
 }

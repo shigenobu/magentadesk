@@ -1,13 +1,15 @@
 package com.walksocket.md.input.member;
 
 import com.google.gson.annotations.Expose;
+import com.walksocket.md.MdUtils;
+import com.walksocket.md.MdValue;
 
 import java.util.List;
 
 /**
  * input http
  */
-public class MdInputMemberHttp {
+public class MdInputMemberHttp extends MdValue {
 
   /**
    * url.
@@ -37,5 +39,22 @@ public class MdInputMemberHttp {
     this.url = url;
     this.timeout = timeout;
     this.successStatusList = successStatusList;
+  }
+
+  /**
+   * is valid.
+   * @return if valid, return true
+   */
+  public boolean isValid() {
+    if (MdUtils.isNullOrEmpty(url) || !url.startsWith("http")) {
+      return false;
+    }
+    if (timeout <= 0) {
+      return false;
+    }
+    if (MdUtils.isNullOrEmpty(successStatusList)) {
+      return false;
+    }
+    return true;
   }
 }

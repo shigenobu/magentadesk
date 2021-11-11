@@ -111,6 +111,12 @@ table.input ul {
     margin: 2px;
     padding: 2px;
 }
+table.input ol {
+    border: #82878c 1px dashed;
+    list-style-type: none;
+    margin: 2px;
+    padding: 2px;
+}
 @media screen and (min-width: 960px) {
     table.input tbody td:nth-child(1) {
         min-width: 200px;

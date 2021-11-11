@@ -1,5 +1,5 @@
-/* add */
-a.btn-add, input.btn-add {
+/* insert */
+a.btn-insert, input.btn-insert {
     display: inline-block;
     max-width: 180px;
     text-align: left;
@@ -14,7 +14,7 @@ a.btn-add, input.btn-add {
     transition: .4s;
     cursor: pointer;
 }
-a.btn-add:hover, input.btn-add:hover {
+a.btn-insert:hover, input.btn-insert:hover {
     background-color: brown;
     border-color: brown;
     color: #FFF;
@@ -108,8 +108,8 @@ a.btn-back:hover {
     color: #FFF;
 }
 
-/* remove */
-a.btn-remove {
+/* delete */
+a.btn-delete {
     display: inline-block;
     max-width: 180px;
     text-align: left;
@@ -124,7 +124,7 @@ a.btn-remove {
     transition: .4s;
     cursor: pointer;
 }
-a.btn-remove:hover {
+a.btn-delete:hover {
     background-color: #ce4a9c;
     border-color: #ce4a9c;
     color: #FFF;
@@ -174,8 +174,8 @@ a.btn-execute:hover {
     color: #FFF;
 }
 
-/* save */
-input.btn-save {
+/* update */
+input.btn-update {
     display: inline-block;
     max-width: 180px;
     text-align: left;
@@ -189,7 +189,7 @@ input.btn-save {
     border-radius: 4px;
     transition: .4s;
 }
-input.btn-save:hover {
+input.btn-update:hover {
     background-color: navy;
     border-color: navy;
     color: #FFF;

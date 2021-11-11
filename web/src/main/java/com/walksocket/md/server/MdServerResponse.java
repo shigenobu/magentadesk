@@ -28,6 +28,11 @@ public class MdServerResponse {
   private Map<String, String> headers = new HashMap<>();
 
   /**
+   * body.
+   */
+  private byte[] body = new byte[0];
+
+  /**
    * sent response.
    */
   private boolean sentResponse = false;
@@ -97,24 +102,38 @@ public class MdServerResponse {
   }
 
   /**
-   * send.
+   * set body.
    * @param body body string
-   * @throws IOException error
    */
-  public void send(String body) throws IOException {
-    if (MdUtils.isNullOrEmpty(body)) {
-      send(new byte[0]);
-    } else {
-      send(body.getBytes(StandardCharsets.UTF_8));
-    }
+  public void setBody(String body) {
+    this.body = body.getBytes(StandardCharsets.UTF_8);
+  }
+
+  /**
+   * set body.
+   * @param body body bytes
+   */
+  public void setBody(byte[] body) {
+    this.body = body;
+  }
+
+  /**
+   * get body
+   * @return body bytes.
+   */
+  public byte[] getBody() {
+    return body;
   }
 
   /**
    * send.
-   * @param body body bytes
    * @throws IOException error
    */
-  public void send(byte[] body) throws IOException {
+  public void send() throws IOException {
+    if (sentResponse) {
+      return;
+    }
+
     // len
     int len = 0;
     if (!MdUtils.isNullOrEmpty(body)) {
@@ -125,7 +144,6 @@ public class MdServerResponse {
     // header
     for (Map.Entry<String, String> entry : headers.entrySet()) {
       exchange.getResponseHeaders().set(entry.getKey(), entry.getValue());
-      MdLogger.trace(String.format("%s: %s", entry.getKey(), entry.getValue()));
     }
 
     // status

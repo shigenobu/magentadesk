@@ -1,23 +1,27 @@
 package com.walksocket.md.html.endpoint;
 
-import com.sun.net.httpserver.HttpExchange;
 import com.walksocket.md.MdFile;
 import com.walksocket.md.MdLogger;
+import com.walksocket.md.MdUtils;
+import com.walksocket.md.html.MdHtmlStatus;
 import com.walksocket.md.server.MdServeUtils;
+import com.walksocket.md.server.MdServerRequest;
+import com.walksocket.md.server.MdServerResponse;
+import com.walksocket.md.sqlite.MdSqliteConnection;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 /**
- * html endpoint asset.
+ * html endpoint asset or favicon.ico.
  */
 public class MdHtmlEndpointAsset extends MdHtmlEndpointAbstract {
 
   @Override
-  public void handle(HttpExchange exchange) throws IOException {
-    init(exchange);
-    MdLogger.trace(getClass().getSimpleName() + ":" + request.getPath());
-
-    int status = 200;
+  public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws Exception {
+    MdHtmlStatus status = MdHtmlStatus.OK;
     byte[] data = null;
     String path = request.getPath();
 
@@ -25,16 +29,26 @@ public class MdHtmlEndpointAsset extends MdHtmlEndpointAbstract {
     if (path.equals("/favicon.ico")) {
       assetPath = "asset/favicon.ico";
     }
-    try (InputStream in = MdHtmlEndpointAsset.class.getClassLoader().getResourceAsStream(assetPath)) {
-      data = MdFile.readByteArray(in);
-    } catch (FileNotFoundException e) {
-      MdLogger.error(e);
-      status = 404;
+    if (MdUtils.isNullOrEmpty(getBasePath())) {
+      try (InputStream in = MdHtmlEndpointAsset.class.getClassLoader().getResourceAsStream(assetPath)) {
+        data = MdFile.readByteArray(in);
+      } catch (FileNotFoundException e) {
+        MdLogger.error(e);
+        status = MdHtmlStatus.NOT_FOUND;
+      }
+    } else {
+      try (InputStream in = new FileInputStream(new File(getBasePath(), assetPath))) {
+        data = MdFile.readByteArray(in);
+      } catch (FileNotFoundException e) {
+        MdLogger.error(e);
+        status = MdHtmlStatus.NOT_FOUND;
+      }
     }
 
-    response.setStatus(status);
+    response.setStatus(status.getStatus());
     response.setContentType(MdServeUtils.getContentType(MdServeUtils.getExtension(assetPath)));
     response.setCacheControl("public, max-age=600");
-    response.send(data);
+    response.setBody(data);
+    response.send();
   }
 }

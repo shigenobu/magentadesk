@@ -140,6 +140,9 @@ public class MdExecuteSync extends MdExecuteAbstract {
     // -----
     // execute before commit commands
     for (MdInputMemberCommand cmd : inputSync.commandsBeforeCommit) {
+      if (!cmd.isValid()) {
+        continue;
+      }
       MdBashCommand command = new MdBashCommand(cmd.command, cmd.timeout);
       command.setStdin(stdin);
       MdBashResult result = MdBash.exec(command);
@@ -155,6 +158,9 @@ public class MdExecuteSync extends MdExecuteAbstract {
 
     // execute before commit http callback
     for (MdInputMemberHttp http : inputSync.httpCallbackBeforeCommit) {
+      if (!http.isValid()) {
+        continue;
+      }
       MdHttpClient client = new MdHttpClient(http.url, http.timeout);
       MdHttpClient.MdHttpClientResponse httpResponse = client.doPost(requestJson);
       if (httpResponse != null) {
@@ -176,6 +182,9 @@ public class MdExecuteSync extends MdExecuteAbstract {
     // -----
     // execute after commit commands
     for (MdInputMemberCommand cmd : inputSync.commandsAfterCommit) {
+      if (!cmd.isValid()) {
+        continue;
+      }
       MdBashCommand command = new MdBashCommand(cmd.command, cmd.timeout);
       command.setStdin(stdin);
       MdBashResult result = MdBash.exec(command);
@@ -188,6 +197,9 @@ public class MdExecuteSync extends MdExecuteAbstract {
 
     // execute after commit http callback
     for (MdInputMemberHttp http : inputSync.httpCallbackAfterCommit) {
+      if (!http.isValid()) {
+        continue;
+      }
       MdHttpClient client = new MdHttpClient(http.url, http.timeout);
       MdHttpClient.MdHttpClientResponse httpResponse = client.doPost(requestJson);
       if (httpResponse != null) {

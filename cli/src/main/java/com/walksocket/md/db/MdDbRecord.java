@@ -11,6 +11,14 @@ import java.util.Map;
 public class MdDbRecord {
 
   /**
+   * create empty record.
+   * @return db record
+   */
+  public static MdDbRecord createEmptyRecord() {
+    return new MdDbRecord();
+  }
+
+  /**
    * params.
    */
   private Map<String, String> params = new LinkedHashMap<>();
@@ -18,7 +26,7 @@ public class MdDbRecord {
   /**
    * constructor.
    */
-  public MdDbRecord() {}
+  private MdDbRecord() {}
 
   /**
    * constructor for record.

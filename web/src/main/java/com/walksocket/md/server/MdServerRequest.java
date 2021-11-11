@@ -81,7 +81,7 @@ public class MdServerRequest {
       if (MdUtils.isNullOrEmpty(kv)) {
         continue;
       }
-      String k = kv[0];
+      String k = MdServerCodec.urlDecode(kv[0]);
       String v = "";
       if (kv.length > 1) {
         v = kv[1];
@@ -98,7 +98,7 @@ public class MdServerRequest {
    * parse body.
    */
   private void parseBody() {
-    if (!MdUtils.isNullOrEmpty(bodyParams)) {
+    if (bodyParams != null) {
       return;
     }
 
@@ -117,8 +117,11 @@ public class MdServerRequest {
       if (MdUtils.isNullOrEmpty(kv)) {
         continue;
       }
-      String k = kv[0];
-      String v = kv[1];
+      String k = MdServerCodec.urlDecode(kv[0]);
+      String v = "";
+      if (kv.length > 1) {
+        v = kv[1];
+      }
 
       if (!bodyParams.containsKey(k)) {
         bodyParams.put(k, new ArrayList<>());

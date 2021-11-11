@@ -1,18 +1,18 @@
 package com.walksocket.md.html.endpoint;
 
-import com.sun.net.httpserver.HttpExchange;
-import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdTemplate;
+import com.walksocket.md.server.MdServerRequest;
+import com.walksocket.md.server.MdServerResponse;
+import com.walksocket.md.sqlite.MdSqliteConnection;
 
-import java.io.IOException;
-
+/**
+ * html endpoint index.
+ */
 public class MdHtmlEndpointIndex extends MdHtmlEndpointAbstract {
-  @Override
-  public void handle(HttpExchange exchange) throws IOException {
-    init(exchange);
-    MdLogger.trace(getClass().getSimpleName() + ":" + request.getPath());
 
+  @Override
+  public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws Exception {
     MdTemplate template = createTemplate("html/index.vm");
-    renderWithLayout(template);
+    renderOkWithLayout(response, template);
   }
 }

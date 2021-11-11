@@ -1,13 +1,15 @@
 package com.walksocket.md.input.member;
 
 import com.google.gson.annotations.Expose;
+import com.walksocket.md.MdUtils;
+import com.walksocket.md.MdValue;
 
 import java.util.List;
 
 /**
  * input command.
  */
-public class MdInputMemberCommand {
+public class MdInputMemberCommand extends MdValue {
 
   /**
    * command.
@@ -37,5 +39,22 @@ public class MdInputMemberCommand {
     this.command = command;
     this.timeout = timeout;
     this.successCodeList = successCodeList;
+  }
+
+  /**
+   * is valid.
+   * @return if valid, return true
+   */
+  public boolean isValid() {
+    if (MdUtils.isNullOrEmpty(command)) {
+      return false;
+    }
+    if (timeout <= 0) {
+      return false;
+    }
+    if (MdUtils.isNullOrEmpty(successCodeList)) {
+      return false;
+    }
+    return true;
   }
 }

@@ -169,7 +169,7 @@ abstract public class MdDbConnection implements AutoCloseable {
   /**
    * get record.
    * @param sql sql
-   * @return record
+   * @return record or null
    * @throws SQLException sql error
    */
   public MdDbRecord getRecord(String sql) throws SQLException {
@@ -177,7 +177,7 @@ abstract public class MdDbConnection implements AutoCloseable {
     if (!MdUtils.isNullOrEmpty(records)) {
       return records.get(0);
     }
-    return new MdDbRecord();
+    return null;
   }
 
   @Override
