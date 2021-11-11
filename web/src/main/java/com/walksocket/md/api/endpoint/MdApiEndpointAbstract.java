@@ -1,13 +1,9 @@
 package com.walksocket.md.api.endpoint;
 
 import com.google.gson.annotations.Expose;
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
-import com.walksocket.md.MdEnv;
-import com.walksocket.md.MdJson;
-import com.walksocket.md.MdMode;
-import com.walksocket.md.output.MdOutputAbstract;
+import com.walksocket.md.*;
 import com.walksocket.md.api.MdApiStatus;
+import com.walksocket.md.output.MdOutputAbstract;
 import com.walksocket.md.server.MdServerRequest;
 import com.walksocket.md.server.MdServerResponse;
 
@@ -16,7 +12,7 @@ import java.io.IOException;
 /**
  * api endpoint abstract.
  */
-abstract public class MdApiEndpointAbstract implements HttpHandler {
+abstract public class MdApiEndpointAbstract extends MdEndpointAbstract {
 
   /**
    * header x-execution-id.
@@ -24,29 +20,10 @@ abstract public class MdApiEndpointAbstract implements HttpHandler {
   public final static String HEADER_EXECUTION_ID = "x-execution-id";
 
   /**
-   * request.
-   */
-  protected MdServerRequest request;
-
-  /**
-   * response.
-   */
-  protected MdServerResponse response;
-
-  /**
-   * init.
-   * @param exchange exchange
-   */
-  protected void init(HttpExchange exchange) {
-    request = new MdServerRequest(exchange);
-    response = new MdServerResponse(exchange);
-  }
-
-  /**
    * get mode
    * @return mode
    */
-  protected MdMode getMode() {
+  protected MdMode getMode(MdServerRequest request) {
     String path = request.getPath();
     if (path.contains("/" + MdMode.DIFF.getMode() + "/")) {
       return MdMode.DIFF;
@@ -58,27 +35,45 @@ abstract public class MdApiEndpointAbstract implements HttpHandler {
     return null;
   }
 
+  @Override
+  public void error(MdServerRequest request, MdServerResponse response) {
+    try {
+      sendOther(response, MdApiStatus.INTERNAL_SERVER_ERROR);
+    } catch (IOException e) {
+      MdLogger.error(e);
+    }
+  }
+
+  @Override
+  public void last(MdServerRequest request, MdServerResponse response) {
+    try {
+      if (!response.isSentResponse()) {
+        sendOther(response, MdApiStatus.INTERNAL_SERVER_ERROR);
+      }
+    } catch (IOException e) {
+      MdLogger.error(e);
+    }
+  }
+
   /**
    * send reserved.
-   * @param executionId execution id
    * @throws IOException error
    */
-  public void sendReserved(String executionId) throws IOException {
-    response.addHeader(HEADER_EXECUTION_ID, executionId);
+  public void sendReserved(MdServerResponse response) throws IOException {
     sendJson(
-        MdApiStatus.ACCEPTED.getStatus(),
+        response,
+        MdApiStatus.ACCEPTED,
         new MdApiResponseMessage(MdApiStatus.ACCEPTED));
   }
 
   /**
    * send processing.
-   * @param executionId execution id
    * @throws IOException error
    */
-  protected void sendProcessing(String executionId) throws IOException {
-    response.addHeader(HEADER_EXECUTION_ID, executionId);
+  protected void sendProcessing(MdServerResponse response) throws IOException {
     sendJson(
-        MdApiStatus.NO_CONTENT.getStatus(),
+        response,
+        MdApiStatus.NO_CONTENT,
         null);
   }
 
@@ -87,9 +82,10 @@ abstract public class MdApiEndpointAbstract implements HttpHandler {
    * @param output output
    * @throws IOException error
    */
-  protected void sendComplete(MdOutputAbstract output) throws IOException {
+  protected void sendComplete(MdServerResponse response, MdOutputAbstract output) throws IOException {
     sendJson(
-        MdApiStatus.OK.getStatus(),
+        response,
+        MdApiStatus.OK,
         output);
   }
 
@@ -98,9 +94,10 @@ abstract public class MdApiEndpointAbstract implements HttpHandler {
    * @param status status
    * @throws IOException error
    */
-  protected void sendOther(MdApiStatus status) throws IOException {
+  protected void sendOther(MdServerResponse response, MdApiStatus status) throws IOException {
     sendJson(
-        status.getStatus(),
+        response,
+        status,
         new MdApiResponseMessage(status));
   }
 
@@ -110,7 +107,7 @@ abstract public class MdApiEndpointAbstract implements HttpHandler {
    * @param obj obj
    * @throws IOException error
    */
-  private void sendJson(int status, Object obj) throws IOException {
+  private void sendJson(MdServerResponse response, MdApiStatus status, Object obj) throws IOException {
     String json = "";
     if (obj != null) {
       if (MdEnv.isPretty()) {
@@ -119,7 +116,7 @@ abstract public class MdApiEndpointAbstract implements HttpHandler {
         json = MdJson.toJsonString(obj);
       }
     }
-    response.setStatus(status);
+    response.setStatus(status.getStatus());
     response.setContentType("application/json; encoding=UTF8");
     response.send(json);
   }

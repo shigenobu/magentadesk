@@ -11,8 +11,14 @@ import java.util.*;
 
 public class MdServerRequest {
 
+  /**
+   * exchange.
+   */
   private HttpExchange exchange;
 
+  /**
+   * headers.
+   */
   private Map<String, List<String>> headers;
 
   /**
@@ -20,14 +26,27 @@ public class MdServerRequest {
    */
   private Map<String, List<String>> lowerHeaders = new LinkedHashMap<>();
 
+  /**
+   * query params.
+   */
   private Map<String, List<String>> queryParams;
 
+  /**
+   * body params.
+   */
   private Map<String, List<String>> bodyParams;
 
+  /**
+   * constructor.
+   * @param exchange exchange
+   */
   public MdServerRequest(HttpExchange exchange) {
     this.exchange = exchange;
   }
 
+  /**
+   * parse header.
+   */
   private void parseHeader() {
     if (headers != null) {
       return;
@@ -44,6 +63,9 @@ public class MdServerRequest {
     }
   }
 
+  /**
+   * parse query.
+   */
   private void parseQuery() {
     if (queryParams != null) {
       return;
@@ -72,6 +94,9 @@ public class MdServerRequest {
     }
   }
 
+  /**
+   * parse body.
+   */
   private void parseBody() {
     if (!MdUtils.isNullOrEmpty(bodyParams)) {
       return;
@@ -134,10 +159,19 @@ public class MdServerRequest {
     return exchange.getRequestMethod().equals("DELETE");
   }
 
+  /**
+   * get path.
+   * @return path
+   */
   public String getPath() {
     return exchange.getRequestURI().getPath();
   }
 
+  /**
+   * get header.
+   * @param name name
+   * @return value
+   */
   public String getHeader(String name) {
     List<String> values = getHeaders(name);
     if (MdUtils.isNullOrEmpty(values)) {
@@ -146,6 +180,11 @@ public class MdServerRequest {
     return values.get(0);
   }
 
+  /**
+   * get headers.
+   * @param name name
+   * @return values
+   */
   public List<String> getHeaders(String name) {
     parseHeader();
     name = name.toLowerCase(Locale.ROOT); // to lower
@@ -155,6 +194,11 @@ public class MdServerRequest {
     return lowerHeaders.get(name);
   }
 
+  /**
+   * get query param.
+   * @param name name
+   * @return value
+   */
   public String getQueryParam(String name) {
     List<String> values = getQueryParams(name);
     if (MdUtils.isNullOrEmpty(values)) {
@@ -163,6 +207,11 @@ public class MdServerRequest {
     return values.get(0);
   }
 
+  /**
+   * get query params.
+   * @param name name
+   * @return values
+   */
   public List<String> getQueryParams(String name) {
     parseQuery();
     if (!queryParams.containsKey(name)) {
@@ -171,6 +220,11 @@ public class MdServerRequest {
     return queryParams.get(name);
   }
 
+  /**
+   * get body param.
+   * @param name name
+   * @return value
+   */
   public String getBodyParam(String name) {
     List<String> values = getBodyParams(name);
     if (MdUtils.isNullOrEmpty(values)) {
@@ -179,6 +233,11 @@ public class MdServerRequest {
     return values.get(0);
   }
 
+  /**
+   * get body params.
+   * @param name name
+   * @return values
+   */
   public List<String> getBodyParams(String name) {
     parseBody();
     if (!bodyParams.containsKey(name)) {
@@ -187,10 +246,18 @@ public class MdServerRequest {
     return bodyParams.get(name);
   }
 
+  /**
+   * get raw query.
+   * @return raw query string
+   */
   public String getRawQuery() {
     return exchange.getRequestURI().getRawQuery();
   }
 
+  /**
+   * get raw body.
+   * @return raw body string
+   */
   public String getRawBody() {
     try {
       return MdFile.readString(exchange.getRequestBody());

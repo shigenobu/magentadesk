@@ -60,7 +60,6 @@ abstract public class MdDbConnection implements AutoCloseable {
    * @throws SQLException sql error
    */
   public void begin() throws SQLException {
-    open();
     MdLogger.sql("BEGIN");
     inTransaction = true;
   }

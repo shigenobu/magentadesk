@@ -1,7 +1,8 @@
 package com.walksocket.md.api.endpoint;
 
-import com.sun.net.httpserver.HttpExchange;
 import com.walksocket.md.*;
+import com.walksocket.md.api.MdApiState;
+import com.walksocket.md.api.MdApiStatus;
 import com.walksocket.md.exception.MdExceptionAbstract;
 import com.walksocket.md.input.MdInputAbstract;
 import com.walksocket.md.input.MdInputDiff;
@@ -11,10 +12,6 @@ import com.walksocket.md.server.MdServerRequest;
 import com.walksocket.md.server.MdServerResponse;
 import com.walksocket.md.sqlite.MdSqliteConnection;
 import com.walksocket.md.sqlite.MdSqliteUtils;
-import com.walksocket.md.api.MdApiState;
-import com.walksocket.md.api.MdApiStatus;
-
-import java.io.IOException;
 
 /**
  * api endpoint reserve.
@@ -22,22 +19,19 @@ import java.io.IOException;
 public class MdApiEndpointReserve extends MdApiEndpointAbstract {
 
   @Override
-  public void handle(HttpExchange exchange) throws IOException {
-    init(exchange);
-    MdLogger.trace(getClass().getSimpleName() + ":" + request.getPath());
-
+  public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws Exception {
     // method check
     if (!request.isPost()) {
       // method not allowed
-      sendOther(MdApiStatus.METHOD_NOT_ALLOWED);
+      sendOther(response, MdApiStatus.METHOD_NOT_ALLOWED);
       return;
     }
 
     // get mode
-    MdMode mdMode = getMode();
+    MdMode mdMode = getMode(request);
     if (mdMode == null) {
       // not found
-      sendOther(MdApiStatus.NOT_FOUND);
+      sendOther(response, MdApiStatus.NOT_FOUND);
       return;
     }
 
@@ -57,7 +51,7 @@ public class MdApiEndpointReserve extends MdApiEndpointAbstract {
     }
     if (input == null) {
       // bad request
-      sendOther(MdApiStatus.BAD_REQUEST);
+      sendOther(response, MdApiStatus.BAD_REQUEST);
       return;
     }
 
@@ -66,44 +60,29 @@ public class MdApiEndpointReserve extends MdApiEndpointAbstract {
       input.validate();
     } catch (MdExceptionAbstract me) {
       // bad request
-      sendOther(MdApiStatus.BAD_REQUEST);
+      sendOther(response, MdApiStatus.BAD_REQUEST);
       return;
     }
 
     // executionId
     String executionId = MdUtils.randomString();
 
-    // db
-    try (MdSqliteConnection con = new MdSqliteConnection()) {
-      // begin
-      con.begin();
-
-      // insert
-      String sql = String.format(
-          "INSERT INTO execution " +
-              "(executionId, mode, state, input, output, created) " +
-              "VALUES " +
-              "('%s', '%s', '%s', '%s', null, %s)",
-          MdSqliteUtils.quote(executionId),
-          MdSqliteUtils.quote(mdMode.getMode()),
-          MdSqliteUtils.quote(MdApiState.RESERVED.getState()),
-          MdSqliteUtils.quote(MdJson.toJsonString(input)),
-          MdDate.timestamp());
-      con.execute(sql);
-
-      //commit
-      con.commit();
-
-    } catch (Exception e) {
-      MdLogger.error(e);
-
-      // error
-      sendOther(MdApiStatus.INTERNAL_SERVER_ERROR);
-      return;
-    }
+    // insert
+    String sql = String.format(
+        "INSERT INTO execution " +
+            "(executionId, mode, state, input, output, created) " +
+            "VALUES " +
+            "('%s', '%s', '%s', '%s', null, %s)",
+        MdSqliteUtils.quote(executionId),
+        MdSqliteUtils.quote(mdMode.getMode()),
+        MdSqliteUtils.quote(MdApiState.RESERVED.getState()),
+        MdSqliteUtils.quote(MdJson.toJsonString(input)),
+        MdDate.timestamp());
+    con.execute(sql);
 
     // accepted
-    sendReserved(executionId);
+    response.addHeader(HEADER_EXECUTION_ID, executionId);
+    sendReserved(response);
     return;
   }
 }
