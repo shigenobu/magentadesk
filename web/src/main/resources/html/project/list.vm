@@ -2,6 +2,7 @@
     <h1>PROJECT LIST</h1>
 </div>
 
+<script src="/asset/js/json.js" type="text/javascript"></script>
 <div class="page-content">
     <div class="page-buttons">
         <a href="/project/edit/" class="btn-insert">NEW PROJECT</a>
@@ -20,6 +21,7 @@
             <td>baseDatabase</td>
             <td>compareDatabase</td>
             <td>presetIdCount</td>
+            <td>-</td>
             <td>-</td>
         </tr>
         </thead>
@@ -40,6 +42,26 @@
                 <td>${record.get("presetIdCount")}</td>
                 <td>
                     <a href="/project/preset/?projectId=${record.get("projectId")}" class="btn-preset">PRESET</a>
+                </td>
+                <td>
+                    <div class="vbox">
+                        <form method="post" action="/json/maintenance/">
+                            <input type="hidden" name="projectId" value="${record.get("projectId")}" />
+                            <input type="submit" class="btn-json" value="MOSTLY MAINTENANCE JSON" />
+                        </form>
+                    </div>
+                    <div class="vbox">
+                        <form method="post" action="/reserve/maintenance/">
+                            <input type="hidden" name="maintenance" value="on" />
+                            <input type="submit" class="btn-execute" value="GO MAINTENANCE ON" />
+                        </form>
+                    </div>
+                    <div class="vbox">
+                        <form method="post" action="/reserve/maintenance/">
+                            <input type="hidden" name="maintenance" value="off" />
+                            <input type="submit" class="btn-execute" value="GO MAINTENANCE OFF" />
+                        </form>
+                    </div>
                 </td>
             </tr>
             #end

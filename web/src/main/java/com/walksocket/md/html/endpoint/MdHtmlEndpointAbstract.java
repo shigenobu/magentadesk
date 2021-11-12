@@ -124,6 +124,17 @@ abstract public class MdHtmlEndpointAbstract extends MdEndpointAbstract {
   }
 
   /**
+   * send ok json.
+   * @param response response
+   * @param json json
+   */
+  protected void sendOkJson(MdServerResponse response, String json) {
+    response.setStatus(MdHtmlStatus.OK.getStatus());
+    response.setContentType("application/json; encoding=UTF8");
+    response.setBody(json);
+  }
+
+  /**
    * send json.
    * @param status status
    * @param obj obj

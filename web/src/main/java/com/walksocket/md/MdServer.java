@@ -126,6 +126,9 @@ public class MdServer implements AutoCloseable {
           server.createContext("/syncConfig/", new MdHtmlEndpointSyncConfig());
           server.createContext("/preset/", new MdHtmlEndpointPreset());
           server.createContext("/project/", new MdHtmlEndpointProject());
+          server.createContext("/json/", new MdHtmlEndpointJson());
+          server.createContext("/reserve/", new MdHtmlEndpointReserve());
+          server.createContext("/check/", new MdHtmlEndpointCheck());
           server.createContext("/", new MdHtmlEndpointIndex());
           // -----
 

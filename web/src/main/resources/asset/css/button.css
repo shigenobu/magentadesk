@@ -70,7 +70,7 @@ a.btn-preset {
     max-width: 180px;
     text-align: left;
     border: 2px solid forestgreen;
-    font-size: 12px;
+    font-size: 10px;
     color: forestgreen;
     background-color: white;
     text-decoration: none;
@@ -127,16 +127,15 @@ a.btn-delete {
 a.btn-delete:hover {
     background-color: #ce4a9c;
     border-color: #ce4a9c;
-    color: #FFF;
 }
 
 /* json */
-a.btn-json {
+input.btn-json {
     display: inline-block;
     max-width: 180px;
     text-align: left;
     border: 2px solid darkgray;
-    font-size: 12px;
+    font-size: 10px;
     color: darkgray;
     background-color: white;
     text-decoration: none;
@@ -146,19 +145,19 @@ a.btn-json {
     transition: .4s;
     cursor: pointer;
 }
-a.btn-json:hover {
+input.btn-json:hover {
     background-color: darkgray;
     border-color: darkgray;
     color: #FFF;
 }
 
 /* execute */
-a.btn-execute {
+a.btn-execute, input.btn-execute {
     display: inline-block;
     max-width: 180px;
     text-align: left;
     border: 2px solid #c77715;
-    font-size: 12px;
+    font-size: 10px;
     color: #c77715;
     background-color: white;
     text-decoration: none;
@@ -168,7 +167,7 @@ a.btn-execute {
     transition: .4s;
     cursor: pointer;
 }
-a.btn-execute:hover {
+a.btn-execute:hover, input.btn-execute:hover {
     background-color: #c77715;
     border-color: #c77715;
     color: #FFF;
@@ -188,6 +187,7 @@ input.btn-update {
     padding: 4px 8px;
     border-radius: 4px;
     transition: .4s;
+    cursor: pointer;
 }
 input.btn-update:hover {
     background-color: navy;

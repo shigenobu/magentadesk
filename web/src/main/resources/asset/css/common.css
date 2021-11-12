@@ -22,10 +22,25 @@ img.overlay {
     background-color: rgba(0, 0, 0, 0.4);
 }
 
+/* dialog */
+div#dialog {
+    display: none;
+}
+pre#dialog-content {
+    margin: 10px;
+    padding: 10px;
+    background-color: #dddddd;
+}
+
 /* horizontal box */
 div.hbox {
     display: inline-flex;
-    margin: 2px;
+    margin: 4px;
+}
+
+/* vertical box */
+div.vbox {
+    margin: 4px;
 }
 
 /* warning */

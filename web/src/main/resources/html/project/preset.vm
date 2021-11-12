@@ -2,12 +2,15 @@
     <h1>PROJECT PRESET</h1>
 </div>
 
+<script src="/asset/js/json.js" type="text/javascript"></script>
 <div class="page-content">
     <table class="input">
         <tr>
             <td>projectId</td>
             <td>
-                ${record.get("projectId")}
+                <div>
+                    <p>${record.get("projectId")}</p>
+                </div>
             </td>
         </tr>
         <tr>
@@ -44,11 +47,27 @@
                 <td>${r.get("diffConfigId")}:${diffTitleMap.get($r.get("diffConfigId"))}</td>
                 <td>${r.get("syncConfigId")}:${syncTitleMap.get($r.get("syncConfigId"))}</td>
                 <td>
-                    <a href="/project/diff/json/?projectId=${record.get("projectId")}&presetId=${r.get("presetId")}" class="btn-json">JSON</a>
-                    <a href="/project/diff/execute/?projectId=${record.get("projectId")}&presetId=${r.get("presetId")}" class="btn-execute">DIFF</a>
+                    <div class="vbox">
+                        <form method="post" action="/json/diff/">
+                            <input type="hidden" name="projectId" value="${record.get("projectId")}" />
+                            <input type="hidden" name="presetId" value="${r.get("presetId")}" />
+                            <input type="submit" class="btn-json" value="MOSTLY DIFF JSON" />
+                        </form>
+                    </div>
+                    <div class="vbox">
+                        <form method="post" action="/reserve/diff/">
+                            <input type="hidden" name="projectId" value="${record.get("projectId")}" />
+                            <input type="hidden" name="presetId" value="${r.get("presetId")}" />
+                            <input type="submit" class="btn-execute" value="GO DIFF" />
+                        </form>
+                    </div>
                 </td>
             </tr>
             #end
         </tbody>
     </table>
+
+    <div class="page-buttons">
+        <a href="/project/list/" class="btn-back">BACK</a>
+    </div>
 </div>

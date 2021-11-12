@@ -24,7 +24,6 @@ import java.util.List;
  */
 public class MdHtmlEndpointDiffConfig extends MdHtmlEndpointAbstract {
 
-
   @Override
   public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws Exception {
     String path = request.getPath();
