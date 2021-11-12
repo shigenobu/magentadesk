@@ -99,7 +99,7 @@ public class MdHtmlEndpointDiffConfig extends MdHtmlEndpointAbstract {
     if (!MdUtils.isNullOrEmpty(tmpDiffConfigId)) {
       diffConfigId = Integer.parseInt(tmpDiffConfigId);
 
-      String sql = String.format("SELECT * FROM diffConfig where diffConfigId = %s", diffConfigId);
+      String sql = String.format("SELECT * FROM diffConfig WHERE diffConfigId = %s", diffConfigId);
       record = con.getRecord(sql);
     }
     if (record == null) {

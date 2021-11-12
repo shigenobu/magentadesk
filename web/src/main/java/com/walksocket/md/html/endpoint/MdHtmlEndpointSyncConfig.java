@@ -95,7 +95,7 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
     if (!MdUtils.isNullOrEmpty(tmpSyncConfigId)) {
       syncConfigId = Integer.parseInt(tmpSyncConfigId);
 
-      String sql = String.format("SELECT * FROM syncConfig where syncConfigId = %s", syncConfigId);
+      String sql = String.format("SELECT * FROM syncConfig WHERE syncConfigId = %s", syncConfigId);
       record = con.getRecord(sql);
     }
     if (record == null) {

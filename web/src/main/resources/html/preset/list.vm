@@ -4,7 +4,7 @@
 
 <div class="page-content">
     <div class="page-buttons">
-        <a href="/preset/edit/" class="btn-add">NEW PRESET</a>
+        <a href="/preset/edit/" class="btn-insert">NEW PRESET</a>
     </div>
 
     <table class="list">
@@ -13,20 +13,24 @@
             <td>-</td>
             <td>presetId</td>
             <td>title</td>
+            <td>explanation</td>
             <td>diffConfigId</td>
             <td>syncConfigId</td>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>
-                <a href="/preset/edit/?presetId=1" class="btn-edit">EDIT</a>
-            </td>
-            <td>1</td>
-            <td>aaa</td>
-            <td>1</td>
-            <td>1</td>
-        </tr>
+            #foreach($record in $records)
+            <tr>
+                <td>
+                    <a href="/preset/edit/?presetId=${record.get("presetId")}" class="btn-edit">EDIT</a>
+                </td>
+                <td>${record.get("presetId")}</td>
+                <td>${record.get("title")}</td>
+                <td>${record.get("explanation")}</td>
+                <td>${record.get("diffConfigId")}:${diffTitleMap.get($record.get("diffConfigId"))}</td>
+                <td>${record.get("syncConfigId")}:${syncTitleMap.get($record.get("syncConfigId"))}</td>
+            </tr>
+            #end
         </tbody>
     </table>
 </div>
