@@ -4,7 +4,7 @@
 
 <div class="page-content">
     <div class="page-buttons">
-        <a href="/diffConfig/edit/" class="btn-add">NEW DIFF CONFIG</a>
+        <a href="/diffConfig/edit/" class="btn-insert">NEW DIFF CONFIG</a>
     </div>
 
     <table class="list">
@@ -13,16 +13,78 @@
             <td>-</td>
             <td>diffConfigId</td>
             <td>title</td>
+            <td>explanation</td>
+            <td>
+                <p>option</p>
+                <p>includeTableLikePatternsCount</p>
+            </td>
+            <td>
+                <p>option</p>
+                <p>excludeTableLikePatternsCount</p>
+            </td>
+            <td>
+                <p>option</p>
+                <p>ignoreAutoIncrement</p>
+            </td>
+            <td>
+                <p>option</p>
+                <p>ignoreComment</p>
+            </td>
+            <td>
+                <p>option</p>
+                <p>ignorePartitions</p>
+            </td>
+            <td>
+                <p>option</p>
+                <p>ignoreDefaultForSequence</p>
+            </td>
+            <td>conditionsCount</td>
+            <td>relationsCount</td>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>
-                <a href="/diffConfig/edit/?diffConfigId=1" class="btn-edit">EDIT</a>
-            </td>
-            <td>1</td>
-            <td>aaa</td>
-        </tr>
+            #foreach($record in $records)
+            <tr>
+                <td>
+                    <a href="/diffConfig/edit/?diffConfigId=${record.get("diffConfigId")}" class="btn-edit">EDIT</a>
+                </td>
+                <td>${record.get("diffConfigId")}</td>
+                <td>${record.get("title")}</td>
+                <td>${record.get("explanation")}</td>
+                <td>${record.get("includeTableLikePatternsCount")}</td>
+                <td>${record.get("excludeTableLikePatternsCount")}</td>
+                <td>
+                    #if($record.get("ignoreAutoIncrement").equals("1"))
+                        true
+                    #else
+                        false
+                    #end
+                </td>
+                <td>
+                    #if($record.get("ignoreComment").equals("1"))
+                        true
+                    #else
+                        false
+                    #end
+                </td>
+                <td>
+                    #if($record.get("ignorePartitions").equals("1"))
+                        true
+                    #else
+                        false
+                    #end
+                </td>
+                <td>
+                    #if($record.get("ignoreDefaultForSequence").equals("1"))
+                        true
+                    #else
+                        false
+                    #end
+                </td>
+                <td>${record.get("conditionsCount")}</td>
+                <td>${record.get("relationsCount")}</td>
+            </tr>
+            #end
         </tbody>
     </table>
 </div>

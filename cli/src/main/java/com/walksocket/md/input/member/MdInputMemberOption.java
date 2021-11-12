@@ -1,6 +1,7 @@
 package com.walksocket.md.input.member;
 
 import com.google.gson.annotations.Expose;
+import com.walksocket.md.MdValue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 /**
  * input option.
  */
-public class MdInputMemberOption {
+public class MdInputMemberOption extends MdValue {
 
   /**
    * include like patterns.

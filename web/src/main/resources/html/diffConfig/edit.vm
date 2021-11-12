@@ -2,108 +2,143 @@
     <h1>DIFF CONFIG EDIT</h1>
 </div>
 
+<script src="/asset/js/save.js" type="text/javascript"></script>
+<script src="/asset/js/delete.js" type="text/javascript"></script>
 <div class="page-content">
-    <form>
+    <form method="post" action="/diffConfig/save/">
         <table class="input">
             <tr>
-                <td>diffConfigId</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>title</td>
                 <td>
-                    <div><input type="text"></div>
+                    <div>diffConfigId</div>
+                </td>
+                <td>
+                    <div>
+                        <p>${record.getOrEmpty("diffConfigId")}</p>
+                        #if(!$record.getOrEmpty("diffConfigId").equals(""))
+                            <input type="hidden" name="diffConfigId" value="${record.get("diffConfigId")}" />
+                        #end
+                    </div>
                 </td>
             </tr>
             <tr>
-                <td>explanation</td>
                 <td>
-                    <div><textarea></textarea></div>
+                    <div>title <span class="warning">*required</span></div>
+                </td>
+                <td>
+                    <div><input type="text" name="title" value="${MdTemplateUtils.nonEscape($record.getOrEmpty("title"))}" required></div>
                 </td>
             </tr>
             <tr>
-                <td>includeTableLikePatterns</td>
                 <td>
-                    <div><input type="text"></div>
-                    <div><input type="text"></div>
-                    <div><input type="text"></div>
-                    <div><input type="text"></div>
-                    <div><input type="text"></div>
+                    <div>explanation</div>
+                </td>
+                <td>
+                    <div><textarea name="explanation">${MdTemplateUtils.nonEscape($record.getOrEmpty("explanation"))}</textarea></div>
                 </td>
             </tr>
             <tr>
-                <td>excludeTableLikePatterns</td>
                 <td>
-                    <div><input type="text"></div>
-                    <div><input type="text"></div>
-                    <div><input type="text"></div>
-                    <div><input type="text"></div>
-                    <div><input type="text"></div>
+                    <div>option.includeTableLikePatterns</div>
+                </td>
+                <td>
+                    #foreach($p in $option.includeTableLikePatterns)
+                        <input type="text" placeholder="m_*" name="includeTableLikePatterns[]" value="${MdTemplateUtils.nonEscape($p)}">
+                    #end
                 </td>
             </tr>
             <tr>
-                <td>ignoreAutoIncrement</td>
                 <td>
-                    <label><input type="radio">false</label>
-                    <label><input type="radio">true</label>
+                    <div>option.excludeTableLikePatterns</div>
+                </td>
+                <td>
+                    #foreach($p in $option.excludeTableLikePatterns)
+                        <input type="text" placeholder="m_admin_%" name="excludeTableLikePatterns[]" value="${MdTemplateUtils.nonEscape($p)}">
+                    #end
                 </td>
             </tr>
             <tr>
-                <td>ignoreComment</td>
                 <td>
-                    <label><input type="radio">false</label>
-                    <label><input type="radio">true</label>
+                    <div>option.ignoreAutoIncrement</div>
+                </td>
+                <td>
+                    <label><input type="radio" name="ignoreAutoIncrement" value="false" ${MdTemplateUtils.checked(false, $option.ignoreAutoIncrement)}>false</label>
+                    <label><input type="radio" name="ignoreAutoIncrement" value="true" ${MdTemplateUtils.checked(true, $option.ignoreAutoIncrement)}>true</label>
                 </td>
             </tr>
             <tr>
-                <td>ignorePartitions</td>
                 <td>
-                    <label><input type="radio">false</label>
-                    <label><input type="radio">true</label>
+                    <div>option.ignoreComment</div>
+                </td>
+                <td>
+                    <label><input type="radio" name="ignoreComment" value="false" ${MdTemplateUtils.checked(false, $option.ignoreComment)}>false</label>
+                    <label><input type="radio" name="ignoreComment" value="true" ${MdTemplateUtils.checked(true, $option.ignoreComment)}>true</label>
                 </td>
             </tr>
             <tr>
-                <td>ignoreDefaultForSequence</td>
                 <td>
-                    <label><input type="radio">false</label>
-                    <label><input type="radio">true</label>
+                    <div>option.ignorePartitions</div>
+                </td>
+                <td>
+                    <label><input type="radio" name="ignorePartitions" value="false" ${MdTemplateUtils.checked(false, $option.ignorePartitions)}>false</label>
+                    <label><input type="radio" name="ignorePartitions" value="true" ${MdTemplateUtils.checked(true, $option.ignorePartitions)}>true</label>
                 </td>
             </tr>
             <tr>
-                <td>conditions (tableName / expression)</td>
                 <td>
-                    <div><input type="text"> / <input type="text"></div>
-                    <div><input type="text"> / <input type="text"></div>
-                    <div><input type="text"> / <input type="text"></div>
-                    <div><input type="text"> / <input type="text"></div>
-                    <div><input type="text"> / <input type="text"></div>
+                    <div>option.ignoreDefaultForSequence</div>
+                </td>
+                <td>
+                    <label><input type="radio" name="ignoreDefaultForSequence" value="false" ${MdTemplateUtils.checked(false, $option.ignoreDefaultForSequence)}>false</label>
+                    <label><input type="radio" name="ignoreDefaultForSequence" value="true" ${MdTemplateUtils.checked(true, $option.ignoreDefaultForSequence)}>true</label>
                 </td>
             </tr>
             <tr>
-                <td>relation from (table / columns)</td>
                 <td>
-                    <div><input type="text"></div>
-                    <div><input type="text"></div>
-                    <div><input type="text"></div>
-                    <div><input type="text"></div>
-                    <div><input type="text"></div>
+                    <div>conditions</div>
+                    <ol>
+                        <li>tableName</li>
+                        <li>expression</li>
+                    </ol>
+                <td>
+                    #set($idx = 0)
+                    #foreach($c in $conditions)
+                        <ol>
+                            <li><input type="text" placeholder="t1" name="conditions_tableName${idx}" value="${MdTemplateUtils.nonEscape($c.tableName)}"></li>
+                            <li><input type="text" placeholder="upd_date > (now() - interval 10 day)" name="conditions_expression${idx}" value="${MdTemplateUtils.nonEscape($c.expression)}"></li>
+                        </ol>
+                        #set($idx = $idx + 1)
+                    #end
                 </td>
             </tr>
             <tr>
-                <td>relation to (table / columns)</td>
                 <td>
-                    <div><input type="text"></div>
-                    <div><input type="text"></div>
-                    <div><input type="text"></div>
-                    <div><input type="text"></div>
-                    <div><input type="text"></div>
+                    <div>relations</div>
+                    <ol>
+                        <li>from</li>
+                        <li>to</li>
+                    </ol>
+                <td>
+                    #set($idx = 0)
+                    #foreach($r in $relations)
+                        <div>
+                            <input type="text" placeholder="child.fk" class="short" name="relations_from${idx}" value="${MdTemplateUtils.nonEscape($r.from)}">
+                            =&gt;
+                            <input type="text" placeholder="parent.pk" class="short" name="relations_to${idx}" value="${MdTemplateUtils.nonEscape($r.to)}">
+                        </div>
+                        #set($idx = $idx + 1)
+                    #end
                 </td>
             </tr>
         </table>
 
         <div class="page-buttons">
-            <input type="submit" class="btn-save" value="SAVE">
-            <a class="btn-back">BACK</a>
+            <input type="hidden" name="${saveMode.getName()}" value="${saveMode.getValue()}" />
+            <input type="submit" class="${saveMode.getCss()}" value="${saveMode.getValue()}">
+            <a href="/diffConfig/list/" class="btn-back">BACK</a>
+
+            #if(!$record.getOrEmpty("diffConfigId").equals(""))
+                <a href="/diffConfig/delete/?diffConfigId=${record.get("diffConfigId")}" class="btn-delete">DELETE</a>
+            #end
         </div>
     </form>
 </div>

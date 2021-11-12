@@ -74,6 +74,9 @@ table.input label {
 table.input input[type=text] {
     min-width: 600px;
 }
+table.input input[type=text].short {
+    min-width: 150px;
+}
 table.input input[type=number] {
     min-width: 150px;
 }
@@ -123,6 +126,9 @@ table.input ol {
     }
     table.input input[type=text] {
         min-width: 800px;
+    }
+    table.input input[type=text].short {
+        min-width: 200px;
     }
     table.input input[type=number] {
         min-width: 200px;

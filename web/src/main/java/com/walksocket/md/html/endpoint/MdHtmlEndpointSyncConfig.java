@@ -109,12 +109,12 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
 
     // commandsBeforeCommit
     List<MdInputMemberCommand> commandsBeforeCommit = new ArrayList<>();
-    commandsBeforeCommit.add(0, new MdInputMemberCommand("", 30, Arrays.asList(0, 0, 0)));
-    commandsBeforeCommit.add(1, new MdInputMemberCommand("", 30, Arrays.asList(0, 0, 0)));
-    commandsBeforeCommit.add(2, new MdInputMemberCommand("", 30, Arrays.asList(0, 0, 0)));
+    for (int i = 0; i < 3; i++) {
+      commandsBeforeCommit.add(i, new MdInputMemberCommand("", 30, Arrays.asList(0, 0, 0)));
+    }
     idx = 0;
     if (!MdUtils.isNullOrEmpty(record.getOrEmpty("commandsBeforeCommit"))) {
-      for (MdInputMemberCommand c : MdJson.toObject(record.getOrEmpty("commandsBeforeCommit"), MdInputMemberCommand[].class)) {
+      for (MdInputMemberCommand c : MdJson.toObject(record.get("commandsBeforeCommit"), MdInputMemberCommand[].class)) {
         if (c != null) {
           commandsBeforeCommit.remove(idx);
           commandsBeforeCommit.add(idx, c);
@@ -126,12 +126,12 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
 
     // commandsBeforeCommit
     List<MdInputMemberCommand> commandsAfterCommit = new ArrayList<>();
-    commandsAfterCommit.add(0, new MdInputMemberCommand("", 30, Arrays.asList(0, 0, 0)));
-    commandsAfterCommit.add(1, new MdInputMemberCommand("", 30, Arrays.asList(0, 0, 0)));
-    commandsAfterCommit.add(2, new MdInputMemberCommand("", 30, Arrays.asList(0, 0, 0)));
+    for (int i = 0; i < 3; i++) {
+      commandsAfterCommit.add(i, new MdInputMemberCommand("", 30, Arrays.asList(0, 0, 0)));
+    }
     idx = 0;
     if (!MdUtils.isNullOrEmpty(record.getOrEmpty("commandsAfterCommit"))) {
-      for (MdInputMemberCommand c : MdJson.toObject(record.getOrEmpty("commandsAfterCommit"), MdInputMemberCommand[].class)) {
+      for (MdInputMemberCommand c : MdJson.toObject(record.get("commandsAfterCommit"), MdInputMemberCommand[].class)) {
         if (c != null) {
           commandsAfterCommit.remove(idx);
           commandsAfterCommit.add(idx, c);
@@ -143,12 +143,12 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
 
     // httpCallbackBeforeCommit
     List<MdInputMemberHttp> httpCallbackBeforeCommit = new ArrayList<>();
-    httpCallbackBeforeCommit.add(0, new MdInputMemberHttp("", 30, Arrays.asList(200, 200, 200)));
-    httpCallbackBeforeCommit.add(1, new MdInputMemberHttp("", 30, Arrays.asList(200, 200, 200)));
-    httpCallbackBeforeCommit.add(2, new MdInputMemberHttp("", 30, Arrays.asList(200, 200, 200)));
+    for (int i = 0; i < 3; i++) {
+      httpCallbackBeforeCommit.add(i, new MdInputMemberHttp("", 30, Arrays.asList(200, 200, 200)));
+    }
     idx = 0;
     if (!MdUtils.isNullOrEmpty(record.getOrEmpty("httpCallbackBeforeCommit"))) {
-      for (MdInputMemberHttp h : MdJson.toObject(record.getOrEmpty("httpCallbackBeforeCommit"), MdInputMemberHttp[].class)) {
+      for (MdInputMemberHttp h : MdJson.toObject(record.get("httpCallbackBeforeCommit"), MdInputMemberHttp[].class)) {
         if (h != null) {
           httpCallbackBeforeCommit.remove(idx);
           httpCallbackBeforeCommit.add(idx, h);
@@ -160,12 +160,12 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
 
     // httpCallbackAfterCommit
     List<MdInputMemberHttp> httpCallbackAfterCommit = new ArrayList<>();
-    httpCallbackAfterCommit.add(0, new MdInputMemberHttp("", 30, Arrays.asList(200, 200, 200)));
-    httpCallbackAfterCommit.add(1, new MdInputMemberHttp("", 30, Arrays.asList(200, 200, 200)));
-    httpCallbackAfterCommit.add(2, new MdInputMemberHttp("", 30, Arrays.asList(200, 200, 200)));
+    for (int i = 0; i < 3; i++) {
+      httpCallbackAfterCommit.add(i, new MdInputMemberHttp("", 30, Arrays.asList(200, 200, 200)));
+    }
     idx = 0;
     if (!MdUtils.isNullOrEmpty(record.getOrEmpty("httpCallbackAfterCommit"))) {
-      for (MdInputMemberHttp h : MdJson.toObject(record.getOrEmpty("httpCallbackAfterCommit"), MdInputMemberHttp[].class)) {
+      for (MdInputMemberHttp h : MdJson.toObject(record.get("httpCallbackAfterCommit"), MdInputMemberHttp[].class)) {
         if (h != null) {
           httpCallbackAfterCommit.remove(idx);
           httpCallbackAfterCommit.add(idx, h);
