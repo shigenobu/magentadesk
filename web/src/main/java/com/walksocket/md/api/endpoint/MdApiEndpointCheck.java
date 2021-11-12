@@ -52,15 +52,15 @@ public class MdApiEndpointCheck extends MdApiEndpointAbstract {
             "FROM execution " +
             "WHERE executionId = '%s'",
         MdSqliteUtils.quote(executionId));
-    List<MdDbRecord> records = con.getRecords(sql);
-    if (records.isEmpty()) {
+    MdDbRecord record = con.getRecord(sql);
+    if (record == null) {
       // conflict
       sendOther(response, MdApiStatus.CONFLICT);
       return;
     }
-    String mode = records.get(0).get("mode");
-    String state = records.get(0).get("state");
-    String output = records.get(0).get("output");
+    String mode = record.get("mode");
+    String state = record.get("state");
+    String output = record.get("output");
     if (!mode.equals(mdMode.getMode())) {
       // conflict
       sendOther(response, MdApiStatus.CONFLICT);
