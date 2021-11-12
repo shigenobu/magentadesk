@@ -4,7 +4,7 @@
 
 <div class="page-content">
     <div class="page-buttons">
-        <a href="/project/edit/" class="btn-add">NEW PROJECT</a>
+        <a href="/project/edit/" class="btn-insert">NEW PROJECT</a>
     </div>
 
     <table class="list">
@@ -13,30 +13,36 @@
             <td>-</td>
             <td>projectId</td>
             <td>title</td>
+            <td>explanation</td>
             <td>host</td>
             <td>port</td>
             <td>charset</td>
             <td>baseDatabase</td>
             <td>compareDatabase</td>
+            <td>presetIdCount</td>
             <td>-</td>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>
-                <a href="/project/edit/?projectId=1" class="btn-edit">EDIT</a>
-            </td>
-            <td>1</td>
-            <td>aaa</td>
-            <td>127.0.0.1</td>
-            <td>3306</td>
-            <td>utf8mb4</td>
-            <td>base</td>
-            <td>compare</td>
-            <td>
-                <a href="/project/preset/?projectId=1" class="btn-preset">PRESET</a>
-            </td>
-        </tr>
+            #foreach($record in $records)
+            <tr>
+                <td>
+                    <a href="/project/edit/?projectId=${record.get("projectId")}" class="btn-edit">EDIT</a>
+                </td>
+                <td>${record.get("projectId")}</td>
+                <td>${record.get("title")}</td>
+                <td>${record.get("explanation")}</td>
+                <td>${record.get("host")}</td>
+                <td>${record.get("port")}</td>
+                <td>${record.get("charset")}</td>
+                <td>${record.get("baseDatabase")}</td>
+                <td>${record.get("compareDatabase")}</td>
+                <td>${record.get("presetIdCount")}</td>
+                <td>
+                    <a href="/project/preset/?projectId=${record.get("projectId")}" class="btn-preset">PRESET</a>
+                </td>
+            </tr>
+            #end
         </tbody>
     </table>
 </div>

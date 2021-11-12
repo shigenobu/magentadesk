@@ -217,7 +217,7 @@ public class MdServer implements AutoCloseable {
         "    title text,\n" +
         "    explanation text,\n" +
         "    host text,\n" +
-        "    port text,\n" +
+        "    port integer,\n" +
         "    user text,\n" +
         "    pass text,\n" +
         "    charset text,\n" +

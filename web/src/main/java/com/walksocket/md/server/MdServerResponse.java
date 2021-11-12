@@ -61,6 +61,14 @@ public class MdServerResponse {
   }
 
   /**
+   * get status.
+   * @return status
+   */
+  public int getStatus() {
+    return status;
+  }
+
+  /**
    * set content type.
    * @param contentType content type
    */

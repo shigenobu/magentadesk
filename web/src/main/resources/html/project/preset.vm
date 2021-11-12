@@ -6,43 +6,49 @@
     <table class="input">
         <tr>
             <td>projectId</td>
-            <td></td>
+            <td>
+                ${record.get("projectId")}
+            </td>
         </tr>
         <tr>
             <td>title</td>
             <td>
-                <div><input type="text"></div>
+                <div>${record.get("title")}</div>
             </td>
         </tr>
         <tr>
             <td>explanation</td>
             <td>
-                <div><input type="text"></div>
+                <div>${record.get("explanation")}</div>
             </td>
         </tr>
     </table>
 
     <table class="list">
         <thead>
-            <tr>
-                <td>presetId</td>
-                <td>title</td>
-                <td>diffConfigId</td>
-                <td>syncConfigId</td>
-                <td>-</td>
-            </tr>
+        <tr>
+            <td>presetId</td>
+            <td>title</td>
+            <td>explanation</td>
+            <td>diffConfigId</td>
+            <td>syncConfigId</td>
+            <td>-</td>
+        </tr>
         </thead>
         <tbody>
+            #foreach($r in $recordPresetList)
             <tr>
-                <td>1</td>
-                <td>news</td>
-                <td>1</td>
-                <td>1</td>
+                <td>${r.get("presetId")}</td>
+                <td>${r.get("title")}</td>
+                <td>${r.get("explanation")}</td>
+                <td>${r.get("diffConfigId")}:${diffTitleMap.get($r.get("diffConfigId"))}</td>
+                <td>${r.get("syncConfigId")}:${syncTitleMap.get($r.get("syncConfigId"))}</td>
                 <td>
-                    <a class="btn-json">JSON</a>
-                    <a class="btn-execute">EXECUTE</a>
+                    <a href="/project/diff/json/?projectId=${record.get("projectId")}&presetId=${r.get("presetId")}" class="btn-json">JSON</a>
+                    <a href="/project/diff/execute/?projectId=${record.get("projectId")}&presetId=${r.get("presetId")}" class="btn-execute">DIFF</a>
                 </td>
             </tr>
+            #end
         </tbody>
     </table>
 </div>

@@ -1,5 +1,7 @@
 package com.walksocket.md.template;
 
+import java.util.List;
+
 /**
  * template utils.
  */
@@ -22,6 +24,38 @@ public class MdTemplateUtils {
   }
 
   /**
+   * selected.
+   * @param base base
+   * @param compare compare
+   * @return selected="selected" or empty
+   */
+  public static String selected(Object base, List<Object> compare) {
+    if (base == null || compare == null) {
+      return "";
+    }
+    if (compare.contains(base.toString())) {
+      return "selected=\"selected\"";
+    }
+    return "";
+  }
+
+  /**
+   * selected.
+   * @param base base
+   * @param compare compare
+   * @return selected="selected" or empty
+   */
+  public static String selected(List<Object> base, Object compare) {
+    if (base == null || compare == null) {
+      return "";
+    }
+    if (base.contains(compare.toString())) {
+      return "selected=\"selected\"";
+    }
+    return "";
+  }
+
+  /**
    * checked.
    * @param base base
    * @param compare compare
@@ -32,6 +66,38 @@ public class MdTemplateUtils {
       return "";
     }
     if (base.toString().equals(compare.toString())) {
+      return "checked=\"checked\"";
+    }
+    return "";
+  }
+
+  /**
+   * checked.
+   * @param base base
+   * @param compare compare
+   * @return checked="checked" or empty
+   */
+  public static String checked(Object base, List<Object> compare) {
+    if (base == null || compare == null) {
+      return "";
+    }
+    if (compare.contains(base.toString())) {
+      return "checked=\"checked\"";
+    }
+    return "";
+  }
+
+  /**
+   * checked.
+   * @param base base
+   * @param compare compare
+   * @return checked="checked" or empty
+   */
+  public static String checked(List<Object> base, Object compare) {
+    if (base == null || compare == null) {
+      return "";
+    }
+    if (base.contains(compare.toString())) {
       return "checked=\"checked\"";
     }
     return "";

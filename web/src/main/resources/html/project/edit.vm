@@ -2,102 +2,130 @@
     <h1>PROJECT EDIT</h1>
 </div>
 
+<script src="/asset/js/save.js" type="text/javascript"></script>
+<script src="/asset/js/delete.js" type="text/javascript"></script>
 <div class="page-content">
-    <form>
+    <form method="post" action="/project/save/">
         <table class="input">
             <tr>
-                <td>projectId</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>title</td>
                 <td>
-                    <div><input type="text"></div>
+                    <div>projectId</div>
+                </td>
+                <td>
+                    <div>
+                        <p>${record.getOrEmpty("projectId")}</p>
+                        #if(!$record.getOrEmpty("projectId").equals(""))
+                            <input type="hidden" name="projectId" value="${record.get("projectId")}" />
+                        #end
+                    </div>
                 </td>
             </tr>
             <tr>
-                <td>explanation</td>
                 <td>
-                    <div><input type="text"></div>
+                    <div>title <span class="warning">*required</span></div>
+                </td>
+                <td>
+                    <div><input type="text" name="title" value="${MdTemplateUtils.nonEscape($record.getOrEmpty("title"))}" required></div>
                 </td>
             </tr>
             <tr>
-                <td>host</td>
                 <td>
-                    <div><input type="text"></div>
+                    <div>explanation</div>
+                </td>
+                <td>
+                    <div><textarea name="explanation">${MdTemplateUtils.nonEscape($record.getOrEmpty("explanation"))}</textarea></div>
                 </td>
             </tr>
             <tr>
-                <td>port</td>
                 <td>
-                    <div><input type="text"></div>
+                    <div>host <span class="warning">*required</span></div>
+                </td>
+                <td>
+                    <div><input type="text" name="host" value="${MdTemplateUtils.nonEscape($record.getOrEmpty("host"))}" required></div>
                 </td>
             </tr>
             <tr>
-                <td>charset</td>
                 <td>
-                    <div><input type="text"></div>
+                    <div>port <span class="warning">*required</span></div>
+                </td>
+                <td>
+                    <div><input type="number" name="port" value="${record.getOrEmpty("port")}" required></div>
                 </td>
             </tr>
             <tr>
-                <td>baseDatabase</td>
                 <td>
-                    <div><input type="text"></div>
+                    <div>user <span class="warning">*required</span></div>
+                </td>
+                <td>
+                    <div><input type="text" name="user" value="${MdTemplateUtils.nonEscape($record.getOrEmpty("user"))}" required></div>
                 </td>
             </tr>
             <tr>
-                <td>compareDatabase</td>
                 <td>
-                    <div><input type="text"></div>
+                    <div>pass <span class="warning">*required</span></div>
+                </td>
+                <td>
+                    <div><input type="text" name="pass" value="${MdTemplateUtils.nonEscape($record.getOrEmpty("pass"))}" required></div>
                 </td>
             </tr>
             <tr>
-                <td>presetList</td>
                 <td>
-                    <div>
-                        <input type="number">
-                        <select></select>
-                    </div>
-                    <div>
-                        <input type="number">
-                        <select></select>
-                    </div>
-                    <div>
-                        <input type="number">
-                        <select></select>
-                    </div>
-                    <div>
-                        <input type="number">
-                        <select></select>
-                    </div>
-                    <div>
-                        <input type="number">
-                        <select></select>
-                    </div>
-                    <div>
-                        <input type="number">
-                        <select></select>
-                    </div>
-                    <div>
-                        <input type="number">
-                        <select></select>
-                    </div>
-                    <div>
-                        <input type="number">
-                        <select></select>
-                    </div>
-                    <div>
-                        <input type="number">
-                        <select></select>
-                    </div>
+                    <div>charset <span class="warning">*required</span></div>
+                </td>
+                <td>
+                    <div><input type="text" name="charset" value="${MdTemplateUtils.nonEscape($record.getOrEmpty("charset"))}" required></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>baseDatabase <span class="warning">*required</span></div>
+                </td>
+                <td>
+                    <div><input type="text" name="baseDatabase" value="${MdTemplateUtils.nonEscape($record.getOrEmpty("baseDatabase"))}" required></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>compareDatabase <span class="warning">*required</span></div>
+                </td>
+                <td>
+                    <div><input type="text" name="compareDatabase" value="${MdTemplateUtils.nonEscape($record.getOrEmpty("compareDatabase"))}" required></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>presetId</div>
+                </td>
+                <td>
+                    #foreach($no in [0..29])
+                        <div>
+                            #set($disp = $no + 1)
+                            ${disp}:
+                            <select name="presetId${no}">
+                                <option value="">---</option>
+                                #foreach($p in $presetRecords)
+                                    #if($presetIdMap.containsKey($no))
+                                        <option value="${p.get("presetId")}" ${MdTemplateUtils.selected($p.get("presetId"), $presetIdMap.get($no))}/>${p.get("presetId")}:${p.get("title")}</option>
+                                    #else
+                                        <option value="${p.get("presetId")}"/>${p.get("presetId")}:${p.get("title")}</option>
+                                    #end
+                                #end
+                            </select>
+                        </div>
+                    #end
                 </td>
             </tr>
         </table>
 
         <div class="page-buttons">
-            <input type="submit" class="btn-save" value="SAVE">
-            <a class="btn-back">BACK</a>
-            <a class="btn-remove">REMOVE</a>
+            <input type="hidden" name="${saveMode.getName()}" value="${saveMode.getValue()}" />
+            <input type="submit" class="${saveMode.getCss()}" value="${saveMode.getValue()}">
+            <a href="/project/list/" class="btn-back">BACK</a>
+
+            #if(!$record.getOrEmpty("projectId").equals(""))
+                <a href="/project/delete/?projectId=${record.get("projectId")}" class="btn-delete">DELETE</a>
+            #end
         </div>
     </form>
 </div>
+

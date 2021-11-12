@@ -26,8 +26,10 @@ abstract public class MdEndpointAbstract implements HttpHandler {
       // action
       action(request, response, con);
 
-      // commit
-      con.commit();
+      if (response.getStatus() >= 200 && response.getStatus() < 400) {
+        // commit
+        con.commit();
+      }
 
     } catch (Exception e) {
       MdLogger.error(e);
