@@ -40,7 +40,6 @@ header nav {
     margin-right: 10px;
 }
 header nav a {
-    color: white;
     font-weight: bold;
     text-decoration: none;
 }
@@ -49,6 +48,27 @@ header nav a:visited {
     font-weight: bold;
     text-decoration: none;
 }
+header nav h3 a {
+    font-size: 14px;
+}
+header nav ol {
+    margin-left: 20px;
+    list-style-type: none;
+    display: inline-flex;
+}
+header nav ol li {
+    width: 100px;
+    text-align: center;
+    margin: 0px 10px 0px 10px;
+    background-color: #82878c;
+    border-color: #82878c;
+    border-radius: 1px;
+    padding: 0px 10px 0px 10px;
+}
+header nav ol li a {
+    font-size: 10px;
+}
+
 
 /* container */
 div.container {

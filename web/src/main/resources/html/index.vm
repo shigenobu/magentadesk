@@ -1,8 +1,15 @@
 <div class="page-content">
+    <img src="/asset/img/summary.png" style="width: 600px" />
 
-    <a href="/diffConfig/list/">diffConfig</a>
-    <a href="/syncConfig/list/">syncConfig</a>
-    <a href="/preset/list/">preset</a>
-    <a href="/project/list/">project</a>
-
+    <p><span style="font-weight: bold">magentadesk-web</span> is diff, sync and maintenance easier than cli.</p>
+    <p>&nbsp;</p>
+    <ol>
+        <li>Set diff config.</li>
+        <li>Set sync config.</li>
+        <li>Set preset related with a diff and a sync config.</li>
+        <li>Set project related with some presets.</li>
+        <li>Go diff from project preset.</li>
+        <li>Go sync when diff is detected.</li>
+        <li>Go maintenance from project.</li>
+    </ol>
 </div>

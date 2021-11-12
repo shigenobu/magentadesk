@@ -18,6 +18,12 @@
 <header>
     <nav>
         <h3><a href="/">magentadesk-web</a></h3>
+        <ol>
+            <li><a href="/diffConfig/list/">diffConfig</a></li>
+            <li><a href="/syncConfig/list/">syncConfig</a></li>
+            <li><a href="/preset/list/">preset</a></li>
+            <li><a href="/project/list/">project</a></li>
+        </ol>
     </nav>
 </header>
 <div class="container">
@@ -26,7 +32,7 @@
         <img id="loading" src="/asset/img/three-dots.svg" class="overlay" />
         <div id="dialog"><pre id="dialog-content"></pre></div>
         <footer>
-            <a href="https://github.com/shigenobu/magentadesk">@magentadesk</a>
+            <a href="https://github.com/shigenobu/magentadesk" target="_blank">@magentadesk</a>
         </footer>
     </main>
 </div>
