@@ -32,6 +32,7 @@ public class MdHtmlEndpointAsset extends MdHtmlEndpointAbstract {
     if (MdUtils.isNullOrEmpty(getBasePath())) {
       try (InputStream in = MdHtmlEndpointAsset.class.getClassLoader().getResourceAsStream(assetPath)) {
         data = MdFile.readByteArray(in);
+        response.setCacheControl("public, max-age=600");
       } catch (FileNotFoundException e) {
         MdLogger.error(e);
         status = MdHtmlStatus.NOT_FOUND;
@@ -47,7 +48,6 @@ public class MdHtmlEndpointAsset extends MdHtmlEndpointAbstract {
 
     response.setStatus(status.getStatus());
     response.setContentType(MdServeUtils.getContentType(MdServeUtils.getExtension(assetPath)));
-    response.setCacheControl("public, max-age=600");
     response.setBody(data);
     response.send();
   }

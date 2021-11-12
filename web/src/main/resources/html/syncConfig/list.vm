@@ -4,7 +4,7 @@
 
 <div class="page-content">
     <div class="page-buttons">
-        <a href="/syncConfig/edit/" class="btn-add">NEW SYNC CONFIG</a>
+        <a href="/syncConfig/edit/" class="btn-insert">NEW SYNC CONFIG</a>
     </div>
 
     <table class="list">
@@ -26,6 +26,7 @@
                     <td>
                         <a href="/syncConfig/edit/?syncConfigId=${record.get("syncConfigId")}" class="btn-edit">EDIT</a>
                     </td>
+                    <td>${record.get("syncConfigId")}</td>
                     <td>${record.get("title")}</td>
                     <td>${record.get("explanation")}</td>
                     <td>${record.get("commandsBeforeCommitCount")}</td>

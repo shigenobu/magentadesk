@@ -32,3 +32,12 @@ div.hbox {
 .warning {
     color: red;
 }
+
+/* success */
+.success {
+    color: white;
+    font-weight: bold;
+    background-color: dodgerblue;
+    margin: 4px;
+    padding: 4px;
+}

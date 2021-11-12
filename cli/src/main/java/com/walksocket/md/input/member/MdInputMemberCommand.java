@@ -42,10 +42,10 @@ public class MdInputMemberCommand extends MdValue {
   }
 
   /**
-   * is valid.
+   * is valid before.
    * @return if valid, return true
    */
-  public boolean isValid() {
+  public boolean isValidBefore() {
     if (MdUtils.isNullOrEmpty(command)) {
       return false;
     }
@@ -53,6 +53,20 @@ public class MdInputMemberCommand extends MdValue {
       return false;
     }
     if (MdUtils.isNullOrEmpty(successCodeList)) {
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * is valid after.
+   * @return if valid, return true
+   */
+  public boolean isValidAfter() {
+    if (MdUtils.isNullOrEmpty(command)) {
+      return false;
+    }
+    if (timeout <= 0) {
       return false;
     }
     return true;

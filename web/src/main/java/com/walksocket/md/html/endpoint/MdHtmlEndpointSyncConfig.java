@@ -1,7 +1,6 @@
 package com.walksocket.md.html.endpoint;
 
 import com.walksocket.md.MdJson;
-import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdTemplate;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.db.MdDbRecord;
@@ -38,11 +37,20 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
       save(request, response, con);
       return;
     } else if (path.equals("/syncConfig/delete/")) {
-
+      delete(request, response, con);
+      return;
     }
     renderOtherWithLayout(response, MdHtmlStatus.NOT_FOUND);
   }
 
+  /**
+   * list.
+   * @param request request
+   * @param response response
+   * @param con sqlite connection
+   * @throws IOException error
+   * @throws SQLException sql error
+   */
   private void list(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws IOException, SQLException {
     // template
     MdTemplate template = createTemplate("html/syncConfig/list.vm");
@@ -52,10 +60,10 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
         "syncConfigId, " +
         "title, " +
         "explanation, " +
-        "json_array_length(commandsBeforeCommit) as commandsBeforeCommitCount, " +
-        "json_array_length(commandsAfterCommit) as commandsAfterCommitCount, " +
-        "json_array_length(httpCallbackBeforeCommit) as httpCallbackBeforeCommitCount, " +
-        "json_array_length(httpCallbackAfterCommit) as httpCallbackAfterCommitCount " +
+        "ifnull(json_array_length(commandsBeforeCommit), 0) as commandsBeforeCommitCount, " +
+        "ifnull(json_array_length(commandsAfterCommit), 0) as commandsAfterCommitCount, " +
+        "ifnull(json_array_length(httpCallbackBeforeCommit), 0) as httpCallbackBeforeCommitCount, " +
+        "ifnull(json_array_length(httpCallbackAfterCommit), 0) as httpCallbackAfterCommitCount " +
         "FROM syncConfig " +
         "ORDER BY syncConfigId DESC";
     List<MdDbRecord> records = con.getRecords(sql);
@@ -65,6 +73,14 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
     renderOkWithLayout(response, template);
   }
 
+  /**
+   * edit.
+   * @param request request
+   * @param response response
+   * @param con sqlite connection
+   * @throws IOException error
+   * @throws SQLException sql error
+   */
   private void edit(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws IOException, SQLException {
     // template
     MdTemplate template = createTemplate("html/syncConfig/edit.vm");
@@ -163,6 +179,14 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
     renderOkWithLayout(response, template);
   }
 
+  /**
+   * save.
+   * @param request request
+   * @param response response
+   * @param con sqlite connection
+   * @throws IOException error
+   * @throws SQLException sql error
+   */
   private void save(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws IOException, SQLException {
     // check
     if (!request.isPost()) {
@@ -179,14 +203,117 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
     }
     String explanation = request.getBodyParam("explanation");
 
+    int idx = 0;
+
+    // commandsBeforeCommit
+    List<MdInputMemberCommand> commandsBeforeCommit = new ArrayList<>();
+    idx = 0;
+    for (int i = 0; i < 3; i++) {
+      if (MdUtils.isNullOrEmpty(request.getBodyParam(String.format("commandsBeforeCommit_command%s", i)))) {
+        continue;
+      }
+      String command = request.getBodyParam(String.format("commandsBeforeCommit_command%s", i));
+      if (MdUtils.isNullOrEmpty(request.getBodyParam(String.format("commandsBeforeCommit_timout%s", i)))) {
+        continue;
+      }
+      int timeout = Integer.parseInt(request.getBodyParam(String.format("commandsBeforeCommit_timout%s", i)));
+
+      List<Integer> codeList = new ArrayList<>();
+      for (String code : request.getBodyParams(String.format("commandsBeforeCommit_successCodeList%s[]", i))) {
+        codeList.add(Integer.parseInt(code));
+      }
+      commandsBeforeCommit.add(new MdInputMemberCommand(
+          command,
+          timeout,
+          codeList
+      ));
+    }
+    String commandsBeforeCommitJson = MdJson.toJsonString(commandsBeforeCommit.toArray());
+
+    // commandsAfterCommit
+    List<MdInputMemberCommand> commandsAfterCommit = new ArrayList<>();
+    idx = 0;
+    for (int i = 0; i < 3; i++) {
+      if (MdUtils.isNullOrEmpty(request.getBodyParam(String.format("commandsAfterCommit_command%s", i)))) {
+        continue;
+      }
+      String command = request.getBodyParam(String.format("commandsAfterCommit_command%s", i));
+      if (MdUtils.isNullOrEmpty(request.getBodyParam(String.format("commandsAfterCommit_timout%s", i)))) {
+        continue;
+      }
+      int timeout = Integer.parseInt(request.getBodyParam(String.format("commandsAfterCommit_timout%s", i)));
+
+      List<Integer> codeList = new ArrayList<>();
+      commandsAfterCommit.add(new MdInputMemberCommand(
+          command,
+          timeout,
+          codeList
+      ));
+    }
+    String commandsAfterCommitJson = MdJson.toJsonString(commandsAfterCommit.toArray());
+
+    // httpCallbackBeforeCommit
+    List<MdInputMemberHttp> httpCallbackBeforeCommit = new ArrayList<>();
+    idx = 0;
+    for (int i = 0; i < 3; i++) {
+      if (MdUtils.isNullOrEmpty(request.getBodyParam(String.format("httpCallbackBeforeCommit_url%s", i)))) {
+        continue;
+      }
+      String url = request.getBodyParam(String.format("httpCallbackBeforeCommit_url%s", i));
+      if (MdUtils.isNullOrEmpty(request.getBodyParam(String.format("httpCallbackBeforeCommit_timeout%s", i)))) {
+        continue;
+      }
+      int timeout = Integer.parseInt(request.getBodyParam(String.format("httpCallbackBeforeCommit_timeout%s", i)));
+
+      List<Integer> statusList = new ArrayList<>();
+      for (String status : request.getBodyParams(String.format("httpCallbackBeforeCommit_successStatusList%s[]", i))) {
+        statusList.add(Integer.parseInt(status));
+      }
+      httpCallbackBeforeCommit.add(new MdInputMemberHttp(
+          url,
+          timeout,
+          statusList
+      ));
+    }
+    String httpCallbackBeforeCommitJson = MdJson.toJsonString(httpCallbackBeforeCommit.toArray());
+
+    // httpCallbackAfterCommit
+    List<MdInputMemberHttp> httpCallbackAfterCommit = new ArrayList<>();
+    idx = 0;
+    for (int i = 0; i < 3; i++) {
+      if (MdUtils.isNullOrEmpty(request.getBodyParam(String.format("httpCallbackAfterCommit_url%s", i)))) {
+        continue;
+      }
+      String url = request.getBodyParam(String.format("httpCallbackAfterCommit_url%s", i));
+      if (MdUtils.isNullOrEmpty(request.getBodyParam(String.format("httpCallbackAfterCommit_timeout%s", i)))) {
+        continue;
+      }
+      int timeout = Integer.parseInt(request.getBodyParam(String.format("httpCallbackAfterCommit_timeout%s", i)));
+
+      List<Integer> statusList = new ArrayList<>();
+      httpCallbackAfterCommit.add(new MdInputMemberHttp(
+          url,
+          timeout,
+          statusList
+      ));
+    }
+    String httpCallbackAfterCommitJson = MdJson.toJsonString(httpCallbackAfterCommit.toArray());
+
     int syncConfigId = 0;
     String sql = "";
     if (saveMode.equals(MdHtmlSaveMode.INSERT.getValue())) {
       // insert
       sql = String.format(
-          "INSERT INTO syncConfig (title, explanation) VALUES ('%s', '%s')",
+          "INSERT INTO syncConfig " +
+              "(title, explanation, commandsBeforeCommit, commandsAfterCommit, httpCallbackBeforeCommit, httpCallbackAfterCommit) " +
+              "VALUES " +
+              "('%s', '%s', '%s', '%s', '%s', '%s')",
           MdSqliteUtils.quote(title),
-          MdSqliteUtils.quote(explanation));
+          MdSqliteUtils.quote(explanation),
+          MdSqliteUtils.quote(commandsBeforeCommitJson),
+          MdSqliteUtils.quote(commandsAfterCommitJson),
+          MdSqliteUtils.quote(httpCallbackBeforeCommitJson),
+          MdSqliteUtils.quote(httpCallbackAfterCommitJson));
       con.execute(sql);
 
       // id
@@ -199,10 +326,68 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
       String tmpSyncConfigId = request.getBodyParam("syncConfigId");
       syncConfigId = Integer.parseInt(tmpSyncConfigId);
 
-
+      sql = String.format(
+          "UPDATE syncConfig " +
+              "SET " +
+              "title = '%s', " +
+              "explanation = '%s', " +
+              "commandsBeforeCommit = '%s', " +
+              "commandsAfterCommit = '%s', " +
+              "httpCallbackBeforeCommit = '%s', " +
+              "httpCallbackAfterCommit = '%s' " +
+              "WHERE syncConfigId = %s",
+          MdSqliteUtils.quote(title),
+          MdSqliteUtils.quote(explanation),
+          MdSqliteUtils.quote(commandsBeforeCommitJson),
+          MdSqliteUtils.quote(commandsAfterCommitJson),
+          MdSqliteUtils.quote(httpCallbackBeforeCommitJson),
+          MdSqliteUtils.quote(httpCallbackAfterCommitJson),
+          syncConfigId);
+      con.execute(sql);
     }
 
     // ok
     sendOk(response, String.format("/syncConfig/edit/?syncConfigId=%s", syncConfigId));
+  }
+
+  /**
+   * delete.
+   * @param request request
+   * @param response response
+   * @param con sqlite connection
+   * @throws IOException error
+   * @throws SQLException sql error
+   */
+  private void delete(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws IOException, SQLException {
+    // check
+    if (!request.isDelete()) {
+      sendOther(response, MdHtmlStatus.METHOD_NOT_ALLOWED);
+      return;
+    }
+
+    // param
+    String tmpSyncConfigId = request.getQueryParam("syncConfigId");
+    if (MdUtils.isNullOrEmpty(tmpSyncConfigId)) {
+      sendOther(response, MdHtmlStatus.BAD_REQUEST);
+      return;
+    }
+    int syncConfigId = Integer.parseInt(tmpSyncConfigId);
+
+    String sql = "";
+
+    // check
+    sql = String.format("SELECT presetId FROM preset WHERE syncConfigId = %s", syncConfigId);
+    MdDbRecord record = con.getRecord(sql);
+    if (record != null) {
+      sendOther(response, MdHtmlStatus.CONFLICT);
+      return;
+    }
+
+    // delete
+    sql = String.format("DELETE FROM syncConfig WHERE syncConfigId = %s", syncConfigId);
+    con.execute(sql);
+
+    // ok
+    sendOk(response, String.format("/syncConfig/list/"));
   }
 }
