@@ -24,7 +24,7 @@ table.list thead td {
     white-space: nowrap;
 }
 table.list tbody tr:hover > td {
-    background-color: darksalmon;
+    background-color: #fddfdf;
 }
 table.list tbody td {
     max-width: 180px;

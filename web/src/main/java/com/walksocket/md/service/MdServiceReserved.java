@@ -1,4 +1,4 @@
-package com.walksocket.md.api.service;
+package com.walksocket.md.service;
 
 import com.walksocket.md.MdDate;
 import com.walksocket.md.MdLogger;
@@ -7,14 +7,14 @@ import com.walksocket.md.sqlite.MdSqliteConnection;
 import com.walksocket.md.sqlite.MdSqliteUtils;
 import com.walksocket.md.api.MdApiQueue;
 import com.walksocket.md.api.MdApiQueueMessage;
-import com.walksocket.md.api.MdApiState;
+import com.walksocket.md.MdState;
 
 import java.util.List;
 
 /**
- * api service reserved.
+ * service reserved.
  */
-public class MdApiServiceReserved implements Runnable {
+public class MdServiceReserved implements Runnable {
 
   /**
    * queue.
@@ -25,7 +25,7 @@ public class MdApiServiceReserved implements Runnable {
    * constructor.
    * @param queue queue
    */
-  public MdApiServiceReserved(MdApiQueue queue) {
+  public MdServiceReserved(MdApiQueue queue) {
     this.queue = queue;
   }
 
@@ -34,7 +34,7 @@ public class MdApiServiceReserved implements Runnable {
    */
   @Override
   public void run() {
-    MdLogger.trace("start MdWebServiceReserved");
+    MdLogger.trace("start " + getClass().getSimpleName());
     try (MdSqliteConnection con = new MdSqliteConnection()) {
       String sql = "";
 
@@ -55,7 +55,7 @@ public class MdApiServiceReserved implements Runnable {
               "FROM execution " +
               "WHERE created >= %s and state = '%s' ORDER BY created asc LIMIT 1",
           MdDate.timestamp() - 60 * 60,
-          MdSqliteUtils.quote(MdApiState.RESERVED.getState())
+          MdSqliteUtils.quote(MdState.RESERVED.getState())
       );
       List<MdDbRecord> records = con.getRecords(sql);
       if (records.isEmpty()) {
@@ -72,7 +72,7 @@ public class MdApiServiceReserved implements Runnable {
           "UPDATE execution " +
               "SET state = '%s' " +
               "WHERE executionId = '%s'",
-          MdSqliteUtils.quote(MdApiState.PROCESSING.getState()),
+          MdSqliteUtils.quote(MdState.PROCESSING.getState()),
           MdSqliteUtils.quote(executionId)
       );
       con.execute(sql);

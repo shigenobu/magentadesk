@@ -79,7 +79,7 @@ div.container {
 div.container main {
     display: block;
     width: 100%;
-    margin: 2px;
+    margin: 2px 10px 2px 10px;
     word-wrap: break-word;
     white-space: normal;
 }
@@ -87,7 +87,7 @@ div.container footer {
     border-top-style: solid;
     text-align: right;
     margin-top: 10px;
-    padding: 5px;
+    padding: 5px 10px 5px 10px;
     color: white;
     border-top-color: black;
 }

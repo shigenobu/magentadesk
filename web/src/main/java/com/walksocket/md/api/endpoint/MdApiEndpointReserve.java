@@ -1,7 +1,8 @@
 package com.walksocket.md.api.endpoint;
 
-import com.walksocket.md.*;
-import com.walksocket.md.api.MdApiState;
+import com.walksocket.md.MdJson;
+import com.walksocket.md.MdLogger;
+import com.walksocket.md.MdMode;
 import com.walksocket.md.api.MdApiStatus;
 import com.walksocket.md.exception.MdExceptionAbstract;
 import com.walksocket.md.input.MdInputAbstract;
@@ -11,7 +12,6 @@ import com.walksocket.md.input.MdInputSync;
 import com.walksocket.md.server.MdServerRequest;
 import com.walksocket.md.server.MdServerResponse;
 import com.walksocket.md.sqlite.MdSqliteConnection;
-import com.walksocket.md.sqlite.MdSqliteUtils;
 
 /**
  * api endpoint reserve.
@@ -64,21 +64,8 @@ public class MdApiEndpointReserve extends MdApiEndpointAbstract {
       return;
     }
 
-    // executionId
-    String executionId = MdUtils.randomString();
-
-    // insert
-    String sql = String.format(
-        "INSERT INTO execution " +
-            "(executionId, mode, state, input, output, created) " +
-            "VALUES " +
-            "('%s', '%s', '%s', '%s', null, %s)",
-        MdSqliteUtils.quote(executionId),
-        MdSqliteUtils.quote(mdMode.getMode()),
-        MdSqliteUtils.quote(MdApiState.RESERVED.getState()),
-        MdSqliteUtils.quote(MdJson.toJsonString(input)),
-        MdDate.timestamp());
-    con.execute(sql);
+    // reserve execution
+    String executionId = reserveExecution(con, mdMode, input);
 
     // accepted
     response.addHeader(HEADER_EXECUTION_ID, executionId);

@@ -49,7 +49,7 @@
                     <div>port <span class="warning">*required</span></div>
                 </td>
                 <td>
-                    <div><input type="number" name="port" value="${record.getOrEmpty("port")}" required></div>
+                    <div><input type="number" name="port" value="${record.getOrDefault("port", 3306)}" required></div>
                 </td>
             </tr>
             <tr>
@@ -73,7 +73,13 @@
                     <div>charset <span class="warning">*required</span></div>
                 </td>
                 <td>
-                    <div><input type="text" name="charset" value="${MdTemplateUtils.nonEscape($record.getOrEmpty("charset"))}" required></div>
+                    <div>
+                        <select name="charset">
+                            #foreach($charset in ["utf8mb4", "utf8mb3", "utf8"])
+                                <option value="${charset}" ${MdTemplateUtils.selected($record.getOrEmpty("charset"), $charset)}>${charset}</option>
+                            #end
+                        </select>
+                    </div>
                 </td>
             </tr>
             <tr>

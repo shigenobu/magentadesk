@@ -2,13 +2,14 @@ package com.walksocket.md.output.member;
 
 import com.google.gson.annotations.Expose;
 import com.walksocket.md.MdInfoDiff;
+import com.walksocket.md.MdValue;
 
 import java.sql.SQLException;
 
 /**
  * output only compare.
  */
-public class MdOutputMemberExistsOnlyCompareTable {
+public class MdOutputMemberExistsOnlyCompareTable extends MdValue {
 
   /**
    * table name.

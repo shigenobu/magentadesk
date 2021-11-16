@@ -121,9 +121,9 @@
                     #set($idx = 0)
                     #foreach($r in $relations)
                         <div>
-                            <input type="text" placeholder="child.fk" class="short" name="relations_from${idx}" value="${MdTemplateUtils.nonEscape($r.from)}">
+                            <input type="text" placeholder="child.pk" class="short" name="relations_from${idx}" value="${MdTemplateUtils.nonEscape($r.from)}">
                             =&gt;
-                            <input type="text" placeholder="parent.pk" class="short" name="relations_to${idx}" value="${MdTemplateUtils.nonEscape($r.to)}">
+                            <input type="text" placeholder="parent.virtual_fk" class="short" name="relations_to${idx}" value="${MdTemplateUtils.nonEscape($r.to)}">
                         </div>
                         #set($idx = $idx + 1)
                     #end

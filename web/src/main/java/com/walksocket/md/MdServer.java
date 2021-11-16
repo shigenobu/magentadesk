@@ -7,8 +7,8 @@ import com.walksocket.md.sqlite.MdSqliteConnection;
 import com.walksocket.md.api.MdApiQueue;
 import com.walksocket.md.api.endpoint.MdApiEndpointCheck;
 import com.walksocket.md.api.endpoint.MdApiEndpointReserve;
-import com.walksocket.md.api.service.MdApiServiceProcessing;
-import com.walksocket.md.api.service.MdApiServiceReserved;
+import com.walksocket.md.service.MdServiceProcessing;
+import com.walksocket.md.service.MdServiceReserved;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -88,7 +88,7 @@ public class MdServer implements AutoCloseable {
     // init reserved message service
     serviceMessageReserved = Executors.newSingleThreadScheduledExecutor();
     serviceMessageReserved.scheduleAtFixedRate(
-        new MdApiServiceReserved(queue),
+        new MdServiceReserved(queue),
         5,
         5,
         TimeUnit.SECONDS);
@@ -96,7 +96,7 @@ public class MdServer implements AutoCloseable {
     // init processing message service
     serviceMessageProcessing = Executors.newSingleThreadScheduledExecutor();
     serviceMessageProcessing.scheduleAtFixedRate(
-        new MdApiServiceProcessing(queue),
+        new MdServiceProcessing(queue),
         5,
         5,
         TimeUnit.SECONDS);

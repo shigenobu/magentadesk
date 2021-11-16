@@ -52,12 +52,14 @@
                     </div>
                     <div class="vbox">
                         <form method="post" action="/reserve/maintenance/">
+                            <input type="hidden" name="projectId" value="${record.get("projectId")}" />
                             <input type="hidden" name="maintenance" value="on" />
                             <input type="submit" class="btn-execute" value="GO MAINTENANCE ON" />
                         </form>
                     </div>
                     <div class="vbox">
                         <form method="post" action="/reserve/maintenance/">
+                            <input type="hidden" name="projectId" value="${record.get("projectId")}" />
                             <input type="hidden" name="maintenance" value="off" />
                             <input type="submit" class="btn-execute" value="GO MAINTENANCE OFF" />
                         </form>

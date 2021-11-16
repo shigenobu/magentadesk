@@ -1,0 +1,69 @@
+<div class="page-title">
+    <h1>${mdMode.getMode().toUpperCase()} RESULT</h1>
+</div>
+
+<div class="page_content">
+    <table class="input">
+        <tr>
+            <td>projectId</td>
+            <td>
+                <div>
+                    <p>${projectRecord.get("projectId")}</p>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>title</td>
+            <td>
+                <div>${projectRecord.get("title")}</div>
+            </td>
+        </tr>
+        <tr>
+            <td>baseDatabase => compareDatabase</td>
+            <td>
+                <div>${projectRecord.get("baseDatabase")} =&gt; ${projectRecord.get("compareDatabase")}</div>
+            </td>
+        </tr>
+    </table>
+
+    <div id="result" style="margin: 20px 0px 20px 0px;">
+        detecting ...
+    </div>
+
+    <div class="page_buttons">
+        #if($presetId > 0)
+            ## diff or sync
+            <a href="/project/preset/?projectId=${projectRecord.get("projectId")}&presetId=${presetId}" class="btn-back">BACK</a>
+        #else
+            ## maitenance
+            <a href="/project/list/" class="btn-back">BACK</a>
+        #end
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        $('#loading').show();
+        let pid = setInterval(function () {
+            $.ajax({
+                url: "/check/${mdMode.getMode()}/?projectId=${projectRecord.get("projectId")}&presetId=${presetId}&executionId=${executionId}",
+                type : "PUT",
+                timeout: 300000,
+                success: function (text) {
+                    if (text == 'WAIT') {
+                        return;
+                    }
+                    $('#result').html(text);
+                    $('#loading').hide();
+                    clearInterval(pid);
+                },
+                error: function () {
+                    alert('error');
+                    $('#result').html('error');
+                    $('#loading').hide();
+                    clearInterval(pid);
+                }
+            });
+        }, 3000);
+    });
+</script>

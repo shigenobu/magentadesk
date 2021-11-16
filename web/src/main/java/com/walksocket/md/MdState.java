@@ -1,9 +1,9 @@
-package com.walksocket.md.api;
+package com.walksocket.md;
 
 /**
- * api state.
+ * state.
  */
-public enum MdApiState {
+public enum MdState {
 
   /**
    * reserved.
@@ -35,7 +35,7 @@ public enum MdApiState {
    * constructor.
    * @param state state
    */
-  MdApiState(String state) {
+  MdState(String state) {
     this.state = state;
   }
 

@@ -2,13 +2,14 @@ package com.walksocket.md.output.member;
 
 import com.google.gson.annotations.Expose;
 import com.walksocket.md.MdInfoDiff;
+import com.walksocket.md.MdValue;
 
 import java.sql.SQLException;
 
 /**
  * output only base.
  */
-public class MdOutputMemberExistsOnlyBaseTable {
+public class MdOutputMemberExistsOnlyBaseTable extends MdValue {
 
   /**
    * table name.

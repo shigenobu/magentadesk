@@ -70,7 +70,7 @@ a.btn-preset {
     max-width: 180px;
     text-align: left;
     border: 2px solid forestgreen;
-    font-size: 10px;
+    font-size: 12px;
     color: forestgreen;
     background-color: white;
     text-decoration: none;
@@ -134,10 +134,10 @@ input.btn-json {
     display: inline-block;
     max-width: 180px;
     text-align: left;
-    border: 2px solid darkgray;
+    border: 2px solid white;
     font-size: 10px;
-    color: darkgray;
-    background-color: white;
+    color: white;
+    background-color: darkgray;
     text-decoration: none;
     font-weight: bold;
     padding: 4px 8px;
@@ -146,9 +146,9 @@ input.btn-json {
     cursor: pointer;
 }
 input.btn-json:hover {
-    background-color: darkgray;
-    border-color: darkgray;
-    color: #FFF;
+    background-color: white;
+    border-color: white;
+    color: darkgray;
 }
 
 /* execute */
@@ -156,10 +156,10 @@ a.btn-execute, input.btn-execute {
     display: inline-block;
     max-width: 180px;
     text-align: left;
-    border: 2px solid #c77715;
+    border: 2px solid white;
     font-size: 10px;
-    color: #c77715;
-    background-color: white;
+    color: white;
+    background-color: #c77715;
     text-decoration: none;
     font-weight: bold;
     padding: 4px 8px;
@@ -168,9 +168,9 @@ a.btn-execute, input.btn-execute {
     cursor: pointer;
 }
 a.btn-execute:hover, input.btn-execute:hover {
-    background-color: #c77715;
-    border-color: #c77715;
-    color: #FFF;
+    background-color: white;
+    border-color: white;
+    color: #c77715;
 }
 
 /* update */

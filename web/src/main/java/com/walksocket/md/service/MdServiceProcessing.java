@@ -1,4 +1,4 @@
-package com.walksocket.md.api.service;
+package com.walksocket.md.service;
 
 import com.walksocket.md.MdExecute;
 import com.walksocket.md.MdJson;
@@ -13,12 +13,12 @@ import com.walksocket.md.sqlite.MdSqliteConnection;
 import com.walksocket.md.sqlite.MdSqliteUtils;
 import com.walksocket.md.api.MdApiQueue;
 import com.walksocket.md.api.MdApiQueueMessage;
-import com.walksocket.md.api.MdApiState;
+import com.walksocket.md.MdState;
 
 /**
- * api service processing.
+ * service processing.
  */
-public class MdApiServiceProcessing implements Runnable {
+public class MdServiceProcessing implements Runnable {
 
   /**
    * queue.
@@ -29,7 +29,7 @@ public class MdApiServiceProcessing implements Runnable {
    * constructor.
    * @param queue queue
    */
-  public MdApiServiceProcessing(MdApiQueue queue) {
+  public MdServiceProcessing(MdApiQueue queue) {
     this.queue = queue;
   }
 
@@ -38,7 +38,7 @@ public class MdApiServiceProcessing implements Runnable {
    */
   @Override
   public void run() {
-    MdLogger.trace("start MdWebServiceProcessing");
+    MdLogger.trace("start " + getClass().getSimpleName());
     MdApiQueueMessage message = null;
     if ((message = queue.poll()) == null) {
       return;
@@ -72,7 +72,7 @@ public class MdApiServiceProcessing implements Runnable {
             "UPDATE execution " +
                 "SET state = '%s' " +
                 "WHERE executionId = '%s'",
-            MdSqliteUtils.quote(MdApiState.ERROR.getState()),
+            MdSqliteUtils.quote(MdState.ERROR.getState()),
             MdSqliteUtils.quote(message.executionId)
         );
         con.execute(sql);
@@ -82,7 +82,7 @@ public class MdApiServiceProcessing implements Runnable {
             "UPDATE execution " +
                 "SET state = '%s', output = '%s' " +
                 "WHERE executionId = '%s'",
-            MdSqliteUtils.quote(MdApiState.COMPLETE.getState()),
+            MdSqliteUtils.quote(MdState.COMPLETE.getState()),
             MdSqliteUtils.quote(MdJson.toJsonString(output)),
             MdSqliteUtils.quote(message.executionId)
         );

@@ -39,6 +39,24 @@ public class MdHtmlDesk {
   }
 
   /**
+   * get project record.
+   * @param projectId projectId
+   * @return project record
+   * @throws SQLException sql error
+   */
+  public MdDbRecord getProjectRecord(int projectId) throws SQLException {
+    String sql = "";
+    if (projectRecord == null) {
+      sql = String.format("SELECT * FROM project WHERE projectId = %s", projectId);
+      projectRecord = con.getRecord(sql);
+      if (projectRecord == null) {
+        throw new SQLException(String.format("Not exists by %s", projectId));
+      }
+    }
+    return projectRecord;
+  }
+
+  /**
    * make common input.
    * @param projectId projectId
    * @param input input
@@ -47,14 +65,8 @@ public class MdHtmlDesk {
   private void makeCommonInput(int projectId, MdInputAbstract input) throws SQLException {
     String sql = "";
 
-    // select
-    if (projectRecord == null) {
-      sql = String.format("SELECT * FROM project WHERE projectId = %s", projectId);
-      projectRecord = con.getRecord(sql);
-      if (projectRecord == null) {
-        throw new SQLException(String.format("Not exists by %s", projectId));
-      }
-    }
+    // get project record
+    projectRecord = getProjectRecord(projectId);
 
     // make
     input.host = projectRecord.get("host");

@@ -19,22 +19,6 @@ abstract public class MdApiEndpointAbstract extends MdEndpointAbstract {
    */
   public final static String HEADER_EXECUTION_ID = "x-execution-id";
 
-  /**
-   * get mode
-   * @return mode
-   */
-  protected MdMode getMode(MdServerRequest request) {
-    String path = request.getPath();
-    if (path.contains("/" + MdMode.DIFF.getMode() + "/")) {
-      return MdMode.DIFF;
-    } else if (path.contains("/" + MdMode.SYNC.getMode() + "/")) {
-      return MdMode.SYNC;
-    } else if (path.contains("/" + MdMode.MAINTENANCE.getMode() + "/")) {
-      return MdMode.MAINTENANCE;
-    }
-    return null;
-  }
-
   @Override
   public void error(MdServerRequest request, MdServerResponse response) {
     try {

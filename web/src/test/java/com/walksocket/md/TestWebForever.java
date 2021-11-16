@@ -22,7 +22,7 @@ public class TestWebForever {
 
     server = new MdServer("0.0.0.0", 8710);
     server.start();
-    server.stopMessageService();
+//    server.stopMessageService();
     Thread.sleep(1000);
   }
 

@@ -2,8 +2,8 @@ package com.walksocket.md.api.endpoint;
 
 import com.walksocket.md.MdJson;
 import com.walksocket.md.MdMode;
+import com.walksocket.md.MdState;
 import com.walksocket.md.MdUtils;
-import com.walksocket.md.api.MdApiState;
 import com.walksocket.md.api.MdApiStatus;
 import com.walksocket.md.db.MdDbRecord;
 import com.walksocket.md.output.MdOutputDiff;
@@ -12,9 +12,6 @@ import com.walksocket.md.output.MdOutputSync;
 import com.walksocket.md.server.MdServerRequest;
 import com.walksocket.md.server.MdServerResponse;
 import com.walksocket.md.sqlite.MdSqliteConnection;
-import com.walksocket.md.sqlite.MdSqliteUtils;
-
-import java.util.List;
 
 /**
  * api endpoint check.
@@ -46,13 +43,8 @@ public class MdApiEndpointCheck extends MdApiEndpointAbstract {
       return;
     }
 
-    // select
-    String sql = String.format(
-        "SELECT mode, state, output " +
-            "FROM execution " +
-            "WHERE executionId = '%s'",
-        MdSqliteUtils.quote(executionId));
-    MdDbRecord record = con.getRecord(sql);
+    // get execution
+    MdDbRecord record = checkExecution(con, executionId);
     if (record == null) {
       // conflict
       sendOther(response, MdApiStatus.CONFLICT);
@@ -67,12 +59,12 @@ public class MdApiEndpointCheck extends MdApiEndpointAbstract {
       return;
     }
 
-    if (state.equals(MdApiState.RESERVED.getState()) || state.equals(MdApiState.PROCESSING.getState())) {
+    if (state.equals(MdState.RESERVED.getState()) || state.equals(MdState.PROCESSING.getState())) {
       // no content
       response.addHeader(HEADER_EXECUTION_ID, executionId);
       sendProcessing(response);
       return;
-    } else if (state.equals(MdApiState.COMPLETE.getState()) && output != null) {
+    } else if (state.equals(MdState.COMPLETE.getState()) && output != null) {
       // ok
       if (mdMode == MdMode.DIFF) {
         sendComplete(response, MdJson.toObject(output, MdOutputDiff.class));

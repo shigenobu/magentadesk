@@ -2,6 +2,7 @@ package com.walksocket.md.output.member;
 
 import com.google.gson.annotations.Expose;
 import com.walksocket.md.MdInfoDiff;
+import com.walksocket.md.MdValue;
 import com.walksocket.md.output.parts.MdOutputPartsColumn;
 import com.walksocket.md.info.MdInfoDiffColumn;
 import com.walksocket.md.output.parts.MdOutputPartsRecord;
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * output mismatch.
  */
-public class MdOutputMemberMismatchRecordTable {
+public class MdOutputMemberMismatchRecordTable extends MdValue {
 
   /**
    * table name.

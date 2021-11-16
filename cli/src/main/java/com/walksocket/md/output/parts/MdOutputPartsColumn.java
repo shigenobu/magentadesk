@@ -1,12 +1,13 @@
 package com.walksocket.md.output.parts;
 
 import com.google.gson.annotations.Expose;
+import com.walksocket.md.MdValue;
 import com.walksocket.md.info.MdInfoDiffColumn;
 
 /**
  * output column.
  */
-public class MdOutputPartsColumn {
+public class MdOutputPartsColumn extends MdValue {
 
   /**
    * column name.
