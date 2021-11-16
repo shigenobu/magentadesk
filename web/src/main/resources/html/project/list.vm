@@ -47,7 +47,7 @@
                     <div class="vbox">
                         <form method="post" action="/json/maintenance/">
                             <input type="hidden" name="projectId" value="${record.get("projectId")}" />
-                            <input type="submit" class="btn-json" value="MOSTLY MAINTENANCE JSON" />
+                            <input type="submit" class="btn-json" value="MOSTLY INPUT MAINTENANCE JSON" />
                         </form>
                     </div>
                     <div class="vbox">

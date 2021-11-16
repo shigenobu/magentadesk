@@ -83,6 +83,7 @@ public class MdHtmlEndpointCheck extends MdHtmlEndpointAbstract {
       MdTemplate template = createTemplate(String.format("html/check/%s.vm", mdMode.getMode()));
       template.assign("projectId", projectId);
       template.assign("presetId", presetId);
+      template.assign("executionId", executionId);
 
       if (mdMode == MdMode.DIFF) {
         template.assign("input", MdJson.toObject(input, MdInputDiff.class));

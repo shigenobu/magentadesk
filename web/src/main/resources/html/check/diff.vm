@@ -119,6 +119,22 @@
     }
 </style>
 
+<script src="/asset/js/json.js" type="text/javascript"></script>
+<div>
+    <div class="hbox">
+        <form method="post" action="/jsond/diff/input/">
+            <input type="hidden" name="executionId" value="${executionId}" />
+            <input type="submit" class="btn-json" value="REALLY INPUT DIFF JSON" />
+        </form>
+    </div>
+    <div class="hbox">
+        <form method="post" action="/jsond/diff/output/">
+            <input type="hidden" name="executionId" value="${executionId}" />
+            <input type="submit" class="btn-json" value="REALLY OUTPUT DIFF JSON" />
+        </form>
+    </div>
+</div>
+
 <form method="post" action="/reserve/sync/" id="avocado_diff_form">
     <input type="hidden" name="projectId" value="${projectId}">
     <input type="hidden" name="presetId" value="${presetId}">

@@ -147,7 +147,7 @@ input.btn-json {
 }
 input.btn-json:hover {
     background-color: white;
-    border-color: white;
+    border-color: darkgray;
     color: darkgray;
 }
 
@@ -169,7 +169,7 @@ a.btn-execute, input.btn-execute {
 }
 a.btn-execute:hover, input.btn-execute:hover {
     background-color: white;
-    border-color: white;
+    border-color: #c77715;
     color: #c77715;
 }
 

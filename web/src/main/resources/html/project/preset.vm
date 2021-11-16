@@ -51,14 +51,14 @@
                         <form method="post" action="/json/diff/">
                             <input type="hidden" name="projectId" value="${record.get("projectId")}" />
                             <input type="hidden" name="presetId" value="${r.get("presetId")}" />
-                            <input type="submit" class="btn-json" value="MOSTLY DIFF JSON" />
+                            <input type="submit" class="btn-json" value="MOSTLY INPUT DIFF JSON" />
                         </form>
                     </div>
                     <div class="vbox">
                         <form method="post" action="/json/sync/">
                             <input type="hidden" name="projectId" value="${record.get("projectId")}" />
                             <input type="hidden" name="presetId" value="${r.get("presetId")}" />
-                            <input type="submit" class="btn-json" value="MOSTLY SYNC JSON" />
+                            <input type="submit" class="btn-json" value="MOSTLY INPUT SYNC JSON" />
                         </form>
                     </div>
                     <div class="vbox">
