@@ -1,13 +1,14 @@
 package com.walksocket.md.output.parts;
 
 import com.google.gson.annotations.Expose;
+import com.walksocket.md.MdValue;
 
 import java.util.List;
 
 /**
  * output not reflected record.
  */
-public class MdOutputPartsNotReflectedRecord {
+public class MdOutputPartsNotReflectedRecord extends MdValue {
 
   /**
    * diff seq.

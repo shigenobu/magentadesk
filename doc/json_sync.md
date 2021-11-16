@@ -135,12 +135,14 @@ web: response 200 /api/sync/check.json
       ],
       "httpResultsBeforeCommit": [
         {
+          "url: "XXX",
           "status": 200,
           "body": ""
         }
       ],
       "httpResultsAfterCommit": [
         {
+          "url: "XXX",
           "status": 200,
           "body": ""
         }

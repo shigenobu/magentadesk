@@ -385,18 +385,18 @@
             </div>
             <div>
                 <p>実行モード:</p>
-                <label><input type="radio" name="run" value="0"/>ドライラン</label>
-                <label><input type="radio" name="run" value="1" checked="checked"/>本実行</label>
+                <label><input type="radio" name="run" value="false"/>ドライラン</label>
+                <label><input type="radio" name="run" value="true" checked="checked"/>本実行</label>
             </div>
             <div>
                 <p>強制モード:</p>
-                <label><input type="radio" name="force" value="0"/>比較先にのみ存在する場合は削除しない</label>
-                <label><input type="radio" name="force" value="1" checked="checked"/>比較先にのみ存在する場合でも強制的に削除する</label>
+                <label><input type="radio" name="force" value="false"/>比較先にのみ存在する場合は削除しない</label>
+                <label><input type="radio" name="force" value="true" checked="checked"/>比較先にのみ存在する場合でも強制的に削除する</label>
             </div>
             <div>
                 <p>差分履歴削除モード:</p>
-                <label><input type="radio" name="loose" value="0"/>比較元／比較先の組み合わせに関連する差分履歴を削除する</label>
-                <label><input type="radio" name="loose" value="1" checked="checked"/>指定されたサマリーIDに関連する差分履歴のみ削除する</label>
+                <label><input type="radio" name="loose" value="false"/>比較元／比較先の組み合わせに関連する差分履歴を削除する</label>
+                <label><input type="radio" name="loose" value="true" checked="checked"/>指定されたサマリーIDに関連する差分履歴のみ削除する</label>
             </div>
 
             <div>

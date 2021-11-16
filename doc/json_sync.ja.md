@@ -145,6 +145,7 @@ web: response 200 /api/sync/check.json
       // コミット直前に実行されたAPI結果
       "httpResultsBeforeCommit": [
         {
+          "url: "XXX",
           "status": 200,
           "body": ""
         }
@@ -152,6 +153,7 @@ web: response 200 /api/sync/check.json
       // コミット直後に実行されたAPI結果
       "httpResultsAfterCommit": [
         {
+          "url: "XXX",
           "status": 200,
           "body": ""
         }

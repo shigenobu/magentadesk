@@ -115,7 +115,7 @@ abstract public class MdEndpointAbstract implements HttpHandler {
    */
   protected MdDbRecord checkExecution(MdSqliteConnection con, String executionId) throws SQLException {
     String sql = String.format(
-        "SELECT mode, state, output " +
+        "SELECT mode, state, input, output " +
             "FROM execution " +
             "WHERE executionId = '%s'",
         MdSqliteUtils.quote(executionId));

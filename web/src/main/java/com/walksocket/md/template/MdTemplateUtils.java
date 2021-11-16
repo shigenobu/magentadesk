@@ -1,5 +1,7 @@
 package com.walksocket.md.template;
 
+import com.walksocket.md.MdUtils;
+
 import java.util.List;
 
 /**
@@ -144,5 +146,14 @@ public class MdTemplateUtils {
     valueString = valueString.replaceAll("\r", "");
     valueString = valueString.replaceAll("\n", "<br />");
     return valueString;
+  }
+
+  /**
+   * get hash.
+   * @param src src
+   * @return hash
+   */
+  public static String getHash(String src) {
+    return MdUtils.getHash(src);
   }
 }

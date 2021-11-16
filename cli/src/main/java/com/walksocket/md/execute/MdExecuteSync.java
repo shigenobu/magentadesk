@@ -169,7 +169,7 @@ public class MdExecuteSync extends MdExecuteAbstract {
           throw new MdExceptionNotSuccessStatus();
         }
         outputSync.httpResultsBeforeCommit.add(
-            new MdOutputMemberHttpResult(httpResponse));
+            new MdOutputMemberHttpResult(http.url, httpResponse));
       }
     }
 
@@ -205,7 +205,7 @@ public class MdExecuteSync extends MdExecuteAbstract {
       if (httpResponse != null) {
         MdLogger.trace(httpResponse);
         outputSync.httpResultsAfterCommit.add(
-            new MdOutputMemberHttpResult(httpResponse));
+            new MdOutputMemberHttpResult(http.url, httpResponse));
       }
     }
 

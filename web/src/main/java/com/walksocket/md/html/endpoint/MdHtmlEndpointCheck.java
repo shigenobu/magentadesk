@@ -3,6 +3,9 @@ package com.walksocket.md.html.endpoint;
 import com.walksocket.md.*;
 import com.walksocket.md.db.MdDbRecord;
 import com.walksocket.md.html.MdHtmlStatus;
+import com.walksocket.md.input.MdInputDiff;
+import com.walksocket.md.input.MdInputMaintenance;
+import com.walksocket.md.input.MdInputSync;
 import com.walksocket.md.output.MdOutputDiff;
 import com.walksocket.md.output.MdOutputMaintenance;
 import com.walksocket.md.output.MdOutputSync;
@@ -62,6 +65,7 @@ public class MdHtmlEndpointCheck extends MdHtmlEndpointAbstract {
     }
     String mode = record.get("mode");
     String state = record.get("state");
+    String input = record.get("input");
     String output = record.get("output");
     if (!mode.equals(mdMode.getMode())) {
       // conflict
@@ -77,15 +81,17 @@ public class MdHtmlEndpointCheck extends MdHtmlEndpointAbstract {
     } else if (state.equals(MdState.COMPLETE.getState()) && output != null) {
       // ok
       MdTemplate template = createTemplate(String.format("html/check/%s.vm", mdMode.getMode()));
-      template.assign("mdMode", mdMode);
       template.assign("projectId", projectId);
       template.assign("presetId", presetId);
 
       if (mdMode == MdMode.DIFF) {
+        template.assign("input", MdJson.toObject(input, MdInputDiff.class));
         template.assign("output", MdJson.toObject(output, MdOutputDiff.class));
       } else if (mdMode == MdMode.SYNC) {
+        template.assign("input", MdJson.toObject(input, MdInputSync.class));
         template.assign("output", MdJson.toObject(output, MdOutputSync.class));
       } else if (mdMode == MdMode.MAINTENANCE) {
+        template.assign("input", MdJson.toObject(input, MdInputMaintenance.class));
         template.assign("output", MdJson.toObject(output, MdOutputMaintenance.class));
       }
       renderOk(response, template);

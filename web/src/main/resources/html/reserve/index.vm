@@ -7,9 +7,7 @@
         <tr>
             <td>projectId</td>
             <td>
-                <div>
-                    <p>${projectRecord.get("projectId")}</p>
-                </div>
+                <div>${projectRecord.get("projectId")}</div>
             </td>
         </tr>
         <tr>
@@ -19,7 +17,7 @@
             </td>
         </tr>
         <tr>
-            <td>baseDatabase => compareDatabase</td>
+            <td>baseDatabase =&gt; compareDatabase</td>
             <td>
                 <div>${projectRecord.get("baseDatabase")} =&gt; ${projectRecord.get("compareDatabase")}</div>
             </td>

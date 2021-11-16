@@ -1,12 +1,13 @@
 package com.walksocket.md.output.member;
 
 import com.google.gson.annotations.Expose;
+import com.walksocket.md.MdValue;
 import com.walksocket.md.bash.MdBashResult;
 
 /**
  * command result.
  */
-public class MdOutputMemberCommandResult {
+public class MdOutputMemberCommandResult extends MdValue {
 
   /**
    * command.

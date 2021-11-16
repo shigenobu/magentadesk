@@ -83,7 +83,9 @@ public class MdHtmlEndpointReserve extends MdHtmlEndpointAbstract {
 
         // add param
         inputSync.summaryId = request.getBodyParam("summaryId");
-        inputSync.diffSeqs = request.getBodyParams("diffSeqs[]").stream().map(s -> Long.parseLong(s)).collect(Collectors.toList());
+        if (request.getBodyParam("diffMode").equals("each")) {
+          inputSync.diffSeqs = request.getBodyParams("diffSeqs[]").stream().map(s -> Long.parseLong(s)).collect(Collectors.toList());
+        }
         inputSync.run = Boolean.parseBoolean(request.getBodyParam("run"));
         inputSync.force = Boolean.parseBoolean(request.getBodyParam("force"));
         inputSync.loose = Boolean.parseBoolean(request.getBodyParam("loose"));

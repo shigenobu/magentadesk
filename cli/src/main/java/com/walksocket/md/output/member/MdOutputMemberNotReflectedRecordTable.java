@@ -2,6 +2,7 @@ package com.walksocket.md.output.member;
 
 import com.google.gson.annotations.Expose;
 import com.walksocket.md.MdInfoSync;
+import com.walksocket.md.MdValue;
 import com.walksocket.md.output.parts.MdOutputPartsColumn;
 import com.walksocket.md.output.parts.MdOutputPartsNotReflectedRecord;
 
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * output not reflect.
  */
-public class MdOutputMemberNotReflectedRecordTable {
+public class MdOutputMemberNotReflectedRecordTable extends MdValue {
 
   /**
    * table name.
