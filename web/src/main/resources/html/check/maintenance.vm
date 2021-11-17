@@ -1,17 +1,29 @@
+<style>
+    h5.magenta_maintenance_headline {
+        font-weight: bold;
+    }
+    div.magenta_maintenance_area {
+        margin-top: 10px;
+        margin-bottom: 5px;
+    }
+</style>
+
 <script src="/asset/js/json.js" type="text/javascript"></script>
 <div>
     <div class="hbox">
-        <form method="post" action="/jsond/maintenance/input/">
+        <form method="get" action="/json/really/maintenance/input/">
             <input type="hidden" name="executionId" value="${executionId}" />
             <input type="submit" class="btn-json" value="REALLY INPUT MAINTENANCE JSON" />
         </form>
     </div>
     <div class="hbox">
-        <form method="post" action="/jsond/maintenance/output/">
+        <form method="get" action="/json/really/maintenance/output/">
             <input type="hidden" name="executionId" value="${executionId}" />
             <input type="submit" class="btn-json" value="REALLY OUTPUT MAINTENANCE JSON" />
         </form>
     </div>
 </div>
 
-${output.maintenance}
+<div class="magenta_maintenance_area">
+    <h5 class="magenta_maintenance_headline">maintenance: ${output.maintenance}</h5>
+</div>

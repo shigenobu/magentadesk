@@ -48,14 +48,14 @@
                 <td>${r.get("syncConfigId")}:${syncTitleMap.get($r.get("syncConfigId"))}</td>
                 <td>
                     <div class="vbox">
-                        <form method="get" action="/json/diff/">
+                        <form method="get" action="/json/mostly/diff/">
                             <input type="hidden" name="projectId" value="${record.get("projectId")}" />
                             <input type="hidden" name="presetId" value="${r.get("presetId")}" />
                             <input type="submit" class="btn-json" value="MOSTLY INPUT DIFF JSON" />
                         </form>
                     </div>
                     <div class="vbox">
-                        <form method="get" action="/json/sync/">
+                        <form method="get" action="/json/mostly/sync/">
                             <input type="hidden" name="projectId" value="${record.get("projectId")}" />
                             <input type="hidden" name="presetId" value="${r.get("presetId")}" />
                             <input type="submit" class="btn-json" value="MOSTLY INPUT SYNC JSON" />

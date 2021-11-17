@@ -3,13 +3,14 @@ package com.walksocket.md.input;
 import com.google.gson.annotations.Expose;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.MdMode;
+import com.walksocket.md.MdValue;
 import com.walksocket.md.exception.MdExceptionInvalidInput;
 import com.walksocket.md.mariadb.MdMariadbUtils;
 
 /**
  * input abstract.
  */
-public abstract class MdInputAbstract {
+public abstract class MdInputAbstract extends MdValue {
 
   /**
    * host.

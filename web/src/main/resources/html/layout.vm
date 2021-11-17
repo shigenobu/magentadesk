@@ -25,14 +25,6 @@
             <li><a href="/project/list/">project</a></li>
         </ol>
     </nav>
-    <nav>
-        <p>language:
-            <select name="language" style="height: 16px; font-size: 8px; margin-top: 2px;">
-                <option value="en">ENGLISH</option>
-                <option value="ja">JAPANESE</option>
-            </select>
-        </p>
-    </nav>
 </header>
 <div class="container">
     <main>

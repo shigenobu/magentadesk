@@ -16,7 +16,6 @@ public class TestWebForever {
   public static void beforeClass() throws Exception {
     MdEnv.setDebug();
     MdEnv.setPretty();
-    MdEnv.setLimitLength(3);
     MdDate.init(60 * 60 * 9);
     MdLogger.open("test.log");
 

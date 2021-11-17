@@ -39,6 +39,14 @@ public class MdHtmlDesk {
   }
 
   /**
+   * get connection.
+   * @return sqlite connection
+   */
+  public MdSqliteConnection getConnection() {
+    return con;
+  }
+
+  /**
    * get project record.
    * @param projectId projectId
    * @return project record

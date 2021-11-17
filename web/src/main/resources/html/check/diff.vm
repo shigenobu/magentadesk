@@ -1,51 +1,50 @@
 <style>
-    h5.avocado_diff_headline {
+    h5.magenta_diff_headline {
         font-weight: bold;
     }
-    div.avocado_diff_area {
+    div.magenta_diff_area {
         margin-top: 10px;
         margin-bottom: 5px;
     }
-    ul.avocado_diff_ul {
+    ul.magenta_diff_ul {
         list-style-type: square;
-        font-size: 14px;
     }
-    div.avocado_diff_open {
+    div.magenta_diff_open {
         cursor: pointer;
-        font-size: 14px;
     }
-    div.avocado_diff_slide {
+    div.magenta_diff_slide {
         display: none;
         padding: 5px;
-        font-size: 14px;
     }
-    div.avocado_diff_slide pre {
+    div.magenta_diff_slide pre {
         background-color: lightgrey;
         margin: 2px;
         padding: 4px;
-        font-size: 12px;
+        font-size: 90%;
     }
-    table.avocado_diff_list {
+    table.magenta_diff_list {
         margin-top: 5px;
         margin-bottom: 10px;
-        font-size: 12px;
+        font-size: 90%;
         border-collapse: collapse;
     }
-    table.avocado_diff_list thead td {
+    table.magenta_diff_list thead td {
         text-align: center;
         font-weight: bold;
         padding: 2px 4px 2px 4px;
         background-color: black;
+        font-size: 90%;
         color: white;
         white-space: nowrap;
         border: 1px solid dimgrey;
     }
-    table.avocado_diff_list tbody tr:nth-child(n) td[rowspan] {
+    table.magenta_diff_list tbody tr:nth-child(n) td[rowspan] {
         text-align: center;
         border: 1px solid gainsboro;
     }
-    table.avocado_diff_list tbody td {
+    table.magenta_diff_list tbody td {
         background-color: whitesmoke;
+        font-size: 90%;
         padding: 2px 4px 2px 4px;
         max-width: 180px;
         white-space: nowrap;
@@ -53,21 +52,20 @@
         text-overflow: ellipsis;
         overflow: hidden;
     }
-    table.avocado_diff_list tbody td:nth-child(n + 2) {
+    table.magenta_diff_list tbody td:nth-child(n + 2) {
         min-width: 50px;
     }
-    table.avocado_diff_list tbody td:nth-child(n + 2):active {
+    table.magenta_diff_list tbody td:nth-child(n + 2):active {
         white-space: normal;
         overflow: scroll;
     }
-    table.avocado_diff_list tbody td.avocado_diff_column {
+    table.magenta_diff_list tbody td.magenta_diff_column {
         background-color: yellow;
     }
-    input#avocado_diff_submit_all {
+    input#magenta_diff_submit_all {
         display: inline-block;
         text-align: left;
         border: 2px solid gray;
-        font-size: 14px;
         color: gray;
         background-color: white;
         text-decoration: none;
@@ -77,16 +75,15 @@
         transition: .4s;
         cursor: pointer;
     }
-    input#avocado_diff_submit_all:hover {
+    input#magenta_diff_submit_all:hover {
         background-color: gray;
         border-color: gray;
         color: #FFF;
     }
-    input#avocado_diff_submit_each {
+    input#magenta_diff_submit_each {
         display: inline-block;
         text-align: left;
         border: 2px solid gray;
-        font-size: 14px;
         color: gray;
         background-color: white;
         text-decoration: none;
@@ -96,25 +93,25 @@
         transition: .4s;
         cursor: pointer;
     }
-    input#avocado_diff_submit_each:hover {
+    input#magenta_diff_submit_each:hover {
         background-color: gray;
         border-color: gray;
         color: #FFF;
     }
-    div.avocado_diff_exec {
+    div.magenta_diff_exec {
         display: block;
         border: 2px dotted gray;
         padding: 10px;
     }
-    div.avocado_diff_exec > div {
+    div.magenta_diff_exec > div {
         padding-bottom: 2px;
         margin-bottom: 10px;
     }
-    div.avocado_diff_exec p {
+    div.magenta_diff_exec p {
         margin: 5px 0px 5px 0px;
         font-weight: bold;
     }
-    div.avocado_diff_exec label {
+    div.magenta_diff_exec label {
         margin-right: 10px;
     }
 </style>
@@ -122,36 +119,36 @@
 <script src="/asset/js/json.js" type="text/javascript"></script>
 <div>
     <div class="hbox">
-        <form method="post" action="/jsond/diff/input/">
+        <form method="get" action="/json/really/diff/input/">
             <input type="hidden" name="executionId" value="${executionId}" />
             <input type="submit" class="btn-json" value="REALLY INPUT DIFF JSON" />
         </form>
     </div>
     <div class="hbox">
-        <form method="post" action="/jsond/diff/output/">
+        <form method="get" action="/json/really/diff/output/">
             <input type="hidden" name="executionId" value="${executionId}" />
             <input type="submit" class="btn-json" value="REALLY OUTPUT DIFF JSON" />
         </form>
     </div>
 </div>
 
-<form method="post" action="/reserve/sync/" id="avocado_diff_form">
+<form method="post" action="/reserve/sync/" id="magenta_diff_form">
     <input type="hidden" name="projectId" value="${projectId}">
     <input type="hidden" name="presetId" value="${presetId}">
 
     #if($output.existsOnlyBaseTables.size() > 0)
-        <div class="avocado_diff_area">
-            <h5 class="avocado_diff_headline">比較元のみに存在するテーブル一覧</h5>
-            <ul class="avocado_diff_ul">
+        <div class="magenta_diff_area">
+            <h5 class="magenta_diff_headline">exists only base tables</h5>
+            <ul class="magenta_diff_ul">
                 #foreach($table in $output.existsOnlyBaseTables)
                     <li>
-                        <div class="avocado_diff_open" id="avocado_diff_open_${table.tableName}">
+                        <div class="magenta_diff_open" id="magenta_diff_open_${table.tableName}">
                             ${table.tableName}
                             #if(!$table.tableComment.equals(""))
                                 / ${table.tableComment}
                             #end
                         </div>
-                        <div class="avocado_diff_slide" id="avocado_diff_slide_${table.tableName}">
+                        <div class="magenta_diff_slide" id="magenta_diff_slide_${table.tableName}">
                             <pre>${table.baseDefinition}</pre>
                         </div>
                     </li>
@@ -161,18 +158,18 @@
     #end
 
     #if($output.existsOnlyCompareTables.size() > 0)
-        <div class="avocado_diff_area">
-            <h5 class="avocado_diff_headline">比較先のみに存在するテーブル一覧</h5>
-            <ul class="avocado_diff_ul">
+        <div class="magenta_diff_area">
+            <h5 class="magenta_diff_headline">exists only compare tables</h5>
+            <ul class="magenta_diff_ul">
                 #foreach($table in $output.existsOnlyCompareTables)
                 <li>
-                    <div class="avocado_diff_open" id="avocado_diff_open_${table.tableName}">
+                    <div class="magenta_diff_open" id="magenta_diff_open_${table.tableName}">
                         ${table.tableName}
                         #if(!$table.tableComment.equals(""))
                             / ${table.tableComment}
                         #end
                     </div>
-                    <div class="avocado_diff_slide" id="avocado_diff_slide_${table.tableName}">
+                    <div class="magenta_diff_slide" id="magenta_diff_slide_${table.tableName}">
                         <pre>${table.compareDefinition}</pre>
                     </div>
                 </li>
@@ -182,19 +179,19 @@
     #end
 
     #if($output.forceExcludeTables.size() > 0)
-        <div class="avocado_diff_area">
-            <h5 class="avocado_diff_headline">強制的に除外されたテーブル一覧</h5>
-            <ul class="avocado_diff_ul">
+        <div class="magenta_diff_area">
+            <h5 class="magenta_diff_headline">force exclude tables</h5>
+            <ul class="magenta_diff_ul">
                 #foreach($table in $output.forceExcludeTables)
                 <li>
-                    <div class="avocado_diff_open" id="avocado_diff_open_${table.tableName}">
+                    <div class="magenta_diff_open" id="magenta_diff_open_${table.tableName}">
                         ${table.tableName}
                         #if(!$table.tableComment.equals(""))
                             / ${table.tableComment}
                         #end
                         (${table.reason})
                     </div>
-                    <div class="avocado_diff_slide" id="avocado_diff_slide_${table.tableName}">
+                    <div class="magenta_diff_slide" id="magenta_diff_slide_${table.tableName}">
                         <pre>${table.definition}</pre>
                     </div>
                 </li>
@@ -204,19 +201,19 @@
     #end
 
     #if($output.incorrectDefinitionTables.size() > 0)
-        <div class="avocado_diff_area">
-            <h5 class="avocado_diff_headline">比較対象外とされたテーブル一覧</h5>
-            <ul class="avocado_diff_ul">
+        <div class="magenta_diff_area">
+            <h5 class="magenta_diff_headline">incorrect definition tables</h5>
+            <ul class="magenta_diff_ul">
                 #foreach($table in $output.incorrectDefinitionTables)
                     <li>
-                        <div class="avocado_diff_open" id="avocado_diff_open_${table.tableName}">
+                        <div class="magenta_diff_open" id="magenta_diff_open_${table.tableName}">
                             ${table.tableName}
                             #if(!$table.tableComment.equals(""))
                                 / ${table.tableComment}
                             #end
                             (${table.reason})
                         </div>
-                        <div class="avocado_diff_slide" id="avocado_diff_slide_${table.tableName}">
+                        <div class="magenta_diff_slide" id="magenta_diff_slide_${table.tableName}">
                             <pre>${table.definition}</pre>
                         </div>
                     </li>
@@ -226,18 +223,18 @@
     #end
 
     #if($output.mismatchDefinitionTables.size() > 0)
-        <div class="avocado_diff_area">
-            <h5 class="avocado_diff_headline">比較元と比較先でテーブル構造が一致しないテーブル一覧</h5>
-            <ul class="avocado_diff_ul">
+        <div class="magenta_diff_area">
+            <h5 class="magenta_diff_headline">mismatch definition tables</h5>
+            <ul class="magenta_diff_ul">
                 #foreach($table in $output.mismatchDefinitionTables)
                     <li>
-                        <div class="avocado_diff_open" id="avocado_diff_open_${table.tableName}">
+                        <div class="magenta_diff_open" id="magenta_diff_open_${table.tableName}">
                             ${table.tableName}
                             #if(!$table.tableComment.equals(""))
                                 / ${table.tableComment}
                             #end
                         </div>
-                        <div class="avocado_diff_slide" id="avocado_diff_slide_${table.tableName}">
+                        <div class="magenta_diff_slide" id="magenta_diff_slide_${table.tableName}">
                             <pre>${table.baseDefinition}</pre>
                             <pre>${table.compareDefinition}</pre>
                         </div>
@@ -248,30 +245,30 @@
     #end
 
     #if($output.mismatchRecordTables.size() > 0)
-        <div class="avocado_diff_area">
-            <h5 class="avocado_diff_headline">データ差分が検出されたテーブル一覧</h5>
-            <ul class="avocado_diff_ul">
+        <div class="magenta_diff_area">
+            <h5 class="magenta_diff_headline">mismatch record tables</h5>
+            <ul class="magenta_diff_ul">
                 #foreach($table in $output.mismatchRecordTables)
                 <li>
                     <div>
-                        ${table.records.size()}件
+                        ${table.records.size()} rows
                         -
                         ${table.tableName}
                         #if(!$table.tableComment.equals(""))
                             / ${table.tableComment}
                         #end
 
-##                        <?php foreach (\Anet\Avocado\Md\Relation::getRelations($table->tableName) as $relation): ?>
+##                        <?php foreach (\Anet\magenta\Md\Relation::getRelations($table->tableName) as $relation): ?>
 ##                        [<?php echo F::h($relation->getP2CRelation()); ?>]
 ##                        <?php endforeach; ?>
                     </div>
                     <div>
-                        <table class="avocado_diff_list">
+                        <table class="magenta_diff_list">
                             <thead>
                             <tr>
                                 <td>
-                                    <p>反映CHK</p>
-                                    <p><input type="checkbox" id="avocado_diff_check_table_${table.tableName}" class="avocado_diff_check_all"/></p>
+                                    <p>SYNC</p>
+                                    <p><input type="checkbox" id="magenta_diff_check_table_${table.tableName}" class="magenta_diff_check_all"/></p>
                                 </td>
 ##                                #set($columnNames = [])
                                 #foreach($column in $table.columns)
@@ -282,13 +279,13 @@
                                         #if($column.isPrimary)
                                             <u>
                                         #end
-                                        <div class="avocado_diff_open" id="avocado_diff_open_${table.tableName}_${column.columnName}">
+                                        <div class="magenta_diff_open" id="magenta_diff_open_${table.tableName}_${column.columnName}">
                                             ${column.columnName}
                                             #if(!$column.columnComment.equals(""))
                                                 / ${column.columnComment}
                                             #end
                                         </div>
-                                        <div class="avocado_diff_slide" id="avocado_diff_slide_${table.tableName}_${column.columnName}">
+                                        <div class="magenta_diff_slide" id="magenta_diff_slide_${table.tableName}_${column.columnName}">
                                             ${column.columnType}
                                             #if(!$column.columnCollation.equals(""))
                                                 (${column.columnCollation})
@@ -311,9 +308,9 @@
                                     <td rowspan="2">
                                         <input type="checkbox" name="diffSeqs[]"
                                                value="${record.diffSeq}"
-                                               class="avocado_diff_check_table_${table.tableName} avocado_diff_check_value"
-    ##                                    <?php echo \Anet\Avocado\Md\Relation::getLinkId($table->tableName, $columnNames, $values) ?>
-    ##                                    <?php echo \Anet\Avocado\Md\Relation::getLinkTarget($table->tableName, $columnNames, $values) ?>
+                                               class="magenta_diff_check_table_${table.tableName} magenta_diff_check_value"
+    ##                                    <?php echo \Anet\magenta\Md\Relation::getLinkId($table->tableName, $columnNames, $values) ?>
+    ##                                    <?php echo \Anet\magenta\Md\Relation::getLinkTarget($table->tableName, $columnNames, $values) ?>
                                         />
                                     </td>
                                     #set($idx = 0)
@@ -321,7 +318,7 @@
                                         <td>
                                             #set($null = "<NULL>")
                                             #set($empty = "<EMPTY>")
-                                            #if(!$value)
+                                            #if($MdTemplateUtils.isNull($value))
                                                 ${null}
                                             #elseif($value.equals(""))
                                                 ${empty}
@@ -336,21 +333,21 @@
                                     #set($idx = 0)
                                     #foreach($value in $record.compareValues)
                                         #set($cls = "")
-                                        #if(!$record.baseValues.get($idx) && !$record.compareValues.get($idx))
+                                        #if($MdTemplateUtils.isNull($record.baseValues.get($idx)) && $MdTemplateUtils.isNull($record.compareValues.get($idx)))
                                             #set($cls = "")
-                                        #elseif(!$record.baseValues.get($idx) && $record.compareValues.get($idx))
-                                            #set($cls = "avocado_diff_column")
-                                        #elseif($record.baseValues.get($idx) && !$record.compareValues.get($idx))
-                                            #set($cls = "avocado_diff_column")
+                                        #elseif($MdTemplateUtils.isNull($record.baseValues.get($idx)) && $MdTemplateUtils.isNotNull($record.compareValues.get($idx)))
+                                            #set($cls = "magenta_diff_column")
+                                        #elseif($MdTemplateUtils.isNotNull($record.baseValues.get($idx)) && $MdTemplateUtils.isNull($record.compareValues.get($idx)))
+                                            #set($cls = "magenta_diff_column")
                                         #elseif(!$record.baseValues.get($idx).equals($record.compareValues.get($idx)))
-                                            #set($cls = "avocado_diff_column")
+                                            #set($cls = "magenta_diff_column")
                                         #else
                                             #set($cls = "")
                                         #end
                                         <td class="${cls}">
                                             #set($null = "<NULL>")
                                             #set($empty = "<EMPTY>")
-                                            #if(!$value)
+                                            #if($MdTemplateUtils.isNull($value))
                                                 ${null}
                                             #elseif($value.equals(""))
                                                 ${empty}
@@ -372,20 +369,20 @@
     #end
 
     #if($output.matchTables.size() > 0)
-        <div class="avocado_diff_area">
-            <h5 class="avocado_diff_headline">データ差分なしと判定されたテーブル一覧</h5>
-            <ul class="avocado_diff_ul">
+        <div class="magenta_diff_area">
+            <h5 class="magenta_diff_headline">match tables</h5>
+            <ul class="magenta_diff_ul">
                 #foreach($table in $output.matchTables)
                     <li>
-                        <div class="avocado_diff_open" id="avocado_diff_open_${table.tableName}">
+                        <div class="magenta_diff_open" id="magenta_diff_open_${table.tableName}">
                             ${table.tableName}
                             #if(!$table.tableComment.equals(""))
                                 / ${table.tableComment}
                             #end
                         </div>
-                        <div class="avocado_diff_slide" id="avocado_diff_slide_${table.tableName}">
-                            <pre>テーブルタイプ:${table.baseTableType}, チェックサム:${table.baseChecksum}</pre>
-                            <pre>テーブルタイプ:${table.compareTableType}, チェックサム:${table.compareChecksum}</pre>
+                        <div class="magenta_diff_slide" id="magenta_diff_slide_${table.tableName}">
+                            <pre>table type:${table.baseTableType}, checksum:${table.baseChecksum}</pre>
+                            <pre>table type:${table.compareTableType}, checksum:${table.compareChecksum}</pre>
                         </div>
                     </li>
                 #end
@@ -394,34 +391,34 @@
     #end
 
     #if($output.mismatchRecordTables.size() > 0)
-        <div class="avocado_diff_exec">
+        <div class="magenta_diff_exec">
             <div>
-                <p>サマリーID:</p>
+                <p>summaryId:</p>
                 <input type="text" name="summaryId" value="${output.summaryId}" readonly="readonly"/>
             </div>
             <div>
-                <p>実行モード:</p>
-                <label><input type="radio" name="run" value="false"/>ドライラン</label>
-                <label><input type="radio" name="run" value="true" checked="checked"/>本実行</label>
+                <p>run mode:</p>
+                <label><input type="radio" name="run" value="true" checked="checked"/>run</label>
+                <label><input type="radio" name="run" value="false"/>dry run</label>
             </div>
             <div>
-                <p>強制モード:</p>
-                <label><input type="radio" name="force" value="false"/>比較先にのみ存在する場合は削除しない</label>
-                <label><input type="radio" name="force" value="true" checked="checked"/>比較先にのみ存在する場合でも強制的に削除する</label>
+                <p>force mode:</p>
+                <label><input type="radio" name="force" value="true" checked="checked"/>force delete to compare</label>
+                <label><input type="radio" name="force" value="false"/>no delete only compare</label>
             </div>
             <div>
-                <p>差分履歴削除モード:</p>
-                <label><input type="radio" name="loose" value="false"/>比較元／比較先の組み合わせに関連する差分履歴を削除する</label>
-                <label><input type="radio" name="loose" value="true" checked="checked"/>指定されたサマリーIDに関連する差分履歴のみ削除する</label>
+                <p>loose mode:</p>
+                <label><input type="radio" name="loose" value="true" checked="checked"/>delete only summaryId related log</label>
+                <label><input type="radio" name="loose" value="false"/>delete base and compare related log</label>
             </div>
 
             <div>
                 <input type="text" name="dummy" style="display: none;">
 
-                <input type="hidden" name="diffMode" id="avocado_diff_mode" />
+                <input type="hidden" name="diffMode" id="magenta_diff_mode" />
 
-                <input type="button" value="全て反映" id="avocado_diff_submit_all"/>
-                <input type="button" value="チェックしたもののみ反映" id="avocado_diff_submit_each"/>
+                <input type="button" value="ALL SYNC" id="magenta_diff_submit_all"/>
+                <input type="button" value="ONLY CHECKED SYNC" id="magenta_diff_submit_each"/>
             </div>
         </div>
     #end
@@ -429,12 +426,12 @@
 </form>
 
 <script type="text/javascript">
-    function avocadoDiffSubmit(e) {
+    function magentaDiffSubmit(e) {
         let mode = e.target.mode;
         if (mode == void(0)) {
             return false;
         }
-        if (mode == 'all' && !confirm("「全て反映」を行います。\nよろしいですか？")) {
+        if (mode == 'all' && !confirm("[ALL SYNC] OK ?")) {
             return false;
         }
         if (mode == 'each') {
@@ -449,35 +446,35 @@
                 }
             }
             if (!anyChecked) {
-                alert("チェックがありません。");
+                alert("NO CHECK");
                 return;
             }
         }
 
-        let diffMode = document.getElementById('avocado_diff_mode');
+        let diffMode = document.getElementById('magenta_diff_mode');
         diffMode.value = mode;
 
-        let diffForm = document.getElementById('avocado_diff_form');
+        let diffForm = document.getElementById('magenta_diff_form');
         diffForm.submit();
         return true;
     }
 
-    let diffSubmitAll = document.querySelector('input#avocado_diff_submit_all');
+    let diffSubmitAll = document.querySelector('input#magenta_diff_submit_all');
     if (diffSubmitAll != void(0)) {
-        diffSubmitAll.addEventListener('click', avocadoDiffSubmit);
+        diffSubmitAll.addEventListener('click', magentaDiffSubmit);
         diffSubmitAll.mode = 'all';
     }
 
-    let diffSubmitEach = document.querySelector('input#avocado_diff_submit_each');
+    let diffSubmitEach = document.querySelector('input#magenta_diff_submit_each');
     if (diffSubmitEach != void(0)) {
-        diffSubmitEach.addEventListener('click', avocadoDiffSubmit);
+        diffSubmitEach.addEventListener('click', magentaDiffSubmit);
         diffSubmitEach.mode = 'each';
     }
 
-    function avocadoDiffSlider(e) {
+    function magentaDiffSlider(e) {
         let id = e.target.id;
-        let name = id.substring('avocado_diff_open_'.length);
-        let slideId = "avocado_diff_slide_" + name;
+        let name = id.substring('magenta_diff_open_'.length);
+        let slideId = "magenta_diff_slide_" + name;
         let slide = document.getElementById(slideId);
 
         if (slide.style.display == '' || slide.style.display == 'none') {
@@ -487,38 +484,36 @@
         }
     }
 
-    let diffOpenList = document.querySelectorAll('div.avocado_diff_open');
+    let diffOpenList = document.querySelectorAll('div.magenta_diff_open');
     if (diffOpenList != void(0)) {
         for (let i = 0; i < diffOpenList.length; i++) {
-            diffOpenList[i].addEventListener('click', avocadoDiffSlider)
+            diffOpenList[i].addEventListener('click', magentaDiffSlider)
         }
     }
 
-    function avocadoDiffCheckAll(e) {
+    function magentaDiffCheckAll(e) {
         let id = e.target.id;
-        let name = id.substring('avocado_diff_check_table_'.length);
-        let checkClass = "avocado_diff_check_table_" + name;
+        let name = id.substring('magenta_diff_check_table_'.length);
+        let checkClass = "magenta_diff_check_table_" + name;
         let checkClazz = document.querySelectorAll('input.' + checkClass);
         if (checkClazz != void(0)) {
             for (let i = 0; i < checkClazz.length; i++) {
                 checkClazz[i].checked = document.getElementById(id).checked;
-
-                // 連動してイベント発生させる
-                if (checkClazz[i].classList.contains('avocado_diff_check_value')) {
+                if (checkClazz[i].classList.contains('magenta_diff_check_value')) {
                     checkClazz[i].dispatchEvent(new Event('change'))
                 }
             }
         }
     }
 
-    function avocadoDiffCheckValue(e) {
+    function magentaDiffCheckValue(e) {
         let targetStr = e.target.dataset.target;
         if (targetStr == void(0)) {
             return;
         }
 
         let targets = targetStr.split('|');
-        let checkClazz = document.querySelectorAll('input.avocado_diff_check_value');
+        let checkClazz = document.querySelectorAll('input.magenta_diff_check_value');
         if (checkClazz != void(0)) {
             for (let i = 0; i < checkClazz.length; i++) {
                 let idStr = checkClazz[i].dataset.id;
@@ -533,8 +528,6 @@
                         if (checkClazz[i].checked != e.target.checked) {
                             checkClazz[i].checked = e.target.checked;
                         }
-
-                        // 連動してイベント発生させる
                         checkClazz[i].dispatchEvent(new Event('change'))
                     }
                 }
@@ -542,17 +535,17 @@
         }
     }
 
-    let diffCheckAllList = document.querySelectorAll('input.avocado_diff_check_all');
+    let diffCheckAllList = document.querySelectorAll('input.magenta_diff_check_all');
     if (diffCheckAllList != void(0)) {
         for (let i = 0; i < diffCheckAllList.length; i++) {
-            diffCheckAllList[i].addEventListener('change', avocadoDiffCheckAll)
+            diffCheckAllList[i].addEventListener('change', magentaDiffCheckAll)
         }
     }
 
-    let diffCheckValueList = document.querySelectorAll('input.avocado_diff_check_value')
+    let diffCheckValueList = document.querySelectorAll('input.magenta_diff_check_value')
     if (diffCheckValueList != void(0)) {
         for (let i = 0; i < diffCheckValueList.length; i++) {
-            diffCheckValueList[i].addEventListener('change', avocadoDiffCheckValue)
+            diffCheckValueList[i].addEventListener('change', magentaDiffCheckValue)
         }
     }
 </script>

@@ -156,4 +156,22 @@ public class MdTemplateUtils {
   public static String getHash(String src) {
     return MdUtils.getHash(src);
   }
+
+  /**
+   * is null.
+   * @param src src
+   * @return if null, return true
+   */
+  public static boolean isNull(Object src) {
+    return src == null;
+  }
+
+  /**
+   * is not null.
+   * @param src src
+   * @return if not null, return true
+   */
+  public static boolean isNotNull(Object src) {
+    return src != null;
+  }
 }

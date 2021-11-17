@@ -1,50 +1,49 @@
 <style>
-    h5.avocado_sync_headline {
+    h5.magenta_sync_headline {
         font-weight: bold;
     }
-    div.avocado_sync_area {
+    div.magenta_sync_area {
         margin-top: 10px;
         margin-bottom: 5px;
     }
-    ul.avocado_sync_ul {
+    ul.magenta_sync_ul {
         list-style-type: square;
-        font-size: 14px;
     }
-    div.avocado_sync_open {
+    div.magenta_sync_open {
         cursor: pointer;
-        font-size: 14px;
     }
-    div.avocado_sync_slide {
+    div.magenta_sync_slide {
         display: none;
         padding: 5px;
-        font-size: 14px;
     }
-    div.avocado_sync_slide pre {
+    div.magenta_sync_slide pre {
         background-color: lightgrey;
+        font-size: 90%;
         margin: 2px;
         padding: 4px;
-        font-size: 12px;
     }
-    table.avocado_sync_list {
+    table.magenta_sync_list {
         margin-top: 5px;
         margin-bottom: 10px;
-        font-size: 12px;
+        font-size: 90%;
         border-collapse: collapse;
     }
-    table.avocado_sync_list thead td {
+    table.magenta_sync_list thead td {
         text-align: center;
         font-weight: bold;
         padding: 2px 4px 2px 4px;
         background-color: black;
+        font-size: 90%;
         color: white;
         white-space: nowrap;
         border: 1px solid dimgrey;
     }
-    table.avocado_sync_list tbody tr {
+    table.magenta_sync_list tbody tr {
         border: 1px solid gainsboro;
     }
-    table.avocado_sync_list tbody td {
+    table.magenta_sync_list tbody td {
         background-color: lightgrey;
+        font-size: 90%;
         padding: 2px 4px 2px 4px;
         max-width: 180px;
         white-space: nowrap;
@@ -52,26 +51,26 @@
         text-overflow: ellipsis;
         overflow: hidden;
     }
-    table.avocado_sync_list tbody td:nth-child(n + 2) {
+    table.magenta_sync_list tbody td:nth-child(n + 2) {
         min-width: 50px;
     }
-    table.avocado_sync_list tbody td:nth-child(n + 2):active {
+    table.magenta_sync_list tbody td:nth-child(n + 2):active {
         white-space: normal;
         overflow: scroll;
     }
-    table.avocado_sync_list tbody td.avocado_nosync_column {
+    table.magenta_sync_list tbody td.magenta_nosync_column {
         background-color: yellow;
     }
-    div.avocado_sync_result {
+    div.magenta_sync_result {
         display: block;
         border: 2px dotted gray;
         padding: 10px;
     }
-    div.avocado_sync_result > div {
+    div.magenta_sync_result > div {
         padding-bottom: 2px;
         margin-bottom: 10px;
     }
-    div.avocado_sync_result p {
+    div.magenta_sync_result p {
         margin: 5px 0px 5px 0px;
         font-weight: bold;
     }
@@ -80,13 +79,13 @@
 <script src="/asset/js/json.js" type="text/javascript"></script>
 <div>
     <div class="hbox">
-        <form method="post" action="/jsond/sync/input/">
+        <form method="get" action="/json/really/sync/input/">
             <input type="hidden" name="executionId" value="${executionId}" />
             <input type="submit" class="btn-json" value="REALLY INPUT SYNC JSON" />
         </form>
     </div>
     <div class="hbox">
-        <form method="post" action="/jsond/sync/output/">
+        <form method="get" action="/json/really/sync/output/">
             <input type="hidden" name="executionId" value="${executionId}" />
             <input type="submit" class="btn-json" value="REALLY OUTPUT SYNC JSON" />
         </form>
@@ -94,13 +93,13 @@
 </div>
 
 #if($output.reflectedRecordTables.size() > 0)
-<div class="avocado_sync_area">
-    <h5 class="avocado_sync_headline">反映されたレコード一覧</h5>
-    <ul class="avocado_sync_ul">
+<div class="magenta_sync_area">
+    <h5 class="magenta_sync_headline">reflected record tables</h5>
+    <ul class="magenta_sync_ul">
         #foreach($table in $output.reflectedRecordTables)
         <li>
             <div>
-                ${table.records.size()}件
+                ${table.records.size()} rows
                 -
                 ${table.tableName}
                 #if(!$table.tableComment.equals(""))
@@ -108,22 +107,22 @@
                 #end
             </div>
             <div>
-                <table class="avocado_sync_list">
+                <table class="magenta_sync_list">
                     <thead>
                     <tr>
-                        <td>反映SEQ</td>
+                        <td>SYNC SEQ</td>
                         #foreach($column in $table.columns)
                         <td>
                             #if($column.isPrimary)
                                 <u>
                             #end
-                            <div class="avocado_sync_open" id="avocado_sync_open_yes_${table.tableName}_${column.columnName}">
+                            <div class="magenta_sync_open" id="magenta_sync_open_yes_${table.tableName}_${column.columnName}">
                                 ${column.columnName}
                                 #if(!$column.columnComment.equals(""))
                                     / ${column.columnComment}
                                 #end
                             </div>
-                            <div class="avocado_sync_slide" id="avocado_sync_slide_yes_${table.tableName}_${column.columnName}">
+                            <div class="magenta_sync_slide" id="magenta_sync_slide_yes_${table.tableName}_${column.columnName}">
                                 ${column.columnType}
                                 #if(!$column.columnCollation.equals(""))
                                     (${column.columnCollation})
@@ -146,7 +145,7 @@
                             <td>
                             #set($null = "<NULL>")
                             #set($empty = "<EMPTY>")
-                            #if(!$value)
+                            #if($MdTemplateUtils.isNull($value))
                                 ${null}
                             #elseif($value.equals(""))
                                 ${empty}
@@ -167,9 +166,9 @@
 #end
 
 #if($output.notReflectedRecordTables.size() > 0)
-<div class="avocado_sync_area">
-    <h5 class="avocado_sync_headline">反映されなかったレコード一覧</h5>
-    <ul class="avocado_sync_ul">
+<div class="magenta_sync_area">
+    <h5 class="magenta_sync_headline">not reflected record tables</h5>
+    <ul class="magenta_sync_ul">
         #foreach($table in $output.notReflectedRecordTables)
         <li>
             <div>
@@ -179,7 +178,7 @@
                 #end
             </div>
             <div>
-                <table class="avocado_sync_list">
+                <table class="magenta_sync_list">
                     <thead>
                     <tr>
                         #foreach($column in $table.columns)
@@ -187,13 +186,13 @@
                             #if($column.isPrimary)
                             <u>
                             #end
-                            <div class="avocado_sync_open" id="avocado_sync_open_yes_${table.tableName}_${column.columnName}">
+                            <div class="magenta_sync_open" id="magenta_sync_open_yes_${table.tableName}_${column.columnName}">
                                 ${column.columnName}
                                 #if(!$column.columnComment.equals(""))
                                     / ${column.columnComment}
                                 #end
                             </div>
-                            <div class="avocado_sync_slide" id="avocado_sync_slide_yes_${table.tableName}_${column.columnName}">
+                            <div class="magenta_sync_slide" id="magenta_sync_slide_yes_${table.tableName}_${column.columnName}">
                                 ${column.columnType}
                                 #if(!$column.columnCollation.equals(""))
                                     (${column.columnCollation})
@@ -214,7 +213,7 @@
                                 <td>
                                 #set($null = "<NULL>")
                                 #set($empty = "<EMPTY>")
-                                #if(!$value)
+                                #if($MdTemplateUtils.isNull($value))
                                     ${null}
                                 #elseif($value.equals(""))
                                     ${empty}
@@ -229,21 +228,21 @@
                             #set($idx = 0)
                             #foreach($value in $record.compareValues)
                                 #set($cls = "")
-                                #if(!$record.baseValues.get($idx) && !$record.compareValues.get($idx))
+                                #if($MdTemplateUtils.isNull($record.baseValues.get($idx)) && $MdTemplateUtils.isNull($record.compareValues.get($idx)))
                                     #set($cls = "")
-                                #elseif(!$record.baseValues.get($idx) && $record.compareValues.get($idx))
-                                    #set($cls = "avocado_nosync_column")
-                                #elseif($record.baseValues.get($idx) && !$record.compareValues.get($idx))
-                                    #set($cls = "avocado_nosync_column")
+                                #elseif($MdTemplateUtils.isNull($record.baseValues.get($idx)) && $MdTemplateUtils.isNotNull($record.compareValues.get($idx)))
+                                    #set($cls = "magenta_nosync_column")
+                                #elseif($MdTemplateUtils.isNotNull($record.baseValues.get($idx)) && $MdTemplateUtils.isNull($record.compareValues.get($idx)))
+                                    #set($cls = "magenta_nosync_column")
                                 #elseif(!$record.baseValues.get($idx).equals($record.compareValues.get($idx)))
-                                    #set($cls = "avocado_nosync_column")
+                                    #set($cls = "magenta_nosync_column")
                                 #else
                                     #set($cls = "")
                                 #end
                                 <td class="${cls}">
                                 #set($null = "<NULL>")
                                 #set($empty = "<EMPTY>")
-                                #if(!$value)
+                                #if($MdTemplateUtils.isNull($value))
                                     ${null}
                                 #elseif($value.equals(""))
                                     ${empty}
@@ -265,15 +264,15 @@
 #end
 
 #if($output.commandResultsBeforeCommit.size() > 0)
-<div class="avocado_sync_area">
-    <h5 class="avocado_sync_headline">コミット直前に実行されたコマンド結果</h5>
-    <ul class="avocado_sync_ul">
+<div class="magenta_sync_area">
+    <h5 class="magenta_sync_headline">command results before commit</h5>
+    <ul class="magenta_sync_ul">
         #foreach($command in $output.commandResultsBeforeCommit)
             <li>
-                <div class="avocado_sync_open" id="avocado_sync_open_bc_${MdTemplateUtils.getHash($command.command)}">
+                <div class="magenta_sync_open" id="magenta_sync_open_bc_${MdTemplateUtils.getHash($command.command)}">
                     ${command.command} (${command.code})
                 </div>
-                <div class="avocado_sync_slide" id="avocado_sync_slide_bc_${MdTemplateUtils.getHash($command.command)}">
+                <div class="magenta_sync_slide" id="magenta_sync_slide_bc_${MdTemplateUtils.getHash($command.command)}">
                     <pre>${command.output}</pre>
                 </div>
             </li>
@@ -283,15 +282,15 @@
 #end
 
 #if($output.commandResultsAfterCommit.size() > 0)
-<div class="avocado_sync_area">
-    <h5 class="avocado_sync_headline">コミット直後に実行されたコマンド結果</h5>
-    <ul class="avocado_sync_ul">
+<div class="magenta_sync_area">
+    <h5 class="magenta_sync_headline">command results after commit</h5>
+    <ul class="magenta_sync_ul">
         #foreach($command in $output.commandResultsAfterCommit)
             <li>
-                <div class="avocado_sync_open" id="avocado_sync_open_bc_${MdTemplateUtils.getHash($command.command)}">
+                <div class="magenta_sync_open" id="magenta_sync_open_bc_${MdTemplateUtils.getHash($command.command)}">
                     ${command.command} (${command.code})
                 </div>
-                <div class="avocado_sync_slide" id="avocado_sync_slide_bc_${MdTemplateUtils.getHash($command.command)}">
+                <div class="magenta_sync_slide" id="magenta_sync_slide_bc_${MdTemplateUtils.getHash($command.command)}">
                     <pre>${command.output}</pre>
                 </div>
             </li>
@@ -301,15 +300,15 @@
 #end
 
 #if($output.httpResultsBeforeCommit.size() > 0)
-<div class="avocado_sync_area">
-    <h5 class="avocado_sync_headline">コミット直前に実行されたHTTPコールバック結果</h5>
-    <ul class="avocado_sync_ul">
+<div class="magenta_sync_area">
+    <h5 class="magenta_sync_headline">http results before commit</h5>
+    <ul class="magenta_sync_ul">
         #foreach($http in $output.httpResultsBeforeCommit)
             <li>
-                <div class="avocado_sync_open" id="avocado_sync_open_bc_${MdTemplateUtils.getHash($http.url)}">
+                <div class="magenta_sync_open" id="magenta_sync_open_bc_${MdTemplateUtils.getHash($http.url)}">
                     ${http.url} (${http.status})
                 </div>
-                <div class="avocado_sync_slide" id="avocado_sync_slide_bc_${MdTemplateUtils.getHash($http.url)}">
+                <div class="magenta_sync_slide" id="magenta_sync_slide_bc_${MdTemplateUtils.getHash($http.url)}">
                     <pre>${http.body}</pre>
                 </div>
             </li>
@@ -319,15 +318,15 @@
 #end
 
 #if($output.httpResultsAfterCommit.size() > 0)
-<div class="avocado_sync_area">
-    <h5 class="avocado_sync_headline">コミット直後に実行されたHTTPコールバック結果</h5>
-    <ul class="avocado_sync_ul">
+<div class="magenta_sync_area">
+    <h5 class="magenta_sync_headline">http results after commit</h5>
+    <ul class="magenta_sync_ul">
         #foreach($http in $output.httpResultsAfterCommit)
             <li>
-                <div class="avocado_sync_open" id="avocado_sync_open_bc_${MdTemplateUtils.getHash($http.url)}">
+                <div class="magenta_sync_open" id="magenta_sync_open_bc_${MdTemplateUtils.getHash($http.url)}">
                     ${http.url} (${http.status})
                 </div>
-                <div class="avocado_sync_slide" id="avocado_sync_slide_bc_${MdTemplateUtils.getHash($http.url)}">
+                <div class="magenta_sync_slide" id="magenta_sync_slide_bc_${MdTemplateUtils.getHash($http.url)}">
                     <pre>${http.body}</pre>
                 </div>
             </li>
@@ -336,42 +335,42 @@
 </div>
 #end
 
-<div class="avocado_sync_result">
+<div class="magenta_sync_result">
     <div>
-        <p>反映に利用されたサマリーID:</p>
-        <label>${summaryId}</label>
+        <p>summarId:</p>
+        <label>${input.summaryId}</label>
     </div>
     <div>
-        <p>実行モード:</p>
-        #if(!$input.run)
-            <label>ドライラン</label>
+        <p>run mode:</p>
+        #if($input.run)
+            <label>run</label>
         #else
-            <label>本実行</label>
+            <label>dry run</label>
         #end
     </div>
     <div>
-        <p>強制モード:</p>
-        #if(!$input.force)
-            <label>比較先にのみ存在する場合は削除しない</label>
+        <p>force mode:</p>
+        #if($input.force)
+            <label>force delete to compare</label>
         #else
-            <label>比較先にのみ存在する場合でも強制的に削除する</label>
+            <label>no delete only compare</label>
         #end
     </div>
     <div>
-        <p>差分履歴削除モード:</p>
-        #if(!$input.loose)
-            <label>比較元／比較先の組み合わせに関連する差分履歴を削除する</label>
+        <p>loose mode:</p>
+        #if($input.loose)
+            <label>delete only summaryId related log</label>
         #else
-            <label>指定されたサマリーIDに関連する差分履歴のみ削除する</label>
+            <label>delete base and compare related log</label>
         #end
     </div>
 </div>
 
 <script type="text/javascript">
-    function avocadoSyncSlider(e) {
+    function magentaSyncSlider(e) {
         let id = e.target.id;
-        let name = id.substring('avocado_sync_open_'.length);
-        let slideId = "avocado_sync_slide_" + name;
+        let name = id.substring('magenta_sync_open_'.length);
+        let slideId = "magenta_sync_slide_" + name;
         let slide = document.getElementById(slideId);
 
         if (slide.style.display == '' || slide.style.display == 'none') {
@@ -381,10 +380,10 @@
         }
     }
 
-    let syncOpenList = document.querySelectorAll('div.avocado_sync_open');
+    let syncOpenList = document.querySelectorAll('div.magenta_sync_open');
     if (syncOpenList != void(0)) {
         for (let i = 0; i < syncOpenList.length; i++) {
-            syncOpenList[i].addEventListener('click', avocadoSyncSlider)
+            syncOpenList[i].addEventListener('click', magentaSyncSlider)
         }
     }
 </script>
