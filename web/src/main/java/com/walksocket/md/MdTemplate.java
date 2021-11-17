@@ -45,14 +45,14 @@ public class MdTemplate {
     this.path = path;
 
     Properties prop = new Properties();
-    prop.setProperty("input.encoding", StandardCharsets.UTF_8.name());
+    prop.setProperty("resource.default_encoding", StandardCharsets.UTF_8.name());
     prop.setProperty("output.encoding", StandardCharsets.UTF_8.name());
-    prop.setProperty("resource.loader", "class");
+    prop.setProperty("resource.loaders", "class");
     prop.setProperty("class.resource.loader.class",
         "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
     prop.setProperty("runtime.log.logsystem.class",
         "org.apache.velocity.runtime.log.NullLogSystem");
-    prop.setProperty("eventhandler.referenceinsertion.class",
+    prop.setProperty("event_handler.reference_insertion.class",
         MdTemplateHandler.class.getName());
     engine.init(prop);
   }
@@ -66,15 +66,15 @@ public class MdTemplate {
     this.path = path;
 
     Properties prop = new Properties();
-    prop.setProperty("input.encoding", StandardCharsets.UTF_8.name());
+    prop.setProperty("resource.default_encoding", StandardCharsets.UTF_8.name());
     prop.setProperty("output.encoding", StandardCharsets.UTF_8.name());
-    prop.setProperty("resource.loader", "file");
-    prop.setProperty("file.resource.loader.class",
+    prop.setProperty("resource.loaders", "file");
+    prop.setProperty("resource.loader.file.class",
         "org.apache.velocity.runtime.resource.loader.FileResourceLoader");
-    prop.setProperty("file.resource.loader.path", basePath);
+    prop.setProperty("resource.loader.file.path", basePath);
     prop.setProperty("runtime.log.logsystem.class",
         "org.apache.velocity.runtime.log.NullLogSystem");
-    prop.setProperty("eventhandler.referenceinsertion.class",
+    prop.setProperty("event_handler.reference_insertion.class",
         MdTemplateHandler.class.getName());
     engine.init(prop);
   }

@@ -89,16 +89,16 @@ public class MdServer implements AutoCloseable {
     serviceMessageReserved = Executors.newSingleThreadScheduledExecutor();
     serviceMessageReserved.scheduleAtFixedRate(
         new MdServiceReserved(queue),
-        5,
-        5,
+        3,
+        3,
         TimeUnit.SECONDS);
 
     // init processing message service
     serviceMessageProcessing = Executors.newSingleThreadScheduledExecutor();
     serviceMessageProcessing.scheduleAtFixedRate(
         new MdServiceProcessing(queue),
-        5,
-        5,
+        3,
+        3,
         TimeUnit.SECONDS);
 
     // init server service

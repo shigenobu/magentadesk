@@ -258,24 +258,22 @@
                             / ${table.tableComment}
                         #end
 
-##                        <?php foreach (\Anet\magenta\Md\Relation::getRelations($table->tableName) as $relation): ?>
-##                        [<?php echo F::h($relation->getP2CRelation()); ?>]
-##                        <?php endforeach; ?>
+                        #foreach($relation in $relationManager.getRelationListForTable($table.tableName))
+                            [${relation.getP2CRelation()}]
+                        #end
                     </div>
                     <div>
                         <table class="magenta_diff_list">
                             <thead>
                             <tr>
                                 <td>
-                                    <p>SYNC</p>
+                                    <p>DIFF SEQ</p>
                                     <p><input type="checkbox" id="magenta_diff_check_table_${table.tableName}" class="magenta_diff_check_all"/></p>
                                 </td>
-##                                #set($columnNames = [])
+                                #set($columnNames = [])
                                 #foreach($column in $table.columns)
                                     <td>
-##                                        <?php
-##                                            $columnNames[] = $column->columnName;
-##                                        ?>
+                                        <!-- $columnNames.add($column.columnName) -->
                                         #if($column.isPrimary)
                                             <u>
                                         #end
@@ -306,12 +304,13 @@
                                         #set($values = $record.compareValues)
                                     #end
                                     <td rowspan="2">
-                                        <input type="checkbox" name="diffSeqs[]"
+                                        <label>
+                                        <p><input type="checkbox" name="diffSeqs[]"
                                                value="${record.diffSeq}"
                                                class="magenta_diff_check_table_${table.tableName} magenta_diff_check_value"
-    ##                                    <?php echo \Anet\magenta\Md\Relation::getLinkId($table->tableName, $columnNames, $values) ?>
-    ##                                    <?php echo \Anet\magenta\Md\Relation::getLinkTarget($table->tableName, $columnNames, $values) ?>
-                                        />
+                                               ${relationManager.getLinkId($table.tableName, $columnNames, $values)}
+                                               ${relationManager.getLinkTarget($table.tableName, $columnNames, $values)}
+                                        /></p><p>${record.diffSeq}</p></label>
                                     </td>
                                     #set($idx = 0)
                                     #foreach($value in $record.baseValues)

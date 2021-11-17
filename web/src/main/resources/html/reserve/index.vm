@@ -62,6 +62,6 @@
                     clearInterval(pid);
                 }
             });
-        }, 3000);
+        }, 2500);
     });
 </script>

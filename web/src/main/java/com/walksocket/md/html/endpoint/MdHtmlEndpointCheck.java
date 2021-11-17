@@ -2,16 +2,22 @@ package com.walksocket.md.html.endpoint;
 
 import com.walksocket.md.*;
 import com.walksocket.md.db.MdDbRecord;
+import com.walksocket.md.html.MdHtmlRelation;
+import com.walksocket.md.html.MdHtmlRelationManager;
 import com.walksocket.md.html.MdHtmlStatus;
 import com.walksocket.md.input.MdInputDiff;
 import com.walksocket.md.input.MdInputMaintenance;
 import com.walksocket.md.input.MdInputSync;
+import com.walksocket.md.input.member.MdInputMemberRelation;
 import com.walksocket.md.output.MdOutputDiff;
 import com.walksocket.md.output.MdOutputMaintenance;
 import com.walksocket.md.output.MdOutputSync;
 import com.walksocket.md.server.MdServerRequest;
 import com.walksocket.md.server.MdServerResponse;
 import com.walksocket.md.sqlite.MdSqliteConnection;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * html endpoint check.
@@ -88,6 +94,25 @@ public class MdHtmlEndpointCheck extends MdHtmlEndpointAbstract {
       if (mdMode == MdMode.DIFF) {
         template.assign("input", MdJson.toObject(input, MdInputDiff.class));
         template.assign("output", MdJson.toObject(output, MdOutputDiff.class));
+
+        // relation
+        MdHtmlRelationManager relationManager = new MdHtmlRelationManager();
+        String sql = String.format(
+            "SELECT t2.relations " +
+                "FROM preset as t1 join diffConfig as t2 on t1.diffConfigId = t2.diffConfigId " +
+                "WHERE presetId = %s", presetId);
+        MdDbRecord r = con.getRecord(sql);
+        if (r != null && !r.getOrEmpty("relations").equals("")) {
+          MdInputMemberRelation[] relations = MdJson.toObject(r.get("relations"), MdInputMemberRelation[].class);
+          for (MdInputMemberRelation relation : relations) {
+            relationManager.add(relation);
+          }
+        }
+        for (MdHtmlRelation relation : relationManager.getRelationList()) {
+          MdLogger.trace(relation);
+        }
+        template.assign("relationManager", relationManager);
+
       } else if (mdMode == MdMode.SYNC) {
         template.assign("input", MdJson.toObject(input, MdInputSync.class));
         template.assign("output", MdJson.toObject(output, MdOutputSync.class));

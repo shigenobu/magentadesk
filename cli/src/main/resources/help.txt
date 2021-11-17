@@ -1,5 +1,5 @@
 magentadesk for cli - Get MariaDB Table Difference, And Reflect.
-version 0.3.0
+version 0.4.0
 
 Usage:
     echo '${json}' \
@@ -33,5 +33,5 @@ Usage:
   24: no exists diff seqs
   31: not success code
   32: not success status
-  41: error local database
+  41: error local database (web only)
   99: unknown

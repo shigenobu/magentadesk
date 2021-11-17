@@ -63,10 +63,11 @@ header nav ol li {
     background-color: #82878c;
     border-color: #82878c;
     border-radius: 1px;
-    padding: 0px 10px 0px 10px;
+    padding: 2px 0px 0px 0px;
 }
 header nav ol li a {
     font-size: 10px;
+    display: block;
 }
 
 

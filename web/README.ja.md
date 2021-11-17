@@ -1,5 +1,9 @@
 # magentadesk for web
 
+webバイナリでは、'api'としても'html'としても機能します。  
+htmlの場合、デフォルトで`http://localhost:8710`でアクセスできます。  
+apiの場合のメッセージ仕様は以下となります。  
+
 ### Jsonフォーマット
 
 * [diff](../doc/json_diff.ja.md)

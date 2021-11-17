@@ -110,7 +110,7 @@
                 <table class="magenta_sync_list">
                     <thead>
                     <tr>
-                        <td>SYNC SEQ</td>
+                        <td>DIFF SEQ</td>
                         #foreach($column in $table.columns)
                         <td>
                             #if($column.isPrimary)

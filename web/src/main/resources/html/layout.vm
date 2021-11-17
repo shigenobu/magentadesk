@@ -29,7 +29,7 @@
 <div class="container">
     <main>
         ${MdTemplateUtils.nonEscape($content)}
-        <img id="loading" src="/asset/img/three-dots.svg" class="overlay" />
+        <img id="loading" src="/asset/img/loading.svg" class="overlay" />
         <div id="dialog"><pre id="dialog-content"></pre></div>
         <footer>
             <a href="https://github.com/shigenobu/magentadesk" target="_blank">@magentadesk</a>

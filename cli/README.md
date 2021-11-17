@@ -6,6 +6,23 @@
 * [sync](../doc/json_sync.md)
 * [maintenance](../doc/json_maintenance.md)
 
+### Exit code
+
+* 0:  success
+* 1:  error
+* 11: invalid args
+* 12: invalid stdin
+* 13: invalid input
+* 14: invalid version
+* 21: disallow simultaneous execution
+* 22: in maintenance
+* 23: no exists base or compare
+* 24: no exists diff seqs
+* 31: not success code
+* 32: not success status
+* 41: error local database (web only)
+* 99: unknown
+
 ### Outline
 
 (mode=diff)

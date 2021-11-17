@@ -1,5 +1,9 @@
 # magentadesk for web
 
+web binary is used for 'api' and 'html'.  
+html is default access to `http://localhost:8710`.  
+api message format is below.  
+
 ### Json Format
 
 * [diff](../doc/json_diff.md)
