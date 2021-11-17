@@ -42,7 +42,9 @@
                 </td>
                 <td>
                     #foreach($p in $option.includeTableLikePatterns)
-                        <input type="text" placeholder="m_*" name="includeTableLikePatterns[]" value="${MdTemplateUtils.nonEscape($p)}">
+                        <div>
+                            <input type="text" placeholder="m_*" class="short" name="includeTableLikePatterns[]" value="${MdTemplateUtils.nonEscape($p)}">
+                        </div>
                     #end
                 </td>
             </tr>
@@ -52,7 +54,9 @@
                 </td>
                 <td>
                     #foreach($p in $option.excludeTableLikePatterns)
-                        <input type="text" placeholder="m_admin_%" name="excludeTableLikePatterns[]" value="${MdTemplateUtils.nonEscape($p)}">
+                        <div>
+                            <input type="text" placeholder="m_admin_%" class="short" name="excludeTableLikePatterns[]" value="${MdTemplateUtils.nonEscape($p)}">
+                        </div>
                     #end
                 </td>
             </tr>
@@ -103,7 +107,7 @@
                     #set($idx = 0)
                     #foreach($c in $conditions)
                         <ol>
-                            <li><input type="text" placeholder="t1" name="conditions_tableName${idx}" value="${MdTemplateUtils.nonEscape($c.tableName)}"></li>
+                            <li><input type="text" placeholder="t1" class="short" name="conditions_tableName${idx}" value="${MdTemplateUtils.nonEscape($c.tableName)}"></li>
                             <li><input type="text" placeholder="upd_date > (now() - interval 10 day)" name="conditions_expression${idx}" value="${MdTemplateUtils.nonEscape($c.expression)}"></li>
                         </ol>
                         #set($idx = $idx + 1)
@@ -114,17 +118,18 @@
                 <td>
                     <div>relations</div>
                     <ol>
-                        <li>from</li>
-                        <li>to</li>
+                        <li>from =&gt; to</li>
                     </ol>
                 <td>
                     #set($idx = 0)
                     #foreach($r in $relations)
-                        <div>
+                        <ol>
+                            <li>
                             <input type="text" placeholder="child.pk" class="short" name="relations_from${idx}" value="${MdTemplateUtils.nonEscape($r.from)}">
                             =&gt;
                             <input type="text" placeholder="parent.virtual_fk" class="short" name="relations_to${idx}" value="${MdTemplateUtils.nonEscape($r.to)}">
-                        </div>
+                            </li>
+                        </ol>
                         #set($idx = $idx + 1)
                     #end
                 </td>

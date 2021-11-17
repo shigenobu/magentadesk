@@ -9,6 +9,11 @@ input, textarea, select {
 input[type=submit] {
     margin: -2px 0px 0px 0px;
 }
+input:focus, textarea:focus, select:focus {
+    border: solid thin #dad55e;
+    background-color: #fffa90;
+    outline: 0;
+}
 
 /* img */
 img.overlay {

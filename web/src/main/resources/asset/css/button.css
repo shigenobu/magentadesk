@@ -1,7 +1,7 @@
 /* insert */
 a.btn-insert, input.btn-insert {
     display: inline-block;
-    max-width: 180px;
+    max-width: 300px;
     text-align: left;
     border: 2px solid brown;
     font-size: 12px;
@@ -23,7 +23,7 @@ a.btn-insert:hover, input.btn-insert:hover {
 /* edit */
 a.btn-edit {
     display: inline-block;
-    max-width: 180px;
+    max-width: 300px;
     text-align: left;
     border: 2px solid darkblue;
     font-size: 12px;
@@ -45,7 +45,7 @@ a.btn-edit:hover {
 /* detail */
 a.btn-detail {
     display: inline-block;
-    max-width: 180px;
+    max-width: 300px;
     text-align: left;
     border: 2px solid cadetblue;
     font-size: 12px;
@@ -67,7 +67,7 @@ a.btn-detail:hover {
 /* preset */
 a.btn-preset {
     display: inline-block;
-    max-width: 180px;
+    max-width: 300px;
     text-align: left;
     border: 2px solid forestgreen;
     font-size: 12px;
@@ -89,7 +89,7 @@ a.btn-preset:hover {
 /* back */
 a.btn-back {
     display: inline-block;
-    max-width: 180px;
+    max-width: 300px;
     text-align: left;
     border: 2px solid cyan;
     font-size: 12px;
@@ -111,7 +111,7 @@ a.btn-back:hover {
 /* delete */
 a.btn-delete {
     display: inline-block;
-    max-width: 180px;
+    max-width: 300px;
     text-align: left;
     border: 2px solid mediumvioletred;
     font-size: 12px;
@@ -132,7 +132,7 @@ a.btn-delete:hover {
 /* json */
 input.btn-json {
     display: inline-block;
-    max-width: 180px;
+    max-width: 300px;
     text-align: left;
     border: 2px solid white;
     font-size: 10px;
@@ -154,7 +154,7 @@ input.btn-json:hover {
 /* execute */
 a.btn-execute, input.btn-execute {
     display: inline-block;
-    max-width: 180px;
+    max-width: 300px;
     text-align: left;
     border: 2px solid white;
     font-size: 10px;
@@ -176,7 +176,7 @@ a.btn-execute:hover, input.btn-execute:hover {
 /* update */
 input.btn-update {
     display: inline-block;
-    max-width: 180px;
+    max-width: 300px;
     text-align: left;
     border: 2px solid navy;
     font-size: 12px;

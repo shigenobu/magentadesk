@@ -4,7 +4,9 @@ $(function() {
         e.target.form.querySelectorAll('input').forEach(e => e.setCustomValidity(""));
 
         const invalid = e.target.form.querySelectorAll('input:invalid');
-        invalid.forEach(e => e.setCustomValidity("NG"));
+        invalid.forEach(e => {
+                e.setAttribute("style", "border: ridge medium red");
+        });
 
         if (invalid.length > 0){
             return false;

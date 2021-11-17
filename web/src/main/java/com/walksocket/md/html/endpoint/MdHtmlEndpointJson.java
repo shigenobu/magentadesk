@@ -1,6 +1,7 @@
 package com.walksocket.md.html.endpoint;
 
 import com.walksocket.md.MdJson;
+import com.walksocket.md.MdMode;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.html.MdHtmlDesk;
 import com.walksocket.md.html.MdHtmlStatus;
@@ -21,45 +22,33 @@ public class MdHtmlEndpointJson extends MdHtmlEndpointAbstract {
 
   @Override
   public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws Exception {
-    String path = request.getPath();
-    MdHtmlDesk desk = new MdHtmlDesk(con);
-    if (path.equals("/json/maintenance/")) {
-      maintenance(request, response, desk);
+    // method check
+    if (!request.isGet()) {
+      // method not allowed
+      sendOther(response, MdHtmlStatus.METHOD_NOT_ALLOWED);
       return;
-    } else if (path.equals("/json/diff/")) {
+    }
+
+    // get mode
+    MdMode mdMode = getMode(request);
+    if (mdMode == null) {
+      // not found
+      sendOther(response, MdHtmlStatus.NOT_FOUND);
+      return;
+    }
+
+    MdHtmlDesk desk = new MdHtmlDesk(con);
+    if (mdMode == MdMode.DIFF) {
       diff(request, response, desk);
       return;
-    } else if (path.equals("/json/sync/")) {
+    } else if (mdMode == MdMode.SYNC) {
       sync(request, response, desk);
+      return;
+    } else if (mdMode == MdMode.MAINTENANCE) {
+      maintenance(request, response, desk);
       return;
     }
     sendOther(response, MdHtmlStatus.NOT_FOUND);
-  }
-
-  /**
-   * maintenance.
-   * @param request request
-   * @param response response
-   * @param desk desk
-   * @throws IOException IO error
-   * @throws SQLException sql error
-   */
-  private void maintenance(MdServerRequest request, MdServerResponse response, MdHtmlDesk desk) throws IOException, SQLException {
-    // param
-    String tmpProjectId = request.getQueryParam("projectId");
-    if (MdUtils.isNullOrEmpty(tmpProjectId)) {
-      sendOther(response, MdHtmlStatus.BAD_REQUEST);
-      return;
-    }
-    int projectId = Integer.parseInt(tmpProjectId);
-
-    // input
-    MdInputMaintenance input = new MdInputMaintenance();
-    desk.makeMaintenanceInput(projectId, input);
-    String json = MdJson.toJsonStringFriendly(input);
-
-    // send
-    sendOkJson(response, json);
   }
 
   /**
@@ -127,4 +116,31 @@ public class MdHtmlEndpointJson extends MdHtmlEndpointAbstract {
     // send
     sendOkJson(response, json);
   }
+
+  /**
+   * maintenance.
+   * @param request request
+   * @param response response
+   * @param desk desk
+   * @throws IOException IO error
+   * @throws SQLException sql error
+   */
+  private void maintenance(MdServerRequest request, MdServerResponse response, MdHtmlDesk desk) throws IOException, SQLException {
+    // param
+    String tmpProjectId = request.getQueryParam("projectId");
+    if (MdUtils.isNullOrEmpty(tmpProjectId)) {
+      sendOther(response, MdHtmlStatus.BAD_REQUEST);
+      return;
+    }
+    int projectId = Integer.parseInt(tmpProjectId);
+
+    // input
+    MdInputMaintenance input = new MdInputMaintenance();
+    desk.makeMaintenanceInput(projectId, input);
+    String json = MdJson.toJsonStringFriendly(input);
+
+    // send
+    sendOkJson(response, json);
+  }
+
 }

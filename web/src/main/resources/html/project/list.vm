@@ -45,7 +45,7 @@
                 </td>
                 <td>
                     <div class="vbox">
-                        <form method="post" action="/json/maintenance/">
+                        <form method="get" action="/json/maintenance/">
                             <input type="hidden" name="projectId" value="${record.get("projectId")}" />
                             <input type="submit" class="btn-json" value="MOSTLY INPUT MAINTENANCE JSON" />
                         </form>

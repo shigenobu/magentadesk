@@ -27,23 +27,18 @@ table.list tbody tr:hover > td {
     background-color: #fddfdf;
 }
 table.list tbody td {
-    max-width: 180px;
+    max-width: 480px;
     white-space: nowrap;
     word-wrap: break-word;
     text-overflow: ellipsis;
     overflow: hidden;
-}
-@media screen and (min-width: 960px) {
-    table.list tbody td {
-        max-width: 360px;
-    }
 }
 table.list tbody td:nth-child(n + 2) {
     min-width: 50px;
 }
 table.list tbody td:nth-child(n + 2):hover {
     white-space: normal;
-    overflow: scroll;
+    overflow: auto;
     text-overflow: unset;
 }
 table.list tbody td.strong {
@@ -61,7 +56,7 @@ table.input tbody td:nth-child(1) {
     padding: 5px 10px 5px 10px;
     background-color: black;
     color: white;
-    min-width: 150px;
+    min-width: 200px;
 }
 table.input tbody td {
     background-color: ghostwhite;
@@ -72,13 +67,13 @@ table.input label {
     white-space: nowrap;
 }
 table.input input[type=text] {
-    min-width: 600px;
+    min-width: 800px;
 }
 table.input input[type=text].short {
-    min-width: 150px;
+    min-width: 200px;
 }
 table.input input[type=number] {
-    min-width: 150px;
+    min-width: 200px;
 }
 table.input input[type=radio] {
     margin-right: 4px;
@@ -89,7 +84,7 @@ table.input input[type=checkbox] {
     margin-left: 10px;
 }
 table.input select {
-    min-width: 150px;
+    min-width: 200px;
 }
 table.input input:read-only {
     background-color: #e0e0e0;
@@ -98,8 +93,8 @@ table.input input:-moz-read-only {
     background-color: #e0e0e0;
 }
 table.input textarea {
-    min-width: 600px;
-    min-height: 100px;
+    min-width: 800px;
+    min-height: 200px;
     resize: vertical;
 }
 table.input textarea:read-only {
@@ -119,25 +114,4 @@ table.input ol {
     list-style-type: none;
     margin: 2px;
     padding: 2px;
-}
-@media screen and (min-width: 960px) {
-    table.input tbody td:nth-child(1) {
-        min-width: 200px;
-    }
-    table.input input[type=text] {
-        min-width: 800px;
-    }
-    table.input input[type=text].short {
-        min-width: 200px;
-    }
-    table.input input[type=number] {
-        min-width: 200px;
-    }
-    table.input select {
-        min-width: 200px;
-    }
-    table.input textarea {
-        min-width: 800px;
-        min-height: 100px;
-    }
 }
