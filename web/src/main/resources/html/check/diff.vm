@@ -51,6 +51,7 @@
         word-wrap: break-word;
         text-overflow: ellipsis;
         overflow: hidden;
+        border: 1px solid gainsboro;
     }
     table.magenta_diff_list tbody td:nth-child(n + 2) {
         min-width: 50px;
@@ -505,7 +506,22 @@
         }
     }
 
+    function magentaDiffCheckColor(node)
+    {
+        if (node.checked) {
+            node.closest('tr').childNodes.forEach(function (c) {
+                c.style = "background-color: #b8860b; opacity: 0.6;";
+            });
+        } else {
+            node.closest('tr').childNodes.forEach(function (c) {
+                c.style = "";
+            });
+        }
+    }
+
     function magentaDiffCheckValue(e) {
+        magentaDiffCheckColor(e.target);
+
         let targetStr = e.target.dataset.target;
         if (targetStr == void(0)) {
             return;
@@ -544,6 +560,7 @@
     let diffCheckValueList = document.querySelectorAll('input.magenta_diff_check_value')
     if (diffCheckValueList != void(0)) {
         for (let i = 0; i < diffCheckValueList.length; i++) {
+            magentaDiffCheckColor(diffCheckValueList[i]);
             diffCheckValueList[i].addEventListener('change', magentaDiffCheckValue)
         }
     }
