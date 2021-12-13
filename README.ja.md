@@ -26,6 +26,16 @@ CLI版のドキュメントは[こちら](cli/README.ja.md)。
 |--logPath|ログを出力するファイルパス|stdoutとすると標準出力へ、stderrとすると標準エラー出力に出力します|
 |--addSeconds|ログに記載される時刻を補正する数字|デフォルトは60x60x9、つまり日本時間となります|
 
+(フル)  
+
+    echo '${json}' \
+      | [MD_ENV=${mdEnv}] \
+        [MD_OUTPUT=${mdOutput}] \
+        [MD_LIMIT_LENGTH=${mdLimitLength}] \
+        [MD_LIMIT_MISMATCH_COUNT=${mdLimitMismatchCount}] \
+        [MD_HOME=${mdHome}] \
+          java -jar magentadesk-cli.jar --mode=${mode} [--logPath=${logPath}] [--addSeconds=${addSeconds}]
+
 ### WEB
 
 標準入力不要で、HTTPサーバが立ち上がります。  
@@ -41,13 +51,24 @@ WEB版のドキュメントは[こちら](web/README.ja.md)。
 |--webHost|待受ホスト|デフォルは0.0.0.0。|
 |--webPort|待受ポート|デフォルは8710。|
 
+(フル)  
+
+    [MD_ENV=${mdEnv}] \
+    [MD_OUTPUT=${mdOutput}] \
+    [MD_LIMIT_LENGTH=${mdLimitLength}] \
+    [MD_LIMIT_MISMATCH_COUNT=${mdLimitMismatchCount}] \
+    [MD_HOME=${mdHome}] \
+      java -jar magentadesk-web.jar [--logPath=${logPath}] [--addSeconds=${addSeconds}] \
+        [--webHost=${webHost}] [--webPort=${webPort}]
+
 ### 環境変数  
 
 |名称|説明|
 |---|---|
 |MD_ENV|DEBUGを指定すると、詳細なログを出力します。|
 |MD_OUTPUT|PRETTYを指定すると、標準出力の結果のJSONが整形されます。|
-|MD_LIMIT_LENGTH|diffの実行結果の値において、このバイト数以上になると、ハッシュ化されます。デフォルト1000です。|
+|MD_LIMIT_LENGTH|diffの実行結果の値において、このバイト数を超えると、ハッシュ化されます。デフォルト1000です。|
+|MD_LIMIT_MISMATCH_COUNT|diffの実行結果の'mismatchRecordTables.records'の件数がこれを超えると、空になります。デフォルト10000です。|
 |MD_HOME|指定しないと、${HOME}/.magentadeskとなり、ここにsync時の任意コマンド実行時の一時ファイルが格納されます。|
 
 ### 注意事項

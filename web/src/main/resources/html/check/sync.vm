@@ -61,6 +61,12 @@
     table.magenta_sync_list tbody td.magenta_nosync_column {
         background-color: yellow;
     }
+    table.magenta_sync_list tbody td span.all_null {
+        color: whitesmoke;
+    }
+    table.magenta_sync_list tbody td hr {
+        border: 1px dashed whitesmoke;
+    }
     div.magenta_sync_result {
         display: block;
         border: 2px dotted gray;
@@ -138,21 +144,43 @@
                     <tbody>
                     #foreach($record in $table.records)
                     <tr>
+                        #set($allNull = $MdTemplateUtils.isAllNull($record.values))
                         <td>
                             ${record.diffSeq}
+                            #if($allNull)
+                                <span class="all_null">[P]</span>
+                            #end
                         </td>
+                        #set($idx = 0)
                         #foreach($value in $record.values)
                             <td>
-                            #set($null = "<NULL>")
-                            #set($empty = "<EMPTY>")
-                            #if($MdTemplateUtils.isNull($value))
-                                ${null}
-                            #elseif($value.equals(""))
-                                ${empty}
-                            #else
-                                ${value}
-                            #end
+                                #set($null = "<NULL>")
+                                #set($empty = "<EMPTY>")
+                                #if($MdTemplateUtils.isNull($value))
+                                    ${null}
+                                #elseif($value.equals(""))
+                                    ${empty}
+                                #else
+                                    ${value}
+                                #end
+
+                                #if($allNull)
+                                    <hr />
+                                    <span class="all_null">
+                                        #set($pValue = $record.previousValues.get($idx))
+                                        #set($null = "<NULL>")
+                                        #set($empty = "<EMPTY>")
+                                        #if($MdTemplateUtils.isNull($pValue))
+                                            ${null}
+                                        #elseif($pValue.equals(""))
+                                            ${empty}
+                                        #else
+                                            ${pValue}
+                                        #end
+                                    </span>
+                                #end
                             </td>
+                            #set($idx = $idx + 1)
                         #end
                     </tr>
                     #end

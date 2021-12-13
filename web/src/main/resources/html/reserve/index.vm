@@ -22,6 +22,14 @@
                 <div>${projectRecord.get("baseDatabase")} =&gt; ${projectRecord.get("compareDatabase")}</div>
             </td>
         </tr>
+        #if(!$presetRecord.getOrEmpty("presetId").equals(""))
+            <tr>
+                <td>preset</td>
+                <td>
+                    <div>${presetRecord.get("presetId")}:${presetRecord.get("title")}</div>
+                </td>
+            </tr>
+        #end
     </table>
 
     <div id="result" style="margin: 20px 0px 20px 0px;">

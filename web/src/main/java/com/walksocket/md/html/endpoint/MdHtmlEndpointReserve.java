@@ -54,6 +54,7 @@ public class MdHtmlEndpointReserve extends MdHtmlEndpointAbstract {
     template.assign("projectId", projectId);
 
     int presetId = 0;
+    MdDbRecord presetRecord = MdDbRecord.createEmptyRecord();
     if (mdMode == MdMode.DIFF || mdMode == MdMode.SYNC) {
       String tmpPresetId = request.getBodyParam("presetId");
       if (MdUtils.isNullOrEmpty(tmpPresetId)) {
@@ -61,8 +62,10 @@ public class MdHtmlEndpointReserve extends MdHtmlEndpointAbstract {
         return;
       }
       presetId = Integer.parseInt(tmpPresetId);
+      presetRecord = con.getRecord(String.format("SELECT presetId, title FROM preset WHERE presetId = %s", presetId));
     }
     template.assign("presetId", presetId);
+    template.assign("presetRecord", presetRecord);
 
     // make input
     MdInputAbstract input = null;

@@ -25,11 +25,15 @@ Cli document is [here](cli/README.md).
 |--logPath|log written path.|when 'stdout', write out to stdout, when 'stderr', write out to stderr.|
 |--addSeconds|add seconds in log time|default is 60x60x9, it means 'ja', if 0, it means 'en'.|
 
-(sample)
+(full)
 
     echo '${json}' \
-      | [MD_ENV=${mdEnv}] [MD_OUTPUT=${mdOutput}] [MD_LIMIT_LENGTH=${mdLimitLength}] [MD_HOME=${mdHome}] \
-        java -jar magentadesk-cli.jar --mode=${mode} [--logPath=${logPath}] [--addSeconds=${addSeconds}]
+      | [MD_ENV=${mdEnv}] \
+        [MD_OUTPUT=${mdOutput}] \
+        [MD_LIMIT_LENGTH=${mdLimitLength}] \
+        [MD_LIMIT_MISMATCH_COUNT=${mdLimitMismatchCount}] \
+        [MD_HOME=${mdHome}] \
+          java -jar magentadesk-cli.jar --mode=${mode} [--logPath=${logPath}] [--addSeconds=${addSeconds}]
 
 ### Usage by web
 
@@ -48,9 +52,13 @@ Web document is [here](web/README.md).
 |--webHost|listen host|default is 0.0.0.0.|
 |--webPort|listen port|default is 8710.|
 
-(sample)  
+(full)  
 
-    [MD_ENV=${mdEnv}] [MD_OUTPUT=${mdOutput}] [MD_LIMIT_LENGTH=${mdLimitLength}] [MD_HOME=${mdHome}] \
+    [MD_ENV=${mdEnv}] \
+    [MD_OUTPUT=${mdOutput}] \
+    [MD_LIMIT_LENGTH=${mdLimitLength}] \
+    [MD_LIMIT_MISMATCH_COUNT=${mdLimitMismatchCount}] \
+    [MD_HOME=${mdHome}] \
       java -jar magentadesk-web.jar [--logPath=${logPath}] [--addSeconds=${addSeconds}] \
         [--webHost=${webHost}] [--webPort=${webPort}]
 
@@ -61,6 +69,7 @@ Web document is [here](web/README.md).
 |MD_ENV|if 'DEBUG', log in detail.|
 |MD_OUTPUT|if 'PRETTY', write out json result in pretty.|
 |MD_LIMIT_LENGTH|when diff and over this, returned value is to hash. default is 1000.|
+|MD_LIMIT_MISMATCH_COUNT|when diff and over this, returned mismatch recods is convert empty. default is 10000.|
 |MD_HOME|default is ${HOME}/.magentadesk. There is a home directory, by commands which execute in sync and at local database storage.|
 
 ### Notice

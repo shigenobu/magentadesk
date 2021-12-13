@@ -2,6 +2,7 @@ package com.walksocket.md.template;
 
 import com.walksocket.md.MdUtils;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -164,6 +165,15 @@ public class MdTemplateUtils {
    */
   public static boolean isNull(Object src) {
     return src == null;
+  }
+
+  /**
+   * is all null.
+   * @param src src
+   * @return if all null, return true
+   */
+  public static boolean isAllNull(Collection src) {
+    return src.stream().allMatch(s -> s == null);
   }
 
   /**

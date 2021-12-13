@@ -252,7 +252,10 @@
                 #foreach($table in $output.mismatchRecordTables)
                 <li>
                     <div>
-                        ${table.records.size()} rows
+                        ${table.mismatchCount} rows
+                        #if($table.overflow)
+                            <b>OVERFLOW</b>
+                        #end
                         -
                         ${table.tableName}
                         #if(!$table.tableComment.equals(""))
@@ -263,105 +266,107 @@
                             [${relation.getP2CRelation()}]
                         #end
                     </div>
-                    <div>
-                        <table class="magenta_diff_list">
-                            <thead>
-                            <tr>
-                                <td>
-                                    <p>DIFF SEQ</p>
-                                    <p><input type="checkbox" id="magenta_diff_check_table_${table.tableName}" class="magenta_diff_check_all"/></p>
-                                </td>
-                                #set($columnNames = [])
-                                #foreach($column in $table.columns)
+                    #if(!$table.overflow)
+                        <div>
+                            <table class="magenta_diff_list">
+                                <thead>
+                                <tr>
                                     <td>
-                                        <!-- $columnNames.add($column.columnName) -->
-                                        #if($column.isPrimary)
-                                            <u>
-                                        #end
-                                        <div class="magenta_diff_open" id="magenta_diff_open_${table.tableName}_${column.columnName}">
-                                            ${column.columnName}
-                                            #if(!$column.columnComment.equals(""))
-                                                / ${column.columnComment}
-                                            #end
-                                        </div>
-                                        <div class="magenta_diff_slide" id="magenta_diff_slide_${table.tableName}_${column.columnName}">
-                                            ${column.columnType}
-                                            #if(!$column.columnCollation.equals(""))
-                                                (${column.columnCollation})
-                                            #end
-                                        </div>
-                                        #if($column.isPrimary)
-                                            </u>
-                                        #end
+                                        <p>DIFF SEQ</p>
+                                        <p><input type="checkbox" id="magenta_diff_check_table_${table.tableName}" class="magenta_diff_check_all"/></p>
                                     </td>
-                                #end
-                            </tr>
-                            </thead>
-                            <tbody>
-                            #foreach($record in $table.records)
-                                <tr>
-                                    #set($values = $record.baseValues)
-                                    #if($values.size == 0 || !$values.get(0))
-                                        #set($values = $record.compareValues)
-                                    #end
-                                    <td rowspan="2">
-                                        <label>
-                                        <p><input type="checkbox" name="diffSeqs[]"
-                                               value="${record.diffSeq}"
-                                               class="magenta_diff_check_table_${table.tableName} magenta_diff_check_value"
-                                               ${relationManager.getLinkId($table.tableName, $columnNames, $values)}
-                                               ${relationManager.getLinkTarget($table.tableName, $columnNames, $values)}
-                                        /></p><p>${record.diffSeq}</p></label>
-                                    </td>
-                                    #set($idx = 0)
-                                    #foreach($value in $record.baseValues)
+                                    #set($columnNames = [])
+                                    #foreach($column in $table.columns)
                                         <td>
-                                            #set($null = "<NULL>")
-                                            #set($empty = "<EMPTY>")
-                                            #if($MdTemplateUtils.isNull($value))
-                                                ${null}
-                                            #elseif($value.equals(""))
-                                                ${empty}
-                                            #else
-                                                ${value}
+                                            <!-- $columnNames.add($column.columnName) -->
+                                            #if($column.isPrimary)
+                                                <u>
                                             #end
-                                            #set($idx = $idx + 1)
+                                            <div class="magenta_diff_open" id="magenta_diff_open_${table.tableName}_${column.columnName}">
+                                                ${column.columnName}
+                                                #if(!$column.columnComment.equals(""))
+                                                    / ${column.columnComment}
+                                                #end
+                                            </div>
+                                            <div class="magenta_diff_slide" id="magenta_diff_slide_${table.tableName}_${column.columnName}">
+                                                ${column.columnType}
+                                                #if(!$column.columnCollation.equals(""))
+                                                    (${column.columnCollation})
+                                                #end
+                                            </div>
+                                            #if($column.isPrimary)
+                                                </u>
+                                            #end
                                         </td>
                                     #end
                                 </tr>
-                                <tr>
-                                    #set($idx = 0)
-                                    #foreach($value in $record.compareValues)
-                                        #set($cls = "")
-                                        #if($MdTemplateUtils.isNull($record.baseValues.get($idx)) && $MdTemplateUtils.isNull($record.compareValues.get($idx)))
-                                            #set($cls = "")
-                                        #elseif($MdTemplateUtils.isNull($record.baseValues.get($idx)) && $MdTemplateUtils.isNotNull($record.compareValues.get($idx)))
-                                            #set($cls = "magenta_diff_column")
-                                        #elseif($MdTemplateUtils.isNotNull($record.baseValues.get($idx)) && $MdTemplateUtils.isNull($record.compareValues.get($idx)))
-                                            #set($cls = "magenta_diff_column")
-                                        #elseif(!$record.baseValues.get($idx).equals($record.compareValues.get($idx)))
-                                            #set($cls = "magenta_diff_column")
-                                        #else
-                                            #set($cls = "")
+                                </thead>
+                                <tbody>
+                                #foreach($record in $table.records)
+                                    <tr>
+                                        #set($values = $record.baseValues)
+                                        #if($values.size == 0 || !$values.get(0))
+                                            #set($values = $record.compareValues)
                                         #end
-                                        <td class="${cls}">
-                                            #set($null = "<NULL>")
-                                            #set($empty = "<EMPTY>")
-                                            #if($MdTemplateUtils.isNull($value))
-                                                ${null}
-                                            #elseif($value.equals(""))
-                                                ${empty}
-                                            #else
-                                                ${value}
-                                            #end
-                                            #set($idx = $idx + 1)
+                                        <td rowspan="2">
+                                            <label>
+                                            <p><input type="checkbox" name="diffSeqs[]"
+                                                   value="${record.diffSeq}"
+                                                   class="magenta_diff_check_table_${table.tableName} magenta_diff_check_value"
+                                                   ${relationManager.getLinkId($table.tableName, $columnNames, $values)}
+                                                   ${relationManager.getLinkTarget($table.tableName, $columnNames, $values)}
+                                            /></p><p>${record.diffSeq}</p></label>
                                         </td>
-                                    #end
-                                </tr>
+                                        #set($idx = 0)
+                                        #foreach($value in $record.baseValues)
+                                            <td>
+                                                #set($null = "<NULL>")
+                                                #set($empty = "<EMPTY>")
+                                                #if($MdTemplateUtils.isNull($value))
+                                                    ${null}
+                                                #elseif($value.equals(""))
+                                                    ${empty}
+                                                #else
+                                                    ${value}
+                                                #end
+                                                #set($idx = $idx + 1)
+                                            </td>
+                                        #end
+                                    </tr>
+                                    <tr>
+                                        #set($idx = 0)
+                                        #foreach($value in $record.compareValues)
+                                            #set($cls = "")
+                                            #if($MdTemplateUtils.isNull($record.baseValues.get($idx)) && $MdTemplateUtils.isNull($record.compareValues.get($idx)))
+                                                #set($cls = "")
+                                            #elseif($MdTemplateUtils.isNull($record.baseValues.get($idx)) && $MdTemplateUtils.isNotNull($record.compareValues.get($idx)))
+                                                #set($cls = "magenta_diff_column")
+                                            #elseif($MdTemplateUtils.isNotNull($record.baseValues.get($idx)) && $MdTemplateUtils.isNull($record.compareValues.get($idx)))
+                                                #set($cls = "magenta_diff_column")
+                                            #elseif(!$record.baseValues.get($idx).equals($record.compareValues.get($idx)))
+                                                #set($cls = "magenta_diff_column")
+                                            #else
+                                                #set($cls = "")
+                                            #end
+                                            <td class="${cls}">
+                                                #set($null = "<NULL>")
+                                                #set($empty = "<EMPTY>")
+                                                #if($MdTemplateUtils.isNull($value))
+                                                    ${null}
+                                                #elseif($value.equals(""))
+                                                    ${empty}
+                                                #else
+                                                    ${value}
+                                                #end
+                                                #set($idx = $idx + 1)
+                                            </td>
+                                        #end
+                                    </tr>
                                 #end
-                            </tbody>
-                        </table>
-                    </div>
+                                </tbody>
+                            </table>
+                        </div>
+                    #end
                 </li>
                 #end
             </ul>
@@ -435,19 +440,21 @@
             return false;
         }
         if (mode == 'each') {
-            let anyChecked = false;
+            let checkLen = 0;
             let diffSeqs = document.getElementsByName('diffSeqs[]')
             if (diffSeqs != void(0)) {
                 for (let i = 0; i < diffSeqs.length; i++) {
                     if (diffSeqs[i].checked) {
-                        anyChecked = true;
-                        break;
+                        checkLen++;
                     }
                 }
             }
-            if (!anyChecked) {
+            if (checkLen == 0) {
                 alert("NO CHECK");
-                return;
+                return false;
+            }
+            if (!confirm("[SYNC " + checkLen.toString() + " record(s)] OK ?")) {
+                return false;
             }
         }
 
