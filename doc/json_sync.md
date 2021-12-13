@@ -91,7 +91,11 @@ web: response 200 /api/sync/check.json
           "records": [
             {
               "diffSeq": XXX,
+              // synced value, equal to base values.
               "values": [],
+              // just before synced value, equal to compare values.
+              "previousValues": [],
+              // 'values[i]' and 'previousValues[i]' is different.
               "changes": []
             }
           ]

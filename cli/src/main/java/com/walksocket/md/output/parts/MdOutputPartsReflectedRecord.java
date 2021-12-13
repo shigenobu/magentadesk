@@ -18,10 +18,16 @@ public class MdOutputPartsReflectedRecord extends MdValue {
   public long diffSeq;
 
   /**
-   * values.
+   * values (base values).
    */
   @Expose
   public List<String> values;
+
+  /**
+   * previous values (compare values).
+   */
+  @Expose
+  public List<String> previousValues;
 
   /**
    * changes.
@@ -36,6 +42,7 @@ public class MdOutputPartsReflectedRecord extends MdValue {
   public MdOutputPartsReflectedRecord(MdOutputPartsRecord partsRecord) {
     this.diffSeq = partsRecord.diffSeq;
     this.values = partsRecord.baseValues;
+    this.previousValues = partsRecord.compareValues;
     this.changes = new ArrayList<>();
 
     for (int i = 0; i < partsRecord.baseValues.size(); i++) {

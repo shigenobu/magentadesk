@@ -161,6 +161,44 @@ public class TestSync {
   }
 
   @Test
+  public void testSyncForceByAll() throws Exception {
+    // diff
+    inputDiff.option = new MdInputMemberOption();
+    inputDiff.option.includeTableLikePatterns.add("t\\_diff");
+    inputDiff.validate();
+    MdOutputDiff outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
+
+    // sync
+    inputSync.summaryId = outputDiff.summaryId;
+    inputSync.run = true;
+    inputSync.force = true;
+    inputSync.validate();
+    MdOutputSync outputSync = (MdOutputSync) MdExecute.execute(inputSync);
+    System.out.println(MdJson.toJsonStringFriendly(outputSync));
+
+    // check previous value
+    outputSync.reflectedRecordTables.get(0).records.forEach(r -> {
+      if (r.values.get(0) != null && r.values.get(0).equals("3")) {
+        Assert.assertNull("null - compare", r.previousValues.get(0));
+        System.out.println(r.previousValues.get(0) == null);
+      }
+      if (r.previousValues.get(0) != null && r.previousValues.get(0).equals("2")) {
+        Assert.assertNull("null - base", r.values.get(0));
+        System.out.println(r.values.get(0) == null);
+      }
+    });
+
+    // re diff
+    outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
+    System.out.println(MdJson.toJsonStringFriendly(outputDiff));
+
+    // match
+    Assert.assertTrue(
+        "matchTables:t_diff",
+        outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_diff")).findFirst().isPresent());
+  }
+
+  @Test
   public void testSyncFull() throws Exception {
     // diff
     inputDiff.option = new MdInputMemberOption();

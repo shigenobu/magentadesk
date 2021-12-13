@@ -97,7 +97,11 @@ web: response 200 /api/sync/check.json
           "records": [
             {
               "diffSeq": XXX,
+              // 反映された値（比較元の値）
               "values": [],
+              // 反映直前の値（比較先の値）
+              "previousValues": [],
+              // 比較元と比較先の値が異なっていればtrue
               "changes": []
             }
           ]
