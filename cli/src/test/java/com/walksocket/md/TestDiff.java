@@ -1,5 +1,6 @@
 package com.walksocket.md;
 
+import com.walksocket.md.exception.MdExceptionInvalidInput;
 import com.walksocket.md.input.MdInputDiff;
 import com.walksocket.md.input.member.MdInputMemberCondition;
 import com.walksocket.md.input.member.MdInputMemberOption;
@@ -33,6 +34,8 @@ public class TestDiff {
     inputDiff.charset = "utf8mb4";
     inputDiff.baseDatabase = "base";
     inputDiff.compareDatabase = "compare";
+
+    MdEnv.setLimitMismatchCount(10000);
   }
 
   @Test
@@ -224,6 +227,35 @@ public class TestDiff {
     Assert.assertTrue(
         "matchTables:t_partition_mismatch",
         outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_partition_mismatch")).findFirst().isPresent());
+  }
+
+  @Test
+  public void test16MismatchOverflow() throws Exception {
+    // set env
+    MdEnv.setLimitMismatchCount(2);
+
+    // diff
+    inputDiff.option = new MdInputMemberOption();
+    inputDiff.option.includeTableLikePatterns.add("t\\_diff");
+    inputDiff.validate();
+    MdOutputDiff outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
+    System.out.println(MdJson.toJsonStringFriendly(outputDiff));
+    Assert.assertFalse("t_diff:overflow:false", outputDiff.mismatchRecordTables.get(0).overflow);
+    Assert.assertEquals("t_diff:mismatchCount", 2, outputDiff.mismatchRecordTables.get(0).mismatchCount);
+    Assert.assertFalse("t_diff:records", outputDiff.mismatchRecordTables.get(0).records.isEmpty());
+
+    // set env
+    MdEnv.setLimitMismatchCount(1);
+
+    // diff
+    inputDiff.option = new MdInputMemberOption();
+    inputDiff.option.includeTableLikePatterns.add("t\\_diff");
+    inputDiff.validate();
+    outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
+    System.out.println(MdJson.toJsonStringFriendly(outputDiff));
+    Assert.assertTrue("t_diff:overflow:true", outputDiff.mismatchRecordTables.get(0).overflow);
+    Assert.assertEquals("t_diff:mismatchCount", 2, outputDiff.mismatchRecordTables.get(0).mismatchCount);
+    Assert.assertTrue("t_diff:records", outputDiff.mismatchRecordTables.get(0).records.isEmpty());
   }
 
   @Test

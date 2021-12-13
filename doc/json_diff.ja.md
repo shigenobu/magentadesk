@@ -124,7 +124,11 @@ web: response 200 /api/diff/check.json
               "baseValues": [],
               "compareValues": []
             }
-          ]
+          ],
+          // 差分があったレコードの件数
+          "mismatchCount": XXX,
+          // 差分があったレコードの件数がMD_LIMIT_MISMATCH_COUNTを超えた場合、recordsが空になり、overflowがtrueとなる
+          "overflow": (true|false)
         }
       ],
       // データ差分なしと判定されたテーブル一覧

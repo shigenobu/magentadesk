@@ -23,6 +23,11 @@ public class MdEnv {
   private static int limitLength = 1000;
 
   /**
+   * limit mismatch count.
+   */
+  private static int limitMismatchCount = 10000;
+
+  /**
    * magentadesk home diretory.
    */
   private static String mdHome = System.getProperty("user.home") + File.separator + ".magentadesk";
@@ -41,6 +46,11 @@ public class MdEnv {
     String mdLimitLength = System.getenv("MD_LIMIT_LENGTH");
     if (mdLimitLength != null && MdUtils.isNumber(mdLimitLength)) {
       limitLength = Integer.parseInt(mdLimitLength);
+    }
+
+    String mdLimitMismatchCount = System.getenv("MD_LIMIT_MISMATCH_COUNT");
+    if (mdLimitMismatchCount != null && MdUtils.isNumber(mdLimitMismatchCount)) {
+      limitMismatchCount = Integer.parseInt(mdLimitMismatchCount);
     }
 
     String mdHome = System.getenv("MD_HOME");
@@ -92,11 +102,27 @@ public class MdEnv {
   }
 
   /**
+   * get limit mismatch count.
+   * @return limit mismatch count.
+   */
+  public static int getLimitMismatchCount() {
+    return limitMismatchCount;
+  }
+
+  /**
    * set limit length.
    * @param limitLength limit length
    */
   public static void setLimitLength(int limitLength) {
     MdEnv.limitLength = limitLength;
+  }
+
+  /**
+   * set limit mismatch count.
+   * @param limitMismatchCount limit mismatch count
+   */
+  public static void setLimitMismatchCount(int limitMismatchCount) {
+    MdEnv.limitMismatchCount = limitMismatchCount;
   }
 
   /**

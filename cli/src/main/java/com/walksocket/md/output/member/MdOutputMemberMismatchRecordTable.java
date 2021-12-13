@@ -1,6 +1,7 @@
 package com.walksocket.md.output.member;
 
 import com.google.gson.annotations.Expose;
+import com.walksocket.md.MdEnv;
 import com.walksocket.md.MdInfoDiff;
 import com.walksocket.md.MdValue;
 import com.walksocket.md.output.parts.MdOutputPartsColumn;
@@ -41,6 +42,18 @@ public class MdOutputMemberMismatchRecordTable extends MdValue {
   public List<MdOutputPartsRecord> records = new ArrayList<>();
 
   /**
+   * mismatch count.
+   */
+  @Expose
+  public int mismatchCount;
+
+  /**
+   * overflow.
+   */
+  @Expose
+  public boolean overflow;
+
+  /**
    * constructor.
    * @param info info
    * @param partsRecord records
@@ -52,6 +65,12 @@ public class MdOutputMemberMismatchRecordTable extends MdValue {
     for (MdInfoDiffColumn infoColumn : info.getRealColumns()) {
       this.columns.add(new MdOutputPartsColumn(infoColumn));
     }
-    this.records.addAll(partsRecord);
+    this.mismatchCount = partsRecord.size();
+    if (this.mismatchCount <= MdEnv.getLimitMismatchCount()) {
+      // if size less than MD_LIMIT_MISMATCH_COUNT, add all records.
+      this.records.addAll(partsRecord);
+    } else {
+      this.overflow = true;
+    }
   }
 }

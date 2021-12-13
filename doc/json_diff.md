@@ -114,7 +114,11 @@ web: response 200 /api/diff/check.json
               "baseValues": [],
               "compareValues": []
             }
-          ]
+          ],
+          // records size
+          "mismatchCount": XXX,
+          // if records size is over MD_LIMIT_MISMATCH_COUNT, records is convert emtpy, and overflow is set true.
+          "overflow": (true|false)
         }
       ],
       "matchTables": [
