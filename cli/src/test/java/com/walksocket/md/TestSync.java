@@ -355,4 +355,66 @@ public class TestSync {
       e.printStackTrace();
     }
   }
+
+  @Test
+  public void testSyncUuid() throws Exception {
+    // diff
+    inputDiff.option = new MdInputMemberOption();
+    inputDiff.option.ignoreAutoIncrement = true;
+    inputDiff.option.ignoreComment = true;
+    inputDiff.option.ignorePartitions = true;
+    inputDiff.option.ignoreDefaultForSequence = true;
+    inputDiff.option.includeTableLikePatterns.add("t\\_uuid");
+    inputDiff.validate();
+    MdOutputDiff outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
+    System.out.println(MdJson.toJsonStringFriendly(outputDiff));
+
+    // sync
+    inputSync.summaryId = outputDiff.summaryId;
+    inputSync.run = true;
+    inputSync.force = true;
+    inputSync.validate();
+    MdOutputSync outputSync = (MdOutputSync) MdExecute.execute(inputSync);
+    System.out.println(MdJson.toJsonStringFriendly(outputSync));
+
+    // re diff
+    outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
+    System.out.println(MdJson.toJsonStringFriendly(outputDiff));
+
+    // mismatchRecordTables
+    Assert.assertTrue(
+        "mismatchRecordTables",
+        outputDiff.mismatchRecordTables.size() == 0);
+  }
+
+  @Test
+  public void testSyncInet6() throws Exception {
+    // diff
+    inputDiff.option = new MdInputMemberOption();
+    inputDiff.option.ignoreAutoIncrement = true;
+    inputDiff.option.ignoreComment = true;
+    inputDiff.option.ignorePartitions = true;
+    inputDiff.option.ignoreDefaultForSequence = true;
+    inputDiff.option.includeTableLikePatterns.add("t\\_inet6");
+    inputDiff.validate();
+    MdOutputDiff outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
+    System.out.println(MdJson.toJsonStringFriendly(outputDiff));
+
+    // sync
+    inputSync.summaryId = outputDiff.summaryId;
+    inputSync.run = true;
+    inputSync.force = true;
+    inputSync.validate();
+    MdOutputSync outputSync = (MdOutputSync) MdExecute.execute(inputSync);
+    System.out.println(MdJson.toJsonStringFriendly(outputSync));
+
+    // re diff
+    outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
+    System.out.println(MdJson.toJsonStringFriendly(outputDiff));
+
+    // mismatchRecordTables
+    Assert.assertTrue(
+        "mismatchRecordTables",
+        outputDiff.mismatchRecordTables.size() == 0);
+  }
 }

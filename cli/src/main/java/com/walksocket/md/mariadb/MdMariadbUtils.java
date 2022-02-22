@@ -35,7 +35,7 @@ public class MdMariadbUtils {
   /**
    * dynamic type.
    */
-  public enum  MdMariadbDynamicType {
+  public enum MdMariadbDynamicType {
     BINARY,
     CHAR,
     DATE,
@@ -79,6 +79,8 @@ public class MdMariadbUtils {
     columnTypes.put("ENUM", MdMariadbColumnType.STRING);
     columnTypes.put("SET", MdMariadbColumnType.STRING);
     columnTypes.put("JSON", MdMariadbColumnType.STRING);
+    columnTypes.put("INET6", MdMariadbColumnType.STRING);
+    columnTypes.put("UUID", MdMariadbColumnType.STRING);
 
     columnTypes.put("DATE", MdMariadbColumnType.STRING);
     columnTypes.put("TIME", MdMariadbColumnType.STRING);
@@ -113,6 +115,8 @@ public class MdMariadbUtils {
     dynamicTypes.put("ENUM", MdMariadbDynamicType.CHAR);
     dynamicTypes.put("SET", MdMariadbDynamicType.CHAR);
     dynamicTypes.put("JSON", MdMariadbDynamicType.CHAR);
+    dynamicTypes.put("INET6", MdMariadbDynamicType.CHAR);
+    dynamicTypes.put("UUID", MdMariadbDynamicType.CHAR);
 
     dynamicTypes.put("DATE", MdMariadbDynamicType.DATE);
     dynamicTypes.put("TIME", MdMariadbDynamicType.TIME);

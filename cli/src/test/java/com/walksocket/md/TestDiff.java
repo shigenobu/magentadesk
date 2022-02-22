@@ -348,4 +348,32 @@ public class TestDiff {
         "fake_compare_t_article",
         outputDiff2.matchTables.stream().filter(o -> o.tableName.equals("t_article")).findFirst().get().compareChecksum);
   }
+
+  @Test
+  public void test41UuidDataType() throws Exception {
+    inputDiff.option = new MdInputMemberOption();
+    inputDiff.option.includeTableLikePatterns.add("t\\_uuid");
+
+    MdOutputDiff outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
+    System.out.println(MdJson.toJsonStringFriendly(outputDiff));
+
+    // mismatchRecordTables
+    Assert.assertTrue(
+        "mismatchRecordTables:t_uuid",
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_uuid")).findFirst().isPresent());
+  }
+
+  @Test
+  public void test42Inet6DataType() throws Exception {
+    inputDiff.option = new MdInputMemberOption();
+    inputDiff.option.includeTableLikePatterns.add("t\\_inet6");
+
+    MdOutputDiff outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
+    System.out.println(MdJson.toJsonStringFriendly(outputDiff));
+
+    // mismatchRecordTables
+    Assert.assertTrue(
+        "mismatchRecordTables:t_inet6",
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_inet6")).findFirst().isPresent());
+  }
 }

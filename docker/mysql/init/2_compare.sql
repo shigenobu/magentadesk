@@ -1,8 +1,8 @@
--- MariaDB dump 10.19  Distrib 10.5.11-MariaDB, for debian-linux-gnu (x86_64)
+-- MariaDB dump 10.19  Distrib 10.6.5-MariaDB, for debian-linux-gnu (x86_64)
 --
 -- Host: 127.0.0.1    Database: compare
 -- ------------------------------------------------------
--- Server version	10.5.11-MariaDB-1:10.5.11+maria~focal
+-- Server version	10.7.1-MariaDB-1:10.7.1+maria~focal
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -518,6 +518,30 @@ LOCK TABLES `t_has_trigger_mismatch` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `t_inet6`
+--
+
+DROP TABLE IF EXISTS `t_inet6`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_inet6` (
+  `address` inet6 NOT NULL,
+  `area` text NOT NULL,
+  PRIMARY KEY (`address`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_inet6`
+--
+
+LOCK TABLES `t_inet6` WRITE;
+/*!40000 ALTER TABLE `t_inet6` DISABLE KEYS */;
+INSERT INTO `t_inet6` VALUES ('::ffff:192.0.2.128','anywhere2');
+/*!40000 ALTER TABLE `t_inet6` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `t_invalid_charset`
 --
 
@@ -808,7 +832,7 @@ CREATE TABLE `t_system_versioned` (
 
 LOCK TABLES `t_system_versioned` WRITE;
 /*!40000 ALTER TABLE `t_system_versioned` DISABLE KEYS */;
-INSERT INTO `t_system_versioned` VALUES (1,'A','2021-07-26 15:02:05.777086','2038-01-19 03:14:07.999999');
+INSERT INTO `t_system_versioned` VALUES (1,'A','2022-02-22 08:03:27.665088','2038-01-19 03:14:07.999999');
 /*!40000 ALTER TABLE `t_system_versioned` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -907,7 +931,7 @@ CREATE TABLE `t_system_versioned_visible` (
 
 LOCK TABLES `t_system_versioned_visible` WRITE;
 /*!40000 ALTER TABLE `t_system_versioned_visible` DISABLE KEYS */;
-INSERT INTO `t_system_versioned_visible` VALUES (1,'A','2021-07-26 15:02:05.798975','2038-01-19 03:14:07.999999');
+INSERT INTO `t_system_versioned_visible` VALUES (1,'A','2022-02-22 08:03:27.696622','2038-01-19 03:14:07.999999');
 /*!40000 ALTER TABLE `t_system_versioned_visible` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -945,7 +969,7 @@ CREATE TABLE `t_utf8_diff` (
   `id` int(11) NOT NULL,
   `name` varchar(16) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -956,6 +980,30 @@ LOCK TABLES `t_utf8_diff` WRITE;
 /*!40000 ALTER TABLE `t_utf8_diff` DISABLE KEYS */;
 INSERT INTO `t_utf8_diff` VALUES (1,'a'),(2,'b');
 /*!40000 ALTER TABLE `t_utf8_diff` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `t_uuid`
+--
+
+DROP TABLE IF EXISTS `t_uuid`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_uuid` (
+  `user_id` uuid NOT NULL,
+  `nickname` text NOT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_uuid`
+--
+
+LOCK TABLES `t_uuid` WRITE;
+/*!40000 ALTER TABLE `t_uuid` DISABLE KEYS */;
+INSERT INTO `t_uuid` VALUES ('75950df7-93a2-11ec-9a9e-0242ac160003','田中1'),('93938570-93a2-11ec-9a9e-0242ac160003','田中3');
+/*!40000 ALTER TABLE `t_uuid` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1030,4 +1078,4 @@ USE `compare`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-07-27  0:07:42
+-- Dump completed on 2022-02-22 17:04:37
