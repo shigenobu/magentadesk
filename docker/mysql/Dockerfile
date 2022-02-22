@@ -1,4 +1,4 @@
-FROM mariadb:10.6
+FROM mariadb:10.7
 
 # copy configuration
 COPY ./mariadb.conf.d/server.cnf /etc/mysql/mariadb.conf.d/server.cnf

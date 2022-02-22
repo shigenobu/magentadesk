@@ -28,7 +28,7 @@ public class MdExecute {
 
     Exception ex = new MdExceptionUnknown();
     try (MdMariadbConnection con = new MdMariadbConnection(input.getConnectionString())) {
-      // check version 10.3, 10.4, 10.5, 10.6
+      // check version 10.3, 10.4, 10.5, 10.6, 10.7
       String version = null;
       sql = "SELECT @@version as version";
       records = con.getRecords(sql);
@@ -38,8 +38,8 @@ public class MdExecute {
       }
       if (MdUtils.isNullOrEmpty(version)
         || !version.contains("mariadb")
-        || !(version.contains("10.3.") || version.contains("10.4.") || version.contains("10.5.") || version.contains("10.6."))) {
-        throw new MdExceptionInvalidVersion("MariaDB 10.3, 10.4, 10.5, 10.6 is required.");
+        || !(version.contains("10.3.") || version.contains("10.4.") || version.contains("10.5.") || version.contains("10.6.")|| version.contains("10.7."))) {
+        throw new MdExceptionInvalidVersion("MariaDB 10.3, 10.4, 10.5, 10.6, 10.7 is required.");
       }
 
       // create database `magentadesk`.
