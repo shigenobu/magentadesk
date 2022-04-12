@@ -20,7 +20,7 @@ public class MdEnv {
   /**
    * limit length.
    */
-  private static int limitLength = 1000;
+  private static int limitLength = 10000;
 
   /**
    * limit mismatch count.

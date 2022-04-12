@@ -64,13 +64,13 @@ Web document is [here](web/README.md).
 
 ### Environment values
 
-|name|remarks|
-|----|-------|
-|MD_ENV|if 'DEBUG', log in detail.|
-|MD_OUTPUT|if 'PRETTY', write out json result in pretty.|
-|MD_LIMIT_LENGTH|when diff and over this, returned value is to hash. default is 1000.|
-|MD_LIMIT_MISMATCH_COUNT|when diff and over this, returned mismatch recods is convert empty. default is 10000.|
-|MD_HOME|default is ${HOME}/.magentadesk. There is a home directory, by commands which execute in sync and at local database storage.|
+|name| remarks                                                                                                                      |
+|----|------------------------------------------------------------------------------------------------------------------------------|
+|MD_ENV| if 'DEBUG', log in detail.                                                                                                   |
+|MD_OUTPUT| if 'PRETTY', write out json result in pretty.                                                                                |
+|MD_LIMIT_LENGTH| when diff and over this, returned value is to hash. default is 10000.                                                        |
+|MD_LIMIT_MISMATCH_COUNT| when diff and over this, returned mismatch recods is convert empty. default is 10000.                                        |
+|MD_HOME| default is ${HOME}/.magentadesk. There is a home directory, by commands which execute in sync and at local database storage. |
 
 ### Notice
 
