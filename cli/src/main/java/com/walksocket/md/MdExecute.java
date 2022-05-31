@@ -38,8 +38,13 @@ public class MdExecute {
       }
       if (MdUtils.isNullOrEmpty(version)
         || !version.contains("mariadb")
-        || !(version.contains("10.3.") || version.contains("10.4.") || version.contains("10.5.") || version.contains("10.6.")|| version.contains("10.7."))) {
-        throw new MdExceptionInvalidVersion("MariaDB 10.3, 10.4, 10.5, 10.6, 10.7 is required.");
+        || !(version.contains("10.3.")
+          || version.contains("10.4.")
+          || version.contains("10.5.")
+          || version.contains("10.6.")
+          || version.contains("10.7.")
+          || version.contains("10.8."))) {
+        throw new MdExceptionInvalidVersion("MariaDB 10.3, 10.4, 10.5, 10.6, 10.7, 10.8 is required.");
       }
 
       // create database `magentadesk`.
