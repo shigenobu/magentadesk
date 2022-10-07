@@ -7,7 +7,7 @@ Get diff and sync between two databases in same host created by MariaDB.
 ### System Required
 
 * over JDK 1.8
-* MariaDB 10.3, 10.4, 10.5, 10.6, 10.7, 10.8
+* MariaDB 10.3, 10.4, 10.5, 10.6, 10.7, 10.8, 10.9
 
 ### Usage by cli
 

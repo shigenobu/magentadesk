@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, user-scalable=yes">
     <title>magentadesk-web</title>
-    <link href="/asset/jquery-ui-1.13.0/jquery-ui.min.css" rel="stylesheet" type="text/css">
+    <link href="/asset/jquery-ui-1.13.2/jquery-ui.min.css" rel="stylesheet" type="text/css">
     <link href="/asset/css/layout.css" rel="stylesheet" type="text/css">
     <link href="/asset/css/common.css" rel="stylesheet" type="text/css">
     <link href="/asset/css/table.css" rel="stylesheet" type="text/css">
@@ -12,7 +12,7 @@
     <link href="/asset/css/button.css" rel="stylesheet" type="text/css">
 
     <script src="/asset/js/jquery-3.3.1.js" type="text/javascript"></script>
-    <script src="/asset/jquery-ui-1.13.0/jquery-ui.min.js"></script>
+    <script src="/asset/jquery-ui-1.13.2/jquery-ui.min.js"></script>
 </head>
 <body>
 <header>

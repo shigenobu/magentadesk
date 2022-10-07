@@ -1,10 +1,13 @@
 magentadesk for cli - Get MariaDB Table Difference, And Reflect.
-version 0.4.0
 
 Usage:
     echo '${json}' \
-      | [MD_ENV=${mdEnv}] [MD_OUTPUT=${mdOutput}] [MD_LIMIT_LENGTH=${mdLimitLength}] [MD_HOME=${mdHome}] \
-        java -jar magentadesk-cli.jar --mode=${mode} [--logPath=${logPath}] [--addSeconds=${addSeconds}]
+      | [MD_ENV=${mdEnv}] \
+        [MD_OUTPUT=${mdOutput}] \
+        [MD_LIMIT_LENGTH=${mdLimitLength}] \
+        [MD_LIMIT_MISMATCH_COUNT=${mdLimitMismatchCount}] \
+        [MD_HOME=${mdHome}] \
+          java -jar magentadesk-cli.jar --mode=${mode} [--logPath=${logPath}] [--addSeconds=${addSeconds}]
 
 (args)
 
@@ -14,10 +17,12 @@ Usage:
 
 (env)
 
-  mdEnv         if 'DEBUG', log in detail.
-  mdOutput      if 'PRETTY', output json is pretty.
-  mdLimitLength when diff and over this, returned value is to hash. default is 1000.
-  mdHome        default is '${HOME}/.magentadesk'.
+  mdEnv                  if 'DEBUG', log in detail.
+  mdOutput               if 'PRETTY', write out json result in pretty.
+  mdLimitLength          when diff and over this, returned value is to hash. default is 10000.
+  mdLimitMismatchCount   when diff and over this, returned mismatch recods is convert empty. default is 10000.
+  mdHome                 default is ${HOME}/.magentadesk. There is a home directory, by commands which execute in sync and at local database storage.
+
 
 (exit code)
 
