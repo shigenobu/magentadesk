@@ -376,4 +376,18 @@ public class TestDiff {
         "mismatchRecordTables:t_inet6",
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_inet6")).findFirst().isPresent());
   }
+
+  @Test
+  public void test43Inet4DataType() throws Exception {
+    inputDiff.option = new MdInputMemberOption();
+    inputDiff.option.includeTableLikePatterns.add("t\\_inet4");
+
+    MdOutputDiff outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
+    System.out.println(MdJson.toJsonStringFriendly(outputDiff));
+
+    // mismatchRecordTables
+    Assert.assertTrue(
+        "mismatchRecordTables:t_inet4",
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_inet4")).findFirst().isPresent());
+  }
 }

@@ -44,8 +44,9 @@ public class MdExecute {
           || version.contains("10.6.")
           || version.contains("10.7.")
           || version.contains("10.8.")
-          || version.contains("10.9."))) {
-        throw new MdExceptionInvalidVersion("MariaDB 10.3, 10.4, 10.5, 10.6, 10.7, 10.8, 10.9 is required.");
+          || version.contains("10.9.")
+          || version.contains("10.10."))) {
+        throw new MdExceptionInvalidVersion("MariaDB 10.3, 10.4, 10.5, 10.6, 10.7, 10.8, 10.9, 10.10 is required.");
       }
 
       // create database `magentadesk`.

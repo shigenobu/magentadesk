@@ -79,6 +79,7 @@ public class MdMariadbUtils {
     columnTypes.put("ENUM", MdMariadbColumnType.STRING);
     columnTypes.put("SET", MdMariadbColumnType.STRING);
     columnTypes.put("JSON", MdMariadbColumnType.STRING);
+    columnTypes.put("INET4", MdMariadbColumnType.STRING);
     columnTypes.put("INET6", MdMariadbColumnType.STRING);
     columnTypes.put("UUID", MdMariadbColumnType.STRING);
 
