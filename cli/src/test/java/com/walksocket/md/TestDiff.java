@@ -379,6 +379,8 @@ public class TestDiff {
 
   @Test
   public void test43Inet4DataType() throws Exception {
+    MdEnv.setLimitLength(100);
+
     inputDiff.option = new MdInputMemberOption();
     inputDiff.option.includeTableLikePatterns.add("t\\_inet4");
 

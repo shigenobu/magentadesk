@@ -116,6 +116,7 @@ public class MdMariadbUtils {
     dynamicTypes.put("ENUM", MdMariadbDynamicType.CHAR);
     dynamicTypes.put("SET", MdMariadbDynamicType.CHAR);
     dynamicTypes.put("JSON", MdMariadbDynamicType.CHAR);
+    dynamicTypes.put("INET4", MdMariadbDynamicType.CHAR);
     dynamicTypes.put("INET6", MdMariadbDynamicType.CHAR);
     dynamicTypes.put("UUID", MdMariadbDynamicType.CHAR);
 
