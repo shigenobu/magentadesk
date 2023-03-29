@@ -15,6 +15,12 @@
   <name>magentadesk</name>
   <url>https://github.com/shigenobu/magentadesk</url>
   <description>Get MariaDB Table Difference, And Reflect.</description>
+  <licenses>
+    <license>
+      <name>Apache 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
 
   <!-- properties -->
   <properties>

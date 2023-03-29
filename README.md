@@ -1,5 +1,7 @@
 # magentadesk - Get MariaDB Table Difference, And Reflect.
 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 ### About
 
 Get diff and sync between two databases in same host created by MariaDB.  

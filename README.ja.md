@@ -1,5 +1,7 @@
 # magentadesk - Get MariaDB Table Difference, And Reflect.
 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 ### 概要
 
 MariaDBの同一ホスト内の2つのデータベースの差分を取り、同期を行います。  
