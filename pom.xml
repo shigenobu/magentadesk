@@ -5,7 +5,7 @@
 
   <groupId>com.walksocket</groupId>
   <artifactId>magentadesk</artifactId>
-  <version>0.4.9</version>
+  <version>0.5.0</version>
   <modules>
     <module>cli</module>
     <module>web</module>
@@ -42,7 +42,7 @@
       <dependency>
         <groupId>org.xerial</groupId>
         <artifactId>sqlite-jdbc</artifactId>
-        <version>3.36.0.3</version>
+        <version>3.42.0.0</version>
       </dependency>
       <!-- gson -->
       <dependency>
