@@ -36,6 +36,7 @@ CLI版のドキュメントは[こちら](cli/README.ja.md)。
         [MD_LIMIT_LENGTH=${mdLimitLength}] \
         [MD_LIMIT_MISMATCH_COUNT=${mdLimitMismatchCount}] \
         [MD_HOME=${mdHome}] \
+        [MD_WAIT=${mdWait}] \
           java -jar magentadesk-cli.jar --mode=${mode} [--logPath=${logPath}] [--addSeconds=${addSeconds}]
 
 ### WEB
