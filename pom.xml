@@ -5,7 +5,7 @@
 
   <groupId>com.walksocket</groupId>
   <artifactId>magentadesk</artifactId>
-  <version>0.5.1</version>
+  <version>0.5.2</version>
   <modules>
     <module>cli</module>
     <module>web</module>

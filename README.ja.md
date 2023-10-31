@@ -60,18 +60,20 @@ WEB版のドキュメントは[こちら](web/README.ja.md)。
     [MD_LIMIT_LENGTH=${mdLimitLength}] \
     [MD_LIMIT_MISMATCH_COUNT=${mdLimitMismatchCount}] \
     [MD_HOME=${mdHome}] \
+    [MD_WAIT=${mdWait}] \
       java -jar magentadesk-web.jar [--logPath=${logPath}] [--addSeconds=${addSeconds}] \
         [--webHost=${webHost}] [--webPort=${webPort}]
 
 ### 環境変数  
 
-|名称| 説明                                                                       |
-|---|--------------------------------------------------------------------------|
-|MD_ENV| DEBUGを指定すると、詳細なログを出力します。                                                 |
-|MD_OUTPUT| PRETTYを指定すると、標準出力の結果のJSONが整形されます。                                        |
-|MD_LIMIT_LENGTH| diffの実行結果の値において、このバイト数を超えると、ハッシュ化されます。デフォルト10000です。                      |
-|MD_LIMIT_MISMATCH_COUNT| diffの実行結果の'mismatchRecordTables.records'の件数がこれを超えると、空になります。デフォルト10000です。 |
-|MD_HOME| 指定しないと、${HOME}/.magentadeskとなり、ここにsync時の任意コマンド実行時の一時ファイルが格納されます。         |
+| 名称                      | 説明                                                                       |
+|-------------------------|--------------------------------------------------------------------------|
+| MD_ENV                  | DEBUGを指定すると、詳細なログを出力します。                                                 |
+| MD_OUTPUT               | PRETTYを指定すると、標準出力の結果のJSONが整形されます。                                        |
+| MD_LIMIT_LENGTH         | diffの実行結果の値において、このバイト数を超えると、ハッシュ化されます。デフォルト10000です。                      |
+| MD_LIMIT_MISMATCH_COUNT | diffの実行結果の'mismatchRecordTables.records'の件数がこれを超えると、空になります。デフォルト10000です。 |
+| MD_HOME                 | 指定しないと、${HOME}/.magentadeskとなり、ここにsync時の任意コマンド実行時の一時ファイルが格納されます。         |
+| MD_WAIT                 | WAITを指定すると、ロックを取得できるまで待ちます。デフォルトはNOWAITです。
 
 ### 注意事項
 

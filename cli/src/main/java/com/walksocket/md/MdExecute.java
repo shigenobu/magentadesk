@@ -28,7 +28,7 @@ public class MdExecute {
 
     Exception ex = new MdExceptionUnknown();
     try (MdMariadbConnection con = new MdMariadbConnection(input.getConnectionString())) {
-      // check version 10.3, 10.4, 10.5, 10.6, 10.7
+      // check version
       String version = null;
       sql = "SELECT @@version as version";
       records = con.getRecords(sql);

@@ -1,5 +1,6 @@
 package com.walksocket.md.execute;
 
+import com.walksocket.md.MdEnv;
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.db.MdDbRecord;
 import com.walksocket.md.exception.MdExceptionDisallowSimultaneousExecution;
@@ -50,21 +51,34 @@ public abstract class MdExecuteAbstract {
 
     // insert `magentadesk`.`diffLock`.
     sql = String.format(
-        "INSERT IGNORE INTO `magentadesk`.`diffLock` (`baseDatabase`, `compareDatabase`) VALUES ('%s', '%s')",
+        "SELECT * FROM `magentadesk`.`diffLock` WHERE `baseDatabase` = '%s' AND `compareDatabase` = '%s'",
         MdMariadbUtils.quote(baseDatabase),
         MdMariadbUtils.quote(compareDatabase));
-    con.execute(sql);
+    MdDbRecord record = con.getRecord(sql);
+    if (record == null) {
+      sql = String.format(
+          "INSERT IGNORE INTO `magentadesk`.`diffLock` (`baseDatabase`, `compareDatabase`) VALUES ('%s', '%s')",
+          MdMariadbUtils.quote(baseDatabase),
+          MdMariadbUtils.quote(compareDatabase));
+      con.execute(sql);
+    }
 
     // lock `magentadesk`.`diffLock`.
     try {
+      String noWait = "NOWAIT";
+      if (MdEnv.isWait()) {
+        noWait = "";
+      }
+
       sql = String.format(
           "SELECT `baseDatabase`, `compareDatabase` " +
               "FROM `magentadesk`.`diffLock` " +
               "WHERE `baseDatabase` = '%s' and `compareDatabase` = '%s' " +
-              "FOR UPDATE NOWAIT",
+              "FOR UPDATE %s",
           MdMariadbUtils.quote(baseDatabase),
-          MdMariadbUtils.quote(compareDatabase));
-      con.getRecords(sql);
+          MdMariadbUtils.quote(compareDatabase),
+          noWait);
+      con.getRecord(sql);
     } catch (SQLException e) {
       MdLogger.error(e);
       throw new MdExceptionDisallowSimultaneousExecution(

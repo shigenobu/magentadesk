@@ -32,6 +32,11 @@ public class MdEnv {
    */
   private static String mdHome = System.getProperty("user.home") + File.separator + ".magentadesk";
 
+  /**
+   * is wait.
+   */
+  private static boolean isWait = false;
+
   static {
     String mdEnv = System.getenv("MD_ENV");
     if (mdEnv != null && mdEnv.equals("DEBUG")) {
@@ -60,6 +65,11 @@ public class MdEnv {
     File f = new File(MdEnv.mdHome);
     if (!f.exists()) {
       f.mkdir();
+    }
+
+    String mdWait = System.getenv("MD_WAIT");
+    if (mdWait != null && mdWait.equals("WAIT")) {
+      isWait = true;
     }
   }
 
@@ -131,5 +141,21 @@ public class MdEnv {
    */
   public static String getMdHome() {
     return mdHome;
+  }
+
+  /**
+   * set is wait.
+   * @param isWait is wait
+   */
+  public static void setIsWait(boolean isWait) {
+    MdEnv.isWait = isWait;
+  }
+
+  /**
+   * is wait.
+   * @return lock wait is true, default is false.
+   */
+  public static boolean isWait() {
+    return isWait;
   }
 }
