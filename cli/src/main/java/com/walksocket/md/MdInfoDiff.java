@@ -333,7 +333,7 @@ public class MdInfoDiff {
    */
   public CompletableFuture<String> getChecksumFuture(ExecutorService service) {
     if (supplier == null) {
-      if (condition != null) {
+      if (condition != null && !MdUtils.isNullOrEmpty(condition.expression)) {
         supplier = new MdSupplierInfoGetChecksumFake(con.getConnectionString(), database, tableName);
       } else {
         supplier = new MdSupplierInfoGetChecksum(con.getConnectionString(), database, tableName);
