@@ -1,5 +1,7 @@
 package com.walksocket.md;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.walksocket.md.bash.MdBashCommand;
 import com.walksocket.md.exception.MdExceptionAbstract;
 import com.walksocket.md.input.MdInputDiff;
@@ -11,21 +13,26 @@ import com.walksocket.md.output.MdOutputDiff;
 import com.walksocket.md.output.MdOutputSync;
 import com.walksocket.md.output.member.MdOutputMemberCommandResult;
 import com.walksocket.md.output.member.MdOutputMemberHttpResult;
-import org.junit.*;
-import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer.MethodName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@TestMethodOrder(MethodName.class)
 public class TestSync {
 
   private MdInputDiff inputDiff;
 
   private MdInputSync inputSync;
 
-  @BeforeClass
+  @BeforeAll
   public static void beforeClass() throws IOException {
     MdEnv.setDebug();
     MdEnv.setPretty();
@@ -33,7 +40,7 @@ public class TestSync {
     MdLogger.open("stderr");
   }
 
-  @Before
+  @BeforeEach
   public void before() {
     inputDiff = new MdInputDiff();
     inputDiff.host = "127.0.0.1";
@@ -52,7 +59,7 @@ public class TestSync {
     inputSync.charset = "utf8mb4";
   }
 
-  @After
+  @AfterEach
   public void after() {
     MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 13306 -u root -ppass < ../docker/mysql/init/1_base.sql", 300));
     MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 13306 -u root -ppass < ../docker/mysql/init/2_compare.sql", 300));
@@ -78,8 +85,8 @@ public class TestSync {
     System.out.println(MdJson.toJsonStringFriendly(outputDiff));
 
     // match
-    Assert.assertTrue(
-        "matchTables:t_all_types",
+    assertTrue(
+//        "matchTables:t_all_types",
         outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_all_types")).findFirst().isPresent());
   }
 
@@ -110,15 +117,15 @@ public class TestSync {
     System.out.println(MdJson.toJsonStringFriendly(outputSync));
 
     // check change
-    Assert.assertTrue(outputSync.reflectedRecordTables.get(0).records.get(0).changes.get(0));
+    assertTrue(outputSync.reflectedRecordTables.get(0).records.get(0).changes.get(0));
 
     // re diff
     outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
     System.out.println(MdJson.toJsonStringFriendly(outputDiff));
 
     // mismatch
-    Assert.assertTrue(
-        "mismatchRecordTables:t_diff",
+    assertTrue(
+//        "mismatchRecordTables:t_diff",
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_diff")).findFirst().isPresent());
   }
 
@@ -155,8 +162,8 @@ public class TestSync {
     System.out.println(MdJson.toJsonStringFriendly(outputDiff));
 
     // mismatch
-    Assert.assertTrue(
-        "mismatchRecordTables:t_diff",
+    assertTrue(
+//        "mismatchRecordTables:t_diff",
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_diff")).findFirst().isPresent());
   }
 
@@ -179,11 +186,15 @@ public class TestSync {
     // check previous value
     outputSync.reflectedRecordTables.get(0).records.forEach(r -> {
       if (r.values.get(0) != null && r.values.get(0).equals("3")) {
-        Assert.assertNull("null - compare", r.previousValues.get(0));
+        assertNull(
+//            "null - compare",
+            r.previousValues.get(0));
         System.out.println(r.previousValues.get(0) == null);
       }
       if (r.previousValues.get(0) != null && r.previousValues.get(0).equals("2")) {
-        Assert.assertNull("null - base", r.values.get(0));
+        assertNull(
+//            "null - base",
+            r.values.get(0));
         System.out.println(r.values.get(0) == null);
       }
     });
@@ -193,8 +204,8 @@ public class TestSync {
     System.out.println(MdJson.toJsonStringFriendly(outputDiff));
 
     // match
-    Assert.assertTrue(
-        "matchTables:t_diff",
+    assertTrue(
+//        "matchTables:t_diff",
         outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_diff")).findFirst().isPresent());
   }
 
@@ -223,8 +234,8 @@ public class TestSync {
     System.out.println(MdJson.toJsonStringFriendly(outputDiff));
 
     // mismatchRecordTables
-    Assert.assertTrue(
-        "mismatchRecordTables",
+    assertTrue(
+//        "mismatchRecordTables",
         outputDiff.mismatchRecordTables.size() == 0);
   }
 
@@ -249,8 +260,8 @@ public class TestSync {
     System.out.println(MdJson.toJsonStringFriendly(outputDiff));
 
     // match
-    Assert.assertTrue(
-        "matchTables:t_dup_unique",
+    assertTrue(
+//        "matchTables:t_dup_unique",
         outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_dup_unique")).findFirst().isPresent());
   }
 
@@ -281,16 +292,16 @@ public class TestSync {
     MdOutputSync outputSync = (MdOutputSync) MdExecute.execute(inputSync);
     System.out.println(MdJson.toJsonStringFriendly(outputSync));
     for (MdOutputMemberCommandResult commandResult : outputSync.commandResultsBeforeCommit) {
-      Assert.assertEquals(0, commandResult.code);
+      assertEquals(0, commandResult.code);
     }
     for (MdOutputMemberCommandResult commandResult : outputSync.commandResultsAfterCommit) {
-      Assert.assertEquals(23, commandResult.code);
+      assertEquals(23, commandResult.code);
     }
     for (MdOutputMemberHttpResult httpResult : outputSync.httpResultsBeforeCommit) {
-      Assert.assertEquals(200, httpResult.status);
+      assertEquals(200, httpResult.status);
     }
     for (MdOutputMemberHttpResult httpResult : outputSync.httpResultsAfterCommit) {
-      Assert.assertEquals(201, httpResult.status);
+      assertEquals(201, httpResult.status);
     }
   }
 
@@ -320,7 +331,7 @@ public class TestSync {
       System.out.println(MdJson.toJsonStringFriendly(outputSync));
       throw new IllegalAccessException();
     } catch (MdExceptionAbstract e) {
-      Assert.assertEquals(MdExceptionAbstract.ExitCode.NOT_SUCCESS_CODE, e.getExitCode());
+      assertEquals(MdExceptionAbstract.ExitCode.NOT_SUCCESS_CODE, e.getExitCode());
       e.printStackTrace();
     }
   }
@@ -351,7 +362,7 @@ public class TestSync {
       System.out.println(MdJson.toJsonStringFriendly(outputSync));
       throw new IllegalAccessException();
     } catch (MdExceptionAbstract e) {
-      Assert.assertEquals(MdExceptionAbstract.ExitCode.NOT_SUCCESS_STATUS, e.getExitCode());
+      assertEquals(MdExceptionAbstract.ExitCode.NOT_SUCCESS_STATUS, e.getExitCode());
       e.printStackTrace();
     }
   }
@@ -382,8 +393,8 @@ public class TestSync {
     System.out.println(MdJson.toJsonStringFriendly(outputDiff));
 
     // mismatchRecordTables
-    Assert.assertTrue(
-        "mismatchRecordTables",
+    assertTrue(
+//        "mismatchRecordTables",
         outputDiff.mismatchRecordTables.size() == 0);
   }
 
@@ -413,8 +424,8 @@ public class TestSync {
     System.out.println(MdJson.toJsonStringFriendly(outputDiff));
 
     // mismatchRecordTables
-    Assert.assertTrue(
-        "mismatchRecordTables",
+    assertTrue(
+//        "mismatchRecordTables",
         outputDiff.mismatchRecordTables.size() == 0);
   }
 
@@ -444,8 +455,8 @@ public class TestSync {
     System.out.println(MdJson.toJsonStringFriendly(outputDiff));
 
     // mismatchRecordTables
-    Assert.assertTrue(
-        "mismatchRecordTables",
+    assertTrue(
+//        "mismatchRecordTables",
         outputDiff.mismatchRecordTables.size() == 0);
   }
 }

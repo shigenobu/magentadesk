@@ -1,5 +1,7 @@
 package com.walksocket.md;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.walksocket.md.bash.MdBashCommand;
 import com.walksocket.md.http.MdHttpClient;
 import com.walksocket.md.input.MdInputDiff;
@@ -10,9 +12,13 @@ import com.walksocket.md.output.MdOutputDiff;
 import com.walksocket.md.output.MdOutputMaintenance;
 import com.walksocket.md.output.MdOutputSync;
 import com.walksocket.md.api.endpoint.MdApiEndpointAbstract;
-import org.junit.*;
 
 import java.util.Arrays;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class TestWeb {
 
@@ -24,7 +30,7 @@ public class TestWeb {
 
   private MdInputMaintenance inputMaintenance;
 
-  @BeforeClass
+  @BeforeAll
   public static void beforeClass() throws Exception {
     MdEnv.setDebug();
     MdEnv.setPretty();
@@ -37,12 +43,12 @@ public class TestWeb {
     Thread.sleep(1000);
   }
 
-  @AfterClass
+  @AfterAll
   public static void afterClass() {
     server.shutdown();
   }
 
-  @Before
+  @BeforeEach
   public void before() {
     inputDiff = new MdInputDiff();
     inputDiff.host = "127.0.0.1";
@@ -70,7 +76,7 @@ public class TestWeb {
     inputMaintenance.compareDatabase = "compare";
   }
 
-  @After
+  @AfterEach
   public void after() {
     MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 13306 -u root -ppass < ../docker/mysql/init/1_base.sql", 300));
     MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 13306 -u root -ppass < ../docker/mysql/init/2_compare.sql", 300));
@@ -103,7 +109,7 @@ public class TestWeb {
     }
 
     System.out.println(MdJson.toJsonStringFriendly(outputDiff));
-    Assert.assertNotNull(outputDiff);
+    assertNotNull(outputDiff);
 
     // ----------------------------------------
     // sync
@@ -130,7 +136,7 @@ public class TestWeb {
     }
 
     System.out.println(MdJson.toJsonStringFriendly(outputSync));
-    Assert.assertNotNull(outputSync);
+    assertNotNull(outputSync);
   }
 
   @Test
@@ -158,7 +164,7 @@ public class TestWeb {
       }
 
       System.out.println(MdJson.toJsonStringFriendly(outputMaintenance));
-      Assert.assertNotNull(outputMaintenance);
+      assertNotNull(outputMaintenance);
     }
   }
 }

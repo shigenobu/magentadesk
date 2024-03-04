@@ -1,21 +1,25 @@
 package com.walksocket.md;
 
-import com.walksocket.md.exception.MdExceptionInvalidInput;
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.walksocket.md.input.MdInputDiff;
 import com.walksocket.md.input.member.MdInputMemberCondition;
 import com.walksocket.md.input.member.MdInputMemberOption;
 import com.walksocket.md.output.MdOutputDiff;
-import org.junit.*;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer.MethodName;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import org.junit.jupiter.api.TestMethodOrder;
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@TestMethodOrder(MethodName.class)
 public class TestDiff {
 
   private MdInputDiff inputDiff;
 
-  @BeforeClass
+  @BeforeAll
   public static void beforeClass() throws IOException {
     MdEnv.setDebug();
     MdEnv.setPretty();
@@ -24,7 +28,7 @@ public class TestDiff {
     MdLogger.open("stderr");
   }
 
-  @Before
+  @BeforeEach
   public void testBefore() throws Exception {
     inputDiff = new MdInputDiff();
     inputDiff.host = "127.0.0.1";
@@ -44,107 +48,107 @@ public class TestDiff {
     System.out.println(MdJson.toJsonStringFriendly(outputDiff));
 
     // existsOnlyBaseTables
-    Assert.assertTrue(
-        "existsOnlyBaseTables:t_only_base",
+    assertTrue(
+//        "existsOnlyBaseTables:t_only_base",
         outputDiff.existsOnlyBaseTables.stream().filter(o -> o.tableName.equals("t_only_base")).findFirst().isPresent());
 
     // existsOnlyCompareTables
-    Assert.assertTrue(
-        "existsOnlyCompareTables:t_only_compare",
+    assertTrue(
+//        "existsOnlyCompareTables:t_only_compare",
         outputDiff.existsOnlyCompareTables.stream().filter(o -> o.tableName.equals("t_only_compare")).findFirst().isPresent());
 
     // forceExcludeTables
-    Assert.assertTrue(
-        "forceExcludeTables:s_seq",
+    assertTrue(
+//        "forceExcludeTables:s_seq",
         outputDiff.forceExcludeTables.stream().filter(o -> o.tableName.equals("s_seq")).findFirst().isPresent());
-    Assert.assertTrue(
-        "forceExcludeTables:t_foreign_had",
+    assertTrue(
+//        "forceExcludeTables:t_foreign_had",
         outputDiff.forceExcludeTables.stream().filter(o -> o.tableName.equals("t_foreign_had")).findFirst().isPresent());
-    Assert.assertTrue(
-        "forceExcludeTables:t_myisam",
+    assertTrue(
+//        "forceExcludeTables:t_myisam",
         outputDiff.forceExcludeTables.stream().filter(o -> o.tableName.equals("t_myisam")).findFirst().isPresent());
-    Assert.assertTrue(
-        "forceExcludeTables:t_view_ok",
+    assertTrue(
+//        "forceExcludeTables:t_view_ok",
         outputDiff.forceExcludeTables.stream().filter(o -> o.tableName.equals("t_view_ok")).findFirst().isPresent());
-    Assert.assertTrue(
-        "forceExcludeTables:t_has_trigger_mismatch",
+    assertTrue(
+//        "forceExcludeTables:t_has_trigger_mismatch",
         outputDiff.forceExcludeTables.stream().filter(o -> o.tableName.equals("t_has_trigger_mismatch")).findFirst().isPresent());
 
     // incorrectDefinitionTables
-    Assert.assertTrue(
-        "incorrectDefinitionTables:t_no_primary",
+    assertTrue(
+//        "incorrectDefinitionTables:t_no_primary",
         outputDiff.incorrectDefinitionTables.stream().filter(o -> o.tableName.equals("t_no_primary")).findFirst().isPresent());
-    Assert.assertTrue(
-        "incorrectDefinitionTables:t_no_primary_system_versioned",
+    assertTrue(
+//        "incorrectDefinitionTables:t_no_primary_system_versioned",
         outputDiff.incorrectDefinitionTables.stream().filter(o -> o.tableName.equals("t_no_primary_system_versioned")).findFirst().isPresent());
-    Assert.assertTrue(
-        "incorrectDefinitionTables:t_foreign_has",
+    assertTrue(
+//        "incorrectDefinitionTables:t_foreign_has",
         outputDiff.incorrectDefinitionTables.stream().filter(o -> o.tableName.equals("t_foreign_has")).findFirst().isPresent());
-    Assert.assertTrue(
-        "incorrectDefinitionTables:t_invalid_charset",
+    assertTrue(
+//        "incorrectDefinitionTables:t_invalid_charset",
         outputDiff.incorrectDefinitionTables.stream().filter(o -> o.tableName.equals("t_invalid_charset")).findFirst().isPresent());
 
     // mismatchDefinitionTables
-    Assert.assertTrue(
-        "mismatchDefinitionTables:t_has_default_seq",
+    assertTrue(
+//        "mismatchDefinitionTables:t_has_default_seq",
         outputDiff.mismatchDefinitionTables.stream().filter(o -> o.tableName.equals("t_has_default_seq")).findFirst().isPresent());
-    Assert.assertTrue(
-        "mismatchDefinitionTables:t_system_versioned",
+    assertTrue(
+//        "mismatchDefinitionTables:t_system_versioned",
         outputDiff.mismatchDefinitionTables.stream().filter(o -> o.tableName.equals("t_system_versioned")).findFirst().isPresent());
-    Assert.assertTrue(
-        "mismatchDefinitionTables:t_system_versioned_mismatch",
+    assertTrue(
+//        "mismatchDefinitionTables:t_system_versioned_mismatch",
         outputDiff.mismatchDefinitionTables.stream().filter(o -> o.tableName.equals("t_system_versioned_mismatch")).findFirst().isPresent());
-    Assert.assertTrue(
-        "mismatchDefinitionTables:t_wrong_auto_increment",
+    assertTrue(
+//        "mismatchDefinitionTables:t_wrong_auto_increment",
         outputDiff.mismatchDefinitionTables.stream().filter(o -> o.tableName.equals("t_wrong_auto_increment")).findFirst().isPresent());
-    Assert.assertTrue(
-        "mismatchDefinitionTables:t_partition_mismatch",
+    assertTrue(
+//        "mismatchDefinitionTables:t_partition_mismatch",
         outputDiff.mismatchDefinitionTables.stream().filter(o -> o.tableName.equals("t_partition_mismatch")).findFirst().isPresent());
-    Assert.assertTrue(
-        "mismatchDefinitionTables:t_comment_mismatch",
+    assertTrue(
+//        "mismatchDefinitionTables:t_comment_mismatch",
         outputDiff.mismatchDefinitionTables.stream().filter(o -> o.tableName.equals("t_comment_mismatch")).findFirst().isPresent());
 
     // mismatchRecordTables
-    Assert.assertTrue(
-        "mismatchRecordTables:t_all_types",
+    assertTrue(
+//        "mismatchRecordTables:t_all_types",
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_all_types")).findFirst().isPresent());
-    Assert.assertTrue(
-        "mismatchRecordTables:t_blob_primary",
+    assertTrue(
+//        "mismatchRecordTables:t_blob_primary",
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_blob_primary")).findFirst().isPresent());
-    Assert.assertTrue(
-        "mismatchRecordTables:t_data_lower_upper",
+    assertTrue(
+//        "mismatchRecordTables:t_data_lower_upper",
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_data_lower_upper")).findFirst().isPresent());
-    Assert.assertTrue(
-        "mismatchRecordTables:t_diff",
+    assertTrue(
+//        "mismatchRecordTables:t_diff",
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_diff")).findFirst().isPresent());
-    Assert.assertTrue(
-        "mismatchRecordTables:t_utf8_diff",
+    assertTrue(
+//        "mismatchRecordTables:t_utf8_diff",
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_utf8_diff")).findFirst().isPresent());
-    Assert.assertTrue(
-        "mismatchRecordTables:t_article",
+    assertTrue(
+//        "mismatchRecordTables:t_article",
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_article")).findFirst().isPresent());
-    Assert.assertTrue(
-        "mismatchRecordTables:t_movie",
+    assertTrue(
+//        "mismatchRecordTables:t_movie",
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_movie")).findFirst().isPresent());
-    Assert.assertTrue(
-        "mismatchRecordTables:t_dup_unique",
+    assertTrue(
+//        "mismatchRecordTables:t_dup_unique",
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_dup_unique")).findFirst().isPresent());
 
     // matchTables
-    Assert.assertTrue(
-        "matchTables:T_ALL_UPPER",
+    assertTrue(
+//        "matchTables:T_ALL_UPPER",
         outputDiff.matchTables.stream().filter(o -> o.tableName.equals("T_ALL_UPPER")).findFirst().isPresent());
-    Assert.assertTrue(
-        "matchTables:t_lower_UPPER",
+    assertTrue(
+//        "matchTables:t_lower_UPPER",
         outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_lower_UPPER")).findFirst().isPresent());
-    Assert.assertTrue(
-        "matchTables:t_system_versioned_invisible",
+    assertTrue(
+//        "matchTables:t_system_versioned_invisible",
         outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_system_versioned_invisible")).findFirst().isPresent());
-    Assert.assertTrue(
-        "matchTables:t_system_versioned_visible",
+    assertTrue(
+//        "matchTables:t_system_versioned_visible",
         outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_system_versioned_visible")).findFirst().isPresent());
-    Assert.assertTrue(
-        "matchTables:t_system_versioned_not_diff",
+    assertTrue(
+//        "matchTables:t_system_versioned_not_diff",
         outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_system_versioned_not_diff")).findFirst().isPresent());
   }
 
@@ -158,8 +162,8 @@ public class TestDiff {
     System.out.println(MdJson.toJsonStringFriendly(outputDiff));
 
     // matchTables
-    Assert.assertTrue(
-        "matchTables:t_wrong_auto_increment",
+    assertTrue(
+//        "matchTables:t_wrong_auto_increment",
         outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_wrong_auto_increment")).findFirst().isPresent());
   }
 
@@ -174,12 +178,12 @@ public class TestDiff {
 //
 //    // mismatch
 //    // (notice) base and system versioned table type is always not match.
-//    Assert.assertTrue(
+//    assertTrue(
 //        "matchTables:t_system_versioned_mismatch",
 //        outputDiff.mismatchDefinitionTables.stream().filter(o -> o.tableName.equals("t_system_versioned_mismatch")).findFirst().isPresent());
 //
 //    // matchTables
-//    Assert.assertTrue(
+//    assertTrue(
 //        "matchTables:t_system_versioned",
 //        outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_system_versioned")).findFirst().isPresent());
 //  }
@@ -194,8 +198,8 @@ public class TestDiff {
     System.out.println(MdJson.toJsonStringFriendly(outputDiff));
 
     // matchTables
-    Assert.assertTrue(
-        "matchTables:t_has_default_seq",
+    assertTrue(
+//        "matchTables:t_has_default_seq",
         outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_has_default_seq")).findFirst().isPresent());
   }
 
@@ -209,8 +213,8 @@ public class TestDiff {
     System.out.println(MdJson.toJsonStringFriendly(outputDiff));
 
     // matchTables
-    Assert.assertTrue(
-        "matchTables:t_comment_mismatch",
+    assertTrue(
+//        "matchTables:t_comment_mismatch",
         outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_comment_mismatch")).findFirst().isPresent());
   }
 
@@ -224,8 +228,8 @@ public class TestDiff {
     System.out.println(MdJson.toJsonStringFriendly(outputDiff));
 
     // matchTables
-    Assert.assertTrue(
-        "matchTables:t_partition_mismatch",
+    assertTrue(
+//        "matchTables:t_partition_mismatch",
         outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_partition_mismatch")).findFirst().isPresent());
   }
 
@@ -240,9 +244,15 @@ public class TestDiff {
     inputDiff.validate();
     MdOutputDiff outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
     System.out.println(MdJson.toJsonStringFriendly(outputDiff));
-    Assert.assertFalse("t_diff:overflow:false", outputDiff.mismatchRecordTables.get(0).overflow);
-    Assert.assertEquals("t_diff:mismatchCount", 2, outputDiff.mismatchRecordTables.get(0).mismatchCount);
-    Assert.assertFalse("t_diff:records", outputDiff.mismatchRecordTables.get(0).records.isEmpty());
+    assertFalse(
+//        "t_diff:overflow:false",
+        outputDiff.mismatchRecordTables.get(0).overflow);
+    assertEquals(
+//        "t_diff:mismatchCount",
+        2, outputDiff.mismatchRecordTables.get(0).mismatchCount);
+    assertFalse(
+//        "t_diff:records",
+        outputDiff.mismatchRecordTables.get(0).records.isEmpty());
 
     // set env
     MdEnv.setLimitMismatchCount(1);
@@ -253,9 +263,15 @@ public class TestDiff {
     inputDiff.validate();
     outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
     System.out.println(MdJson.toJsonStringFriendly(outputDiff));
-    Assert.assertTrue("t_diff:overflow:true", outputDiff.mismatchRecordTables.get(0).overflow);
-    Assert.assertEquals("t_diff:mismatchCount", 2, outputDiff.mismatchRecordTables.get(0).mismatchCount);
-    Assert.assertTrue("t_diff:records", outputDiff.mismatchRecordTables.get(0).records.isEmpty());
+    assertTrue(
+//        "t_diff:overflow:true",
+        outputDiff.mismatchRecordTables.get(0).overflow);
+    assertEquals(
+//        "t_diff:mismatchCount",
+        2, outputDiff.mismatchRecordTables.get(0).mismatchCount);
+    assertTrue(
+//        "t_diff:records",
+        outputDiff.mismatchRecordTables.get(0).records.isEmpty());
   }
 
   @Test
@@ -268,22 +284,22 @@ public class TestDiff {
     System.out.println(MdJson.toJsonStringFriendly(outputDiff));
 
     // mismatchRecordTables
-    Assert.assertEquals(
+    assertEquals(
         2,
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_diff_generated")).findFirst().get().columns.size());
-    Assert.assertEquals(
+    assertEquals(
         2,
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_diff_generated")).findFirst().get().records.get(0).baseValues.size());
-    Assert.assertEquals(
+    assertEquals(
         2,
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_diff_generated")).findFirst().get().records.get(0).compareValues.size());
-    Assert.assertEquals(
+    assertEquals(
         2,
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_diff_generated_stored")).findFirst().get().columns.size());
-    Assert.assertEquals(
+    assertEquals(
         2,
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_diff_generated_stored")).findFirst().get().records.get(0).baseValues.size());
-    Assert.assertEquals(
+    assertEquals(
         2,
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_diff_generated_stored")).findFirst().get().records.get(0).compareValues.size());
   }
@@ -309,11 +325,11 @@ public class TestDiff {
     System.out.println(MdJson.toJsonStringFriendly(outputDiff1));
 
     // mismatchRecordTables
-    Assert.assertTrue(
-        "mismatchRecordTables:t_article",
+    assertTrue(
+//        "mismatchRecordTables:t_article",
         outputDiff1.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_article")).findFirst().isPresent());
-    Assert.assertTrue(
-        "mismatchRecordTables:t_movie",
+    assertTrue(
+//        "mismatchRecordTables:t_movie",
         outputDiff1.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_movie")).findFirst().isPresent());
 
     // ---
@@ -333,18 +349,20 @@ public class TestDiff {
     System.out.println(MdJson.toJsonStringFriendly(outputDiff2));
 
     // matchTables
-    Assert.assertTrue(
-        "matchTables:t_article",
+    assertTrue(
+//        "matchTables:t_article",
         outputDiff2.matchTables.stream().filter(o -> o.tableName.equals("t_article")).findFirst().isPresent());
-    Assert.assertTrue(
-        "matchTables:t_movie",
+    assertTrue(
+//        "matchTables:t_movie",
         outputDiff2.matchTables.stream().filter(o -> o.tableName.equals("t_movie")).findFirst().isPresent());
 
     // checksum
-    Assert.assertEquals("checksum:t_article",
+    assertEquals(
+//        "checksum:t_article",
         "fake_base_t_article",
         outputDiff2.matchTables.stream().filter(o -> o.tableName.equals("t_article")).findFirst().get().baseChecksum);
-    Assert.assertEquals("checksum:t_article",
+    assertEquals(
+//        "checksum:t_article",
         "fake_compare_t_article",
         outputDiff2.matchTables.stream().filter(o -> o.tableName.equals("t_article")).findFirst().get().compareChecksum);
   }
@@ -358,8 +376,8 @@ public class TestDiff {
     System.out.println(MdJson.toJsonStringFriendly(outputDiff));
 
     // mismatchRecordTables
-    Assert.assertTrue(
-        "mismatchRecordTables:t_uuid",
+    assertTrue(
+//        "mismatchRecordTables:t_uuid",
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_uuid")).findFirst().isPresent());
   }
 
@@ -372,8 +390,8 @@ public class TestDiff {
     System.out.println(MdJson.toJsonStringFriendly(outputDiff));
 
     // mismatchRecordTables
-    Assert.assertTrue(
-        "mismatchRecordTables:t_inet6",
+    assertTrue(
+//        "mismatchRecordTables:t_inet6",
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_inet6")).findFirst().isPresent());
   }
 
@@ -388,8 +406,8 @@ public class TestDiff {
     System.out.println(MdJson.toJsonStringFriendly(outputDiff));
 
     // mismatchRecordTables
-    Assert.assertTrue(
-        "mismatchRecordTables:t_inet4",
+    assertTrue(
+//        "mismatchRecordTables:t_inet4",
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_inet4")).findFirst().isPresent());
   }
 }

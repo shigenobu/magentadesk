@@ -1,18 +1,18 @@
 package com.walksocket.md;
 
 import com.walksocket.md.html.endpoint.MdHtmlEndpointAbstract;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class TestWebForever {
 
   private static MdServer server;
 
-  @BeforeClass
+  @BeforeAll
   public static void beforeClass() throws Exception {
     MdEnv.setDebug();
     MdEnv.setPretty();
@@ -25,7 +25,7 @@ public class TestWebForever {
     Thread.sleep(1000);
   }
 
-  @AfterClass
+  @AfterAll
   public static void afterClass() throws IOException {
     server.shutdown();
   }

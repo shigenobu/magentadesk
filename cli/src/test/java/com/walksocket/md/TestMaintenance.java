@@ -1,21 +1,27 @@
 package com.walksocket.md;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.walksocket.md.exception.MdExceptionAbstract;
 import com.walksocket.md.input.MdInputDiff;
 import com.walksocket.md.input.MdInputMaintenance;
 import com.walksocket.md.output.MdOutputDiff;
 import com.walksocket.md.output.MdOutputMaintenance;
-import org.junit.*;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer.MethodName;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import org.junit.jupiter.api.TestMethodOrder;
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@TestMethodOrder(MethodName.class)
 public class TestMaintenance {
 
   private MdInputMaintenance inputMaintenance;
 
-  @BeforeClass
+  @BeforeAll
   public static void beforeClass() throws IOException {
     MdEnv.setDebug();
     MdEnv.setPretty();
@@ -23,7 +29,7 @@ public class TestMaintenance {
     MdLogger.open("stderr");
   }
 
-  @Before
+  @BeforeEach
   public void testBefore() {
     inputMaintenance = new MdInputMaintenance();
     inputMaintenance.host = "127.0.0.1";
@@ -35,7 +41,7 @@ public class TestMaintenance {
     inputMaintenance.compareDatabase = "compare";
   }
 
-  @After
+  @AfterEach
   public void testAfter() throws Exception {
     // maintenance off
     inputMaintenance.maintenance = "off";
@@ -50,7 +56,7 @@ public class TestMaintenance {
     MdOutputMaintenance outputMaintenance = (MdOutputMaintenance) MdExecute.execute(inputMaintenance);
     System.out.println(MdJson.toJsonStringFriendly(outputMaintenance));
 
-    Assert.assertEquals("on", outputMaintenance.maintenance);
+    assertEquals("on", outputMaintenance.maintenance);
 
     // check fail
     MdInputDiff inputDiff = new MdInputDiff();
@@ -64,9 +70,9 @@ public class TestMaintenance {
 
     try {
       MdExecute.execute(inputDiff);
-      Assert.fail("not hear.");
+      fail("not hear.");
     } catch (MdExceptionAbstract e) {
-      Assert.assertEquals(MdExceptionAbstract.ExitCode.IN_MAINTENANCE, e.getExitCode());
+      assertEquals(MdExceptionAbstract.ExitCode.IN_MAINTENANCE, e.getExitCode());
     }
   }
 
@@ -78,7 +84,7 @@ public class TestMaintenance {
     MdOutputMaintenance outputMaintenance = (MdOutputMaintenance) MdExecute.execute(inputMaintenance);
     System.out.println(MdJson.toJsonStringFriendly(outputMaintenance));
 
-    Assert.assertEquals("off", outputMaintenance.maintenance);
+    assertEquals("off", outputMaintenance.maintenance);
 
     // check success
     MdInputDiff inputDiff = new MdInputDiff();
@@ -92,9 +98,9 @@ public class TestMaintenance {
 
     try {
       MdOutputDiff outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
-      Assert.assertNotNull(outputDiff);
+      assertNotNull(outputDiff);
     } catch (MdExceptionAbstract e) {
-      Assert.fail("not hear.");
+      fail("not hear.");
     }
   }
 }
