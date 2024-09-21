@@ -4,7 +4,7 @@ import com.walksocket.md.MdDesk;
 import com.walksocket.md.MdInfoDiff;
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdUtils;
-import com.walksocket.md.mariadb.MdMariadbConnection;
+import com.walksocket.md.db.MdDbConnection;
 import com.walksocket.md.output.MdOutputDiff;
 import com.walksocket.md.output.member.MdOutputMemberMatchTables;
 import com.walksocket.md.info.MdInfoDiffColumn;
@@ -32,9 +32,9 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
 
   /**
    * constructor.
-   * @param con mariadb connection
+   * @param con db connection
    */
-  public MdFilterDiffMismatchRecordTables(MdMariadbConnection con) {
+  public MdFilterDiffMismatchRecordTables(MdDbConnection con) {
     super(con);
 
     this.desk = new MdDesk(con);

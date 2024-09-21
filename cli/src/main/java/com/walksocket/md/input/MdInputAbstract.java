@@ -1,6 +1,7 @@
 package com.walksocket.md.input;
 
 import com.google.gson.annotations.Expose;
+import com.walksocket.md.db.MdDbFactory;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.MdMode;
 import com.walksocket.md.MdValue;
@@ -46,17 +47,41 @@ public abstract class MdInputAbstract extends MdValue {
   public String charset;
 
   /**
+   * mariadb or mysql
+   */
+  @Expose
+  public String dbType;
+
+  /**
    * get connection string.
    * @return connection string
    */
   public String getConnectionString() {
+    if (dbType.equalsIgnoreCase(MdDbFactory.DbType.MYSQL.getDbType())) {
+      return String.format(
+          "%s%s:%s/information_schema" +
+              "?user=%s" +
+              "&password=%s" +
+              "&useUnicode=true" +
+              "&characterEncoding=utf8" +
+              "&sessionVariables=character_set_client=%s,character_set_results=%s,character_set_connection=%s",
+          MdDbFactory.JDBC_PREFIX_MYSQL,
+          host,
+          port,
+          user,
+          pass,
+          charset,
+          charset,
+          charset);
+    }
     return String.format(
-        "jdbc:mariadb://%s:%s/information_schema" +
+        "%s%s:%s/information_schema" +
             "?user=%s" +
             "&password=%s" +
             "&useUnicode=true" +
             "&characterEncoding=utf8" +
             "&sessionVariables=character_set_client=%s,character_set_results=%s,character_set_connection=%s",
+        MdDbFactory.JDBC_PREFIX_MARIADB,
         host,
         port,
         user,
@@ -86,6 +111,13 @@ public abstract class MdInputAbstract extends MdValue {
     if (MdUtils.isNullOrEmpty(charset)
       || !MdMariadbUtils.isValidCharset(charset)) {
       throw new MdExceptionInvalidInput("Invalid charset.");
+    }
+    if (MdUtils.isNullOrEmpty(dbType)) {
+      dbType = MdDbFactory.DbType.MARIADB.getDbType();
+    }
+    if (!dbType.equalsIgnoreCase(MdDbFactory.DbType.MARIADB.getDbType())
+      || !dbType.equalsIgnoreCase(MdDbFactory.DbType.MYSQL.getDbType())) {
+      throw new MdExceptionInvalidInput("Invalid dbType.");
     }
   }
 

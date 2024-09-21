@@ -1,5 +1,7 @@
 package com.walksocket.md;
 
+import com.walksocket.md.db.MdDbConnection;
+import com.walksocket.md.db.MdDbFactory;
 import com.walksocket.md.db.MdDbRecord;
 import com.walksocket.md.exception.MdExceptionAbstract;
 import com.walksocket.md.exception.MdExceptionInvalidVersion;
@@ -9,7 +11,6 @@ import com.walksocket.md.execute.MdExecuteDiff;
 import com.walksocket.md.execute.MdExecuteMaintenance;
 import com.walksocket.md.execute.MdExecuteSync;
 import com.walksocket.md.input.MdInputAbstract;
-import com.walksocket.md.mariadb.MdMariadbConnection;
 import com.walksocket.md.output.MdOutputAbstract;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class MdExecute {
     List<MdDbRecord> records;
 
     Exception ex = new MdExceptionUnknown();
-    try (MdMariadbConnection con = new MdMariadbConnection(input.getConnectionString())) {
+    try (MdDbConnection con = MdDbFactory.newCreate(input.getConnectionString())) {
       // check version
       String version = null;
       sql = "SELECT @@version as version";

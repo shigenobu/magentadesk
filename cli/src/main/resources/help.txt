@@ -7,6 +7,7 @@ Usage:
         [MD_LIMIT_LENGTH=${mdLimitLength}] \
         [MD_LIMIT_MISMATCH_COUNT=${mdLimitMismatchCount}] \
         [MD_HOME=${mdHome}] \
+        [MD_WAIT=${mdWait}] \
           java -jar magentadesk-cli.jar --mode=${mode} [--logPath=${logPath}] [--addSeconds=${addSeconds}]
 
 (args)
@@ -22,6 +23,7 @@ Usage:
   mdLimitLength          when diff and over this, returned value is to hash. default is 10000.
   mdLimitMismatchCount   when diff and over this, returned mismatch recods is convert empty. default is 10000.
   mdHome                 default is ${HOME}/.magentadesk. There is a home directory, by commands which execute in sync and at local database storage.
+  mdWait                 if 'WAIT', waiting until getting lock. Default is 'NOWAIT'.
 
 
 (exit code)

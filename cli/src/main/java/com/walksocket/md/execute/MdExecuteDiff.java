@@ -4,10 +4,10 @@ import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdInfoDiff;
 import com.walksocket.md.MdJson;
 import com.walksocket.md.MdUtils;
+import com.walksocket.md.db.MdDbConnection;
 import com.walksocket.md.filter.*;
 import com.walksocket.md.input.MdInputAbstract;
 import com.walksocket.md.input.MdInputDiff;
-import com.walksocket.md.mariadb.MdMariadbConnection;
 import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.output.MdOutputAbstract;
 import com.walksocket.md.output.MdOutputDiff;
@@ -23,9 +23,9 @@ public class MdExecuteDiff extends MdExecuteAbstract {
 
   /**
    * constructor.
-   * @param con mariadb connection
+   * @param con db connection
    */
-  public MdExecuteDiff(MdMariadbConnection con) {
+  public MdExecuteDiff(MdDbConnection con) {
     super(con);
   }
 

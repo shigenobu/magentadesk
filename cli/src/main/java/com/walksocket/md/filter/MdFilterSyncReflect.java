@@ -3,8 +3,8 @@ package com.walksocket.md.filter;
 import com.walksocket.md.MdDesk;
 import com.walksocket.md.MdInfoSync;
 import com.walksocket.md.MdUtils;
+import com.walksocket.md.db.MdDbConnection;
 import com.walksocket.md.output.MdOutputSync;
-import com.walksocket.md.mariadb.MdMariadbConnection;
 import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.output.member.MdOutputMemberNotReflectedRecordTable;
 import com.walksocket.md.output.member.MdOutputMemberReflectedRecordTable;
@@ -40,10 +40,10 @@ public class MdFilterSyncReflect extends MdFilterSyncAbstract {
 
   /**
    * constructor.
-   * @param con mariadb connection
+   * @param con db connection
    * @param force force flag
    */
-  public MdFilterSyncReflect(MdMariadbConnection con, boolean force) {
+  public MdFilterSyncReflect(MdDbConnection con, boolean force) {
     super(con);
 
     this.force = force;

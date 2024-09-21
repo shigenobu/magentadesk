@@ -1,7 +1,7 @@
 package com.walksocket.md.filter;
 
 import com.walksocket.md.MdInfoDiff;
-import com.walksocket.md.mariadb.MdMariadbConnection;
+import com.walksocket.md.db.MdDbConnection;
 import com.walksocket.md.output.MdOutputDiff;
 
 import java.sql.SQLException;
@@ -13,15 +13,15 @@ import java.util.List;
 public abstract class MdFilterDiffAbstract {
 
   /**
-   * mariadb connection.
+   * db connection.
    */
-  protected MdMariadbConnection con;
+  protected MdDbConnection con;
 
   /**
    * constructor.
-   * @param con mariadb connection
+   * @param con db connection
    */
-  public MdFilterDiffAbstract(MdMariadbConnection con) {
+  public MdFilterDiffAbstract(MdDbConnection con) {
     this.con = con;
   }
 

@@ -1,7 +1,7 @@
 package com.walksocket.md.filter;
 
 import com.walksocket.md.MdInfoDiff;
-import com.walksocket.md.mariadb.MdMariadbConnection;
+import com.walksocket.md.db.MdDbConnection;
 import com.walksocket.md.output.MdOutputDiff;
 import com.walksocket.md.output.member.MdOutputMemberForceExcludeTable;
 
@@ -17,9 +17,9 @@ public class MdFilterDiffForceExcludeTables extends MdFilterDiffAbstract {
 
   /**
    * constructor.
-   * @param con mariadb connection
+   * @param con db connection
    */
-  public MdFilterDiffForceExcludeTables(MdMariadbConnection con) {
+  public MdFilterDiffForceExcludeTables(MdDbConnection con) {
     super(con);
   }
 

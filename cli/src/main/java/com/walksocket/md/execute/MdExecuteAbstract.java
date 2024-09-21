@@ -2,12 +2,12 @@ package com.walksocket.md.execute;
 
 import com.walksocket.md.MdEnv;
 import com.walksocket.md.MdLogger;
+import com.walksocket.md.db.MdDbConnection;
 import com.walksocket.md.db.MdDbRecord;
 import com.walksocket.md.exception.MdExceptionDisallowSimultaneousExecution;
 import com.walksocket.md.exception.MdExceptionInMaintenance;
 import com.walksocket.md.input.MdInputAbstract;
 import com.walksocket.md.input.MdInputMaintenance;
-import com.walksocket.md.mariadb.MdMariadbConnection;
 import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.output.MdOutputAbstract;
 
@@ -20,15 +20,15 @@ import java.util.List;
 public abstract class MdExecuteAbstract {
 
   /**
-   * mariadb connection.
+   * db connection.
    */
-  protected MdMariadbConnection con;
+  protected MdDbConnection con;
 
   /**
    * constructor.
-   * @param con mariadb connection
+   * @param con db connection
    */
-  public MdExecuteAbstract(MdMariadbConnection con) {
+  public MdExecuteAbstract(MdDbConnection con) {
     this.con = con;
   }
 

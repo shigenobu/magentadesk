@@ -1,8 +1,8 @@
 package com.walksocket.md;
 
+import com.walksocket.md.db.MdDbConnection;
 import com.walksocket.md.db.MdDbRecord;
 import com.walksocket.md.info.MdInfoDiffColumn;
-import com.walksocket.md.mariadb.MdMariadbConnection;
 import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.output.parts.MdOutputPartsColumn;
 import com.walksocket.md.output.parts.MdOutputPartsRecord;
@@ -20,15 +20,15 @@ import java.util.Map;
 public class MdDesk {
 
   /**
-   * mariadb connection.
+   * db connection.
    */
-  private MdMariadbConnection con;
+  private MdDbConnection con;
 
   /**
    * constructor.
-   * @param con mariadb connection
+   * @param con db connection
    */
-  public MdDesk(MdMariadbConnection con) {
+  public MdDesk(MdDbConnection con) {
     this.con = con;
   }
 

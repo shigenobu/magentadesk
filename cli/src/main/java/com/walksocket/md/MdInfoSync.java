@@ -1,8 +1,8 @@
 package com.walksocket.md;
 
+import com.walksocket.md.db.MdDbConnection;
 import com.walksocket.md.db.MdDbRecord;
 import com.walksocket.md.input.MdInputSync;
-import com.walksocket.md.mariadb.MdMariadbConnection;
 import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.output.parts.MdOutputPartsColumn;
 
@@ -19,7 +19,7 @@ public class MdInfoSync {
 
   /**
    * create info list.
-   * @param con mariadb connection
+   * @param con db connection
    * @param baseDatabase base database
    * @param compareDatabase compare database
    * @param inputSync input object
@@ -27,7 +27,7 @@ public class MdInfoSync {
    * @throws SQLException sql error
    */
   public static List<MdInfoSync> createInfoList(
-      MdMariadbConnection con,
+      MdDbConnection con,
       String baseDatabase,
       String compareDatabase,
       MdInputSync inputSync) throws SQLException {

@@ -1,8 +1,8 @@
 package com.walksocket.md.execute;
 
+import com.walksocket.md.db.MdDbConnection;
 import com.walksocket.md.input.MdInputAbstract;
 import com.walksocket.md.input.MdInputMaintenance;
-import com.walksocket.md.mariadb.MdMariadbConnection;
 import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.output.MdOutputAbstract;
 import com.walksocket.md.output.MdOutputMaintenance;
@@ -14,9 +14,9 @@ public class MdExecuteMaintenance extends MdExecuteAbstract {
 
   /**
    * constructor.
-   * @param con mariadb connection
+   * @param con db connection
    */
-  public MdExecuteMaintenance(MdMariadbConnection con) {
+  public MdExecuteMaintenance(MdDbConnection con) {
     super(con);
   }
 

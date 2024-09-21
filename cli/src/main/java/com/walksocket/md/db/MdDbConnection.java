@@ -3,6 +3,7 @@ package com.walksocket.md.db;
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdUtils;
 
+import com.walksocket.md.db.MdDbFactory.DbType;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +36,14 @@ abstract public class MdDbConnection implements AutoCloseable {
    */
   public String getConnectionString() {
     return connectionString;
+  }
+
+  /**
+   * get db type.
+   * @return db type
+   */
+  public DbType getDbType() {
+    return MdDbFactory.getDbType(connectionString);
   }
 
   /**

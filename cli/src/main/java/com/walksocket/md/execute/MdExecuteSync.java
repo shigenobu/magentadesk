@@ -4,13 +4,13 @@ import com.walksocket.md.*;
 import com.walksocket.md.bash.MdBashCommand;
 import com.walksocket.md.bash.MdBashResult;
 import com.walksocket.md.bash.MdBashStdin;
+import com.walksocket.md.db.MdDbConnection;
 import com.walksocket.md.exception.MdExceptionNoExistsDiffSeqs;
 import com.walksocket.md.exception.MdExceptionNotSuccessCode;
 import com.walksocket.md.filter.MdFilterSyncAbstract;
 import com.walksocket.md.filter.MdFilterSyncReflect;
 import com.walksocket.md.http.MdHttpClient;
 import com.walksocket.md.input.member.MdInputMemberHttp;
-import com.walksocket.md.mariadb.MdMariadbConnection;
 import com.walksocket.md.output.MdOutputAbstract;
 import com.walksocket.md.output.MdOutputSync;
 import com.walksocket.md.output.member.MdOutputMemberHttpResult;
@@ -36,9 +36,9 @@ public class MdExecuteSync extends MdExecuteAbstract {
 
   /**
    * constructor.
-   * @param con mariadb connection
+   * @param con db connection
    */
-  public MdExecuteSync(MdMariadbConnection con) {
+  public MdExecuteSync(MdDbConnection con) {
     super(con);
   }
 

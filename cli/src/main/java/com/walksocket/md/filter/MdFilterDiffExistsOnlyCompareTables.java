@@ -1,7 +1,7 @@
 package com.walksocket.md.filter;
 
 import com.walksocket.md.MdInfoDiff;
-import com.walksocket.md.mariadb.MdMariadbConnection;
+import com.walksocket.md.db.MdDbConnection;
 import com.walksocket.md.output.MdOutputDiff;
 import com.walksocket.md.output.member.MdOutputMemberExistsOnlyCompareTable;
 
@@ -18,9 +18,9 @@ public class MdFilterDiffExistsOnlyCompareTables extends MdFilterDiffAbstract {
 
   /**
    * constructor.
-   * @param con mariadb connection
+   * @param con db connection
    */
-  public MdFilterDiffExistsOnlyCompareTables(MdMariadbConnection con) {
+  public MdFilterDiffExistsOnlyCompareTables(MdDbConnection con) {
     super(con);
   }
 

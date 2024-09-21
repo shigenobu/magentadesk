@@ -1,10 +1,10 @@
 package com.walksocket.md;
 
+import com.walksocket.md.db.MdDbConnection;
 import com.walksocket.md.db.MdDbRecord;
 import com.walksocket.md.info.*;
 import com.walksocket.md.input.member.MdInputMemberCondition;
 import com.walksocket.md.input.member.MdInputMemberOption;
-import com.walksocket.md.mariadb.MdMariadbConnection;
 import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.supplier.MdSupplierInfoGetChecksum;
 import com.walksocket.md.supplier.MdSupplierInfoGetChecksumFake;
@@ -22,7 +22,7 @@ public class MdInfoDiff {
 
   /**
    * create info list.
-   * @param con mariadb connection.
+   * @param con db connection.
    * @param database base or compare database
    * @param option input option
    * @param conditions condtion list
@@ -30,7 +30,7 @@ public class MdInfoDiff {
    * @throws SQLException sql error
    */
   public static List<MdInfoDiff> createInfoList(
-      MdMariadbConnection con,
+      MdDbConnection con,
       String database,
       MdInputMemberOption option,
       List<MdInputMemberCondition> conditions) throws SQLException {
@@ -89,9 +89,9 @@ public class MdInfoDiff {
   }
 
   /**
-   * mariadb connection.
+   * db connection.
    */
-  private MdMariadbConnection con;
+  private MdDbConnection con;
 
   /**
    * database (base or compare).
@@ -189,7 +189,7 @@ public class MdInfoDiff {
 
   /**
    * construtor.
-   * @param con mariadb connection
+   * @param con db connection
    * @param database base or compare database
    * @param tableName table name
    * @param option input option
@@ -197,7 +197,7 @@ public class MdInfoDiff {
    * @throws SQLException sql error
    */
   public MdInfoDiff(
-      MdMariadbConnection con,
+      MdDbConnection con,
       String database,
       String tableName,
       MdInputMemberOption option,
