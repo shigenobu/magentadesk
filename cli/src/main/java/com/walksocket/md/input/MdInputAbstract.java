@@ -5,6 +5,7 @@ import com.walksocket.md.db.MdDbFactory;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.MdMode;
 import com.walksocket.md.MdValue;
+import com.walksocket.md.db.MdDbFactory.DbType;
 import com.walksocket.md.exception.MdExceptionInvalidInput;
 import com.walksocket.md.mariadb.MdMariadbUtils;
 
@@ -50,7 +51,7 @@ public abstract class MdInputAbstract extends MdValue {
    * mariadb or mysql
    */
   @Expose
-  public String dbType;
+  public String dbType = DbType.MARIADB.getDbType();
 
   /**
    * get connection string.
@@ -112,11 +113,8 @@ public abstract class MdInputAbstract extends MdValue {
       || !MdMariadbUtils.isValidCharset(charset)) {
       throw new MdExceptionInvalidInput("Invalid charset.");
     }
-    if (MdUtils.isNullOrEmpty(dbType)) {
-      dbType = MdDbFactory.DbType.MARIADB.getDbType();
-    }
     if (!dbType.equalsIgnoreCase(MdDbFactory.DbType.MARIADB.getDbType())
-      || !dbType.equalsIgnoreCase(MdDbFactory.DbType.MYSQL.getDbType())) {
+      && !dbType.equalsIgnoreCase(MdDbFactory.DbType.MYSQL.getDbType())) {
       throw new MdExceptionInvalidInput("Invalid dbType.");
     }
   }

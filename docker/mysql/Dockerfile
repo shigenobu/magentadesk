@@ -1,7 +1,7 @@
-FROM mariadb:11.5
+FROM mysql:8.0.31
 
 # copy configuration
-COPY ./mariadb.conf.d/server.cnf /etc/mysql/mariadb.conf.d/server.cnf
+COPY ./conf.d/my.cnf /etc/mysql/conf.d/my.cnf
 
 # copy query
 COPY ./init/ /docker-entrypoint-initdb.d

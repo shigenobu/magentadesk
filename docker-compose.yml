@@ -11,11 +11,20 @@ services:
       - 9000:8080
     volumes:
       - ./docker/php/public:/var/www
-  mysql:
-    build: ./docker/mysql
-    container_name: magentadesk-mysql
-    image: magentadesk-mysql:0.1.1
+  mariadb:
+    build: ./docker/mariadb
+    container_name: magentadesk-mariadb
+    image: magentadesk-mariadb:0.2.0
     ports:
       - 13306:3306
     environment:
       - MYSQL_ROOT_PASSWORD=pass
+  mysql:
+    build: ./docker/mysql
+    container_name: magentadesk-mysql
+    image: magentadesk-mysql:0.0.1
+    ports:
+      - 23306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=pass
+      - TZ=Asia/Tokyo
