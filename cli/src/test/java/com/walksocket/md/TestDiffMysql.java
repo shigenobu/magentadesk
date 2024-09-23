@@ -96,10 +96,10 @@ public class TestDiffMysql {
 //        "mismatchDefinitionTables:t_comment_mismatch",
         outputDiff.mismatchDefinitionTables.stream().filter(o -> o.tableName.equals("t_comment_mismatch")).findFirst().isPresent());
 
-//    // mismatchRecordTables
-//    assertTrue(
-////        "mismatchRecordTables:t_all_types",
-//        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_all_types")).findFirst().isPresent());
+    // mismatchRecordTables
+    assertTrue(
+//        "mismatchRecordTables:t_all_types",
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_all_types")).findFirst().isPresent());
 //    assertTrue(
 ////        "mismatchRecordTables:t_blob_primary",
 //        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_blob_primary")).findFirst().isPresent());
@@ -122,22 +122,13 @@ public class TestDiffMysql {
 ////        "mismatchRecordTables:t_dup_unique",
 //        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_dup_unique")).findFirst().isPresent());
 //
-//    // matchTables
-//    assertTrue(
-////        "matchTables:T_ALL_UPPER",
-//        outputDiff.matchTables.stream().filter(o -> o.tableName.equals("T_ALL_UPPER")).findFirst().isPresent());
-//    assertTrue(
-////        "matchTables:t_lower_UPPER",
-//        outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_lower_UPPER")).findFirst().isPresent());
-//    assertTrue(
-////        "matchTables:t_system_versioned_invisible",
-//        outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_system_versioned_invisible")).findFirst().isPresent());
-//    assertTrue(
-////        "matchTables:t_system_versioned_visible",
-//        outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_system_versioned_visible")).findFirst().isPresent());
-//    assertTrue(
-////        "matchTables:t_system_versioned_not_diff",
-//        outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_system_versioned_not_diff")).findFirst().isPresent());
+    // matchTables
+    assertTrue(
+//        "matchTables:T_ALL_UPPER",
+        outputDiff.matchTables.stream().filter(o -> o.tableName.equals("T_ALL_UPPER")).findFirst().isPresent());
+    assertTrue(
+//        "matchTables:t_lower_UPPER",
+        outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_lower_UPPER")).findFirst().isPresent());
   }
 
   @Test
@@ -153,42 +144,6 @@ public class TestDiffMysql {
     assertTrue(
 //        "matchTables:t_wrong_auto_increment",
         outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_wrong_auto_increment")).findFirst().isPresent());
-  }
-
-//  @Test
-//  public void test12IgnoreSystemVersioned() throws Exception {
-//    inputDiff.option = new MdInputMemberOption();
-//    inputDiff.option.includeTableLikePatterns.add("t\\_system\\_versioned");
-//    inputDiff.option.includeTableLikePatterns.add("t\\_system\\_versioned\\_mismatch");
-//
-//    MdOutputDiff outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
-//    System.out.println(MdJson.toJsonStringFriendly(outputDiff));
-//
-//    // mismatch
-//    // (notice) base and system versioned table type is always not match.
-//    assertTrue(
-//        "matchTables:t_system_versioned_mismatch",
-//        outputDiff.mismatchDefinitionTables.stream().filter(o -> o.tableName.equals("t_system_versioned_mismatch")).findFirst().isPresent());
-//
-//    // matchTables
-//    assertTrue(
-//        "matchTables:t_system_versioned",
-//        outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_system_versioned")).findFirst().isPresent());
-//  }
-
-  @Test
-  public void test13IgnoreDefaultForSequence() throws Exception {
-    inputDiff.option = new MdInputMemberOption();
-    inputDiff.option.ignoreDefaultForSequence = true;
-    inputDiff.option.includeTableLikePatterns.add("t\\_has\\_default\\_seq");
-
-    MdOutputDiff outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
-    System.out.println(MdJson.toJsonStringFriendly(outputDiff));
-
-    // matchTables
-    assertTrue(
-//        "matchTables:t_has_default_seq",
-        outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_has_default_seq")).findFirst().isPresent());
   }
 
   @Test
@@ -353,49 +308,5 @@ public class TestDiffMysql {
 //        "checksum:t_article",
         "fake_compare_t_article",
         outputDiff2.matchTables.stream().filter(o -> o.tableName.equals("t_article")).findFirst().get().compareChecksum);
-  }
-
-  @Test
-  public void test41UuidDataType() throws Exception {
-    inputDiff.option = new MdInputMemberOption();
-    inputDiff.option.includeTableLikePatterns.add("t\\_uuid");
-
-    MdOutputDiff outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
-    System.out.println(MdJson.toJsonStringFriendly(outputDiff));
-
-    // mismatchRecordTables
-    assertTrue(
-//        "mismatchRecordTables:t_uuid",
-        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_uuid")).findFirst().isPresent());
-  }
-
-  @Test
-  public void test42Inet6DataType() throws Exception {
-    inputDiff.option = new MdInputMemberOption();
-    inputDiff.option.includeTableLikePatterns.add("t\\_inet6");
-
-    MdOutputDiff outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
-    System.out.println(MdJson.toJsonStringFriendly(outputDiff));
-
-    // mismatchRecordTables
-    assertTrue(
-//        "mismatchRecordTables:t_inet6",
-        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_inet6")).findFirst().isPresent());
-  }
-
-  @Test
-  public void test43Inet4DataType() throws Exception {
-    MdEnv.setLimitLength(100);
-
-    inputDiff.option = new MdInputMemberOption();
-    inputDiff.option.includeTableLikePatterns.add("t\\_inet4");
-
-    MdOutputDiff outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
-    System.out.println(MdJson.toJsonStringFriendly(outputDiff));
-
-    // mismatchRecordTables
-    assertTrue(
-//        "mismatchRecordTables:t_inet4",
-        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_inet4")).findFirst().isPresent());
   }
 }

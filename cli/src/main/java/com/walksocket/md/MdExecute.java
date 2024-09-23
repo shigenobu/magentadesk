@@ -123,24 +123,37 @@ public class MdExecute {
           "  END";
         con.execute(sql);
 
+        // create table `magentadesk`.`diffRecord`.
+        sql = "CREATE TABLE IF NOT EXISTS `magentadesk`.`diffRecord` (" +
+            "  `summaryId` varchar(32) not null," +
+            "  `tableName` varchar(64) not null," +
+            "  `diffSeq` bigint not null," +
+            "  `baseValues` json," +
+            "  `compareValues` json," +
+            "  primary key (`summaryId`, `tableName`, `diffSeq`)," +
+            "  unique key (`diffSeq`)," +
+            "  foreign key (`summaryId`) references `magentadesk`.`diffSummary` (`summaryId`) on delete cascade" +
+            ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+        con.execute(sql);
+
       } else {
         // create sequence `magentadesk`.`diffSequence`.
         sql = "CREATE SEQUENCE IF NOT EXISTS `magentadesk`.`diffSequence` increment by 0 cycle;";
         con.execute(sql);
-      }
 
-      // create table `magentadesk`.`diffRecord`.
-      sql = "CREATE TABLE IF NOT EXISTS `magentadesk`.`diffRecord` (" +
-          "  `summaryId` varchar(32) not null," +
-          "  `tableName` varchar(64) not null," +
-          "  `diffSeq` bigint not null," +
-          "  `baseValues` longblob," +
-          "  `compareValues` longblob," +
-          "  primary key (`summaryId`, `tableName`, `diffSeq`)," +
-          "  unique key (`diffSeq`)," +
-          "  foreign key (`summaryId`) references `magentadesk`.`diffSummary` (`summaryId`) on delete cascade" +
-          ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
-      con.execute(sql);
+        // create table `magentadesk`.`diffRecord`.
+        sql = "CREATE TABLE IF NOT EXISTS `magentadesk`.`diffRecord` (" +
+            "  `summaryId` varchar(32) not null," +
+            "  `tableName` varchar(64) not null," +
+            "  `diffSeq` bigint not null," +
+            "  `baseValues` longblob," +
+            "  `compareValues` longblob," +
+            "  primary key (`summaryId`, `tableName`, `diffSeq`)," +
+            "  unique key (`diffSeq`)," +
+            "  foreign key (`summaryId`) references `magentadesk`.`diffSummary` (`summaryId`) on delete cascade" +
+            ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+        con.execute(sql);
+      }
 
       // delete from `magentadesk`.`diffSummary` where expired.
       sql = "DELETE FROM `magentadesk`.`diffSummary` WHERE `created` < (NOW() - INTERVAL 10800 SECOND)";

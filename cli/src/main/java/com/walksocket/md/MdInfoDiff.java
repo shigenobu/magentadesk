@@ -381,7 +381,7 @@ public class MdInfoDiff {
           tableName);
       List<MdDbRecord> records = con.getRecords(sql);
       for (MdDbRecord record : records) {
-        infoColumns.add(new MdInfoDiffColumn(record, con.getDbType(), option));
+        infoColumns.add(new MdInfoDiffColumn(record, option));
       }
     }
     return infoColumns;

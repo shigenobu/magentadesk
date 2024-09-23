@@ -5,6 +5,7 @@ import com.walksocket.md.MdInfoDiff;
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.db.MdDbConnection;
+import com.walksocket.md.db.MdDbFactory.DbType;
 import com.walksocket.md.output.MdOutputDiff;
 import com.walksocket.md.output.member.MdOutputMemberMatchTables;
 import com.walksocket.md.info.MdInfoDiffColumn;
@@ -185,6 +186,16 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
       conditions.add(condition);
     }
 
+    String seqExpression = "";
+    String dynamicExpression = "";
+    if (con.getDbType() == DbType.MYSQL) {
+      seqExpression = "`magentadesk`.`nextDiffSeq`()";
+      dynamicExpression = "JSON_OBJECT";
+    } else {
+      seqExpression = "nextval(`magentadesk`.`diffSequence`)";
+      dynamicExpression = "COLUMN_CREATE";
+    }
+
     String sql = String.format(
         "INSERT INTO `magentadesk`.`diffRecord` (`summaryId`, `tableName`, `diffSeq`, `baseValues`, `compareValues`) " +
             "WITH " +
@@ -206,9 +217,9 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
             "SELECT " +
             "  '%s' as summaryId, " +
             "  '%s' as tableName, " +
-            "  nextval(`magentadesk`.`diffSequence`), " +
-            "  COLUMN_CREATE(%s) as baseValues, " +
-            "  COLUMN_CREATE(%s) as compareValues " +
+            "  %s, " +
+            "  %s(%s) as baseValues, " +
+            "  %s(%s) as compareValues " +
             "FROM " +
             "  md_full",
         // md_b2c
@@ -240,7 +251,10 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
         // SELECT
         summaryId,
         baseInfo.getTableName(),
+        seqExpression,
+        dynamicExpression,
         MdUtils.join(baseDynamicColumnNames, ", "),
+        dynamicExpression,
         MdUtils.join(compareDynamicColumnNames, ", "));
     con.execute(sql);
   }

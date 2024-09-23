@@ -1,6 +1,7 @@
 package com.walksocket.md;
 
 import com.walksocket.md.db.MdDbConnection;
+import com.walksocket.md.db.MdDbFactory.DbType;
 import com.walksocket.md.db.MdDbRecord;
 import com.walksocket.md.info.MdInfoDiffColumn;
 import com.walksocket.md.mariadb.MdMariadbUtils;
@@ -72,23 +73,49 @@ public class MdDesk {
     // get base columns
     List<String> baseColumns = new ArrayList<>();
     for (MdInfoDiffColumn column : baseInfo.getRealColumns()) {
-      baseColumns.add(
-          String.format(
-              "COLUMN_GET(`baseValues`, '%s' as %s) as mdb_%s",
-              column.getColumnName(),
-              MdMariadbUtils.getDynamicType(column.getColumnType()).toString(),
-              column.getColumnName()));
+      if (con.getDbType() == DbType.MYSQL) {
+        if (column.isBinary()) {
+          // select from_base64(substring('base64:type15:YWJj', locate(':', 'base64:type15:YWJj', 8) + 1));
+          baseColumns.add(
+              String.format(
+                  // returning char
+                  "FROM_BASE64(SUBSTRING(JSON_VALUE(`baseValues`, '$.%s' returning %s), LOCATE(':', JSON_VALUE(`baseValues`, '$.%s' returning %s), 8) + 1)) as mdb_%s",
+                  column.getColumnName(),
+                  MdMysqlUtils.getReturningType(column.getColumnType()).toString(),
+                  column.getColumnName(),
+                  MdMysqlUtils.getReturningType(column.getColumnType()).toString(),
+                  column.getColumnName()));
+        } else {
+          baseColumns.add(
+              String.format(
+                  "JSON_VALUE(`baseValues`, '$.%s' returning %s) as mdb_%s",
+                  column.getColumnName(),
+                  MdMysqlUtils.getReturningType(column.getColumnType()).toString(),
+                  column.getColumnName()));
+        }
+      } else {
+        baseColumns.add(
+            String.format(
+                "COLUMN_GET(`baseValues`, '%s' as %s) as mdb_%s",
+                column.getColumnName(),
+                MdMariadbUtils.getDynamicType(column.getColumnType()).toString(),
+                column.getColumnName()));
+      }
     }
 
     // get compare columns
     List<String> compareColumns = new ArrayList<>();
     for (MdInfoDiffColumn column : compareInfo.getRealColumns()) {
-      compareColumns.add(
-          String.format(
-              "COLUMN_GET(`compareValues`, '%s' as %s) as mdc_%s",
-              column.getColumnName(),
-              MdMariadbUtils.getDynamicType(column.getColumnType()).toString(),
-              column.getColumnName()));
+      if (con.getDbType() == DbType.MYSQL) {
+
+      } else {
+        compareColumns.add(
+            String.format(
+                "COLUMN_GET(`compareValues`, '%s' as %s) as mdc_%s",
+                column.getColumnName(),
+                MdMariadbUtils.getDynamicType(column.getColumnType()).toString(),
+                column.getColumnName()));
+      }
     }
 
     // get

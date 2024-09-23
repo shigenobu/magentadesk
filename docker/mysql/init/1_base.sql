@@ -78,3 +78,19 @@ CREATE TABLE `t_comment_mismatch` (
 (PARTITION `p1` VALUES IN (1,2,3) COMMENT = 'PARTITION P1' ENGINE = InnoDB,
  PARTITION `p2` VALUES IN (4,5,6) COMMENT = 'PARTITION P2' ENGINE = InnoDB,
  PARTITION `p3` VALUES IN (7,8,9) COMMENT = 'PARTITION P3' ENGINE = InnoDB);
+
+CREATE TABLE `T_ALL_UPPER` (
+                               `ID` int(11) NOT NULL,
+                               `NAME` varchar(16) DEFAULT NULL,
+                               PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+INSERT INTO `T_ALL_UPPER` VALUES
+    (1,'a');
+
+CREATE TABLE `t_lower_UPPER` (
+                                 `Id` int(11) NOT NULL,
+                                 `NaMe` varchar(16) DEFAULT NULL,
+                                 PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+INSERT INTO `t_lower_UPPER` VALUES
+    (1,'a');
