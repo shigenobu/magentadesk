@@ -1,6 +1,7 @@
 package com.walksocket.md;
 
 import com.walksocket.md.db.MdDbConnection;
+import com.walksocket.md.db.MdDbFactory.DbType;
 import com.walksocket.md.db.MdDbRecord;
 import com.walksocket.md.info.*;
 import com.walksocket.md.input.member.MdInputMemberCondition;
@@ -380,7 +381,7 @@ public class MdInfoDiff {
           tableName);
       List<MdDbRecord> records = con.getRecords(sql);
       for (MdDbRecord record : records) {
-        infoColumns.add(new MdInfoDiffColumn(record, option));
+        infoColumns.add(new MdInfoDiffColumn(record, con.getDbType(), option));
       }
     }
     return infoColumns;
@@ -417,13 +418,26 @@ public class MdInfoDiff {
   private List<MdInfoDiffConstraint> getInfoConstraints() throws SQLException {
     if (infoConstraints == null) {
       infoConstraints = new ArrayList<>();
-      String sql = String.format(
-          "SELECT * " +
-              "FROM information_schema.CHECK_CONSTRAINTS " +
-              "WHERE constraint_schema = '%s' and table_name = '%s' " +
-              "ORDER BY constraint_name",
-          database,
-          tableName);
+      String sql = "";
+      if (con.getDbType() == DbType.MYSQL) {
+        sql = String.format(
+            "SELECT t1.CONSTRAINT_NAME, t1.CHECK_CLAUSE " +
+                "FROM information_schema.CHECK_CONSTRAINTS as t1 " +
+                "JOIN information_schema.TABLE_CONSTRAINTS as t2 " +
+                "ON t1.CONSTRAINT_SCHEMA = t2.CONSTRAINT_SCHEMA and t1.CONSTRAINT_NAME = t2.CONSTRAINT_NAME " +
+                "WHERE t1.constraint_schema = '%s' and t2.table_name = '%s' " +
+                "ORDER BY t1.constraint_name",
+            database,
+            tableName);
+      } else {
+        sql = String.format(
+            "SELECT * " +
+                "FROM information_schema.CHECK_CONSTRAINTS " +
+                "WHERE constraint_schema = '%s' and table_name = '%s' " +
+                "ORDER BY constraint_name",
+            database,
+            tableName);
+      }
       List<MdDbRecord> records = con.getRecords(sql);
       for (MdDbRecord record : records) {
         infoConstraints.add(new MdInfoDiffConstraint(record));

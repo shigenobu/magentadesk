@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 @TestMethodOrder(MethodName.class)
-public class TestMysqlMaintenance {
+public class TestMaintenanceMysql {
 
   private MdInputMaintenance inputMaintenance;
 

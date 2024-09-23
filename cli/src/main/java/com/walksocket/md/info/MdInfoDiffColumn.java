@@ -2,6 +2,7 @@ package com.walksocket.md.info;
 
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdUtils;
+import com.walksocket.md.db.MdDbFactory.DbType;
 import com.walksocket.md.db.MdDbRecord;
 import com.walksocket.md.input.member.MdInputMemberOption;
 import com.walksocket.md.mariadb.MdMariadbUtils;
@@ -92,11 +93,13 @@ public class MdInfoDiffColumn implements MdInfoDiffInterface {
 
   /**
    * constructor.
+   *
    * @param record record
+   * @param dbType db type
    * @param option input option
    * @throws SQLException sql error
    */
-  public MdInfoDiffColumn(MdDbRecord record, MdInputMemberOption option) throws SQLException {
+  public MdInfoDiffColumn(MdDbRecord record, DbType dbType, MdInputMemberOption option) throws SQLException {
     this.TABLE_NAME = record.get("TABLE_NAME");
     this.COLUMN_NAME = record.get("COLUMN_NAME");
     this.ORDINAL_POSITION = record.get("ORDINAL_POSITION");
@@ -109,8 +112,16 @@ public class MdInfoDiffColumn implements MdInfoDiffInterface {
     this.COLUMN_KEY = record.get("COLUMN_KEY");
     this.EXTRA = record.get("EXTRA");
     this.COLUMN_COMMENT = record.get("COLUMN_COMMENT");
-    this.IS_GENERATED = record.get("IS_GENERATED");
-    this.GENERATION_EXPRESSION = record.get("GENERATION_EXPRESSION");
+
+    if (dbType == DbType.MYSQL) {
+      this.GENERATION_EXPRESSION = record.get("GENERATION_EXPRESSION");
+      if (!MdUtils.isNullOrEmpty(this.GENERATION_EXPRESSION)) {
+        this.IS_GENERATED = "FAKE_OF_MYSQL";
+      }
+    } else {
+      this.IS_GENERATED = record.get("IS_GENERATED");
+      this.GENERATION_EXPRESSION = record.get("GENERATION_EXPRESSION");
+    }
 
     this.option = option;
   }
