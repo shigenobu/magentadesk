@@ -52,86 +52,98 @@ public class TestDiffMysql {
 
     // existsOnlyBaseTables
     assertTrue(
-//        "existsOnlyBaseTables:t_only_base",
-        outputDiff.existsOnlyBaseTables.stream().filter(o -> o.tableName.equals("t_only_base")).findFirst().isPresent());
+        outputDiff.existsOnlyBaseTables.stream().filter(o -> o.tableName.equals("t_only_base")).findFirst().isPresent(),
+        "existsOnlyBaseTables:t_only_base");
 
     // existsOnlyCompareTables
     assertTrue(
-//        "existsOnlyCompareTables:t_only_compare",
-        outputDiff.existsOnlyCompareTables.stream().filter(o -> o.tableName.equals("t_only_compare")).findFirst().isPresent());
+        outputDiff.existsOnlyCompareTables.stream().filter(o -> o.tableName.equals("t_only_compare")).findFirst().isPresent(),
+        "existsOnlyCompareTables:t_only_compare");
 
     // forceExcludeTables
     assertTrue(
-//        "forceExcludeTables:t_foreign_had",
-        outputDiff.forceExcludeTables.stream().filter(o -> o.tableName.equals("t_foreign_had")).findFirst().isPresent());
+        outputDiff.forceExcludeTables.stream().filter(o -> o.tableName.equals("t_foreign_had")).findFirst().isPresent(),
+        "forceExcludeTables:t_foreign_had");
     assertTrue(
-//        "forceExcludeTables:t_myisam",
-        outputDiff.forceExcludeTables.stream().filter(o -> o.tableName.equals("t_myisam")).findFirst().isPresent());
+        outputDiff.forceExcludeTables.stream().filter(o -> o.tableName.equals("t_myisam")).findFirst().isPresent(),
+        "forceExcludeTables:t_myisam");
     assertTrue(
-//        "forceExcludeTables:t_view_ok",
-        outputDiff.forceExcludeTables.stream().filter(o -> o.tableName.equals("t_view_ok")).findFirst().isPresent());
+        outputDiff.forceExcludeTables.stream().filter(o -> o.tableName.equals("t_view_ok")).findFirst().isPresent(),
+        "forceExcludeTables:t_view_ok");
     assertTrue(
-//        "forceExcludeTables:t_has_trigger_mismatch",
-        outputDiff.forceExcludeTables.stream().filter(o -> o.tableName.equals("t_has_trigger_mismatch")).findFirst().isPresent());
+        outputDiff.forceExcludeTables.stream().filter(o -> o.tableName.equals("t_has_trigger_mismatch")).findFirst().isPresent(),
+        "forceExcludeTables:t_has_trigger_mismatch");
 
     // incorrectDefinitionTables
     assertTrue(
-//        "incorrectDefinitionTables:t_no_primary",
-        outputDiff.incorrectDefinitionTables.stream().filter(o -> o.tableName.equals("t_no_primary")).findFirst().isPresent());
+        outputDiff.incorrectDefinitionTables.stream().filter(o -> o.tableName.equals("t_no_primary")).findFirst().isPresent(),
+        "incorrectDefinitionTables:t_no_primary");
     assertTrue(
-//        "incorrectDefinitionTables:t_foreign_has",
-        outputDiff.incorrectDefinitionTables.stream().filter(o -> o.tableName.equals("t_foreign_has")).findFirst().isPresent());
+        outputDiff.incorrectDefinitionTables.stream().filter(o -> o.tableName.equals("t_foreign_has")).findFirst().isPresent(),
+        "incorrectDefinitionTables:t_foreign_has");
     assertTrue(
-//        "incorrectDefinitionTables:t_invalid_charset",
-        outputDiff.incorrectDefinitionTables.stream().filter(o -> o.tableName.equals("t_invalid_charset")).findFirst().isPresent());
+        outputDiff.incorrectDefinitionTables.stream().filter(o -> o.tableName.equals("t_invalid_charset")).findFirst().isPresent(),
+        "incorrectDefinitionTables:t_invalid_charset");
 
     // mismatchDefinitionTables
     assertTrue(
-//        "mismatchDefinitionTables:t_wrong_auto_increment",
-        outputDiff.mismatchDefinitionTables.stream().filter(o -> o.tableName.equals("t_wrong_auto_increment")).findFirst().isPresent());
+        outputDiff.mismatchDefinitionTables.stream().filter(o -> o.tableName.equals("t_wrong_auto_increment")).findFirst().isPresent(),
+        "mismatchDefinitionTables:t_wrong_auto_increment");
     assertTrue(
-//        "mismatchDefinitionTables:t_partition_mismatch",
-        outputDiff.mismatchDefinitionTables.stream().filter(o -> o.tableName.equals("t_partition_mismatch")).findFirst().isPresent());
+        outputDiff.mismatchDefinitionTables.stream().filter(o -> o.tableName.equals("t_partition_mismatch")).findFirst().isPresent(),
+        "mismatchDefinitionTables:t_partition_mismatch");
     assertTrue(
-//        "mismatchDefinitionTables:t_comment_mismatch",
-        outputDiff.mismatchDefinitionTables.stream().filter(o -> o.tableName.equals("t_comment_mismatch")).findFirst().isPresent());
+        outputDiff.mismatchDefinitionTables.stream().filter(o -> o.tableName.equals("t_comment_mismatch")).findFirst().isPresent(),
+        "mismatchDefinitionTables:t_comment_mismatch");
 
     // mismatchRecordTables
     assertTrue(
-//        "mismatchRecordTables:t_all_types",
-        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_all_types")).findFirst().isPresent());
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_all_types")).findFirst().isPresent(),
+        "mismatchRecordTables:t_all_types");
     assertTrue(
-//        "mismatchRecordTables:t_blob_primary",
-        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_blob_primary")).findFirst().isPresent());
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_blob_primary")).findFirst().isPresent(),
+        "mismatchRecordTables:t_blob_primary");
     assertTrue(
-//        "mismatchRecordTables:t_data_lower_upper",
-        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_data_lower_upper")).findFirst().isPresent());
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_data_lower_upper")).findFirst().isPresent(),
+        "mismatchRecordTables:t_data_lower_upper");
     assertTrue(
-//        "mismatchRecordTables:t_diff",
-        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_diff")).findFirst().isPresent());
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_diff")).findFirst().isPresent(),
+        "mismatchRecordTables:t_diff");
     assertEquals(
         2,
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_diff")).findFirst().get().mismatchCount);
-//    assertTrue(
-////        "mismatchRecordTables:t_utf8_diff",
-//        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_utf8_diff")).findFirst().isPresent());
-//    assertTrue(
-////        "mismatchRecordTables:t_article",
-//        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_article")).findFirst().isPresent());
-//    assertTrue(
-////        "mismatchRecordTables:t_movie",
-//        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_movie")).findFirst().isPresent());
-//    assertTrue(
-////        "mismatchRecordTables:t_dup_unique",
-//        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_dup_unique")).findFirst().isPresent());
-//
+    assertTrue(
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_utf8_diff")).findFirst().isPresent(),
+        "mismatchRecordTables:t_utf8_diff");
+    assertEquals(
+        2,
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_utf8_diff")).findFirst().get().mismatchCount);
+    assertTrue(
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_article")).findFirst().isPresent(),
+        "mismatchRecordTables:t_article");
+    assertEquals(
+        4,
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_article")).findFirst().get().mismatchCount);
+    assertTrue(
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_movie")).findFirst().isPresent(),
+        "mismatchRecordTables:t_movie");
+    assertEquals(
+        3,
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_movie")).findFirst().get().mismatchCount);
+    assertTrue(
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_dup_unique")).findFirst().isPresent(),
+        "mismatchRecordTables:t_dup_unique");
+    assertEquals(
+        2,
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_dup_unique")).findFirst().get().mismatchCount);
+
     // matchTables
     assertTrue(
-//        "matchTables:T_ALL_UPPER",
-        outputDiff.matchTables.stream().filter(o -> o.tableName.equals("T_ALL_UPPER")).findFirst().isPresent());
+        outputDiff.matchTables.stream().filter(o -> o.tableName.equals("T_ALL_UPPER")).findFirst().isPresent(),
+        "matchTables:T_ALL_UPPER");
     assertTrue(
-//        "matchTables:t_lower_UPPER",
-        outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_lower_UPPER")).findFirst().isPresent());
+        outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_lower_UPPER")).findFirst().isPresent(),
+        "matchTables:t_lower_UPPER");
   }
 
   @Test
@@ -145,8 +157,8 @@ public class TestDiffMysql {
 
     // matchTables
     assertTrue(
-//        "matchTables:t_wrong_auto_increment",
-        outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_wrong_auto_increment")).findFirst().isPresent());
+        outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_wrong_auto_increment")).findFirst().isPresent(),
+        "matchTables:t_wrong_auto_increment");
   }
 
   @Test
@@ -160,8 +172,8 @@ public class TestDiffMysql {
 
     // matchTables
     assertTrue(
-//        "matchTables:t_comment_mismatch",
-        outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_comment_mismatch")).findFirst().isPresent());
+        outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_comment_mismatch")).findFirst().isPresent(),
+        "matchTables:t_comment_mismatch");
   }
 
   @Test
@@ -175,8 +187,8 @@ public class TestDiffMysql {
 
     // matchTables
     assertTrue(
-//        "matchTables:t_partition_mismatch",
-        outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_partition_mismatch")).findFirst().isPresent());
+        outputDiff.matchTables.stream().filter(o -> o.tableName.equals("t_partition_mismatch")).findFirst().isPresent(),
+        "matchTables:t_partition_mismatch");
   }
 
   @Test
@@ -191,14 +203,14 @@ public class TestDiffMysql {
     MdOutputDiff outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
     System.out.println(MdJson.toJsonStringFriendly(outputDiff));
     assertFalse(
-//        "t_diff:overflow:false",
-        outputDiff.mismatchRecordTables.get(0).overflow);
+        outputDiff.mismatchRecordTables.get(0).overflow,
+        "t_diff:overflow:false");
     assertEquals(
-//        "t_diff:mismatchCount",
-        2, outputDiff.mismatchRecordTables.get(0).mismatchCount);
+        2, outputDiff.mismatchRecordTables.get(0).mismatchCount,
+        "t_diff:mismatchCount");
     assertFalse(
-//        "t_diff:records",
-        outputDiff.mismatchRecordTables.get(0).records.isEmpty());
+        outputDiff.mismatchRecordTables.get(0).records.isEmpty(),
+        "t_diff:records");
 
     // set env
     MdEnv.setLimitMismatchCount(1);
@@ -210,14 +222,14 @@ public class TestDiffMysql {
     outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
     System.out.println(MdJson.toJsonStringFriendly(outputDiff));
     assertTrue(
-//        "t_diff:overflow:true",
-        outputDiff.mismatchRecordTables.get(0).overflow);
+        outputDiff.mismatchRecordTables.get(0).overflow,
+        "t_diff:overflow:true");
     assertEquals(
-//        "t_diff:mismatchCount",
-        2, outputDiff.mismatchRecordTables.get(0).mismatchCount);
+        2, outputDiff.mismatchRecordTables.get(0).mismatchCount,
+        "t_diff:mismatchCount");
     assertTrue(
-//        "t_diff:records",
-        outputDiff.mismatchRecordTables.get(0).records.isEmpty());
+        outputDiff.mismatchRecordTables.get(0).records.isEmpty(),
+        "t_diff:records");
   }
 
   @Test
@@ -272,11 +284,11 @@ public class TestDiffMysql {
 
     // mismatchRecordTables
     assertTrue(
-//        "mismatchRecordTables:t_article",
-        outputDiff1.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_article")).findFirst().isPresent());
+        outputDiff1.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_article")).findFirst().isPresent(),
+        "mismatchRecordTables:t_article");
     assertTrue(
-//        "mismatchRecordTables:t_movie",
-        outputDiff1.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_movie")).findFirst().isPresent());
+        outputDiff1.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_movie")).findFirst().isPresent(),
+        "mismatchRecordTables:t_movie");
 
     // ---
     inputDiff.conditions.clear();
@@ -296,20 +308,20 @@ public class TestDiffMysql {
 
     // matchTables
     assertTrue(
-//        "matchTables:t_article",
-        outputDiff2.matchTables.stream().filter(o -> o.tableName.equals("t_article")).findFirst().isPresent());
+        outputDiff2.matchTables.stream().filter(o -> o.tableName.equals("t_article")).findFirst().isPresent(),
+        "matchTables:t_article");
     assertTrue(
-//        "matchTables:t_movie",
-        outputDiff2.matchTables.stream().filter(o -> o.tableName.equals("t_movie")).findFirst().isPresent());
+        outputDiff2.matchTables.stream().filter(o -> o.tableName.equals("t_movie")).findFirst().isPresent(),
+        "matchTables:t_movie");
 
     // checksum
     assertEquals(
-//        "checksum:t_article",
         "fake_base_t_article",
-        outputDiff2.matchTables.stream().filter(o -> o.tableName.equals("t_article")).findFirst().get().baseChecksum);
+        outputDiff2.matchTables.stream().filter(o -> o.tableName.equals("t_article")).findFirst().get().baseChecksum,
+        "checksum:t_article");
     assertEquals(
-//        "checksum:t_article",
         "fake_compare_t_article",
-        outputDiff2.matchTables.stream().filter(o -> o.tableName.equals("t_article")).findFirst().get().compareChecksum);
+        outputDiff2.matchTables.stream().filter(o -> o.tableName.equals("t_article")).findFirst().get().compareChecksum,
+        "checksum:t_article");
   }
 }

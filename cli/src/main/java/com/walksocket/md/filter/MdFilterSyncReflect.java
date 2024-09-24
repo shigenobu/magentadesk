@@ -107,33 +107,102 @@ public class MdFilterSyncReflect extends MdFilterSyncAbstract {
     List<String> compareColumns = new ArrayList<>();
     for (MdOutputPartsColumn column : info.getColumns()) {
       if (column.isPrimary) {
-        primaryBaseColumns.add(
+        if (con.getDbType() == DbType.MYSQL) {
+          if (MdMysqlUtils.isBinary(column.columnType)) {
+            primaryBaseColumns.add(
+                String.format(
+                    "FROM_BASE64(SUBSTRING(JSON_VALUE(`baseValues`, '$.%s' returning %s), LOCATE(':', JSON_VALUE(`baseValues`, '$.%s' returning %s), 8) + 1)) as %s",
+                    column.columnName,
+                    MdMysqlUtils.getReturningType(column.columnType).toString(),
+                    column.columnName,
+                    MdMysqlUtils.getReturningType(column.columnType).toString(),
+                    column.columnName));
+            primaryCompareColumns.add(
+                String.format(
+                    "FROM_BASE64(SUBSTRING(JSON_VALUE(`compareValues`, '$.%s' returning %s), LOCATE(':', JSON_VALUE(`compareValues`, '$.%s' returning %s), 8) + 1)) as %s",
+                    column.columnName,
+                    MdMysqlUtils.getReturningType(column.columnType).toString(),
+                    column.columnName,
+                    MdMysqlUtils.getReturningType(column.columnType).toString(),
+                    column.columnName));
+          } else {
+            primaryBaseColumns.add(
+                String.format(
+                    "JSON_VALUE(`baseValues`, '$.%s' returning %s) as %s",
+                    column.columnName,
+                    MdMysqlUtils.getReturningType(column.columnType).toString(),
+                    column.columnName));
+            primaryCompareColumns.add(
+                String.format(
+                    "JSON_VALUE(`compareValues`, '$.%s' returning %s) as %s",
+                    column.columnName,
+                    MdMysqlUtils.getReturningType(column.columnType).toString(),
+                    column.columnName));
+          }
+        } else {
+          primaryBaseColumns.add(
+              String.format(
+                  "COLUMN_GET(`baseValues`, '%s' as %s) as %s",
+                  column.columnName,
+                  MdMariadbUtils.getDynamicType(column.columnType).toString(),
+                  column.columnName));
+          primaryCompareColumns.add(
+              String.format(
+                  "COLUMN_GET(`compareValues`, '%s' as %s) as %s",
+                  column.columnName,
+                  MdMariadbUtils.getDynamicType(column.columnType).toString(),
+                  column.columnName));
+        }
+      }
+
+      columnNames.add(String.format("`%s`", column.columnName));
+
+      if (con.getDbType() == DbType.MYSQL) {
+        if (MdMysqlUtils.isBinary(column.columnType)) {
+          baseColumns.add(
+              String.format(
+                  "FROM_BASE64(SUBSTRING(JSON_VALUE(`baseValues`, '$.%s' returning %s), LOCATE(':', JSON_VALUE(`baseValues`, '$.%s' returning %s), 8) + 1)) as %s",
+                  column.columnName,
+                  MdMysqlUtils.getReturningType(column.columnType).toString(),
+                  column.columnName,
+                  MdMysqlUtils.getReturningType(column.columnType).toString(),
+                  column.columnName));
+          compareColumns.add(
+              String.format(
+                  "FROM_BASE64(SUBSTRING(JSON_VALUE(`compareValues`, '$.%s' returning %s), LOCATE(':', JSON_VALUE(`compareValues`, '$.%s' returning %s), 8) + 1)) as %s",
+                  column.columnName,
+                  MdMysqlUtils.getReturningType(column.columnType).toString(),
+                  column.columnName,
+                  MdMysqlUtils.getReturningType(column.columnType).toString(),
+                  column.columnName));
+        } else {
+          baseColumns.add(
+              String.format(
+                  "JSON_VALUE(`baseValues`, '$.%s' returning %s) as %s",
+                  column.columnName,
+                  MdMysqlUtils.getReturningType(column.columnType).toString(),
+                  column.columnName));
+          compareColumns.add(
+              String.format(
+                  "JSON_VALUE(`compareValues`, '$.%s' returning %s) as %s",
+                  column.columnName,
+                  MdMysqlUtils.getReturningType(column.columnType).toString(),
+                  column.columnName));
+        }
+      } else {
+        baseColumns.add(
             String.format(
                 "COLUMN_GET(`baseValues`, '%s' as %s) as %s",
                 column.columnName,
                 MdMariadbUtils.getDynamicType(column.columnType).toString(),
                 column.columnName));
-        primaryCompareColumns.add(
+        compareColumns.add(
             String.format(
                 "COLUMN_GET(`compareValues`, '%s' as %s) as %s",
                 column.columnName,
                 MdMariadbUtils.getDynamicType(column.columnType).toString(),
                 column.columnName));
       }
-
-      columnNames.add(String.format("`%s`", column.columnName));
-      baseColumns.add(
-          String.format(
-              "COLUMN_GET(`baseValues`, '%s' as %s) as %s",
-              column.columnName,
-              MdMariadbUtils.getDynamicType(column.columnType).toString(),
-              column.columnName));
-      compareColumns.add(
-          String.format(
-              "COLUMN_GET(`compareValues`, '%s' as %s) as %s",
-              column.columnName,
-              MdMariadbUtils.getDynamicType(column.columnType).toString(),
-              column.columnName));
     }
 
     for (Long diffSeq : info.getDiffSeqs()) {

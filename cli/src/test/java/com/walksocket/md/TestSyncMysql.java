@@ -1,8 +1,11 @@
 package com.walksocket.md;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.walksocket.md.bash.MdBashCommand;
+import com.walksocket.md.db.MdDbFactory.DbType;
 import com.walksocket.md.exception.MdExceptionAbstract;
 import com.walksocket.md.input.MdInputDiff;
 import com.walksocket.md.input.MdInputSync;
@@ -13,11 +16,9 @@ import com.walksocket.md.output.MdOutputDiff;
 import com.walksocket.md.output.MdOutputSync;
 import com.walksocket.md.output.member.MdOutputMemberCommandResult;
 import com.walksocket.md.output.member.MdOutputMemberHttpResult;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 @TestMethodOrder(MethodName.class)
-public class TestSync {
+public class TestSyncMysql {
 
   private MdInputDiff inputDiff;
 
@@ -44,25 +45,27 @@ public class TestSync {
   public void before() {
     inputDiff = new MdInputDiff();
     inputDiff.host = "127.0.0.1";
-    inputDiff.port = 13306;
+    inputDiff.port = 23306;
     inputDiff.user = "root";
     inputDiff.pass = "pass";
     inputDiff.charset = "utf8mb4";
     inputDiff.baseDatabase = "base";
     inputDiff.compareDatabase = "compare";
+    inputDiff.dbType = DbType.MYSQL.getDbType();
 
     inputSync = new MdInputSync();
     inputSync.host = "127.0.0.1";
-    inputSync.port = 13306;
+    inputSync.port = 23306;
     inputSync.user = "root";
     inputSync.pass = "pass";
     inputSync.charset = "utf8mb4";
+    inputSync.dbType = DbType.MYSQL.getDbType();
   }
 
   @AfterEach
   public void after() {
-    MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 13306 -u root -ppass < ../docker/mariadb/init/1_base.sql", 300));
-    MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 13306 -u root -ppass < ../docker/mariadb/init/2_compare.sql", 300));
+    MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 23306 -u root -ppass < ../docker/mysql/init/1_base.sql", 300));
+    MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 23306 -u root -ppass < ../docker/mysql/init/2_compare.sql", 300));
   }
 
   @Test
@@ -365,98 +368,5 @@ public class TestSync {
       assertEquals(MdExceptionAbstract.ExitCode.NOT_SUCCESS_STATUS, e.getExitCode());
       e.printStackTrace();
     }
-  }
-
-  @Test
-  public void testSyncUuid() throws Exception {
-    // diff
-    inputDiff.option = new MdInputMemberOption();
-    inputDiff.option.ignoreAutoIncrement = true;
-    inputDiff.option.ignoreComment = true;
-    inputDiff.option.ignorePartitions = true;
-    inputDiff.option.ignoreDefaultForSequence = true;
-    inputDiff.option.includeTableLikePatterns.add("t\\_uuid");
-    inputDiff.validate();
-    MdOutputDiff outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
-    System.out.println(MdJson.toJsonStringFriendly(outputDiff));
-
-    // sync
-    inputSync.summaryId = outputDiff.summaryId;
-    inputSync.run = true;
-    inputSync.force = true;
-    inputSync.validate();
-    MdOutputSync outputSync = (MdOutputSync) MdExecute.execute(inputSync);
-    System.out.println(MdJson.toJsonStringFriendly(outputSync));
-
-    // re diff
-    outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
-    System.out.println(MdJson.toJsonStringFriendly(outputDiff));
-
-    // mismatchRecordTables
-    assertTrue(
-        outputDiff.mismatchRecordTables.size() == 0,
-        "mismatchRecordTables");
-  }
-
-  @Test
-  public void testSyncInet6() throws Exception {
-    // diff
-    inputDiff.option = new MdInputMemberOption();
-    inputDiff.option.ignoreAutoIncrement = true;
-    inputDiff.option.ignoreComment = true;
-    inputDiff.option.ignorePartitions = true;
-    inputDiff.option.ignoreDefaultForSequence = true;
-    inputDiff.option.includeTableLikePatterns.add("t\\_inet6");
-    inputDiff.validate();
-    MdOutputDiff outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
-    System.out.println(MdJson.toJsonStringFriendly(outputDiff));
-
-    // sync
-    inputSync.summaryId = outputDiff.summaryId;
-    inputSync.run = true;
-    inputSync.force = true;
-    inputSync.validate();
-    MdOutputSync outputSync = (MdOutputSync) MdExecute.execute(inputSync);
-    System.out.println(MdJson.toJsonStringFriendly(outputSync));
-
-    // re diff
-    outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
-    System.out.println(MdJson.toJsonStringFriendly(outputDiff));
-
-    // mismatchRecordTables
-    assertTrue(
-        outputDiff.mismatchRecordTables.size() == 0,
-        "mismatchRecordTables");
-  }
-
-  @Test
-  public void testSyncInet4() throws Exception {
-    // diff
-    inputDiff.option = new MdInputMemberOption();
-    inputDiff.option.ignoreAutoIncrement = true;
-    inputDiff.option.ignoreComment = true;
-    inputDiff.option.ignorePartitions = true;
-    inputDiff.option.ignoreDefaultForSequence = true;
-    inputDiff.option.includeTableLikePatterns.add("t\\_inet4");
-    inputDiff.validate();
-    MdOutputDiff outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
-    System.out.println(MdJson.toJsonStringFriendly(outputDiff));
-
-    // sync
-    inputSync.summaryId = outputDiff.summaryId;
-    inputSync.run = true;
-    inputSync.force = true;
-    inputSync.validate();
-    MdOutputSync outputSync = (MdOutputSync) MdExecute.execute(inputSync);
-    System.out.println(MdJson.toJsonStringFriendly(outputSync));
-
-    // re diff
-    outputDiff = (MdOutputDiff) MdExecute.execute(inputDiff);
-    System.out.println(MdJson.toJsonStringFriendly(outputDiff));
-
-    // mismatchRecordTables
-    assertTrue(
-        outputDiff.mismatchRecordTables.size() == 0,
-        "mismatchRecordTables");
   }
 }
