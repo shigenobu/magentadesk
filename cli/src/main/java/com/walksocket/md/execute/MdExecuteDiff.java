@@ -1,5 +1,6 @@
 package com.walksocket.md.execute;
 
+import com.walksocket.md.MdDbUtils;
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdInfoDiff;
 import com.walksocket.md.MdJson;
@@ -58,9 +59,9 @@ public class MdExecuteDiff extends MdExecuteAbstract {
             "('%s'," +
             "'%s'," +
             "'%s')",
-        MdMariadbUtils.quote(outputDiff.summaryId),
-        MdMariadbUtils.quote(inputDiff.baseDatabase),
-        MdMariadbUtils.quote(inputDiff.compareDatabase));
+        MdDbUtils.quote(outputDiff.summaryId),
+        MdDbUtils.quote(inputDiff.baseDatabase),
+        MdDbUtils.quote(inputDiff.compareDatabase));
     con.execute(sql);
 
     // -----
@@ -105,10 +106,10 @@ public class MdExecuteDiff extends MdExecuteAbstract {
               "`columns`) " +
               "VALUES " +
               "('%s', '%s', '%s', '%s')",
-          MdMariadbUtils.quote(outputDiff.summaryId),
-          MdMariadbUtils.quote(mismatchRecordTable.tableName),
-          MdMariadbUtils.quote(mismatchRecordTable.tableComment),
-          MdMariadbUtils.quote(MdJson.toJsonString(mismatchRecordTable.columns))
+          MdDbUtils.quote(outputDiff.summaryId),
+          MdDbUtils.quote(mismatchRecordTable.tableName),
+          MdDbUtils.quote(mismatchRecordTable.tableComment),
+          MdDbUtils.quote(MdJson.toJsonString(mismatchRecordTable.columns))
       );
       con.execute(sql);
     }

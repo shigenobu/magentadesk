@@ -23,7 +23,7 @@ public class TestDiff {
   public static void beforeClass() throws IOException {
     MdEnv.setDebug();
     MdEnv.setPretty();
-    MdEnv.setLimitLength(3);
+//    MdEnv.setLimitLength(3);
     MdDate.init(60 * 60 * 9);
     MdLogger.open("stderr");
   }
@@ -121,6 +121,9 @@ public class TestDiff {
     assertTrue(
 //        "mismatchRecordTables:t_diff",
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_diff")).findFirst().isPresent());
+    assertEquals(
+        2,
+        outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_diff")).findFirst().get().mismatchCount);
     assertTrue(
 //        "mismatchRecordTables:t_utf8_diff",
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_utf8_diff")).findFirst().isPresent());

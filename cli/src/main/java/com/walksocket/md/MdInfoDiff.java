@@ -45,12 +45,12 @@ public class MdInfoDiff {
     for (String pattern : option.includeTableLikePatterns) {
       likeSqlPatterns.add(
           String.format("table_name like '%s'",
-              MdMariadbUtils.quote(pattern)));
+              MdDbUtils.quote(pattern)));
     }
     for (String pattern : option.excludeTableLikePatterns) {
       notLikeSqlPatterns.add(
           String.format("table_name not like '%s'",
-              MdMariadbUtils.quote(pattern)));
+              MdDbUtils.quote(pattern)));
     }
     if (likeSqlPatterns.size() == 0) {
       likeSqlPatterns.add("table_name like '%'");

@@ -1,5 +1,6 @@
 package com.walksocket.md.execute;
 
+import com.walksocket.md.MdDbUtils;
 import com.walksocket.md.MdEnv;
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.db.MdDbConnection;
@@ -52,14 +53,14 @@ public abstract class MdExecuteAbstract {
     // insert `magentadesk`.`diffLock`.
     sql = String.format(
         "SELECT * FROM `magentadesk`.`diffLock` WHERE `baseDatabase` = '%s' AND `compareDatabase` = '%s'",
-        MdMariadbUtils.quote(baseDatabase),
-        MdMariadbUtils.quote(compareDatabase));
+        MdDbUtils.quote(baseDatabase),
+        MdDbUtils.quote(compareDatabase));
     MdDbRecord record = con.getRecord(sql);
     if (record == null) {
       sql = String.format(
           "INSERT IGNORE INTO `magentadesk`.`diffLock` (`baseDatabase`, `compareDatabase`) VALUES ('%s', '%s')",
-          MdMariadbUtils.quote(baseDatabase),
-          MdMariadbUtils.quote(compareDatabase));
+          MdDbUtils.quote(baseDatabase),
+          MdDbUtils.quote(compareDatabase));
       con.execute(sql);
     }
 
@@ -75,8 +76,8 @@ public abstract class MdExecuteAbstract {
               "FROM `magentadesk`.`diffLock` " +
               "WHERE `baseDatabase` = '%s' and `compareDatabase` = '%s' " +
               "FOR UPDATE %s",
-          MdMariadbUtils.quote(baseDatabase),
-          MdMariadbUtils.quote(compareDatabase),
+          MdDbUtils.quote(baseDatabase),
+          MdDbUtils.quote(compareDatabase),
           noWait);
       con.getRecord(sql);
     } catch (SQLException e) {
@@ -98,8 +99,8 @@ public abstract class MdExecuteAbstract {
     // insert `magentadesk`.`diffMaintenance`.
     sql = String.format(
         "INSERT IGNORE INTO `magentadesk`.`diffMaintenance` (`baseDatabase`, `compareDatabase`) VALUES ('%s', '%s')",
-        MdMariadbUtils.quote(baseDatabase),
-        MdMariadbUtils.quote(compareDatabase));
+        MdDbUtils.quote(baseDatabase),
+        MdDbUtils.quote(compareDatabase));
     con.execute(sql);
 
     // check `magentadesk`.`diffMaintenance`.
@@ -107,8 +108,8 @@ public abstract class MdExecuteAbstract {
         "SELECT `maintenance` " +
             "FROM `magentadesk`.`diffMaintenance` " +
             "WHERE `baseDatabase` = '%s' and `compareDatabase` = '%s'",
-        MdMariadbUtils.quote(baseDatabase),
-        MdMariadbUtils.quote(compareDatabase));
+        MdDbUtils.quote(baseDatabase),
+        MdDbUtils.quote(compareDatabase));
     List<MdDbRecord> records = con.getRecords(sql);
     for (MdDbRecord record : records) {
       String maintenance = record.get("maintenance");

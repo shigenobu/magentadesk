@@ -1,6 +1,7 @@
 package com.walksocket.md.input;
 
 import com.google.gson.annotations.Expose;
+import com.walksocket.md.MdDbUtils;
 import com.walksocket.md.db.MdDbFactory;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.MdMode;
@@ -110,7 +111,7 @@ public abstract class MdInputAbstract extends MdValue {
       throw new MdExceptionInvalidInput("Invalid pass.");
     }
     if (MdUtils.isNullOrEmpty(charset)
-      || !MdMariadbUtils.isValidCharset(charset)) {
+      || !MdDbUtils.isValidCharset(charset)) {
       throw new MdExceptionInvalidInput("Invalid charset.");
     }
     if (!dbType.equalsIgnoreCase(MdDbFactory.DbType.MARIADB.getDbType())

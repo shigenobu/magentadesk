@@ -188,9 +188,16 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
 
     String seqExpression = "";
     String dynamicExpression = "";
+    String additionalExpression = "";
     if (con.getDbType() == DbType.MYSQL) {
       seqExpression = "`magentadesk`.`nextDiffSeq`()";
       dynamicExpression = "JSON_OBJECT";
+      additionalExpression = String.format(
+          "WHERE JSON_OBJECT(%s) != JSON_OBJECT(%s)",
+          MdUtils.join(baseDynamicColumnNames, ", "),
+          MdUtils.join(compareDynamicColumnNames, ", ")
+          );
+
     } else {
       seqExpression = "nextval(`magentadesk`.`diffSequence`)";
       dynamicExpression = "COLUMN_CREATE";
@@ -221,7 +228,8 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
             "  %s(%s) as baseValues, " +
             "  %s(%s) as compareValues " +
             "FROM " +
-            "  md_full",
+            "  md_full " +
+            "%s",
         // md_b2c
         MdUtils.join(realColumnNames, ", "),
         baseInfo.getDatabase(),
@@ -255,7 +263,8 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
         dynamicExpression,
         MdUtils.join(baseDynamicColumnNames, ", "),
         dynamicExpression,
-        MdUtils.join(compareDynamicColumnNames, ", "));
+        MdUtils.join(compareDynamicColumnNames, ", "),
+        additionalExpression);
     con.execute(sql);
   }
 }

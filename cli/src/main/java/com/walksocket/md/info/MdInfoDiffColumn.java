@@ -1,5 +1,6 @@
 package com.walksocket.md.info;
 
+import com.walksocket.md.MdDbUtils;
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.db.MdDbFactory.DbType;
@@ -178,7 +179,7 @@ public class MdInfoDiffColumn implements MdInfoDiffInterface {
       // number and so on, is valid.
       return true;
     }
-    return MdMariadbUtils.isValidCollation(COLLATION_NAME);
+    return MdDbUtils.isValidCollation(COLLATION_NAME);
   }
 
   /**

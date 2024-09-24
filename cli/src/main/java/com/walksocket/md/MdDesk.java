@@ -5,6 +5,7 @@ import com.walksocket.md.db.MdDbFactory.DbType;
 import com.walksocket.md.db.MdDbRecord;
 import com.walksocket.md.info.MdInfoDiffColumn;
 import com.walksocket.md.mariadb.MdMariadbUtils;
+import com.walksocket.md.mysql.MdMysqlUtils;
 import com.walksocket.md.output.parts.MdOutputPartsColumn;
 import com.walksocket.md.output.parts.MdOutputPartsRecord;
 
@@ -74,7 +75,7 @@ public class MdDesk {
     List<String> baseColumns = new ArrayList<>();
     for (MdInfoDiffColumn column : baseInfo.getRealColumns()) {
       if (con.getDbType() == DbType.MYSQL) {
-        if (column.isBinary()) {
+        if (MdMysqlUtils.isBinary(column.getColumnType())) {
           // select from_base64(substring('base64:type15:YWJj', locate(':', 'base64:type15:YWJj', 8) + 1));
           baseColumns.add(
               String.format(
@@ -107,7 +108,25 @@ public class MdDesk {
     List<String> compareColumns = new ArrayList<>();
     for (MdInfoDiffColumn column : compareInfo.getRealColumns()) {
       if (con.getDbType() == DbType.MYSQL) {
-
+        if (MdMysqlUtils.isBinary(column.getColumnType())) {
+          // select from_base64(substring('base64:type15:YWJj', locate(':', 'base64:type15:YWJj', 8) + 1));
+          compareColumns.add(
+              String.format(
+                  // returning char
+                  "FROM_BASE64(SUBSTRING(JSON_VALUE(`compareValues`, '$.%s' returning %s), LOCATE(':', JSON_VALUE(`compareValues`, '$.%s' returning %s), 8) + 1)) as mdc_%s",
+                  column.getColumnName(),
+                  MdMysqlUtils.getReturningType(column.getColumnType()).toString(),
+                  column.getColumnName(),
+                  MdMysqlUtils.getReturningType(column.getColumnType()).toString(),
+                  column.getColumnName()));
+        } else {
+          compareColumns.add(
+              String.format(
+                  "JSON_VALUE(`compareValues`, '$.%s' returning %s) as mdc_%s",
+                  column.getColumnName(),
+                  MdMysqlUtils.getReturningType(column.getColumnType()).toString(),
+                  column.getColumnName()));
+        }
       } else {
         compareColumns.add(
             String.format(
@@ -123,8 +142,8 @@ public class MdDesk {
         "SELECT `diffSeq`, %s, %s FROM `magentadesk`.`diffRecord` WHERE `summaryId` = '%s' and `tableName` = '%s'",
         MdUtils.join(baseColumns, ", "),
         MdUtils.join(compareColumns, ", "),
-        MdMariadbUtils.quote(summaryId),
-        MdMariadbUtils.quote(baseInfo.getTableName()));
+        MdDbUtils.quote(summaryId),
+        MdDbUtils.quote(baseInfo.getTableName()));
     return getPartRecords(sql);
   }
 

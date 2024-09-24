@@ -13,16 +13,6 @@ import java.util.Map;
 public class MdMariadbUtils {
 
   /**
-   * charset.
-   */
-  public enum MdMariadbCharset {
-    UTF8,
-    UTF8MB3,
-    UTF8MB4,
-    ;
-  }
-
-  /**
    * column type.
    */
   public enum MdMariadbColumnType {
@@ -135,38 +125,6 @@ public class MdMariadbUtils {
   }
 
   /**
-   * quote.
-   * @param src string
-   * @return quoted string
-   */
-  public static String quote(String src) {
-    return StringUtils.replace(src, "'", "''");
-  }
-
-  /**
-   * is valid charset.
-   * @param charset charset
-   * @return if valid, true
-   */
-  public static boolean isValidCharset(String charset) {
-    return Arrays.asList(MdMariadbCharset.values())
-        .stream()
-        .filter(c -> c.toString().equalsIgnoreCase(charset))
-        .findFirst()
-        .isPresent();
-  }
-
-  /**
-   * is valid collation.
-   * @param collation collation.
-   * @return if valid, true
-   */
-  public static boolean isValidCollation(String collation) {
-    String charset = collation.split("_")[0];
-    return isValidCharset(charset);
-  }
-
-  /**
    * get column type.
    * @param columnType column type string
    * @return column type enum
@@ -180,7 +138,7 @@ public class MdMariadbUtils {
       }
     }
     for (Map.Entry<String, MdMariadbColumnType> entry : columnTypes.entrySet()) {
-      if (columnType.toLowerCase().startsWith(entry.getKey().toLowerCase())) {
+      if (columnType.startsWith(entry.getKey())) {
         return entry.getValue();
       }
     }
@@ -192,16 +150,17 @@ public class MdMariadbUtils {
    * get dynamic type.
    * @param columnType column type string
    * @return dynamic type enum
+   * @exception SQLException sql error
    */
-  public static MdMariadbDynamicType getDynamicType(String columnType) {
+  public static MdMariadbDynamicType getDynamicType(String columnType) throws SQLException {
     columnType = columnType.toUpperCase();
     if ((
-          columnType.toLowerCase().startsWith("tinyint")
-          || columnType.toLowerCase().startsWith("smallint")
-          || columnType.toLowerCase().startsWith("mediumint")
-          || columnType.toLowerCase().startsWith("int")
-          || columnType.toLowerCase().startsWith("bigint"))
-        && columnType.toLowerCase().contains("unsigned")) {
+        columnType.startsWith("TINYINT")
+          || columnType.startsWith("SMALLINT")
+          || columnType.startsWith("MEDIUMINT")
+          || columnType.startsWith("INT")
+          || columnType.startsWith("BIGINT"))
+        && columnType.contains("UNSIGNED")) {
       return MdMariadbDynamicType.UNSIGNED;
     }
     for (Map.Entry<String, MdMariadbDynamicType> entry : dynamicTypes.entrySet()) {
@@ -210,10 +169,11 @@ public class MdMariadbUtils {
       }
     }
     for (Map.Entry<String, MdMariadbDynamicType> entry : dynamicTypes.entrySet()) {
-      if (columnType.toLowerCase().startsWith(entry.getKey().toLowerCase())) {
+      if (columnType.startsWith(entry.getKey())) {
         return entry.getValue();
       }
     }
-    return MdMariadbDynamicType.BINARY;
+
+    throw new SQLException(columnType + " is wrong.");
   }
 }

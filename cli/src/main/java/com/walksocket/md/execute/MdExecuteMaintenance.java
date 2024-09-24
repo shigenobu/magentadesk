@@ -1,5 +1,6 @@
 package com.walksocket.md.execute;
 
+import com.walksocket.md.MdDbUtils;
 import com.walksocket.md.db.MdDbConnection;
 import com.walksocket.md.input.MdInputAbstract;
 import com.walksocket.md.input.MdInputMaintenance;
@@ -38,9 +39,9 @@ public class MdExecuteMaintenance extends MdExecuteAbstract {
             "VALUES " +
             "('%s', '%s', '%s') " +
             "ON DUPLICATE KEY UPDATE `maintenance` = VALUES (`maintenance`)",
-        MdMariadbUtils.quote(inputMaintenance.baseDatabase),
-        MdMariadbUtils.quote(inputMaintenance.compareDatabase),
-        MdMariadbUtils.quote(inputMaintenance.maintenance));
+        MdDbUtils.quote(inputMaintenance.baseDatabase),
+        MdDbUtils.quote(inputMaintenance.compareDatabase),
+        MdDbUtils.quote(inputMaintenance.maintenance));
     con.execute(sql);
 
     // -----

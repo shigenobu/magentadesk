@@ -1,9 +1,12 @@
 package com.walksocket.md.filter;
 
+import com.walksocket.md.MdDbUtils;
 import com.walksocket.md.MdDesk;
 import com.walksocket.md.MdInfoSync;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.db.MdDbConnection;
+import com.walksocket.md.db.MdDbFactory.DbType;
+import com.walksocket.md.mysql.MdMysqlUtils;
 import com.walksocket.md.output.MdOutputSync;
 import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.output.member.MdOutputMemberNotReflectedRecordTable;
@@ -213,11 +216,20 @@ public class MdFilterSyncReflect extends MdFilterSyncAbstract {
       return "NULL";
     }
 
-    if (MdMariadbUtils.getColumnType(columnType) == MdMariadbUtils.MdMariadbColumnType.STRING) {
-      columnValue = String.format("'%s'", MdMariadbUtils.quote(columnValue));
-    } else if (MdMariadbUtils.getColumnType(columnType) == MdMariadbUtils.MdMariadbColumnType.BINARY) {
-      columnValue = "0x" + MdUtils.toHexString(columnValue);
+    if (con.getDbType() == DbType.MYSQL) {
+      if (MdMysqlUtils.getColumnType(columnType) == MdMysqlUtils.MdMysqlColumnType.STRING) {
+        columnValue = String.format("'%s'", MdDbUtils.quote(columnValue));
+      } else if (MdMysqlUtils.getColumnType(columnType) == MdMysqlUtils.MdMysqlColumnType.BINARY) {
+        columnValue = "0x" + MdUtils.toHexString(columnValue);
+      }
+    } else {
+      if (MdMariadbUtils.getColumnType(columnType) == MdMariadbUtils.MdMariadbColumnType.STRING) {
+        columnValue = String.format("'%s'", MdDbUtils.quote(columnValue));
+      } else if (MdMariadbUtils.getColumnType(columnType) == MdMariadbUtils.MdMariadbColumnType.BINARY) {
+        columnValue = "0x" + MdUtils.toHexString(columnValue);
+      }
     }
+
     return columnValue;
   }
 }

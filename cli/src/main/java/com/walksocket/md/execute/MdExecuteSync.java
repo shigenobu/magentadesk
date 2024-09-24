@@ -58,7 +58,7 @@ public class MdExecuteSync extends MdExecuteAbstract {
         "SELECT `baseDatabase`, `compareDatabase` " +
             "FROM `magentadesk`.`diffSummary` " +
             "WHERE `summaryId` = '%s'",
-        MdMariadbUtils.quote(inputSync.summaryId));
+        MdDbUtils.quote(inputSync.summaryId));
     records = con.getRecords(sql);
     for (MdDbRecord record : records) {
       baseDatabase = record.get("baseDatabase");
@@ -87,7 +87,7 @@ public class MdExecuteSync extends MdExecuteAbstract {
 
       // select `diffSeq` from `magentadesk`.`diffRecord`
       sql = String.format("SELECT `diffSeq` FROM `magentadesk`.`diffRecord` WHERE `summaryId` = '%s'",
-          MdMariadbUtils.quote(inputSync.summaryId));
+          MdDbUtils.quote(inputSync.summaryId));
       records = con.getRecords(sql);
       for (MdDbRecord record : records) {
         long diffSeq = Long.parseLong(record.get("diffSeq"));
@@ -115,7 +115,7 @@ public class MdExecuteSync extends MdExecuteAbstract {
     if (inputSync.loose) {
       // delete from `magentadesk`.`diffSummary` WHERE `summaryId`
       sql = String.format("DELETE FROM `magentadesk`.`diffSummary` WHERE `summaryId` = '%s'",
-          MdMariadbUtils.quote(inputSync.summaryId));
+          MdDbUtils.quote(inputSync.summaryId));
       con.execute(sql);
     } else {
       // delete from `magentadesk`.`diffSummary` WHERE `baseDatabase`, `compareDatabase`

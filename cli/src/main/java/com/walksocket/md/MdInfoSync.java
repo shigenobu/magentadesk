@@ -40,7 +40,7 @@ public class MdInfoSync {
         "SELECT `tableName`, `tableComment`, `columns` " +
             "FROM `magentadesk`.`diffTable` " +
             "WHERE `summaryId` = '%s'",
-        MdMariadbUtils.quote(inputSync.summaryId));
+        MdDbUtils.quote(inputSync.summaryId));
     records = con.getRecords(sql);
     for (MdDbRecord record : records) {
       String tableName = record.get("tableName");
