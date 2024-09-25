@@ -1,4 +1,4 @@
-magentadesk for cli - Get MariaDB Table Difference, And Reflect.
+magentadesk for cli - Get MariaDB / MySQL Table Difference, And Reflect.
 
 Usage:
     echo '${json}' \

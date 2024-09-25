@@ -82,6 +82,20 @@
                     </div>
                 </td>
             </tr>
+              <tr>
+                <td>
+                  <div>dbType <span class="warning">*required</span></div>
+                </td>
+                <td>
+                  <div>
+                    <select name="dbType">
+                        #foreach($dbType in ["mariadb", "mysql"])
+                          <option value="${dbType}" ${MdTemplateUtils.selected($record.getOrEmpty("dbType"), $dbType)}>${dbType}</option>
+                        #end
+                    </select>
+                  </div>
+                </td>
+              </tr>
             <tr>
                 <td>
                     <div>baseDatabase <span class="warning">*required</span></div>

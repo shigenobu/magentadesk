@@ -82,6 +82,7 @@ public class MdHtmlDesk {
     input.user = projectRecord.get("user");
     input.pass = projectRecord.get("pass");
     input.charset = projectRecord.get("charset");
+    input.dbType = projectRecord.get("dbType");
   }
 
   /**

@@ -1,15 +1,16 @@
-# magentadesk - Get MariaDB Table Difference, And Reflect.
+# magentadesk - Get MariaDB / MySQL Table Difference, And Reflect.
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ### 概要
 
-MariaDBの同一ホスト内の2つのデータベースの差分を取り、同期を行います。  
+MariaDBまたはMySQLの同一ホスト内の2つのデータベースの差分を取り、同期を行います。  
 
 ### システム要件
 
 * JDK 1.8 以上
 * MariaDB 10.3, 10.4, 10.5, 10.6, 10.7, 10.8, 10.9, 10.10, 10.11, 11.0, 11.1, 11.2, 11.3, 11.4, 11.5
+* MySQL 8.0.31, 8.0.32
 
 ### コマンド
 

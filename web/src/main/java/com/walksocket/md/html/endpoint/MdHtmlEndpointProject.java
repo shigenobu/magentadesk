@@ -64,6 +64,7 @@ public class MdHtmlEndpointProject extends MdHtmlEndpointAbstract {
         "t1.host, " +
         "t1.port, " +
         "t1.charset, " +
+        "t1.dbType, " +
         "t1.baseDatabase, " +
         "t1.compareDatabase, " +
         "ifnull(count(t2.presetId), 0) as presetIdCount " +
@@ -186,6 +187,12 @@ public class MdHtmlEndpointProject extends MdHtmlEndpointAbstract {
       return;
     }
 
+    String dbType = request.getBodyParam("dbType");
+    if (MdUtils.isNullOrEmpty(dbType)) {
+      sendOther(response, MdHtmlStatus.BAD_REQUEST);
+      return;
+    }
+
     String baseDatabase = request.getBodyParam("baseDatabase");
     if (MdUtils.isNullOrEmpty(baseDatabase)) {
       sendOther(response, MdHtmlStatus.BAD_REQUEST);
@@ -225,9 +232,9 @@ public class MdHtmlEndpointProject extends MdHtmlEndpointAbstract {
       // insert
       sql = String.format(
           "INSERT INTO project " +
-              "(title, explanation, host, port, user, pass, charset, baseDatabase, compareDatabase) " +
+              "(title, explanation, host, port, user, pass, charset, dbType, baseDatabase, compareDatabase) " +
               "VALUES " +
-              "('%s', '%s', '%s', %s, '%s', '%s', '%s', '%s', '%s')",
+              "('%s', '%s', '%s', %s, '%s', '%s', '%s', '%s', '%s', '%s')",
           MdSqliteUtils.quote(title),
           MdSqliteUtils.quote(explanation),
           MdSqliteUtils.quote(host),
@@ -235,6 +242,7 @@ public class MdHtmlEndpointProject extends MdHtmlEndpointAbstract {
           MdSqliteUtils.quote(user),
           MdSqliteUtils.quote(pass),
           MdSqliteUtils.quote(charset),
+          MdSqliteUtils.quote(dbType),
           MdSqliteUtils.quote(baseDatabase),
           MdSqliteUtils.quote(compareDatabase));
       con.execute(sql);
@@ -259,6 +267,7 @@ public class MdHtmlEndpointProject extends MdHtmlEndpointAbstract {
               "user = '%s', " +
               "pass = '%s', " +
               "charset = '%s', " +
+              "dbType = '%s', " +
               "baseDatabase = '%s', " +
               "compareDatabase = '%s' " +
               "WHERE projectId = %s",
@@ -269,6 +278,7 @@ public class MdHtmlEndpointProject extends MdHtmlEndpointAbstract {
           MdSqliteUtils.quote(user),
           MdSqliteUtils.quote(pass),
           MdSqliteUtils.quote(charset),
+          MdSqliteUtils.quote(dbType),
           MdSqliteUtils.quote(baseDatabase),
           MdSqliteUtils.quote(compareDatabase),
           projectId);

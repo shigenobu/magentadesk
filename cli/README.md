@@ -29,7 +29,7 @@
 
 * (diff and sync) create magentadesk database, and table.
 * (diff and sync) delete from diff recored passed over 3 hours since created.
-* (diff and sync) base and compare, lock execute simultaneously. （FOR UPDATE NOWAIT）
+* (diff and sync) base and compare, lock execute simultaneously. （FOR UPDATE NOWAIT/WAIT）
 * check maintenance state between base and compare.
 * extract target to diff table.
 * register table diff.
@@ -38,7 +38,7 @@
 
 * (diff and sync) create magentadesk database, and table.
 * (diff and sync) delete from diff recored passed over 3 hours since created.
-* (diff and sync) base and compare, lock execute simultaneously. （FOR UPDATE NOWAIT）
+* (diff and sync) base and compare, lock execute simultaneously. （FOR UPDATE NOWAIT/WAIT）
 * check maintenance state between base and compare.
 * sync table diff used by diff.
 * execute any commands.
@@ -47,7 +47,7 @@
 
 * (diff and sync) create magentadesk database, and table.
 * (diff and sync) delete from diff recored passed over 3 hours since created.
-* (diff and sync) base and compare, lock execute simultaneously. （FOR UPDATE NOWAIT）
+* (diff and sync) base and compare, lock execute simultaneously. （FOR UPDATE NOWAIT/WAIT）
 * set maintenance state.
 
 

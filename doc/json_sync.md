@@ -17,6 +17,8 @@ web: request /api/sync/reserve.json
       "pass":"pass",
       // (required) connect charset, 'utf8', 'utf8mb3' or 'utf8mb4' is allowed
       "charset":"utf8mb4",
+      // (required) db type, 'mariadb' or 'mysql' is allowed, 'mariadb' is selected when no input 
+      "dbType": "mariadb"
       // (required) diff result id
       "summaryId":"XXXXX",
       // optionally, if listed, selected diffSeqs are only reflected.

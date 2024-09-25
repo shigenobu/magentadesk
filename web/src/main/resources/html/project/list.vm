@@ -18,6 +18,7 @@
             <td>host</td>
             <td>port</td>
             <td>charset</td>
+            <td>dbType</td>
             <td>baseDatabase</td>
             <td>compareDatabase</td>
             <td>presetIdCount</td>
@@ -37,6 +38,7 @@
                 <td>${record.get("host")}</td>
                 <td>${record.get("port")}</td>
                 <td>${record.get("charset")}</td>
+                <td>${record.get("dbType")}</td>
                 <td>${record.get("baseDatabase")}</td>
                 <td>${record.get("compareDatabase")}</td>
                 <td>${record.get("presetIdCount")}</td>

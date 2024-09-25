@@ -18,6 +18,8 @@ web: request /api/sync/reserve.json
       "pass": "pass",
       // （必須）文字コード、utf8, utf8mb3 または utf8mb4 のみ
       "charset": "utf8mb4",
+      // （必須）DBタイプ、mariadb または mysql のみで省略時は、mariadb
+      "dbType": "mariadb"
       // ----- 独自 -----
       // （必須）mode=diffの出力結果に記載されているサマリーID
       "summaryId": "XXXXX",

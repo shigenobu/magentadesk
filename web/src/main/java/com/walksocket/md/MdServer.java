@@ -224,6 +224,7 @@ public class MdServer implements AutoCloseable {
         "    user text,\n" +
         "    pass text,\n" +
         "    charset text,\n" +
+        "    dbType text,\n" +
         "    baseDatabase text,\n" +
         "    compareDatabase text\n" +
         ")";
