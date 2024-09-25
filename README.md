@@ -1,4 +1,4 @@
-`# magentadesk - Get MariaDB / MySQL Table Difference, And Reflect.`
+# magentadesk - Get MariaDB / MySQL Table Difference, And Reflect.
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
