@@ -41,8 +41,16 @@ public class MdExecute {
         }
         if (MdUtils.isNullOrEmpty(version)
             || !(version.contains("8.0.31")
-            || version.contains("8.0.32"))) {
-          throw new MdExceptionInvalidVersion("MySQL 8.0.31, 8.0.32 is required.");
+            || version.contains("8.0.32")
+            || version.contains("8.0.33")
+            || version.contains("8.0.34")
+            || version.contains("8.0.35")
+            || version.contains("8.0.36")
+            || version.contains("8.0.37")
+            || version.contains("8.0.38")
+            || version.contains("8.0.39")
+            || version.contains("8.0.40"))) {
+          throw new MdExceptionInvalidVersion("MySQL 8.0.31, 8.0.32, 8.0.33, 8.0.34, 8.0.35, 8.0.36, 8.0.37, 8.0.38, 8.0.39, 8.0.40 is required.");
         }
       } else {
         // check version
