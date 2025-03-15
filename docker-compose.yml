@@ -14,7 +14,7 @@ services:
   mariadb:
     build: ./docker/mariadb
     container_name: magentadesk-mariadb
-    image: magentadesk-mariadb:0.2.0
+    image: magentadesk-mariadb:0.2.1
     ports:
       - 13306:3306
     environment:
@@ -22,7 +22,7 @@ services:
   mysql:
     build: ./docker/mysql
     container_name: magentadesk-mysql
-    image: magentadesk-mysql:0.1.0
+    image: magentadesk-mysql:0.1.1
     ports:
       - 23306:3306
     environment:

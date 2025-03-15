@@ -1,4 +1,4 @@
-FROM mysql:8.0.40
+FROM mysql:8.0.41
 
 # copy configuration
 COPY ./conf.d/my.cnf /etc/mysql/conf.d/my.cnf
