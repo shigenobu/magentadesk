@@ -4,7 +4,6 @@ import com.walksocket.md.MdDbUtils;
 import com.walksocket.md.db.MdDbConnection;
 import com.walksocket.md.input.MdInputAbstract;
 import com.walksocket.md.input.MdInputMaintenance;
-import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.output.MdOutputAbstract;
 import com.walksocket.md.output.MdOutputMaintenance;
 
@@ -15,6 +14,7 @@ public class MdExecuteMaintenance extends MdExecuteAbstract {
 
   /**
    * constructor.
+   *
    * @param con db connection
    */
   public MdExecuteMaintenance(MdDbConnection con) {
@@ -25,7 +25,7 @@ public class MdExecuteMaintenance extends MdExecuteAbstract {
   public MdOutputAbstract execute(MdInputAbstract input) throws Exception {
     MdInputMaintenance inputMaintenance = (MdInputMaintenance) input;
     MdOutputMaintenance outputMaintenance = new MdOutputMaintenance();
-    String sql = "";
+    String sql;
 
     // -----
     // lock

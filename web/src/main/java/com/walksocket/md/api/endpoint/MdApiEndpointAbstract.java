@@ -1,13 +1,16 @@
 package com.walksocket.md.api.endpoint;
 
 import com.google.gson.annotations.Expose;
-import com.walksocket.md.*;
+import com.walksocket.md.MdEndpointAbstract;
+import com.walksocket.md.MdEnv;
+import com.walksocket.md.MdJson;
+import com.walksocket.md.MdLogger;
 import com.walksocket.md.api.MdApiStatus;
 import com.walksocket.md.output.MdOutputAbstract;
 import com.walksocket.md.server.MdServerRequest;
 import com.walksocket.md.server.MdServerResponse;
-
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * api endpoint abstract.
@@ -30,6 +33,7 @@ abstract public class MdApiEndpointAbstract extends MdEndpointAbstract {
 
   /**
    * send reserved.
+   *
    * @throws IOException error
    */
   public void sendReserved(MdServerResponse response) throws IOException {
@@ -41,6 +45,7 @@ abstract public class MdApiEndpointAbstract extends MdEndpointAbstract {
 
   /**
    * send processing.
+   *
    * @throws IOException error
    */
   protected void sendProcessing(MdServerResponse response) throws IOException {
@@ -52,10 +57,12 @@ abstract public class MdApiEndpointAbstract extends MdEndpointAbstract {
 
   /**
    * send comlete.
+   *
    * @param output output
    * @throws IOException error
    */
-  protected void sendComplete(MdServerResponse response, MdOutputAbstract output) throws IOException {
+  protected void sendComplete(MdServerResponse response, MdOutputAbstract output)
+      throws IOException {
     sendJson(
         response,
         MdApiStatus.OK,
@@ -64,6 +71,7 @@ abstract public class MdApiEndpointAbstract extends MdEndpointAbstract {
 
   /**
    * send other.
+   *
    * @param status status
    * @throws IOException error
    */
@@ -76,11 +84,13 @@ abstract public class MdApiEndpointAbstract extends MdEndpointAbstract {
 
   /**
    * send json.
+   *
    * @param status status
-   * @param obj obj
+   * @param obj    obj
    * @throws IOException error
    */
-  private void sendJson(MdServerResponse response, MdApiStatus status, Object obj) throws IOException {
+  private void sendJson(MdServerResponse response, MdApiStatus status, Object obj)
+      throws IOException {
     String json = "";
     if (obj != null) {
       if (MdEnv.isPretty()) {
@@ -91,13 +101,13 @@ abstract public class MdApiEndpointAbstract extends MdEndpointAbstract {
     }
     response.setStatus(status.getStatus());
     response.setContentType("application/json; encoding=UTF8");
-    response.setBody(json);
+    response.setBody(Objects.requireNonNull(json));
   }
 
   /**
    * api response message.
    */
-  public class MdApiResponseMessage {
+  public static class MdApiResponseMessage {
 
     /**
      * status.
@@ -113,6 +123,7 @@ abstract public class MdApiEndpointAbstract extends MdEndpointAbstract {
 
     /**
      * constructor.
+     *
      * @param status status
      */
     public MdApiResponseMessage(MdApiStatus status) {

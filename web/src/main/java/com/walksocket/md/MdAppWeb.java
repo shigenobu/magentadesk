@@ -29,13 +29,14 @@ public class MdAppWeb implements AutoCloseable {
 
   /**
    * main.
+   *
    * @param args args
    * @throws Exception error
    */
-  public static void main(String args[]) throws Exception {
+  public static void main(String[] args) throws Exception {
     // check args
     String logPath = null;
-    long addSeconds  = 60 * 60 * 9;
+    long addSeconds = 60 * 60 * 9;
     String webHost = "0.0.0.0";
     int webPort = 8710;
     for (String arg : args) {
@@ -58,7 +59,7 @@ public class MdAppWeb implements AutoCloseable {
 
     // execute
     MdExceptionAbstract.ExitCode exitCode = MdExceptionAbstract.ExitCode.ERROR;
-    try (MdAppWeb app = new MdAppWeb()) {
+    try (MdAppWeb ignored = new MdAppWeb()) {
       // set log
       MdLogger.open(logPath);
       MdLogger.trace(String.format(
@@ -89,6 +90,7 @@ public class MdAppWeb implements AutoCloseable {
 
   /**
    * execute.
+   *
    * @param host host
    * @param port port
    * @return exit code

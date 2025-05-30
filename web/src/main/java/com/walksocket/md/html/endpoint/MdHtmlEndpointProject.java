@@ -9,11 +9,13 @@ import com.walksocket.md.server.MdServerRequest;
 import com.walksocket.md.server.MdServerResponse;
 import com.walksocket.md.sqlite.MdSqliteConnection;
 import com.walksocket.md.sqlite.MdSqliteUtils;
-
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * html endpoint project.
@@ -21,40 +23,49 @@ import java.util.stream.Collectors;
 public class MdHtmlEndpointProject extends MdHtmlEndpointAbstract {
 
   @Override
-  public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws Exception {
+  public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws Exception {
     String path = request.getPath();
-    if (path.equals("/project/list/")) {
-      list(request, response, con);
-      return;
-    } else if (path.equals("/project/edit/")) {
-      edit(request, response, con);
-      return;
-    } else if (path.equals("/project/save/")) {
-      save(request, response, con);
-      return;
-    } else if (path.equals("/project/delete/")) {
-      delete(request, response, con);
-      return;
-    } else if (path.equals("/project/preset/")) {
-      preset(request, response, con);
-      return;
+    switch (path) {
+      case "/project/list/" -> {
+        list(request, response, con);
+        return;
+      }
+      case "/project/edit/" -> {
+        edit(request, response, con);
+        return;
+      }
+      case "/project/save/" -> {
+        save(request, response, con);
+        return;
+      }
+      case "/project/delete/" -> {
+        delete(request, response, con);
+        return;
+      }
+      case "/project/preset/" -> {
+        preset(request, response, con);
+        return;
+      }
     }
     renderOtherWithLayout(response, MdHtmlStatus.NOT_FOUND);
   }
 
   /**
    * list.
-   * @param request request
+   *
+   * @param request  request
    * @param response response
-   * @param con sqlite connection
-   * @throws IOException error
+   * @param con      sqlite connection
+   * @throws IOException  error
    * @throws SQLException sql error
    */
-  private void list(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws IOException, SQLException {
+  private void list(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws IOException, SQLException {
     // template
     MdTemplate template = createTemplate("html/project/list.vm");
 
-    String sql = "";
+    String sql;
 
     // select
     sql = "SELECT " +
@@ -82,24 +93,26 @@ public class MdHtmlEndpointProject extends MdHtmlEndpointAbstract {
 
   /**
    * edit.
-   * @param request request
+   *
+   * @param request  request
    * @param response response
-   * @param con sqlite connection
-   * @throws IOException error
+   * @param con      sqlite connection
+   * @throws IOException  error
    * @throws SQLException sql error
    */
-  private void edit(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws IOException, SQLException {
+  private void edit(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws IOException, SQLException {
     // template
     MdTemplate template = createTemplate("html/project/edit.vm");
 
     // param
     String tmpProjectId = request.getQueryParam("projectId");
 
-    String sql = "";
+    String sql;
 
     // select
     MdHtmlSaveMode saveMode = MdHtmlSaveMode.UPDATE;
-    int projectId = 0;
+    int projectId;
     MdDbRecord record = null;
     Map<Integer, String> presetIdMap = new HashMap<>();
     if (!MdUtils.isNullOrEmpty(tmpProjectId)) {
@@ -123,7 +136,7 @@ public class MdHtmlEndpointProject extends MdHtmlEndpointAbstract {
     template.assign("saveMode", saveMode);
 
     // get all preset
-    List<MdDbRecord> presetRecords = new ArrayList<>();
+    List<MdDbRecord> presetRecords;
     sql = "SELECT presetId, title FROM preset ORDER BY presetId DESC";
     presetRecords = con.getRecords(sql);
     template.assign("presetRecords", presetRecords);
@@ -134,13 +147,15 @@ public class MdHtmlEndpointProject extends MdHtmlEndpointAbstract {
 
   /**
    * save.
-   * @param request request
+   *
+   * @param request  request
    * @param response response
-   * @param con sqlite connection
-   * @throws IOException error
+   * @param con      sqlite connection
+   * @throws IOException  error
    * @throws SQLException sql error
    */
-  private void save(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws IOException, SQLException {
+  private void save(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws IOException, SQLException {
     // check
     if (!request.isPost()) {
       sendOther(response, MdHtmlStatus.METHOD_NOT_ALLOWED);
@@ -204,7 +219,7 @@ public class MdHtmlEndpointProject extends MdHtmlEndpointAbstract {
       sendOther(response, MdHtmlStatus.BAD_REQUEST);
       return;
     }
-    
+
     Map<Integer, String> presetIdMap = new HashMap<>();
     for (int i = 0; i < 30; i++) {
       if (MdUtils.isNullOrEmpty(request.getBodyParam(String.format("presetId%s", i)))) {
@@ -213,13 +228,13 @@ public class MdHtmlEndpointProject extends MdHtmlEndpointAbstract {
       presetIdMap.put(i, request.getBodyParam(String.format("presetId%s", i)));
     }
 
-    String sql = "";
+    String sql;
 
     // check
-    if (presetIdMap.size() > 0) {
+    if (!presetIdMap.isEmpty()) {
       sql = String.format(
           "SELECT count(presetId) as cnt FROM preset WHERE presetId in (%s)",
-          presetIdMap.values().stream().collect(Collectors.joining(", ")));
+          String.join(", ", presetIdMap.values()));
       MdDbRecord rPreset = con.getRecord(sql);
       if (rPreset == null || Integer.parseInt(rPreset.get("cnt")) != presetIdMap.size()) {
         sendOther(response, MdHtmlStatus.BAD_REQUEST);
@@ -232,7 +247,8 @@ public class MdHtmlEndpointProject extends MdHtmlEndpointAbstract {
       // insert
       sql = String.format(
           "INSERT INTO project " +
-              "(title, explanation, host, port, user, pass, charset, dbType, baseDatabase, compareDatabase) " +
+              "(title, explanation, host, port, user, pass, charset, dbType, baseDatabase, compareDatabase) "
+              +
               "VALUES " +
               "('%s', '%s', '%s', %s, '%s', '%s', '%s', '%s', '%s', '%s')",
           MdSqliteUtils.quote(title),
@@ -308,13 +324,15 @@ public class MdHtmlEndpointProject extends MdHtmlEndpointAbstract {
 
   /**
    * delete.
-   * @param request request
+   *
+   * @param request  request
    * @param response response
-   * @param con sqlite connection
-   * @throws IOException error
+   * @param con      sqlite connection
+   * @throws IOException  error
    * @throws SQLException sql error
    */
-  private void delete(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws IOException, SQLException {
+  private void delete(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws IOException, SQLException {
     // check
     if (!request.isDelete()) {
       sendOther(response, MdHtmlStatus.METHOD_NOT_ALLOWED);
@@ -329,7 +347,7 @@ public class MdHtmlEndpointProject extends MdHtmlEndpointAbstract {
     }
     int projectId = Integer.parseInt(tmpProjectId);
 
-    String sql = "";
+    String sql;
 
     // delete
     sql = String.format("DELETE FROM project WHERE projectId = %s", projectId);
@@ -339,18 +357,20 @@ public class MdHtmlEndpointProject extends MdHtmlEndpointAbstract {
     con.execute(sql);
 
     // ok
-    sendOk(response, String.format("/project/list/"));
+    sendOk(response, "/project/list/");
   }
 
   /**
    * preset.
-   * @param request request
+   *
+   * @param request  request
    * @param response response
-   * @param con sqlite connection
-   * @throws IOException error
+   * @param con      sqlite connection
+   * @throws IOException  error
    * @throws SQLException sql error
    */
-  private void preset(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws IOException, SQLException {
+  private void preset(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws IOException, SQLException {
     // template
     MdTemplate template = createTemplate("html/project/preset.vm");
 
@@ -362,7 +382,7 @@ public class MdHtmlEndpointProject extends MdHtmlEndpointAbstract {
     }
     int projectId = Integer.parseInt(tmpProjectId);
 
-    String sql = "";
+    String sql;
 
     // select
     sql = String.format("SELECT * FROM project WHERE projectId = %s", projectId);
@@ -399,19 +419,19 @@ public class MdHtmlEndpointProject extends MdHtmlEndpointAbstract {
       diffConfigIds.add(r.get("diffConfigId"));
       syncConfigIds.add(r.get("syncConfigId"));
     }
-    if (diffConfigIds.size() > 0) {
+    if (!diffConfigIds.isEmpty()) {
       sql = String.format(
           "SELECT diffConfigId, title FROM diffConfig WHERE diffConfigId in (%s)",
-          diffConfigIds.stream().collect(Collectors.joining(", ")));
+          String.join(", ", diffConfigIds));
       List<MdDbRecord> rsDiff = con.getRecords(sql);
       for (MdDbRecord r : rsDiff) {
         diffTitleMap.put(r.get("diffConfigId"), r.get("title"));
       }
     }
-    if (syncConfigIds.size() > 0) {
+    if (!syncConfigIds.isEmpty()) {
       sql = String.format(
           "SELECT syncConfigId, title FROM syncConfig WHERE syncConfigId in (%s)",
-          syncConfigIds.stream().collect(Collectors.joining(", ")));
+          String.join(", ", syncConfigIds));
       List<MdDbRecord> rsSync = con.getRecords(sql);
       for (MdDbRecord r : rsSync) {
         syncTitleMap.put(r.get("syncConfigId"), r.get("title"));

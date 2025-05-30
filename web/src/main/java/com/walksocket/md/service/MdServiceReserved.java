@@ -2,13 +2,12 @@ package com.walksocket.md.service;
 
 import com.walksocket.md.MdDate;
 import com.walksocket.md.MdLogger;
+import com.walksocket.md.MdState;
+import com.walksocket.md.api.MdApiQueue;
+import com.walksocket.md.api.MdApiQueueMessage;
 import com.walksocket.md.db.MdDbRecord;
 import com.walksocket.md.sqlite.MdSqliteConnection;
 import com.walksocket.md.sqlite.MdSqliteUtils;
-import com.walksocket.md.api.MdApiQueue;
-import com.walksocket.md.api.MdApiQueueMessage;
-import com.walksocket.md.MdState;
-
 import java.util.List;
 
 /**
@@ -19,10 +18,11 @@ public class MdServiceReserved implements Runnable {
   /**
    * queue.
    */
-  private MdApiQueue queue;
+  private final MdApiQueue queue;
 
   /**
    * constructor.
+   *
    * @param queue queue
    */
   public MdServiceReserved(MdApiQueue queue) {

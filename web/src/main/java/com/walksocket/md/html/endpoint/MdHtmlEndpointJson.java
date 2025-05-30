@@ -15,7 +15,6 @@ import com.walksocket.md.output.MdOutputSync;
 import com.walksocket.md.server.MdServerRequest;
 import com.walksocket.md.server.MdServerResponse;
 import com.walksocket.md.sqlite.MdSqliteConnection;
-
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -25,7 +24,8 @@ import java.sql.SQLException;
 public class MdHtmlEndpointJson extends MdHtmlEndpointAbstract {
 
   @Override
-  public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws Exception {
+  public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws Exception {
     // method check
     if (!request.isGet()) {
       // method not allowed
@@ -57,6 +57,7 @@ public class MdHtmlEndpointJson extends MdHtmlEndpointAbstract {
 
   /**
    * is mostly.
+   *
    * @param request request
    * @return if mostly, true
    */
@@ -66,6 +67,7 @@ public class MdHtmlEndpointJson extends MdHtmlEndpointAbstract {
 
   /**
    * is really inpu.
+   *
    * @param request request
    * @return if really input, true
    */
@@ -75,15 +77,17 @@ public class MdHtmlEndpointJson extends MdHtmlEndpointAbstract {
 
   /**
    * diff.
-   * @param request request
+   *
+   * @param request  request
    * @param response response
-   * @param desk desk
-   * @throws IOException IO error
+   * @param desk     desk
+   * @throws IOException  IO error
    * @throws SQLException sql error
    */
-  private void diff(MdServerRequest request, MdServerResponse response, MdHtmlDesk desk) throws IOException, SQLException {
+  private void diff(MdServerRequest request, MdServerResponse response, MdHtmlDesk desk)
+      throws IOException, SQLException {
     // json
-    String json = "";
+    String json;
     if (isMostly(request)) {
       // param
       String tmpProjectId = request.getQueryParam("projectId");
@@ -120,7 +124,8 @@ public class MdHtmlEndpointJson extends MdHtmlEndpointAbstract {
       if (isReallyInput(request)) {
         json = MdJson.toJsonStringFriendly(MdJson.toObject(record.get("input"), MdInputDiff.class));
       } else {
-        json = MdJson.toJsonStringFriendly(MdJson.toObject(record.get("output"), MdOutputDiff.class));
+        json = MdJson.toJsonStringFriendly(
+            MdJson.toObject(record.get("output"), MdOutputDiff.class));
       }
     }
 
@@ -130,15 +135,17 @@ public class MdHtmlEndpointJson extends MdHtmlEndpointAbstract {
 
   /**
    * sync.
-   * @param request request
+   *
+   * @param request  request
    * @param response response
-   * @param desk desk
-   * @throws IOException IO error
+   * @param desk     desk
+   * @throws IOException  IO error
    * @throws SQLException sql error
    */
-  private void sync(MdServerRequest request, MdServerResponse response, MdHtmlDesk desk) throws SQLException, IOException {
+  private void sync(MdServerRequest request, MdServerResponse response, MdHtmlDesk desk)
+      throws SQLException, IOException {
     // json
-    String json = "";
+    String json;
     if (isMostly(request)) {
       // param
       String tmpProjectId = request.getQueryParam("projectId");
@@ -176,7 +183,8 @@ public class MdHtmlEndpointJson extends MdHtmlEndpointAbstract {
       if (isReallyInput(request)) {
         json = MdJson.toJsonStringFriendly(MdJson.toObject(record.get("input"), MdInputSync.class));
       } else {
-        json = MdJson.toJsonStringFriendly(MdJson.toObject(record.get("output"), MdOutputSync.class));
+        json = MdJson.toJsonStringFriendly(
+            MdJson.toObject(record.get("output"), MdOutputSync.class));
       }
     }
 
@@ -186,15 +194,17 @@ public class MdHtmlEndpointJson extends MdHtmlEndpointAbstract {
 
   /**
    * maintenance.
-   * @param request request
+   *
+   * @param request  request
    * @param response response
-   * @param desk desk
-   * @throws IOException IO error
+   * @param desk     desk
+   * @throws IOException  IO error
    * @throws SQLException sql error
    */
-  private void maintenance(MdServerRequest request, MdServerResponse response, MdHtmlDesk desk) throws IOException, SQLException {
+  private void maintenance(MdServerRequest request, MdServerResponse response, MdHtmlDesk desk)
+      throws IOException, SQLException {
     // json
-    String json = "";
+    String json;
     if (isMostly(request)) {
       // param
       String tmpProjectId = request.getQueryParam("projectId");
@@ -223,9 +233,11 @@ public class MdHtmlEndpointJson extends MdHtmlEndpointAbstract {
         return;
       }
       if (isReallyInput(request)) {
-        json = MdJson.toJsonStringFriendly(MdJson.toObject(record.get("input"), MdInputMaintenance.class));
+        json = MdJson.toJsonStringFriendly(
+            MdJson.toObject(record.get("input"), MdInputMaintenance.class));
       } else {
-        json = MdJson.toJsonStringFriendly(MdJson.toObject(record.get("output"), MdOutputMaintenance.class));
+        json = MdJson.toJsonStringFriendly(
+            MdJson.toObject(record.get("output"), MdOutputMaintenance.class));
       }
     }
 

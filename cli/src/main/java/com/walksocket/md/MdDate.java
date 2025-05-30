@@ -23,6 +23,7 @@ public class MdDate {
 
   /**
    * init.
+   *
    * @param addSeconds add seconds
    */
   public static void init(long addSeconds) {
@@ -31,6 +32,7 @@ public class MdDate {
 
   /**
    * now.
+   *
    * @return now
    */
   public static String now() {
@@ -43,6 +45,7 @@ public class MdDate {
 
   /**
    * timestamp.
+   *
    * @return timestamp
    */
   public static int timestamp() {

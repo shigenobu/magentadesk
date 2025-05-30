@@ -13,11 +13,11 @@ import com.walksocket.md.server.MdServerRequest;
 import com.walksocket.md.server.MdServerResponse;
 import com.walksocket.md.sqlite.MdSqliteConnection;
 import com.walksocket.md.sqlite.MdSqliteUtils;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * html endpoint diff config.
@@ -25,33 +25,41 @@ import java.util.List;
 public class MdHtmlEndpointDiffConfig extends MdHtmlEndpointAbstract {
 
   @Override
-  public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws Exception {
+  public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws Exception {
     String path = request.getPath();
-    if (path.equals("/diffConfig/list/")) {
-      list(request, response, con);
-      return;
-    } else if (path.equals("/diffConfig/edit/")) {
-      edit(request, response, con);
-      return;
-    } else if (path.equals("/diffConfig/save/")) {
-      save(request, response, con);
-      return;
-    } else if (path.equals("/diffConfig/delete/")) {
-      delete(request, response, con);
-      return;
+    switch (path) {
+      case "/diffConfig/list/" -> {
+        list(request, response, con);
+        return;
+      }
+      case "/diffConfig/edit/" -> {
+        edit(request, response, con);
+        return;
+      }
+      case "/diffConfig/save/" -> {
+        save(request, response, con);
+        return;
+      }
+      case "/diffConfig/delete/" -> {
+        delete(request, response, con);
+        return;
+      }
     }
     renderOtherWithLayout(response, MdHtmlStatus.NOT_FOUND);
   }
 
   /**
    * list.
-   * @param request request
+   *
+   * @param request  request
    * @param response response
-   * @param con sqlite connection
-   * @throws IOException error
+   * @param con      sqlite connection
+   * @throws IOException  error
    * @throws SQLException sql error
    */
-  private void list(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws IOException, SQLException {
+  private void list(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws IOException, SQLException {
     // template
     MdTemplate template = createTemplate("html/diffConfig/list.vm");
 
@@ -60,12 +68,15 @@ public class MdHtmlEndpointDiffConfig extends MdHtmlEndpointAbstract {
         "diffConfigId, " +
         "title, " +
         "explanation, " +
-        "ifnull(json_array_length(json_extract(option, '$.includeTableLikePatterns')), 0) as includeTableLikePatternsCount, " +
-        "ifnull(json_array_length(json_extract(option, '$.excludeTableLikePatterns')), 0) as excludeTableLikePatternsCount, " +
+        "ifnull(json_array_length(json_extract(option, '$.includeTableLikePatterns')), 0) as includeTableLikePatternsCount, "
+        +
+        "ifnull(json_array_length(json_extract(option, '$.excludeTableLikePatterns')), 0) as excludeTableLikePatternsCount, "
+        +
         "ifnull(json_extract(option, '$.ignoreAutoIncrement'), 0) as ignoreAutoIncrement, " +
         "ifnull(json_extract(option, '$.ignoreComment'), 0) as ignoreComment, " +
         "ifnull(json_extract(option, '$.ignorePartitions'), 0) as ignorePartitions, " +
-        "ifnull(json_extract(option, '$.ignoreDefaultForSequence'), 0) as ignoreDefaultForSequence, " +
+        "ifnull(json_extract(option, '$.ignoreDefaultForSequence'), 0) as ignoreDefaultForSequence, "
+        +
         "ifnull(json_array_length(conditions), 0) as conditionsCount, " +
         "ifnull(json_array_length(relations), 0) as relationsCount " +
         "FROM diffConfig " +
@@ -79,13 +90,15 @@ public class MdHtmlEndpointDiffConfig extends MdHtmlEndpointAbstract {
 
   /**
    * edit.
-   * @param request request
+   *
+   * @param request  request
    * @param response response
-   * @param con sqlite connection
-   * @throws IOException error
+   * @param con      sqlite connection
+   * @throws IOException  error
    * @throws SQLException sql error
    */
-  private void edit(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws IOException, SQLException {
+  private void edit(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws IOException, SQLException {
     // template
     MdTemplate template = createTemplate("html/diffConfig/edit.vm");
 
@@ -94,7 +107,7 @@ public class MdHtmlEndpointDiffConfig extends MdHtmlEndpointAbstract {
 
     // select
     MdHtmlSaveMode saveMode = MdHtmlSaveMode.UPDATE;
-    int diffConfigId = 0;
+    int diffConfigId;
     MdDbRecord record = null;
     if (!MdUtils.isNullOrEmpty(tmpDiffConfigId)) {
       diffConfigId = Integer.parseInt(tmpDiffConfigId);
@@ -114,7 +127,7 @@ public class MdHtmlEndpointDiffConfig extends MdHtmlEndpointAbstract {
     if (!MdUtils.isNullOrEmpty(record.getOrEmpty("option"))) {
       option = MdJson.toObject(record.get("option"), MdInputMemberOption.class);
     }
-    while (option.includeTableLikePatterns.size() < 5) {
+    while (Objects.requireNonNull(option).includeTableLikePatterns.size() < 5) {
       option.includeTableLikePatterns.add(option.includeTableLikePatterns.size(), "");
     }
     for (int i = 0; i < 5; i++) {
@@ -131,7 +144,7 @@ public class MdHtmlEndpointDiffConfig extends MdHtmlEndpointAbstract {
     }
     template.assign("option", option);
 
-    int idx = 0;
+    int idx;
 
     // conditions
     List<MdInputMemberCondition> conditions = new ArrayList<>();
@@ -140,7 +153,8 @@ public class MdHtmlEndpointDiffConfig extends MdHtmlEndpointAbstract {
     }
     idx = 0;
     if (!MdUtils.isNullOrEmpty(record.getOrEmpty("conditions"))) {
-      for (MdInputMemberCondition c : MdJson.toObject(record.get("conditions"), MdInputMemberCondition[].class)) {
+      for (MdInputMemberCondition c : MdJson.toObject(record.get("conditions"),
+          MdInputMemberCondition[].class)) {
         if (c != null) {
           conditions.remove(idx);
           conditions.add(idx, c);
@@ -157,7 +171,8 @@ public class MdHtmlEndpointDiffConfig extends MdHtmlEndpointAbstract {
     }
     idx = 0;
     if (!MdUtils.isNullOrEmpty(record.getOrEmpty("relations"))) {
-      for (MdInputMemberRelation c : MdJson.toObject(record.getOrEmpty("relations"), MdInputMemberRelation[].class)) {
+      for (MdInputMemberRelation c : MdJson.toObject(record.getOrEmpty("relations"),
+          MdInputMemberRelation[].class)) {
         if (c != null) {
           relations.remove(idx);
           relations.add(idx, c);
@@ -173,13 +188,15 @@ public class MdHtmlEndpointDiffConfig extends MdHtmlEndpointAbstract {
 
   /**
    * save.
-   * @param request request
+   *
+   * @param request  request
    * @param response response
-   * @param con sqlite connection
-   * @throws IOException error
+   * @param con      sqlite connection
+   * @throws IOException  error
    * @throws SQLException sql error
    */
-  private void save(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws IOException, SQLException {
+  private void save(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws IOException, SQLException {
     // check
     if (!request.isPost()) {
       sendOther(response, MdHtmlStatus.METHOD_NOT_ALLOWED);
@@ -194,8 +211,6 @@ public class MdHtmlEndpointDiffConfig extends MdHtmlEndpointAbstract {
       return;
     }
     String explanation = request.getBodyParam("explanation");
-
-    int idx = 0;
 
     // option
     MdInputMemberOption option = new MdInputMemberOption();
@@ -214,18 +229,19 @@ public class MdHtmlEndpointDiffConfig extends MdHtmlEndpointAbstract {
     option.ignoreAutoIncrement = Boolean.parseBoolean(request.getBodyParam("ignoreAutoIncrement"));
     option.ignoreComment = Boolean.parseBoolean(request.getBodyParam("ignoreComment"));
     option.ignorePartitions = Boolean.parseBoolean(request.getBodyParam("ignorePartitions"));
-    option.ignoreDefaultForSequence = Boolean.parseBoolean(request.getBodyParam("ignoreDefaultForSequence"));
+    option.ignoreDefaultForSequence = Boolean.parseBoolean(
+        request.getBodyParam("ignoreDefaultForSequence"));
     String optionJson = MdJson.toJsonString(option);
 
     // conditions
     List<MdInputMemberCondition> conditions = new ArrayList<>();
-    idx = 0;
     for (int i = 0; i < 5; i++) {
       if (MdUtils.isNullOrEmpty(request.getBodyParam(String.format("conditions_tableName%s", i)))) {
         continue;
       }
       String tableName = request.getBodyParam(String.format("conditions_tableName%s", i));
-      if (MdUtils.isNullOrEmpty(request.getBodyParam(String.format("conditions_expression%s", i)))) {
+      if (MdUtils.isNullOrEmpty(
+          request.getBodyParam(String.format("conditions_expression%s", i)))) {
         continue;
       }
       String expression = request.getBodyParam(String.format("conditions_expression%s", i));
@@ -239,7 +255,6 @@ public class MdHtmlEndpointDiffConfig extends MdHtmlEndpointAbstract {
 
     // conditions
     List<MdInputMemberRelation> relations = new ArrayList<>();
-    idx = 0;
     for (int i = 0; i < 5; i++) {
       if (MdUtils.isNullOrEmpty(request.getBodyParam(String.format("relations_from%s", i)))) {
         continue;
@@ -258,7 +273,7 @@ public class MdHtmlEndpointDiffConfig extends MdHtmlEndpointAbstract {
     String relationsJson = MdJson.toJsonString(relations.toArray());
 
     int diffConfigId = 0;
-    String sql = "";
+    String sql;
     if (saveMode.equals(MdHtmlSaveMode.INSERT.getValue())) {
       // insert
       sql = String.format(
@@ -307,13 +322,15 @@ public class MdHtmlEndpointDiffConfig extends MdHtmlEndpointAbstract {
 
   /**
    * delete.
-   * @param request request
+   *
+   * @param request  request
    * @param response response
-   * @param con sqlite connection
-   * @throws IOException error
+   * @param con      sqlite connection
+   * @throws IOException  error
    * @throws SQLException sql error
    */
-  private void delete(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws IOException, SQLException {
+  private void delete(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws IOException, SQLException {
     // check
     if (!request.isDelete()) {
       sendOther(response, MdHtmlStatus.METHOD_NOT_ALLOWED);
@@ -328,7 +345,7 @@ public class MdHtmlEndpointDiffConfig extends MdHtmlEndpointAbstract {
     }
     int diffConfigId = Integer.parseInt(tmpDiffConfigId);
 
-    String sql = "";
+    String sql;
 
     // check
     sql = String.format("SELECT presetId FROM preset WHERE diffConfigId = %s", diffConfigId);
@@ -343,6 +360,6 @@ public class MdHtmlEndpointDiffConfig extends MdHtmlEndpointAbstract {
     con.execute(sql);
 
     // ok
-    sendOk(response, String.format("/diffConfig/list/"));
+    sendOk(response, "/diffConfig/list/");
   }
 }

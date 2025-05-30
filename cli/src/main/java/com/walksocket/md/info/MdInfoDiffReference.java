@@ -2,7 +2,6 @@ package com.walksocket.md.info;
 
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.db.MdDbRecord;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,40 +14,41 @@ public class MdInfoDiffReference implements MdInfoDiffInterface {
   /**
    * constraint name.
    */
-  private String CONSTRAINT_NAME;
+  private final String CONSTRAINT_NAME;
 
   /**
    * unique constraint name.
    */
-  private String UNIQUE_CONSTRAINT_NAME;
+  private final String UNIQUE_CONSTRAINT_NAME;
 
   /**
    * match option.
    */
-  private String MATCH_OPTION;
+  private final String MATCH_OPTION;
 
   /**
    * update rule.
    */
-  private String UPDATE_RULE;
+  private final String UPDATE_RULE;
 
   /**
    * delete rule.
    */
-  private String DELETE_RULE;
+  private final String DELETE_RULE;
 
   /**
    * table name.
    */
-  private String TABLE_NAME;
+  private final String TABLE_NAME;
 
   /**
    * referenced table name.
    */
-  private String REFERENCED_TABLE_NAME;
+  private final String REFERENCED_TABLE_NAME;
 
   /**
    * constructor.
+   *
    * @param record record
    * @throws SQLException sql error
    */

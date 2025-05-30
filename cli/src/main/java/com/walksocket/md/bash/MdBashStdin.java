@@ -21,7 +21,8 @@ public class MdBashStdin {
 
   /**
    * constructor.
-   * @param run run
+   *
+   * @param run               run
    * @param reflectedJsonPath reflected json path
    */
   public MdBashStdin(boolean run, String reflectedJsonPath) {

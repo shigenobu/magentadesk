@@ -1,10 +1,9 @@
 package com.walksocket.md.supplier;
 
-import com.walksocket.md.db.MdDbFactory;
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.db.MdDbConnection;
+import com.walksocket.md.db.MdDbFactory;
 import com.walksocket.md.db.MdDbRecord;
-
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -16,17 +15,17 @@ public class MdSupplierInfoGetChecksum implements Supplier<String> {
   /**
    * connection string.
    */
-  private String connectionString;
+  private final String connectionString;
 
   /**
    * database.
    */
-  private String database;
+  private final String database;
 
   /**
    * table name.
    */
-  private String tableName;
+  private final String tableName;
 
   /**
    * checksum.
@@ -38,9 +37,10 @@ public class MdSupplierInfoGetChecksum implements Supplier<String> {
 
   /**
    * constructor.
+   *
    * @param connectionString connection string
-   * @param database database
-   * @param tableName table name
+   * @param database         database
+   * @param tableName        table name
    */
   public MdSupplierInfoGetChecksum(String connectionString, String database, String tableName) {
     this.connectionString = connectionString;

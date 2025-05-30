@@ -6,7 +6,6 @@ import com.walksocket.md.MdUtils;
 import com.walksocket.md.exception.MdExceptionInvalidInput;
 import com.walksocket.md.input.member.MdInputMemberCondition;
 import com.walksocket.md.input.member.MdInputMemberOption;
-
 import java.util.ArrayList;
 import java.util.List;
 

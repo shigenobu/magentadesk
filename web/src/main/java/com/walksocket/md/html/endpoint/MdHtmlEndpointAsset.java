@@ -8,7 +8,6 @@ import com.walksocket.md.server.MdServeUtils;
 import com.walksocket.md.server.MdServerRequest;
 import com.walksocket.md.server.MdServerResponse;
 import com.walksocket.md.sqlite.MdSqliteConnection;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -20,7 +19,8 @@ import java.io.InputStream;
 public class MdHtmlEndpointAsset extends MdHtmlEndpointAbstract {
 
   @Override
-  public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws Exception {
+  public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws Exception {
     MdHtmlStatus status = MdHtmlStatus.OK;
     byte[] data = null;
     String path = request.getPath();
@@ -30,7 +30,8 @@ public class MdHtmlEndpointAsset extends MdHtmlEndpointAbstract {
       assetPath = "asset/favicon.ico";
     }
     if (MdUtils.isNullOrEmpty(getBasePath())) {
-      try (InputStream in = MdHtmlEndpointAsset.class.getClassLoader().getResourceAsStream(assetPath)) {
+      try (InputStream in = MdHtmlEndpointAsset.class.getClassLoader()
+          .getResourceAsStream(assetPath)) {
         data = MdFile.readByteArray(in);
         response.setCacheControl("public, max-age=600");
       } catch (FileNotFoundException e) {

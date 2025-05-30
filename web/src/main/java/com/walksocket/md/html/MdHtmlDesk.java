@@ -11,7 +11,6 @@ import com.walksocket.md.input.member.MdInputMemberCondition;
 import com.walksocket.md.input.member.MdInputMemberHttp;
 import com.walksocket.md.input.member.MdInputMemberOption;
 import com.walksocket.md.sqlite.MdSqliteConnection;
-
 import java.sql.SQLException;
 import java.util.Arrays;
 
@@ -23,7 +22,7 @@ public class MdHtmlDesk {
   /**
    * sqlite connection.
    */
-  private MdSqliteConnection con;
+  private final MdSqliteConnection con;
 
   /**
    * project record.
@@ -32,6 +31,7 @@ public class MdHtmlDesk {
 
   /**
    * constructor.
+   *
    * @param con sqlite connection
    */
   public MdHtmlDesk(MdSqliteConnection con) {
@@ -40,6 +40,7 @@ public class MdHtmlDesk {
 
   /**
    * get connection.
+   *
    * @return sqlite connection
    */
   public MdSqliteConnection getConnection() {
@@ -48,12 +49,13 @@ public class MdHtmlDesk {
 
   /**
    * get project record.
+   *
    * @param projectId projectId
    * @return project record
    * @throws SQLException sql error
    */
   public MdDbRecord getProjectRecord(int projectId) throws SQLException {
-    String sql = "";
+    String sql;
     if (projectRecord == null) {
       sql = String.format("SELECT * FROM project WHERE projectId = %s", projectId);
       projectRecord = con.getRecord(sql);
@@ -66,12 +68,12 @@ public class MdHtmlDesk {
 
   /**
    * make common input.
+   *
    * @param projectId projectId
-   * @param input input
+   * @param input     input
    * @throws SQLException sql error
    */
   private void makeCommonInput(int projectId, MdInputAbstract input) throws SQLException {
-    String sql = "";
 
     // get project record
     projectRecord = getProjectRecord(projectId);
@@ -87,8 +89,9 @@ public class MdHtmlDesk {
 
   /**
    * make maintenance input.
+   *
    * @param projectId projectId
-   * @param input input
+   * @param input     input
    * @throws SQLException sql error
    */
   public void makeMaintenanceInput(int projectId, MdInputMaintenance input) throws SQLException {
@@ -102,9 +105,10 @@ public class MdHtmlDesk {
 
   /**
    * make diff input.
+   *
    * @param projectId projectId
-   * @param presetId presetId
-   * @param input input
+   * @param presetId  presetId
+   * @param input     input
    * @throws SQLException sql error
    */
   public void makeDiffInput(int projectId, int presetId, MdInputDiff input) throws SQLException {
@@ -115,28 +119,28 @@ public class MdHtmlDesk {
     input.baseDatabase = projectRecord.get("baseDatabase");
     input.compareDatabase = projectRecord.get("compareDatabase");
 
-    String sql = "";
+    String sql;
 
     // select
     sql = String.format(
         "SELECT " +
-          "t4.option," +
-          "t4.conditions " +
-          "FROM " +
-          "project as t1 " +
-          "join " +
-          "projectPreset as t2 " +
-          "on t1.projectId = t2.projectId " +
-          "join " +
-          "preset as t3 " +
-          "on t2.presetId = t3.presetId " +
-          "join " +
-          "diffConfig as t4 " +
-          "on t3.diffConfigId = t4.diffConfigId " +
-          "WHERE " +
-          "t1.projectId = %s " +
-          "AND " +
-          "t3.presetId = %s ",
+            "t4.option," +
+            "t4.conditions " +
+            "FROM " +
+            "project as t1 " +
+            "join " +
+            "projectPreset as t2 " +
+            "on t1.projectId = t2.projectId " +
+            "join " +
+            "preset as t3 " +
+            "on t2.presetId = t3.presetId " +
+            "join " +
+            "diffConfig as t4 " +
+            "on t3.diffConfigId = t4.diffConfigId " +
+            "WHERE " +
+            "t1.projectId = %s " +
+            "AND " +
+            "t3.presetId = %s ",
         projectId,
         presetId);
     MdDbRecord record = con.getRecord(sql);
@@ -144,21 +148,23 @@ public class MdHtmlDesk {
       throw new SQLException(String.format("Not exists by %s %s", projectId, presetId));
     }
     input.option = MdJson.toObject(record.get("option"), MdInputMemberOption.class);
-    input.conditions = Arrays.asList(MdJson.toObject(record.get("conditions"), MdInputMemberCondition[].class));
+    input.conditions = Arrays.asList(
+        MdJson.toObject(record.get("conditions"), MdInputMemberCondition[].class));
   }
 
   /**
    * make sync input.
+   *
    * @param projectId projectId
-   * @param presetId presetId
-   * @param input input
+   * @param presetId  presetId
+   * @param input     input
    * @throws SQLException sql error
    */
   public void makeSyncInput(int projectId, int presetId, MdInputSync input) throws SQLException {
     // common
     makeCommonInput(projectId, input);
 
-    String sql = "";
+    String sql;
 
     // select
     sql = String.format(
@@ -188,9 +194,13 @@ public class MdHtmlDesk {
     if (record == null) {
       throw new SQLException(String.format("Not exists by %s %s", projectId, presetId));
     }
-    input.commandsBeforeCommit = Arrays.asList(MdJson.toObject(record.get("commandsBeforeCommit"), MdInputMemberCommand[].class));
-    input.commandsAfterCommit = Arrays.asList(MdJson.toObject(record.get("commandsAfterCommit"), MdInputMemberCommand[].class));
-    input.httpCallbackBeforeCommit = Arrays.asList(MdJson.toObject(record.get("httpCallbackBeforeCommit"), MdInputMemberHttp[].class));
-    input.httpCallbackAfterCommit = Arrays.asList(MdJson.toObject(record.get("httpCallbackAfterCommit"), MdInputMemberHttp[].class));
+    input.commandsBeforeCommit = Arrays.asList(
+        MdJson.toObject(record.get("commandsBeforeCommit"), MdInputMemberCommand[].class));
+    input.commandsAfterCommit = Arrays.asList(
+        MdJson.toObject(record.get("commandsAfterCommit"), MdInputMemberCommand[].class));
+    input.httpCallbackBeforeCommit = Arrays.asList(
+        MdJson.toObject(record.get("httpCallbackBeforeCommit"), MdInputMemberHttp[].class));
+    input.httpCallbackAfterCommit = Arrays.asList(
+        MdJson.toObject(record.get("httpCallbackAfterCommit"), MdInputMemberHttp[].class));
   }
 }

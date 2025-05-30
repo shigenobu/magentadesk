@@ -11,7 +11,8 @@ import com.walksocket.md.sqlite.MdSqliteConnection;
 public class MdHtmlEndpointIndex extends MdHtmlEndpointAbstract {
 
   @Override
-  public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws Exception {
+  public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws Exception {
     MdTemplate template = createTemplate("html/index.vm");
     renderOkWithLayout(response, template);
   }

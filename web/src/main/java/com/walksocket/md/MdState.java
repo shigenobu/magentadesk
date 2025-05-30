@@ -29,10 +29,11 @@ public enum MdState {
   /**
    * state.
    */
-  private String state;
+  private final String state;
 
   /**
    * constructor.
+   *
    * @param state state
    */
   MdState(String state) {
@@ -41,6 +42,7 @@ public enum MdState {
 
   /**
    * get state.
+   *
    * @return state
    */
   public String getState() {

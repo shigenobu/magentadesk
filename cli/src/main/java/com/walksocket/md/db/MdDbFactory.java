@@ -20,6 +20,7 @@ public class MdDbFactory {
 
   /**
    * new create.
+   *
    * @param connectionString connection string
    * @return db connection
    */
@@ -32,6 +33,7 @@ public class MdDbFactory {
 
   /**
    * get db type.
+   *
    * @param connectionString connection string
    * @return db type
    */
@@ -61,10 +63,11 @@ public class MdDbFactory {
     /**
      * db type.
      */
-    private String dbType;
+    private final String dbType;
 
     /**
      * constructor.
+     *
      * @param dbType db type
      */
     DbType(String dbType) {
@@ -73,6 +76,7 @@ public class MdDbFactory {
 
     /**
      * get db type.
+     *
      * @return db type
      */
     public String getDbType() {

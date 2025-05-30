@@ -8,12 +8,12 @@ public class MdBashCommand {
   /**
    * command.
    */
-  private String command;
+  private final String command;
 
   /**
    * timeout.
    */
-  private int timeout;
+  private final int timeout;
 
   /**
    * stdin.
@@ -22,6 +22,7 @@ public class MdBashCommand {
 
   /**
    * constructor.
+   *
    * @param command command
    * @param timeout timeout
    */
@@ -32,6 +33,7 @@ public class MdBashCommand {
 
   /**
    * get command.
+   *
    * @return command.
    */
   public String getCommand() {
@@ -40,6 +42,7 @@ public class MdBashCommand {
 
   /**
    * get timeout.
+   *
    * @return timeout.
    */
   public int getTimeout() {
@@ -48,6 +51,7 @@ public class MdBashCommand {
 
   /**
    * get stdin.
+   *
    * @return stdin.
    */
   public String getStdin() {
@@ -56,6 +60,7 @@ public class MdBashCommand {
 
   /**
    * set stdin.
+   *
    * @param stdin stdin.
    */
   public void setStdin(String stdin) {

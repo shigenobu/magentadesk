@@ -6,10 +6,10 @@ import com.walksocket.md.input.MdInputDiff;
 import com.walksocket.md.input.MdInputMaintenance;
 import com.walksocket.md.input.MdInputSync;
 import com.walksocket.md.output.MdOutputAbstract;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -35,10 +35,11 @@ public class MdAppCli implements AutoCloseable {
 
   /**
    * main.
+   *
    * @param args args
    * @throws Exception error
    */
-  public static void main(String args[]) throws Exception {
+  public static void main(String[] args) throws Exception {
     // if no args, show help
     if (args.length == 0) {
       help();
@@ -48,7 +49,7 @@ public class MdAppCli implements AutoCloseable {
     // check args
     String mode = null;
     String logPath = null;
-    long addSeconds  = 60 * 60 * 9;
+    long addSeconds = 60 * 60 * 9;
     for (String arg : args) {
       if (arg.startsWith(ARG_MODE)) {
         mode = arg.substring(ARG_MODE.length());
@@ -65,11 +66,10 @@ public class MdAppCli implements AutoCloseable {
       System.exit(MdExceptionAbstract.ExitCode.INVALID_ARGS.getExitCode());
     }
     String finalMode = mode;
-    Optional<MdMode> opt = Arrays.asList(MdMode.values())
-        .stream()
+    Optional<MdMode> opt = Arrays.stream(MdMode.values())
         .filter(elem -> finalMode.compareTo(elem.getMode()) == 0)
         .findFirst();
-    if (!opt.isPresent()) {
+    if (opt.isEmpty()) {
       System.err.println("Arg 'mode' is not defined.");
       System.exit(MdExceptionAbstract.ExitCode.INVALID_ARGS.getExitCode());
     }
@@ -79,7 +79,7 @@ public class MdAppCli implements AutoCloseable {
 
     // execute
     MdExceptionAbstract.ExitCode exitCode = MdExceptionAbstract.ExitCode.ERROR;
-    try (MdAppCli app = new MdAppCli()) {
+    try (MdAppCli ignored = new MdAppCli()) {
       // set log
       MdLogger.open(logPath);
       MdLogger.trace(String.format(
@@ -117,6 +117,7 @@ public class MdAppCli implements AutoCloseable {
 
   /**
    * execute.
+   *
    * @param mode mode
    * @param json json
    * @return exit code
@@ -124,7 +125,7 @@ public class MdAppCli implements AutoCloseable {
    */
   public static MdExceptionAbstract.ExitCode execute(String mode, String json) throws Exception {
     MdExceptionAbstract.ExitCode exitCode;
-    MdOutputAbstract output = null;
+    MdOutputAbstract output;
 
     // start
     long start = System.currentTimeMillis();
@@ -138,7 +139,7 @@ public class MdAppCli implements AutoCloseable {
     } else if (mode.equals(MdMode.MAINTENANCE.getMode())) {
       input = MdJson.toObject(json, MdInputMaintenance.class);
     }
-    input.validate();
+    Objects.requireNonNull(input).validate();
     MdLogger.trace(String.format("input:%s", MdJson.toJsonStringFriendly(input)));
     output = MdExecute.execute(input);
     exitCode = MdExceptionAbstract.ExitCode.SUCCESS;
@@ -160,6 +161,7 @@ public class MdAppCli implements AutoCloseable {
 
   /**
    * help.
+   *
    * @throws IOException read error
    */
   private static void help() throws IOException {

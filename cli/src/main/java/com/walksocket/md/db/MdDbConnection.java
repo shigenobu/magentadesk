@@ -2,9 +2,12 @@ package com.walksocket.md.db;
 
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdUtils;
-
 import com.walksocket.md.db.MdDbFactory.DbType;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +35,7 @@ abstract public class MdDbConnection implements AutoCloseable {
 
   /**
    * get connection string.
+   *
    * @return connection string
    */
   public String getConnectionString() {
@@ -40,6 +44,7 @@ abstract public class MdDbConnection implements AutoCloseable {
 
   /**
    * get db type.
+   *
    * @return db type
    */
   public DbType getDbType() {
@@ -48,24 +53,24 @@ abstract public class MdDbConnection implements AutoCloseable {
 
   /**
    * open.
+   *
    * @throws SQLException sql error
    */
   abstract public void open() throws SQLException;
 
   /**
    * is open.
+   *
    * @return if opend, true
    * @throws SQLException sql error
    */
   public boolean isOpen() throws SQLException {
-    if (con != null && !con.isClosed()) {
-      return true;
-    }
-    return false;
+    return con != null && !con.isClosed();
   }
 
   /**
    * begin.
+   *
    * @throws SQLException sql error
    */
   public void begin() throws SQLException {
@@ -75,6 +80,7 @@ abstract public class MdDbConnection implements AutoCloseable {
 
   /**
    * commit.
+   *
    * @throws SQLException sql error
    */
   public void commit() throws SQLException {
@@ -102,6 +108,7 @@ abstract public class MdDbConnection implements AutoCloseable {
 
   /**
    * execute.
+   *
    * @param sql sql
    * @throws SQLException sql error
    */
@@ -128,6 +135,7 @@ abstract public class MdDbConnection implements AutoCloseable {
 
   /**
    * get records.
+   *
    * @param sql sql
    * @return records
    * @throws SQLException sql error
@@ -177,6 +185,7 @@ abstract public class MdDbConnection implements AutoCloseable {
 
   /**
    * get record.
+   *
    * @param sql sql
    * @return record or null
    * @throws SQLException sql error

@@ -27,6 +27,7 @@ public class MdLogger {
 
   /**
    * open logger.
+   *
    * @param logPath log path
    * @throws IOException no file error
    */
@@ -50,6 +51,7 @@ public class MdLogger {
 
   /**
    * close.
+   *
    * @throws IOException close error
    */
   public static void close() throws IOException {
@@ -61,6 +63,7 @@ public class MdLogger {
 
   /**
    * sql logger.
+   *
    * @param message message
    */
   public static void sql(Object message) {
@@ -71,6 +74,7 @@ public class MdLogger {
 
   /**
    * trace logger.
+   *
    * @param message message
    */
   public static void trace(Object message) {
@@ -81,6 +85,7 @@ public class MdLogger {
 
   /**
    * trace logger.
+   *
    * @param message message
    */
   public static void trace(Supplier<Object> message) {
@@ -91,6 +96,7 @@ public class MdLogger {
 
   /**
    * error logger.
+   *
    * @param message message
    */
   public static void error(Object message) {
@@ -99,7 +105,8 @@ public class MdLogger {
 
   /**
    * out log.
-   * @param level level
+   *
+   * @param level   level
    * @param message message
    */
   private static void out(String level, Object message) {
@@ -108,24 +115,26 @@ public class MdLogger {
     }
 
     try {
-      String msg = "[" + MdDate.now() + "][" + String.format("%010d", Thread.currentThread().getId()) + "][" + level + "]" + message.toString();
+      String msg =
+          "[" + MdDate.now() + "][" + String.format("%010d", Thread.currentThread().getId()) + "]["
+              + level + "]" + message.toString();
       writer.write(msg + "\n");
       writer.flush();
 
       if (message instanceof Throwable) {
         StackTraceElement[] stacks = ((Throwable) message).getStackTrace();
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         for (StackTraceElement stack : stacks) {
           buffer.append("\n");
-          buffer.append("<" + stack.getClassName() + ">");
-          buffer.append("<" + stack.getFileName() + ">");
-          buffer.append("<" + stack.getLineNumber() + ">");
-          buffer.append("<" + stack.getMethodName() + ">");
+          buffer.append("<").append(stack.getClassName()).append(">");
+          buffer.append("<").append(stack.getFileName()).append(">");
+          buffer.append("<").append(stack.getLineNumber()).append(">");
+          buffer.append("<").append(stack.getMethodName()).append(">");
         }
-        writer.write(buffer.toString() + "\n");
+        writer.write(buffer + "\n");
         writer.flush();
       }
-    } catch (Exception e) {
+    } catch (Exception ignored) {
     }
   }
 }

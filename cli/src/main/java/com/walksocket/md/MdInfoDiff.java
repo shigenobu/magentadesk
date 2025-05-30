@@ -3,15 +3,23 @@ package com.walksocket.md;
 import com.walksocket.md.db.MdDbConnection;
 import com.walksocket.md.db.MdDbFactory.DbType;
 import com.walksocket.md.db.MdDbRecord;
-import com.walksocket.md.info.*;
+import com.walksocket.md.info.MdInfoDiffColumn;
+import com.walksocket.md.info.MdInfoDiffConstraint;
+import com.walksocket.md.info.MdInfoDiffIndex;
+import com.walksocket.md.info.MdInfoDiffPartition;
+import com.walksocket.md.info.MdInfoDiffReference;
+import com.walksocket.md.info.MdInfoDiffTable;
+import com.walksocket.md.info.MdInfoDiffTrigger;
 import com.walksocket.md.input.member.MdInputMemberCondition;
 import com.walksocket.md.input.member.MdInputMemberOption;
-import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.supplier.MdSupplierInfoGetChecksum;
 import com.walksocket.md.supplier.MdSupplierInfoGetChecksumFake;
-
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
@@ -23,9 +31,10 @@ public class MdInfoDiff {
 
   /**
    * create info list.
-   * @param con db connection.
-   * @param database base or compare database
-   * @param option input option
+   *
+   * @param con        db connection.
+   * @param database   base or compare database
+   * @param option     input option
    * @param conditions condtion list
    * @return listed info
    * @throws SQLException sql error
@@ -35,8 +44,8 @@ public class MdInfoDiff {
       String database,
       MdInputMemberOption option,
       List<MdInputMemberCondition> conditions) throws SQLException {
-    String sql = null;
-    List<MdDbRecord> records = null;
+    String sql;
+    List<MdDbRecord> records;
 
     List<MdInfoDiff> infoList = new ArrayList<>();
 
@@ -52,10 +61,10 @@ public class MdInfoDiff {
           String.format("table_name not like '%s'",
               MdDbUtils.quote(pattern)));
     }
-    if (likeSqlPatterns.size() == 0) {
+    if (likeSqlPatterns.isEmpty()) {
       likeSqlPatterns.add("table_name like '%'");
     }
-    if (notLikeSqlPatterns.size() == 0) {
+    if (notLikeSqlPatterns.isEmpty()) {
       notLikeSqlPatterns.add("table_name not like ''");
     }
 
@@ -72,7 +81,8 @@ public class MdInfoDiff {
       String tableName = record.get("TABLE_NAME");
 
       MdInputMemberCondition condition = null;
-      Optional<MdInputMemberCondition> opt = conditions.stream().filter(c -> c.tableName.equals(tableName)).findFirst();
+      Optional<MdInputMemberCondition> opt = conditions.stream()
+          .filter(c -> c.tableName.equals(tableName)).findFirst();
       if (opt.isPresent()) {
         condition = opt.get();
       }
@@ -92,27 +102,27 @@ public class MdInfoDiff {
   /**
    * db connection.
    */
-  private MdDbConnection con;
+  private final MdDbConnection con;
 
   /**
    * database (base or compare).
    */
-  private String database;
+  private final String database;
 
   /**
    * table name.
    */
-  private String tableName;
+  private final String tableName;
 
   /**
    * input option.
    */
-  private MdInputMemberOption option;
+  private final MdInputMemberOption option;
 
   /**
    * input condition.
    */
-  private MdInputMemberCondition condition;
+  private final MdInputMemberCondition condition;
 
   /**
    * definition.
@@ -190,10 +200,11 @@ public class MdInfoDiff {
 
   /**
    * construtor.
-   * @param con db connection
-   * @param database base or compare database
+   *
+   * @param con       db connection
+   * @param database  base or compare database
    * @param tableName table name
-   * @param option input option
+   * @param option    input option
    * @param condition where condition
    * @throws SQLException sql error
    */
@@ -212,6 +223,7 @@ public class MdInfoDiff {
 
   /**
    * get database.
+   *
    * @return database
    */
   public String getDatabase() {
@@ -220,6 +232,7 @@ public class MdInfoDiff {
 
   /**
    * get table name.
+   *
    * @return table name
    */
   public String getTableName() {
@@ -228,6 +241,7 @@ public class MdInfoDiff {
 
   /**
    * get where expression.
+   *
    * @return where expression
    */
   public String getWhereExpression() {
@@ -244,6 +258,7 @@ public class MdInfoDiff {
 
   /**
    * get definition.
+   *
    * @return definition
    * @throws SQLException sql error
    */
@@ -278,6 +293,7 @@ public class MdInfoDiff {
 
   /**
    * get structure hash.
+   *
    * @return structure hash
    * @throws SQLException sql error
    */
@@ -286,31 +302,31 @@ public class MdInfoDiff {
 
     // table
     buffer.append(getInfoTable().getHash());
-    MdLogger.trace(() -> ("after table hash:" + buffer.toString()));
+    MdLogger.trace(() -> ("after table hash:" + buffer));
 
     // column
     for (MdInfoDiffColumn i : getInfoColumns()) {
       buffer.append(i.getHash());
     }
-    MdLogger.trace(() -> ("after column hash:" + buffer.toString()));
+    MdLogger.trace(() -> ("after column hash:" + buffer));
 
     // reference
     for (MdInfoDiffReference i : getInfoReferences()) {
       buffer.append(i.getHash());
     }
-    MdLogger.trace(() -> ("after reference hash:" + buffer.toString()));
+    MdLogger.trace(() -> ("after reference hash:" + buffer));
 
     // constraint
     for (MdInfoDiffConstraint i : getInfoConstraints()) {
       buffer.append(i.getHash());
     }
-    MdLogger.trace(() -> ("after constraint hash:" + buffer.toString()));
+    MdLogger.trace(() -> ("after constraint hash:" + buffer));
 
     // index
     for (MdInfoDiffIndex i : getInfoIndexes()) {
       buffer.append(i.getHash());
     }
-    MdLogger.trace(() -> ("after index hash:" + buffer.toString()));
+    MdLogger.trace(() -> ("after index hash:" + buffer));
 
     // partition
     if (!option.ignorePartitions) {
@@ -318,24 +334,26 @@ public class MdInfoDiff {
         buffer.append(i.getHash());
       }
     }
-    MdLogger.trace(() -> ("after partition hash:" + buffer.toString()));
+    MdLogger.trace(() -> ("after partition hash:" + buffer));
 
     // no trigger
 
     String hash = MdUtils.getHash(buffer.toString());
-    MdLogger.trace(() -> ("hash of " + tableName + ":" + buffer.toString()));
+    MdLogger.trace(() -> ("hash of " + tableName + ":" + buffer));
     return hash;
   }
 
   /**
    * get future for checksum.
+   *
    * @param service service
    * @return future for checksum
    */
   public CompletableFuture<String> getChecksumFuture(ExecutorService service) {
     if (supplier == null) {
       if (condition != null && !MdUtils.isNullOrEmpty(condition.expression)) {
-        supplier = new MdSupplierInfoGetChecksumFake(con.getConnectionString(), database, tableName);
+        supplier = new MdSupplierInfoGetChecksumFake(con.getConnectionString(), database,
+            tableName);
       } else {
         supplier = new MdSupplierInfoGetChecksum(con.getConnectionString(), database, tableName);
       }
@@ -345,6 +363,7 @@ public class MdInfoDiff {
 
   /**
    * get info table for diff.
+   *
    * @return info table object
    * @throws SQLException sql error.
    */
@@ -366,6 +385,7 @@ public class MdInfoDiff {
 
   /**
    * get info column list for diff.
+   *
    * @return info column object list
    * @throws SQLException sql error.
    */
@@ -389,6 +409,7 @@ public class MdInfoDiff {
 
   /**
    * get info reference list for diff.
+   *
    * @return info reference object list
    * @throws SQLException sql error.
    */
@@ -412,19 +433,21 @@ public class MdInfoDiff {
 
   /**
    * get info constraint list for diff.
+   *
    * @return info constraint object list
    * @throws SQLException sql error.
    */
   private List<MdInfoDiffConstraint> getInfoConstraints() throws SQLException {
     if (infoConstraints == null) {
       infoConstraints = new ArrayList<>();
-      String sql = "";
+      String sql;
       if (con.getDbType() == DbType.MYSQL) {
         sql = String.format(
             "SELECT t1.CONSTRAINT_NAME, t1.CHECK_CLAUSE " +
                 "FROM information_schema.CHECK_CONSTRAINTS as t1 " +
                 "JOIN information_schema.TABLE_CONSTRAINTS as t2 " +
-                "ON t1.CONSTRAINT_SCHEMA = t2.CONSTRAINT_SCHEMA and t1.CONSTRAINT_NAME = t2.CONSTRAINT_NAME " +
+                "ON t1.CONSTRAINT_SCHEMA = t2.CONSTRAINT_SCHEMA and t1.CONSTRAINT_NAME = t2.CONSTRAINT_NAME "
+                +
                 "WHERE t1.constraint_schema = '%s' and t2.table_name = '%s' " +
                 "ORDER BY t1.constraint_name",
             database,
@@ -448,6 +471,7 @@ public class MdInfoDiff {
 
   /**
    * get info index list for diff.
+   *
    * @return info index object list
    * @throws SQLException sql error.
    */
@@ -471,6 +495,7 @@ public class MdInfoDiff {
 
   /**
    * get info partition list for diff.
+   *
    * @return info partition object list
    * @throws SQLException sql error.
    */
@@ -494,6 +519,7 @@ public class MdInfoDiff {
 
   /**
    * get info trigger list for diff.
+   *
    * @return info trigger object list
    * @throws SQLException sql error.
    */
@@ -517,6 +543,7 @@ public class MdInfoDiff {
 
   /**
    * get referenced table name.
+   *
    * @return referenced table name
    * @throws SQLException sql error
    */
@@ -542,6 +569,7 @@ public class MdInfoDiff {
 
   /**
    * get primary columns.
+   *
    * @return primary columns
    * @throws SQLException sql error
    */
@@ -559,6 +587,7 @@ public class MdInfoDiff {
 
   /**
    * get real columns.
+   *
    * @return real columns
    * @throws SQLException sql error
    */
@@ -576,24 +605,27 @@ public class MdInfoDiff {
 
   /**
    * has foreign key.
+   *
    * @return if true, has foreign key
    * @throws SQLException sql error
    */
   public boolean hasForeignKey() throws SQLException {
-    return getInfoReferences().size() > 0;
+    return !getInfoReferences().isEmpty();
   }
 
   /**
    * has trigger.
+   *
    * @return if true, has trigger
    * @throws SQLException sql error
    */
   public boolean hasTrigger() throws SQLException {
-    return getInfoTriggers().size() > 0;
+    return !getInfoTriggers().isEmpty();
   }
 
   /**
    * get trigger hash.
+   *
    * @return trigger hash
    * @throws SQLException sql error
    */
@@ -603,10 +635,11 @@ public class MdInfoDiff {
 
   /**
    * has referenced.
+   *
    * @return if true, has referenced
    * @throws SQLException sql error
    */
   public boolean hasReferenced() throws SQLException {
-    return getReferencedTableNames().size() > 0;
+    return !getReferencedTableNames().isEmpty();
   }
 }

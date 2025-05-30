@@ -1,10 +1,9 @@
 package com.walksocket.md.input;
 
 import com.google.gson.annotations.Expose;
-import com.walksocket.md.MdUtils;
 import com.walksocket.md.MdMode;
+import com.walksocket.md.MdUtils;
 import com.walksocket.md.exception.MdExceptionInvalidInput;
-
 import java.util.Arrays;
 
 /**
@@ -31,10 +30,11 @@ public class MdInputMaintenance extends MdInputAbstract {
     /**
      * maintenance.
      */
-    private String maintenance;
+    private final String maintenance;
 
     /**
      * constructor.
+     *
      * @param maintenance maintenance
      */
     Maintenance(String maintenance) {
@@ -43,6 +43,7 @@ public class MdInputMaintenance extends MdInputAbstract {
 
     /**
      * get maintenance.
+     *
      * @return maintenance
      */
     public String getMaintenance() {
@@ -84,7 +85,8 @@ public class MdInputMaintenance extends MdInputAbstract {
       throw new MdExceptionInvalidInput("Invalid compareDatabase.");
     }
     if (MdUtils.isNullOrEmpty(maintenance)
-      || !Arrays.asList(Maintenance.values()).stream().filter(m -> m.getMaintenance().equals(maintenance)).findFirst().isPresent()) {
+        || Arrays.stream(Maintenance.values())
+        .noneMatch(m -> m.getMaintenance().equals(maintenance))) {
       throw new MdExceptionInvalidInput("Invalid maintenance.");
     }
   }

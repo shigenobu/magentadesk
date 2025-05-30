@@ -1,6 +1,11 @@
 package com.walksocket.md.html.endpoint;
 
-import com.walksocket.md.*;
+import com.walksocket.md.MdJson;
+import com.walksocket.md.MdLogger;
+import com.walksocket.md.MdMode;
+import com.walksocket.md.MdState;
+import com.walksocket.md.MdTemplate;
+import com.walksocket.md.MdUtils;
 import com.walksocket.md.db.MdDbRecord;
 import com.walksocket.md.html.MdHtmlRelation;
 import com.walksocket.md.html.MdHtmlRelationManager;
@@ -15,9 +20,7 @@ import com.walksocket.md.output.MdOutputSync;
 import com.walksocket.md.server.MdServerRequest;
 import com.walksocket.md.server.MdServerResponse;
 import com.walksocket.md.sqlite.MdSqliteConnection;
-
-import java.util.Arrays;
-import java.util.List;
+import java.util.Objects;
 
 /**
  * html endpoint check.
@@ -25,7 +28,8 @@ import java.util.List;
 public class MdHtmlEndpointCheck extends MdHtmlEndpointAbstract {
 
   @Override
-  public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws Exception {
+  public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws Exception {
     // method check
     if (!request.isPut()) {
       // method not allowed
@@ -83,7 +87,6 @@ public class MdHtmlEndpointCheck extends MdHtmlEndpointAbstract {
       // no content
       MdTemplate template = createTemplate("html/reserve/wait.vm");
       renderOk(response, template);
-      return;
     } else if (state.equals(MdState.COMPLETE.getState()) && output != null) {
       // ok
       MdTemplate template = createTemplate(String.format("html/check/%s.vm", mdMode.getMode()));
@@ -102,9 +105,10 @@ public class MdHtmlEndpointCheck extends MdHtmlEndpointAbstract {
                 "FROM preset as t1 join diffConfig as t2 on t1.diffConfigId = t2.diffConfigId " +
                 "WHERE presetId = %s", presetId);
         MdDbRecord r = con.getRecord(sql);
-        if (r != null && !r.getOrEmpty("relations").equals("")) {
-          MdInputMemberRelation[] relations = MdJson.toObject(r.get("relations"), MdInputMemberRelation[].class);
-          for (MdInputMemberRelation relation : relations) {
+        if (r != null && !r.getOrEmpty("relations").isEmpty()) {
+          MdInputMemberRelation[] relations = MdJson.toObject(r.get("relations"),
+              MdInputMemberRelation[].class);
+          for (MdInputMemberRelation relation : Objects.requireNonNull(relations)) {
             relationManager.add(relation);
           }
         }
@@ -121,7 +125,6 @@ public class MdHtmlEndpointCheck extends MdHtmlEndpointAbstract {
         template.assign("output", MdJson.toObject(output, MdOutputMaintenance.class));
       }
       renderOk(response, template);
-      return;
     }
   }
 }

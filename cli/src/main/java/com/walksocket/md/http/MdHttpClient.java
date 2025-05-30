@@ -1,17 +1,26 @@
 package com.walksocket.md.http;
 
 import com.walksocket.md.MdLogger;
-
-import javax.net.ssl.*;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.StandardCharsets;
-import java.security.cert.CertificateException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 /**
  * http client.
@@ -36,21 +45,22 @@ public class MdHttpClient {
   /**
    * url.
    */
-  private String url;
+  private final String url;
 
   /**
    * timeout seconds.
    */
-  private int timeout;
+  private final int timeout;
 
   /**
    * headers.
    */
-  private Map<String, String> headers = new LinkedHashMap<>();
+  private final Map<String, String> headers = new LinkedHashMap<>();
 
   /**
    * constructor.
-   * @param url url
+   *
+   * @param url     url
    * @param timeout timeout seconds
    */
   public MdHttpClient(String url, int timeout) {
@@ -60,7 +70,8 @@ public class MdHttpClient {
 
   /**
    * set header.
-   * @param name name
+   *
+   * @param name  name
    * @param value value
    * @return this
    */
@@ -71,6 +82,7 @@ public class MdHttpClient {
 
   /**
    * do post
+   *
    * @param body body string.
    * @return response
    */
@@ -130,7 +142,8 @@ public class MdHttpClient {
         con.disconnect();
       }
     }
-    return new MdHttpClientResponse(responseEncoding, responseStatus, responseHeaders, responseBody);
+    return new MdHttpClientResponse(responseEncoding, responseStatus, responseHeaders,
+        responseBody);
   }
 
   /**
@@ -138,26 +151,25 @@ public class MdHttpClient {
    * <pre>
    *   ignore illegal ssl.
    * </pre>
+   *
    * @param uri URI
    * @return http connection
    * @throws Exception security exception
    */
   private HttpURLConnection getConnection(String uri) throws Exception {
-    HttpURLConnection urlconn = null;
+    HttpURLConnection urlconn;
     URL url = new URL(uri);
     if (url.getProtocol().equals("https")) {
       TrustManager[] tms = {new X509TrustManager() {
 
         @Override
         public void checkClientTrusted(
-            java.security.cert.X509Certificate[] arg0, String arg1)
-            throws CertificateException {
+            java.security.cert.X509Certificate[] arg0, String arg1) {
         }
 
         @Override
         public void checkServerTrusted(
-            java.security.cert.X509Certificate[] arg0, String arg1)
-            throws CertificateException {
+            java.security.cert.X509Certificate[] arg0, String arg1) {
         }
 
         @Override
@@ -167,16 +179,10 @@ public class MdHttpClient {
       }};
       SSLContext sslcontext = SSLContext.getInstance("SSL");
       sslcontext.init(null, tms, null);
-      HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
-
-        @Override
-        public boolean verify(String arg0, SSLSession arg1) {
-          return true;
-        }
-      });
+      HttpsURLConnection.setDefaultHostnameVerifier((arg0, arg1) -> true);
 
       urlconn = (HttpsURLConnection) url.openConnection();
-      ((HttpsURLConnection)urlconn).setSSLSocketFactory(sslcontext.getSocketFactory());
+      ((HttpsURLConnection) urlconn).setSSLSocketFactory(sslcontext.getSocketFactory());
     } else {
       urlconn = (HttpURLConnection) url.openConnection();
     }
@@ -185,6 +191,7 @@ public class MdHttpClient {
 
   /**
    * get response encoding.
+   *
    * @param con http connection
    * @return response encoding
    */
@@ -208,6 +215,7 @@ public class MdHttpClient {
 
   /**
    * get response body.
+   *
    * @param con http connection
    * @return response body
    */
@@ -281,17 +289,17 @@ public class MdHttpClient {
   /**
    * http response.
    */
-  public class MdHttpClientResponse {
+  public static class MdHttpClientResponse {
 
     /**
      * encoding.
      */
-    private String encoding;
+    private final String encoding;
 
     /**
      * status.
      */
-    private int status;
+    private final int status;
 
     /**
      * headers.
@@ -301,22 +309,23 @@ public class MdHttpClient {
     /**
      * lower headers.
      */
-    private Map<String, List<String>> lowerHeaders = new LinkedHashMap<>();
+    private final Map<String, List<String>> lowerHeaders = new LinkedHashMap<>();
 
     /**
      * body.
      */
-    private byte[] body;
+    private final byte[] body;
 
     /**
      * constructor.
+     *
      * @param encoding encoding
-     * @param status status
-     * @param headers headers
-     * @param body body
+     * @param status   status
+     * @param headers  headers
+     * @param body     body
      */
     private MdHttpClientResponse(String encoding, int status,
-                          Map<String, List<String>> headers, byte[] body) {
+        Map<String, List<String>> headers, byte[] body) {
       this.encoding = encoding;
       this.status = status;
       if (headers != null) {
@@ -332,17 +341,16 @@ public class MdHttpClient {
 
     /**
      * is success.
+     *
      * @return if 200 is true, else false
      */
     public boolean isSuccessful() {
-      if (status < 400) {
-        return true;
-      }
-      return false;
+      return status < 400;
     }
 
     /**
      * get status.
+     *
      * @return status
      */
     public int getStatus() {
@@ -351,6 +359,7 @@ public class MdHttpClient {
 
     /**
      * get header in case ignore.
+     *
      * @param name header name
      * @return header value
      */
@@ -364,6 +373,7 @@ public class MdHttpClient {
 
     /**
      * get headers in case ignore.
+     *
      * @param name header name
      * @return header values
      */
@@ -372,18 +382,19 @@ public class MdHttpClient {
       if (lowerHeaders.containsKey(name)) {
         return lowerHeaders.get(name);
       }
-      return new ArrayList<String>();
+      return new ArrayList<>();
     }
 
     /**
      * get body by String.
+     *
      * @return body by String
      */
     public String getBodyString() {
       String bodyString = "";
       try {
         if (encoding != null && body != null) {
-          bodyString = new String(body, 0, body.length, encoding);
+          bodyString = new String(body, encoding);
         }
       } catch (UnsupportedEncodingException e) {
         MdLogger.error(e);
@@ -393,6 +404,7 @@ public class MdHttpClient {
 
     /**
      * get body by byte array.
+     *
      * @return body by byte array
      */
     public byte[] getBodyByteArray() {
@@ -425,7 +437,7 @@ public class MdHttpClient {
       buffer.append(getBodyString());
 
       return "MdHttpClientResponse{" +
-          buffer.toString() +
+          buffer +
           '}';
     }
   }

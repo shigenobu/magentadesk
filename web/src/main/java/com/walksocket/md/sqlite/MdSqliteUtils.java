@@ -9,6 +9,7 @@ public class MdSqliteUtils {
 
   /**
    * quote.
+   *
    * @param src string
    * @return quoted string
    */

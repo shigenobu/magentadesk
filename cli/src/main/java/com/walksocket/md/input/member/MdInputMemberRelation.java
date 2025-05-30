@@ -23,12 +23,14 @@ public class MdInputMemberRelation extends MdValue {
   /**
    * constructor.
    */
-  public MdInputMemberRelation() {}
+  public MdInputMemberRelation() {
+  }
 
   /**
    * constructor.
+   *
    * @param from from
-   * @param to to
+   * @param to   to
    */
   public MdInputMemberRelation(String from, String to) {
     this.from = from;

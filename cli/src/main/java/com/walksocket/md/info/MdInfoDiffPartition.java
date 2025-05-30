@@ -2,9 +2,8 @@ package com.walksocket.md.info;
 
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdUtils;
-import com.walksocket.md.input.member.MdInputMemberOption;
 import com.walksocket.md.db.MdDbRecord;
-
+import com.walksocket.md.input.member.MdInputMemberOption;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,60 +16,61 @@ public class MdInfoDiffPartition implements MdInfoDiffInterface {
   /**
    * table name.
    */
-  private String TABLE_NAME;
+  private final String TABLE_NAME;
 
   /**
    * partition name.
    */
-  private String PARTITION_NAME;
+  private final String PARTITION_NAME;
 
   /**
    * subpartition name.
    */
-  private String SUBPARTITION_NAME;
+  private final String SUBPARTITION_NAME;
 
   /**
    * partition ordinal postion.
    */
-  private String PARTITION_ORDINAL_POSITION;
+  private final String PARTITION_ORDINAL_POSITION;
 
   /**
    * subpartition ordinal postion.
    */
-  private String SUBPARTITION_ORDINAL_POSITION;
+  private final String SUBPARTITION_ORDINAL_POSITION;
 
   /**
    * partition method.
    */
-  private String PARTITION_METHOD;
+  private final String PARTITION_METHOD;
 
   /**
    * subpartition method.
    */
-  private String SUBPARTITION_METHOD;
+  private final String SUBPARTITION_METHOD;
 
   /**
    * partition expression.
    */
-  private String PARTITION_EXPRESSION;
+  private final String PARTITION_EXPRESSION;
 
   /**
    * subpartition expression.
    */
-  private String SUBPARTITION_EXPRESSION;
+  private final String SUBPARTITION_EXPRESSION;
 
   /**
    * partition comment.
    */
-  private String PARTITION_COMMENT;
+  private final String PARTITION_COMMENT;
 
   /**
    * input option.
    */
-  private MdInputMemberOption option;
+  private final MdInputMemberOption option;
 
   /**
    * constructor.
+   *
    * @param record record
    * @param option input option
    * @throws SQLException sql error

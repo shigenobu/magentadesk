@@ -5,16 +5,20 @@ import com.sun.net.httpserver.HttpExchange;
 import com.walksocket.md.MdFile;
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdUtils;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class MdServerRequest {
 
   /**
    * exchange.
    */
-  private HttpExchange exchange;
+  private final HttpExchange exchange;
 
   /**
    * headers.
@@ -24,7 +28,7 @@ public class MdServerRequest {
   /**
    * lower headers.
    */
-  private Map<String, List<String>> lowerHeaders = new LinkedHashMap<>();
+  private final Map<String, List<String>> lowerHeaders = new LinkedHashMap<>();
 
   /**
    * query params.
@@ -38,6 +42,7 @@ public class MdServerRequest {
 
   /**
    * constructor.
+   *
    * @param exchange exchange
    */
   public MdServerRequest(HttpExchange exchange) {
@@ -54,7 +59,7 @@ public class MdServerRequest {
 
     headers = new HashMap<>();
     Headers pairs = exchange.getRequestHeaders();
-    if (pairs == null || pairs.size() == 0) {
+    if (pairs == null || pairs.isEmpty()) {
       return;
     }
     for (Map.Entry<String, List<String>> pair : pairs.entrySet()) {
@@ -132,6 +137,7 @@ public class MdServerRequest {
 
   /**
    * is post.
+   *
    * @return if post, true
    */
   public boolean isPost() {
@@ -140,6 +146,7 @@ public class MdServerRequest {
 
   /**
    * is get.
+   *
    * @return if get, true
    */
   public boolean isGet() {
@@ -148,6 +155,7 @@ public class MdServerRequest {
 
   /**
    * is put.
+   *
    * @return if put, true
    */
   public boolean isPut() {
@@ -156,6 +164,7 @@ public class MdServerRequest {
 
   /**
    * is delete.
+   *
    * @return if delete, true
    */
   public boolean isDelete() {
@@ -164,6 +173,7 @@ public class MdServerRequest {
 
   /**
    * get path.
+   *
    * @return path
    */
   public String getPath() {
@@ -172,6 +182,7 @@ public class MdServerRequest {
 
   /**
    * get header.
+   *
    * @param name name
    * @return value
    */
@@ -185,6 +196,7 @@ public class MdServerRequest {
 
   /**
    * get headers.
+   *
    * @param name name
    * @return values
    */
@@ -199,6 +211,7 @@ public class MdServerRequest {
 
   /**
    * get query param.
+   *
    * @param name name
    * @return value
    */
@@ -212,6 +225,7 @@ public class MdServerRequest {
 
   /**
    * get query params.
+   *
    * @param name name
    * @return values
    */
@@ -225,6 +239,7 @@ public class MdServerRequest {
 
   /**
    * get body param.
+   *
    * @param name name
    * @return value
    */
@@ -238,6 +253,7 @@ public class MdServerRequest {
 
   /**
    * get body params.
+   *
    * @param name name
    * @return values
    */
@@ -251,6 +267,7 @@ public class MdServerRequest {
 
   /**
    * get raw query.
+   *
    * @return raw query string
    */
   public String getRawQuery() {
@@ -259,6 +276,7 @@ public class MdServerRequest {
 
   /**
    * get raw body.
+   *
    * @return raw body string
    */
   public String getRawBody() {

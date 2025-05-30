@@ -1,574 +1,600 @@
 <style>
-    h5.magenta_diff_headline {
-        font-weight: bold;
-    }
-    div.magenta_diff_area {
-        margin-top: 10px;
-        margin-bottom: 5px;
-    }
-    ul.magenta_diff_ul {
-        list-style-type: square;
-    }
-    div.magenta_diff_open {
-        cursor: pointer;
-    }
-    div.magenta_diff_slide {
-        display: none;
-        padding: 5px;
-    }
-    div.magenta_diff_slide pre {
-        background-color: lightgrey;
-        margin: 2px;
-        padding: 4px;
-        font-size: 90%;
-    }
-    table.magenta_diff_list {
-        margin-top: 5px;
-        margin-bottom: 10px;
-        font-size: 90%;
-        border-collapse: collapse;
-    }
-    table.magenta_diff_list thead td {
-        text-align: center;
-        font-weight: bold;
-        padding: 2px 4px 2px 4px;
-        background-color: black;
-        font-size: 90%;
-        color: white;
-        white-space: nowrap;
-        border: 1px solid dimgrey;
-    }
-    table.magenta_diff_list tbody tr:nth-child(n) td[rowspan] {
-        text-align: center;
-        border: 1px solid gainsboro;
-    }
-    table.magenta_diff_list tbody td {
-        background-color: whitesmoke;
-        font-size: 90%;
-        padding: 2px 4px 2px 4px;
-        max-width: 180px;
-        white-space: nowrap;
-        word-wrap: break-word;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        border: 1px solid gainsboro;
-    }
-    table.magenta_diff_list tbody td:nth-child(n + 2) {
-        min-width: 50px;
-    }
-    table.magenta_diff_list tbody td:nth-child(n + 2):active {
-        white-space: normal;
-        overflow: scroll;
-    }
-    table.magenta_diff_list tbody td.magenta_diff_column {
-        background-color: yellow;
-    }
-    input#magenta_diff_submit_all {
-        display: inline-block;
-        text-align: left;
-        border: 2px solid gray;
-        color: gray;
-        background-color: white;
-        text-decoration: none;
-        font-weight: bold;
-        padding: 4px 8px;
-        border-radius: 4px;
-        transition: .4s;
-        cursor: pointer;
-    }
-    input#magenta_diff_submit_all:hover {
-        background-color: gray;
-        border-color: gray;
-        color: #FFF;
-    }
-    input#magenta_diff_submit_each {
-        display: inline-block;
-        text-align: left;
-        border: 2px solid gray;
-        color: gray;
-        background-color: white;
-        text-decoration: none;
-        font-weight: bold;
-        padding: 4px 8px;
-        border-radius: 4px;
-        transition: .4s;
-        cursor: pointer;
-    }
-    input#magenta_diff_submit_each:hover {
-        background-color: gray;
-        border-color: gray;
-        color: #FFF;
-    }
-    div.magenta_diff_exec {
-        display: block;
-        border: 2px dotted gray;
-        padding: 10px;
-    }
-    div.magenta_diff_exec > div {
-        padding-bottom: 2px;
-        margin-bottom: 10px;
-    }
-    div.magenta_diff_exec p {
-        margin: 5px 0px 5px 0px;
-        font-weight: bold;
-    }
-    div.magenta_diff_exec label {
-        margin-right: 10px;
-    }
+  h5.magenta_diff_headline {
+    font-weight: bold;
+  }
+
+  div.magenta_diff_area {
+    margin-top: 10px;
+    margin-bottom: 5px;
+  }
+
+  ul.magenta_diff_ul {
+    list-style-type: square;
+  }
+
+  div.magenta_diff_open {
+    cursor: pointer;
+  }
+
+  div.magenta_diff_slide {
+    display: none;
+    padding: 5px;
+  }
+
+  div.magenta_diff_slide pre {
+    background-color: lightgrey;
+    margin: 2px;
+    padding: 4px;
+    font-size: 90%;
+  }
+
+  table.magenta_diff_list {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-size: 90%;
+    border-collapse: collapse;
+  }
+
+  table.magenta_diff_list thead td {
+    text-align: center;
+    font-weight: bold;
+    padding: 2px 4px 2px 4px;
+    background-color: black;
+    font-size: 90%;
+    color: white;
+    white-space: nowrap;
+    border: 1px solid dimgrey;
+  }
+
+  table.magenta_diff_list tbody tr:nth-child(n) td[rowspan] {
+    text-align: center;
+    border: 1px solid gainsboro;
+  }
+
+  table.magenta_diff_list tbody td {
+    background-color: whitesmoke;
+    font-size: 90%;
+    padding: 2px 4px 2px 4px;
+    max-width: 180px;
+    white-space: nowrap;
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    border: 1px solid gainsboro;
+  }
+
+  table.magenta_diff_list tbody td:nth-child(n + 2) {
+    min-width: 50px;
+  }
+
+  table.magenta_diff_list tbody td:nth-child(n + 2):active {
+    white-space: normal;
+    overflow: scroll;
+  }
+
+  table.magenta_diff_list tbody td.magenta_diff_column {
+    background-color: yellow;
+  }
+
+  input#magenta_diff_submit_all {
+    display: inline-block;
+    text-align: left;
+    border: 2px solid gray;
+    color: gray;
+    background-color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: .4s;
+    cursor: pointer;
+  }
+
+  input#magenta_diff_submit_all:hover {
+    background-color: gray;
+    border-color: gray;
+    color: #FFF;
+  }
+
+  input#magenta_diff_submit_each {
+    display: inline-block;
+    text-align: left;
+    border: 2px solid gray;
+    color: gray;
+    background-color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: .4s;
+    cursor: pointer;
+  }
+
+  input#magenta_diff_submit_each:hover {
+    background-color: gray;
+    border-color: gray;
+    color: #FFF;
+  }
+
+  div.magenta_diff_exec {
+    display: block;
+    border: 2px dotted gray;
+    padding: 10px;
+  }
+
+  div.magenta_diff_exec > div {
+    padding-bottom: 2px;
+    margin-bottom: 10px;
+  }
+
+  div.magenta_diff_exec p {
+    margin: 5px 0px 5px 0px;
+    font-weight: bold;
+  }
+
+  div.magenta_diff_exec label {
+    margin-right: 10px;
+  }
 </style>
 
 <script src="/asset/js/json.js" type="text/javascript"></script>
 <div>
-    <div class="hbox">
-        <form method="get" action="/json/really/diff/input/">
-            <input type="hidden" name="executionId" value="${executionId}" />
-            <input type="submit" class="btn-json" value="REALLY INPUT DIFF JSON" />
-        </form>
-    </div>
-    <div class="hbox">
-        <form method="get" action="/json/really/diff/output/">
-            <input type="hidden" name="executionId" value="${executionId}" />
-            <input type="submit" class="btn-json" value="REALLY OUTPUT DIFF JSON" />
-        </form>
-    </div>
+  <div class="hbox">
+    <form method="get" action="/json/really/diff/input/">
+      <input type="hidden" name="executionId" value="${executionId}"/>
+      <input type="submit" class="btn-json" value="REALLY INPUT DIFF JSON"/>
+    </form>
+  </div>
+  <div class="hbox">
+    <form method="get" action="/json/really/diff/output/">
+      <input type="hidden" name="executionId" value="${executionId}"/>
+      <input type="submit" class="btn-json" value="REALLY OUTPUT DIFF JSON"/>
+    </form>
+  </div>
 </div>
 
 <form method="post" action="/reserve/sync/" id="magenta_diff_form">
-    <input type="hidden" name="projectId" value="${projectId}">
-    <input type="hidden" name="presetId" value="${presetId}">
+  <input type="hidden" name="projectId" value="${projectId}">
+  <input type="hidden" name="presetId" value="${presetId}">
 
     #if($output.existsOnlyBaseTables.size() > 0)
-        <div class="magenta_diff_area">
-            <h5 class="magenta_diff_headline">exists only base tables</h5>
-            <ul class="magenta_diff_ul">
-                #foreach($table in $output.existsOnlyBaseTables)
-                    <li>
-                        <div class="magenta_diff_open" id="magenta_diff_open_${table.tableName}">
-                            ${table.tableName}
-                            #if(!$table.tableComment.equals(""))
-                                / ${table.tableComment}
-                            #end
-                        </div>
-                        <div class="magenta_diff_slide" id="magenta_diff_slide_${table.tableName}">
-                            <pre>${table.baseDefinition}</pre>
-                        </div>
-                    </li>
-                #end
-            </ul>
-        </div>
+      <div class="magenta_diff_area">
+        <h5 class="magenta_diff_headline">exists only base tables</h5>
+        <ul class="magenta_diff_ul">
+            #foreach($table in $output.existsOnlyBaseTables)
+              <li>
+                <div class="magenta_diff_open" id="magenta_diff_open_${table.tableName}">
+                    ${table.tableName}
+                    #if(!$table.tableComment.equals(""))
+                      / ${table.tableComment}
+                    #end
+                </div>
+                <div class="magenta_diff_slide" id="magenta_diff_slide_${table.tableName}">
+                  <pre>${table.baseDefinition}</pre>
+                </div>
+              </li>
+            #end
+        </ul>
+      </div>
     #end
 
     #if($output.existsOnlyCompareTables.size() > 0)
-        <div class="magenta_diff_area">
-            <h5 class="magenta_diff_headline">exists only compare tables</h5>
-            <ul class="magenta_diff_ul">
-                #foreach($table in $output.existsOnlyCompareTables)
-                <li>
-                    <div class="magenta_diff_open" id="magenta_diff_open_${table.tableName}">
-                        ${table.tableName}
-                        #if(!$table.tableComment.equals(""))
-                            / ${table.tableComment}
-                        #end
-                    </div>
-                    <div class="magenta_diff_slide" id="magenta_diff_slide_${table.tableName}">
-                        <pre>${table.compareDefinition}</pre>
-                    </div>
-                </li>
-                #end
-            </ul>
-        </div>
+      <div class="magenta_diff_area">
+        <h5 class="magenta_diff_headline">exists only compare tables</h5>
+        <ul class="magenta_diff_ul">
+            #foreach($table in $output.existsOnlyCompareTables)
+              <li>
+                <div class="magenta_diff_open" id="magenta_diff_open_${table.tableName}">
+                    ${table.tableName}
+                    #if(!$table.tableComment.equals(""))
+                      / ${table.tableComment}
+                    #end
+                </div>
+                <div class="magenta_diff_slide" id="magenta_diff_slide_${table.tableName}">
+                  <pre>${table.compareDefinition}</pre>
+                </div>
+              </li>
+            #end
+        </ul>
+      </div>
     #end
 
     #if($output.forceExcludeTables.size() > 0)
-        <div class="magenta_diff_area">
-            <h5 class="magenta_diff_headline">force exclude tables</h5>
-            <ul class="magenta_diff_ul">
-                #foreach($table in $output.forceExcludeTables)
-                <li>
-                    <div class="magenta_diff_open" id="magenta_diff_open_${table.tableName}">
-                        ${table.tableName}
-                        #if(!$table.tableComment.equals(""))
-                            / ${table.tableComment}
-                        #end
-                        (${table.reason})
-                    </div>
-                    <div class="magenta_diff_slide" id="magenta_diff_slide_${table.tableName}">
-                        <pre>${table.definition}</pre>
-                    </div>
-                </li>
-                #end
-            </ul>
-        </div>
+      <div class="magenta_diff_area">
+        <h5 class="magenta_diff_headline">force exclude tables</h5>
+        <ul class="magenta_diff_ul">
+            #foreach($table in $output.forceExcludeTables)
+              <li>
+                <div class="magenta_diff_open" id="magenta_diff_open_${table.tableName}">
+                    ${table.tableName}
+                    #if(!$table.tableComment.equals(""))
+                      / ${table.tableComment}
+                    #end
+                  (${table.reason})
+                </div>
+                <div class="magenta_diff_slide" id="magenta_diff_slide_${table.tableName}">
+                  <pre>${table.definition}</pre>
+                </div>
+              </li>
+            #end
+        </ul>
+      </div>
     #end
 
     #if($output.incorrectDefinitionTables.size() > 0)
-        <div class="magenta_diff_area">
-            <h5 class="magenta_diff_headline">incorrect definition tables</h5>
-            <ul class="magenta_diff_ul">
-                #foreach($table in $output.incorrectDefinitionTables)
-                    <li>
-                        <div class="magenta_diff_open" id="magenta_diff_open_${table.tableName}">
-                            ${table.tableName}
-                            #if(!$table.tableComment.equals(""))
-                                / ${table.tableComment}
-                            #end
-                            (${table.reason})
-                        </div>
-                        <div class="magenta_diff_slide" id="magenta_diff_slide_${table.tableName}">
-                            <pre>${table.definition}</pre>
-                        </div>
-                    </li>
-                #end
-            </ul>
-        </div>
+      <div class="magenta_diff_area">
+        <h5 class="magenta_diff_headline">incorrect definition tables</h5>
+        <ul class="magenta_diff_ul">
+            #foreach($table in $output.incorrectDefinitionTables)
+              <li>
+                <div class="magenta_diff_open" id="magenta_diff_open_${table.tableName}">
+                    ${table.tableName}
+                    #if(!$table.tableComment.equals(""))
+                      / ${table.tableComment}
+                    #end
+                  (${table.reason})
+                </div>
+                <div class="magenta_diff_slide" id="magenta_diff_slide_${table.tableName}">
+                  <pre>${table.definition}</pre>
+                </div>
+              </li>
+            #end
+        </ul>
+      </div>
     #end
 
     #if($output.mismatchDefinitionTables.size() > 0)
-        <div class="magenta_diff_area">
-            <h5 class="magenta_diff_headline">mismatch definition tables</h5>
-            <ul class="magenta_diff_ul">
-                #foreach($table in $output.mismatchDefinitionTables)
-                    <li>
-                        <div class="magenta_diff_open" id="magenta_diff_open_${table.tableName}">
-                            ${table.tableName}
-                            #if(!$table.tableComment.equals(""))
-                                / ${table.tableComment}
-                            #end
-                        </div>
-                        <div class="magenta_diff_slide" id="magenta_diff_slide_${table.tableName}">
-                            <pre>${table.baseDefinition}</pre>
-                            <pre>${table.compareDefinition}</pre>
-                        </div>
-                    </li>
-                #end
-            </ul>
-        </div>
+      <div class="magenta_diff_area">
+        <h5 class="magenta_diff_headline">mismatch definition tables</h5>
+        <ul class="magenta_diff_ul">
+            #foreach($table in $output.mismatchDefinitionTables)
+              <li>
+                <div class="magenta_diff_open" id="magenta_diff_open_${table.tableName}">
+                    ${table.tableName}
+                    #if(!$table.tableComment.equals(""))
+                      / ${table.tableComment}
+                    #end
+                </div>
+                <div class="magenta_diff_slide" id="magenta_diff_slide_${table.tableName}">
+                  <pre>${table.baseDefinition}</pre>
+                  <pre>${table.compareDefinition}</pre>
+                </div>
+              </li>
+            #end
+        </ul>
+      </div>
     #end
 
     #if($output.mismatchRecordTables.size() > 0)
-        <div class="magenta_diff_area">
-            <h5 class="magenta_diff_headline">mismatch record tables</h5>
-            <ul class="magenta_diff_ul">
-                #foreach($table in $output.mismatchRecordTables)
-                <li>
-                    <div>
-                        ${table.mismatchCount} rows
-                        #if($table.overflow)
-                            <b>OVERFLOW</b>
-                        #end
-                        -
-                        ${table.tableName}
-                        #if(!$table.tableComment.equals(""))
-                            / ${table.tableComment}
-                        #end
-
-                        #foreach($relation in $relationManager.getRelationListForTable($table.tableName))
-                            [${relation.getP2CRelation()}]
-                        #end
-                    </div>
-                    #if(!$table.overflow)
-                        <div>
-                            <table class="magenta_diff_list">
-                                <thead>
-                                <tr>
-                                    <td>
-                                        <p>DIFF SEQ</p>
-                                        <p><input type="checkbox" id="magenta_diff_check_table_${table.tableName}" class="magenta_diff_check_all"/></p>
-                                    </td>
-                                    #set($columnNames = [])
-                                    #foreach($column in $table.columns)
-                                        <td>
-                                            <!-- $columnNames.add($column.columnName) -->
-                                            #if($column.isPrimary)
-                                                <u>
-                                            #end
-                                            <div class="magenta_diff_open" id="magenta_diff_open_${table.tableName}_${column.columnName}">
-                                                ${column.columnName}
-                                                #if(!$column.columnComment.equals(""))
-                                                    / ${column.columnComment}
-                                                #end
-                                            </div>
-                                            <div class="magenta_diff_slide" id="magenta_diff_slide_${table.tableName}_${column.columnName}">
-                                                ${column.columnType}
-                                                #if(!$column.columnCollation.equals(""))
-                                                    (${column.columnCollation})
-                                                #end
-                                            </div>
-                                            #if($column.isPrimary)
-                                                </u>
-                                            #end
-                                        </td>
-                                    #end
-                                </tr>
-                                </thead>
-                                <tbody>
-                                #foreach($record in $table.records)
-                                    <tr>
-                                        #set($values = $record.baseValues)
-                                        #if($values.size == 0 || !$values.get(0))
-                                            #set($values = $record.compareValues)
-                                        #end
-                                        <td rowspan="2">
-                                            <label>
-                                            <p><input type="checkbox" name="diffSeqs[]"
-                                                   value="${record.diffSeq}"
-                                                   class="magenta_diff_check_table_${table.tableName} magenta_diff_check_value"
-                                                   ${relationManager.getLinkId($table.tableName, $columnNames, $values)}
-                                                   ${relationManager.getLinkTarget($table.tableName, $columnNames, $values)}
-                                            /></p><p>${record.diffSeq}</p></label>
-                                        </td>
-                                        #set($idx = 0)
-                                        #foreach($value in $record.baseValues)
-                                            <td>
-                                                #set($null = "<NULL>")
-                                                #set($empty = "<EMPTY>")
-                                                #if($MdTemplateUtils.isNull($value))
-                                                    ${null}
-                                                #elseif($value.equals(""))
-                                                    ${empty}
-                                                #else
-                                                    ${value}
-                                                #end
-                                                #set($idx = $idx + 1)
-                                            </td>
-                                        #end
-                                    </tr>
-                                    <tr>
-                                        #set($idx = 0)
-                                        #foreach($value in $record.compareValues)
-                                            #set($cls = "")
-                                            #if($MdTemplateUtils.isNull($record.baseValues.get($idx)) && $MdTemplateUtils.isNull($record.compareValues.get($idx)))
-                                                #set($cls = "")
-                                            #elseif($MdTemplateUtils.isNull($record.baseValues.get($idx)) && $MdTemplateUtils.isNotNull($record.compareValues.get($idx)))
-                                                #set($cls = "magenta_diff_column")
-                                            #elseif($MdTemplateUtils.isNotNull($record.baseValues.get($idx)) && $MdTemplateUtils.isNull($record.compareValues.get($idx)))
-                                                #set($cls = "magenta_diff_column")
-                                            #elseif(!$record.baseValues.get($idx).equals($record.compareValues.get($idx)))
-                                                #set($cls = "magenta_diff_column")
-                                            #else
-                                                #set($cls = "")
-                                            #end
-                                            <td class="${cls}">
-                                                #set($null = "<NULL>")
-                                                #set($empty = "<EMPTY>")
-                                                #if($MdTemplateUtils.isNull($value))
-                                                    ${null}
-                                                #elseif($value.equals(""))
-                                                    ${empty}
-                                                #else
-                                                    ${value}
-                                                #end
-                                                #set($idx = $idx + 1)
-                                            </td>
-                                        #end
-                                    </tr>
-                                #end
-                                </tbody>
-                            </table>
-                        </div>
+      <div class="magenta_diff_area">
+        <h5 class="magenta_diff_headline">mismatch record tables</h5>
+        <ul class="magenta_diff_ul">
+            #foreach($table in $output.mismatchRecordTables)
+              <li>
+                <div>
+                    ${table.mismatchCount} rows
+                    #if($table.overflow)
+                      <b>OVERFLOW</b>
                     #end
-                </li>
-                #end
-            </ul>
-        </div>
+                  -
+                    ${table.tableName}
+                    #if(!$table.tableComment.equals(""))
+                      / ${table.tableComment}
+                    #end
+
+                    #foreach($relation in $relationManager.getRelationListForTable($table.tableName))
+                      [${relation.getP2CRelation()}]
+                    #end
+                </div>
+                  #if(!$table.overflow)
+                    <div>
+                      <table class="magenta_diff_list">
+                        <thead>
+                        <tr>
+                          <td>
+                            <p>DIFF SEQ</p>
+                            <p><input type="checkbox"
+                                      id="magenta_diff_check_table_${table.tableName}"
+                                      class="magenta_diff_check_all"/></p>
+                          </td>
+                            #set($columnNames = [])
+                            #foreach($column in $table.columns)
+                              <td>
+                                <!-- $columnNames.add($column.columnName) -->
+                                  #if($column.isPrimary)
+                                  <u>
+                                  #end
+                                <div class="magenta_diff_open"
+                                     id="magenta_diff_open_${table.tableName}_${column.columnName}">
+                                    ${column.columnName}
+                                    #if(!$column.columnComment.equals(""))
+                                      / ${column.columnComment}
+                                    #end
+                                </div>
+                                <div class="magenta_diff_slide"
+                                     id="magenta_diff_slide_${table.tableName}_${column.columnName}">
+                                    ${column.columnType}
+                                    #if(!$column.columnCollation.equals(""))
+                                      (${column.columnCollation})
+                                    #end
+                                </div>
+                                  #if($column.isPrimary)
+                                  </u>
+                                  #end
+                              </td>
+                            #end
+                        </tr>
+                        </thead>
+                        <tbody>
+                            #foreach($record in $table.records)
+                            <tr>
+                                #set($values = $record.baseValues)
+                                #if($values.size == 0 || !$values.get(0))
+                                    #set($values = $record.compareValues)
+                                #end
+                              <td rowspan="2">
+                                <label>
+                                  <p><input type="checkbox" name="diffSeqs[]"
+                                            value="${record.diffSeq}"
+                                            class="magenta_diff_check_table_${table.tableName} magenta_diff_check_value"
+                                      ${relationManager.getLinkId($table.tableName, $columnNames, $values)}
+                                      ${relationManager.getLinkTarget($table.tableName, $columnNames, $values)}
+                                  /></p>
+                                  <p>${record.diffSeq}</p></label>
+                              </td>
+                                #set($idx = 0)
+                                #foreach($value in $record.baseValues)
+                                  <td>
+                                      #set($null = "<NULL>")
+                                                #set($empty = "<EMPTY>")
+                                                #if($MdTemplateUtils.isNull($value))
+                                      ${null}
+                                  #elseif($value.equals(""))
+                                      ${empty}
+                                  #else
+                                      ${value}
+                                  #end
+                                                #set($idx = $idx + 1)
+                                  </td>
+                                #end
+                            </tr>
+                            <tr>
+                                #set($idx = 0)
+                                #foreach($value in $record.compareValues)
+                                    #set($cls = "")
+                                    #if($MdTemplateUtils.isNull($record.baseValues.get($idx)) && $MdTemplateUtils.isNull($record.compareValues.get($idx)))
+                                        #set($cls = "")
+                                    #elseif($MdTemplateUtils.isNull($record.baseValues.get($idx)) && $MdTemplateUtils.isNotNull($record.compareValues.get($idx)))
+                                        #set($cls = "magenta_diff_column")
+                                    #elseif($MdTemplateUtils.isNotNull($record.baseValues.get($idx)) && $MdTemplateUtils.isNull($record.compareValues.get($idx)))
+                                        #set($cls = "magenta_diff_column")
+                                    #elseif(!$record.baseValues.get($idx).equals($record.compareValues.get($idx)))
+                                        #set($cls = "magenta_diff_column")
+                                    #else
+                                        #set($cls = "")
+                                    #end
+                                  <td class="${cls}">
+                                      #set($null = "<NULL>")
+                                                #set($empty = "<EMPTY>")
+                                                #if($MdTemplateUtils.isNull($value))
+                                      ${null}
+                                  #elseif($value.equals(""))
+                                      ${empty}
+                                  #else
+                                      ${value}
+                                  #end
+                                                #set($idx = $idx + 1)
+                                  </td>
+                                #end
+                            </tr>
+                            #end
+                        </tbody>
+                      </table>
+                    </div>
+                  #end
+              </li>
+            #end
+        </ul>
+      </div>
     #end
 
     #if($output.matchTables.size() > 0)
-        <div class="magenta_diff_area">
-            <h5 class="magenta_diff_headline">match tables</h5>
-            <ul class="magenta_diff_ul">
-                #foreach($table in $output.matchTables)
-                    <li>
-                        <div class="magenta_diff_open" id="magenta_diff_open_${table.tableName}">
-                            ${table.tableName}
-                            #if(!$table.tableComment.equals(""))
-                                / ${table.tableComment}
-                            #end
-                        </div>
-                        <div class="magenta_diff_slide" id="magenta_diff_slide_${table.tableName}">
-                            <pre>table type:${table.baseTableType}, checksum:${table.baseChecksum}</pre>
-                            <pre>table type:${table.compareTableType}, checksum:${table.compareChecksum}</pre>
-                        </div>
-                    </li>
-                #end
-            </ul>
-        </div>
+      <div class="magenta_diff_area">
+        <h5 class="magenta_diff_headline">match tables</h5>
+        <ul class="magenta_diff_ul">
+            #foreach($table in $output.matchTables)
+              <li>
+                <div class="magenta_diff_open" id="magenta_diff_open_${table.tableName}">
+                    ${table.tableName}
+                    #if(!$table.tableComment.equals(""))
+                      / ${table.tableComment}
+                    #end
+                </div>
+                <div class="magenta_diff_slide" id="magenta_diff_slide_${table.tableName}">
+                  <pre>table type:${table.baseTableType}, checksum:${table.baseChecksum}</pre>
+                  <pre>table type:${table.compareTableType}, checksum:${table.compareChecksum}</pre>
+                </div>
+              </li>
+            #end
+        </ul>
+      </div>
     #end
 
     #if($output.mismatchRecordTables.size() > 0)
-        <div class="magenta_diff_exec">
-            <div>
-                <p>summaryId:</p>
-                <input type="text" name="summaryId" value="${output.summaryId}" readonly="readonly"/>
-            </div>
-            <div>
-                <p>run mode:</p>
-                <label><input type="radio" name="run" value="true" checked="checked"/>run</label>
-                <label><input type="radio" name="run" value="false"/>dry run</label>
-            </div>
-            <div>
-                <p>force mode:</p>
-                <label><input type="radio" name="force" value="true" checked="checked"/>force delete to compare</label>
-                <label><input type="radio" name="force" value="false"/>no delete only compare</label>
-            </div>
-            <div>
-                <p>loose mode:</p>
-                <label><input type="radio" name="loose" value="true" checked="checked"/>delete only summaryId related log</label>
-                <label><input type="radio" name="loose" value="false"/>delete base and compare related log</label>
-            </div>
-
-            <div>
-                <input type="text" name="dummy" style="display: none;">
-
-                <input type="hidden" name="diffMode" id="magenta_diff_mode" />
-
-                <input type="button" value="ALL SYNC" id="magenta_diff_submit_all"/>
-                <input type="button" value="ONLY CHECKED SYNC" id="magenta_diff_submit_each"/>
-            </div>
+      <div class="magenta_diff_exec">
+        <div>
+          <p>summaryId:</p>
+          <input type="text" name="summaryId" value="${output.summaryId}" readonly="readonly"/>
         </div>
+        <div>
+          <p>run mode:</p>
+          <label><input type="radio" name="run" value="true" checked="checked"/>run</label>
+          <label><input type="radio" name="run" value="false"/>dry run</label>
+        </div>
+        <div>
+          <p>force mode:</p>
+          <label><input type="radio" name="force" value="true" checked="checked"/>force delete to
+            compare</label>
+          <label><input type="radio" name="force" value="false"/>no delete only compare</label>
+        </div>
+        <div>
+          <p>loose mode:</p>
+          <label><input type="radio" name="loose" value="true" checked="checked"/>delete only
+            summaryId related log</label>
+          <label><input type="radio" name="loose" value="false"/>delete base and compare related log</label>
+        </div>
+
+        <div>
+          <input type="text" name="dummy" style="display: none;">
+
+          <input type="hidden" name="diffMode" id="magenta_diff_mode"/>
+
+          <input type="button" value="ALL SYNC" id="magenta_diff_submit_all"/>
+          <input type="button" value="ONLY CHECKED SYNC" id="magenta_diff_submit_each"/>
+        </div>
+      </div>
     #end
 
 </form>
 
 <script type="text/javascript">
-    function magentaDiffSubmit(e) {
-        let mode = e.target.mode;
-        if (mode == void(0)) {
-            return false;
+  function magentaDiffSubmit(e) {
+    let mode = e.target.mode;
+    if (mode == void (0)) {
+      return false;
+    }
+    if (mode == 'all' && !confirm("[ALL SYNC] OK ?")) {
+      return false;
+    }
+    if (mode == 'each') {
+      let checkLen = 0;
+      let diffSeqs = document.getElementsByName('diffSeqs[]')
+      if (diffSeqs != void (0)) {
+        for (let i = 0; i < diffSeqs.length; i++) {
+          if (diffSeqs[i].checked) {
+            checkLen++;
+          }
         }
-        if (mode == 'all' && !confirm("[ALL SYNC] OK ?")) {
-            return false;
+      }
+      if (checkLen == 0) {
+        alert("NO CHECK");
+        return false;
+      }
+      if (!confirm("[SYNC " + checkLen.toString() + " record(s)] OK ?")) {
+        return false;
+      }
+    }
+
+    let diffMode = document.getElementById('magenta_diff_mode');
+    diffMode.value = mode;
+
+    let diffForm = document.getElementById('magenta_diff_form');
+    diffForm.submit();
+    return true;
+  }
+
+  let diffSubmitAll = document.querySelector('input#magenta_diff_submit_all');
+  if (diffSubmitAll != void (0)) {
+    diffSubmitAll.addEventListener('click', magentaDiffSubmit);
+    diffSubmitAll.mode = 'all';
+  }
+
+  let diffSubmitEach = document.querySelector('input#magenta_diff_submit_each');
+  if (diffSubmitEach != void (0)) {
+    diffSubmitEach.addEventListener('click', magentaDiffSubmit);
+    diffSubmitEach.mode = 'each';
+  }
+
+  function magentaDiffSlider(e) {
+    let id = e.target.id;
+    let name = id.substring('magenta_diff_open_'.length);
+    let slideId = "magenta_diff_slide_" + name;
+    let slide = document.getElementById(slideId);
+
+    if (slide.style.display == '' || slide.style.display == 'none') {
+      slide.style.display = 'inline-flex';
+    } else {
+      slide.style.display = 'none';
+    }
+  }
+
+  let diffOpenList = document.querySelectorAll('div.magenta_diff_open');
+  if (diffOpenList != void (0)) {
+    for (let i = 0; i < diffOpenList.length; i++) {
+      diffOpenList[i].addEventListener('click', magentaDiffSlider)
+    }
+  }
+
+  function magentaDiffCheckAll(e) {
+    let id = e.target.id;
+    let name = id.substring('magenta_diff_check_table_'.length);
+    let checkClass = "magenta_diff_check_table_" + name;
+    let checkClazz = document.querySelectorAll('input.' + checkClass);
+    if (checkClazz != void (0)) {
+      for (let i = 0; i < checkClazz.length; i++) {
+        checkClazz[i].checked = document.getElementById(id).checked;
+        if (checkClazz[i].classList.contains('magenta_diff_check_value')) {
+          checkClazz[i].dispatchEvent(new Event('change'))
         }
-        if (mode == 'each') {
-            let checkLen = 0;
-            let diffSeqs = document.getElementsByName('diffSeqs[]')
-            if (diffSeqs != void(0)) {
-                for (let i = 0; i < diffSeqs.length; i++) {
-                    if (diffSeqs[i].checked) {
-                        checkLen++;
-                    }
-                }
+      }
+    }
+  }
+
+  function magentaDiffCheckColor(node) {
+    if (node.checked) {
+      node.closest('tr').childNodes.forEach(function (c) {
+        c.style = "background-color: #b8860b; opacity: 0.6;";
+      });
+    } else {
+      node.closest('tr').childNodes.forEach(function (c) {
+        c.style = "";
+      });
+    }
+  }
+
+  function magentaDiffCheckValue(e) {
+    magentaDiffCheckColor(e.target);
+
+    let targetStr = e.target.dataset.target;
+    if (targetStr == void (0)) {
+      return;
+    }
+
+    let targets = targetStr.split('|');
+    let checkClazz = document.querySelectorAll('input.magenta_diff_check_value');
+    if (checkClazz != void (0)) {
+      for (let i = 0; i < checkClazz.length; i++) {
+        let idStr = checkClazz[i].dataset.id;
+        if (idStr == void (0)) {
+          continue;
+        }
+
+        let ids = idStr.split('|');
+        for (const j in ids) {
+          let id = ids[j];
+          if (targets.includes(id)) {
+            if (checkClazz[i].checked != e.target.checked) {
+              checkClazz[i].checked = e.target.checked;
             }
-            if (checkLen == 0) {
-                alert("NO CHECK");
-                return false;
-            }
-            if (!confirm("[SYNC " + checkLen.toString() + " record(s)] OK ?")) {
-                return false;
-            }
+            checkClazz[i].dispatchEvent(new Event('change'))
+          }
         }
-
-        let diffMode = document.getElementById('magenta_diff_mode');
-        diffMode.value = mode;
-
-        let diffForm = document.getElementById('magenta_diff_form');
-        diffForm.submit();
-        return true;
+      }
     }
+  }
 
-    let diffSubmitAll = document.querySelector('input#magenta_diff_submit_all');
-    if (diffSubmitAll != void(0)) {
-        diffSubmitAll.addEventListener('click', magentaDiffSubmit);
-        diffSubmitAll.mode = 'all';
+  let diffCheckAllList = document.querySelectorAll('input.magenta_diff_check_all');
+  if (diffCheckAllList != void (0)) {
+    for (let i = 0; i < diffCheckAllList.length; i++) {
+      diffCheckAllList[i].addEventListener('change', magentaDiffCheckAll)
     }
+  }
 
-    let diffSubmitEach = document.querySelector('input#magenta_diff_submit_each');
-    if (diffSubmitEach != void(0)) {
-        diffSubmitEach.addEventListener('click', magentaDiffSubmit);
-        diffSubmitEach.mode = 'each';
+  let diffCheckValueList = document.querySelectorAll('input.magenta_diff_check_value')
+  if (diffCheckValueList != void (0)) {
+    for (let i = 0; i < diffCheckValueList.length; i++) {
+      magentaDiffCheckColor(diffCheckValueList[i]);
+      diffCheckValueList[i].addEventListener('change', magentaDiffCheckValue)
     }
-
-    function magentaDiffSlider(e) {
-        let id = e.target.id;
-        let name = id.substring('magenta_diff_open_'.length);
-        let slideId = "magenta_diff_slide_" + name;
-        let slide = document.getElementById(slideId);
-
-        if (slide.style.display == '' || slide.style.display == 'none') {
-            slide.style.display = 'inline-flex';
-        } else {
-            slide.style.display = 'none';
-        }
-    }
-
-    let diffOpenList = document.querySelectorAll('div.magenta_diff_open');
-    if (diffOpenList != void(0)) {
-        for (let i = 0; i < diffOpenList.length; i++) {
-            diffOpenList[i].addEventListener('click', magentaDiffSlider)
-        }
-    }
-
-    function magentaDiffCheckAll(e) {
-        let id = e.target.id;
-        let name = id.substring('magenta_diff_check_table_'.length);
-        let checkClass = "magenta_diff_check_table_" + name;
-        let checkClazz = document.querySelectorAll('input.' + checkClass);
-        if (checkClazz != void(0)) {
-            for (let i = 0; i < checkClazz.length; i++) {
-                checkClazz[i].checked = document.getElementById(id).checked;
-                if (checkClazz[i].classList.contains('magenta_diff_check_value')) {
-                    checkClazz[i].dispatchEvent(new Event('change'))
-                }
-            }
-        }
-    }
-
-    function magentaDiffCheckColor(node)
-    {
-        if (node.checked) {
-            node.closest('tr').childNodes.forEach(function (c) {
-                c.style = "background-color: #b8860b; opacity: 0.6;";
-            });
-        } else {
-            node.closest('tr').childNodes.forEach(function (c) {
-                c.style = "";
-            });
-        }
-    }
-
-    function magentaDiffCheckValue(e) {
-        magentaDiffCheckColor(e.target);
-
-        let targetStr = e.target.dataset.target;
-        if (targetStr == void(0)) {
-            return;
-        }
-
-        let targets = targetStr.split('|');
-        let checkClazz = document.querySelectorAll('input.magenta_diff_check_value');
-        if (checkClazz != void(0)) {
-            for (let i = 0; i < checkClazz.length; i++) {
-                let idStr = checkClazz[i].dataset.id;
-                if (idStr == void(0)) {
-                    continue;
-                }
-
-                let ids = idStr.split('|');
-                for (const j in ids) {
-                    let id = ids[j];
-                    if (targets.includes(id)) {
-                        if (checkClazz[i].checked != e.target.checked) {
-                            checkClazz[i].checked = e.target.checked;
-                        }
-                        checkClazz[i].dispatchEvent(new Event('change'))
-                    }
-                }
-            }
-        }
-    }
-
-    let diffCheckAllList = document.querySelectorAll('input.magenta_diff_check_all');
-    if (diffCheckAllList != void(0)) {
-        for (let i = 0; i < diffCheckAllList.length; i++) {
-            diffCheckAllList[i].addEventListener('change', magentaDiffCheckAll)
-        }
-    }
-
-    let diffCheckValueList = document.querySelectorAll('input.magenta_diff_check_value')
-    if (diffCheckValueList != void(0)) {
-        for (let i = 0; i < diffCheckValueList.length; i++) {
-            magentaDiffCheckColor(diffCheckValueList[i]);
-            diffCheckValueList[i].addEventListener('change', magentaDiffCheckValue)
-        }
-    }
+  }
 </script>

@@ -3,11 +3,8 @@ package com.walksocket.md.info;
 import com.walksocket.md.MdDbUtils;
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdUtils;
-import com.walksocket.md.db.MdDbFactory.DbType;
 import com.walksocket.md.db.MdDbRecord;
 import com.walksocket.md.input.member.MdInputMemberOption;
-import com.walksocket.md.mariadb.MdMariadbUtils;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,62 +17,62 @@ public class MdInfoDiffColumn implements MdInfoDiffInterface {
   /**
    * table name.
    */
-  private String TABLE_NAME;
+  private final String TABLE_NAME;
 
   /**
    * column name.
    */
-  private String COLUMN_NAME;
+  private final String COLUMN_NAME;
 
   /**
    * ordinal position.
    */
-  private String ORDINAL_POSITION;
+  private final String ORDINAL_POSITION;
 
   /**
    * column default.
    */
-  private String COLUMN_DEFAULT;
+  private final String COLUMN_DEFAULT;
 
   /**
    * is nullable.
    */
-  private String IS_NULLABLE;
+  private final String IS_NULLABLE;
 
   /**
    * data type.
    */
-  private String DATA_TYPE;
+  private final String DATA_TYPE;
 
   /**
    * charset.
    */
-  private String CHARACTER_SET_NAME;
+  private final String CHARACTER_SET_NAME;
 
   /**
    * collation.
    */
-  private String COLLATION_NAME;
+  private final String COLLATION_NAME;
 
   /**
    * column type.
    */
-  private String COLUMN_TYPE;
+  private final String COLUMN_TYPE;
 
   /**
    * column key.
    */
-  private String COLUMN_KEY;
+  private final String COLUMN_KEY;
 
   /**
    * extra.
    */
-  private String EXTRA;
+  private final String EXTRA;
 
   /**
    * column comment.
    */
-  private String COLUMN_COMMENT;
+  private final String COLUMN_COMMENT;
 
   /**
    * is generated.
@@ -85,12 +82,12 @@ public class MdInfoDiffColumn implements MdInfoDiffInterface {
   /**
    * generate expression.
    */
-  private String GENERATION_EXPRESSION;
+  private final String GENERATION_EXPRESSION;
 
   /**
    * input option.
    */
-  private MdInputMemberOption option;
+  private final MdInputMemberOption option;
 
   /**
    * constructor.
@@ -115,7 +112,8 @@ public class MdInfoDiffColumn implements MdInfoDiffInterface {
 
     this.IS_GENERATED = record.getOrEmpty("IS_GENERATED");
     this.GENERATION_EXPRESSION = record.get("GENERATION_EXPRESSION");
-    if (MdUtils.isNullOrEmpty(this.IS_GENERATED) && !MdUtils.isNullOrEmpty(this.GENERATION_EXPRESSION)) {
+    if (MdUtils.isNullOrEmpty(this.IS_GENERATED) && !MdUtils.isNullOrEmpty(
+        this.GENERATION_EXPRESSION)) {
       this.IS_GENERATED = "FAKE";
     }
 
@@ -124,6 +122,7 @@ public class MdInfoDiffColumn implements MdInfoDiffInterface {
 
   /**
    * get column name.
+   *
    * @return column name
    */
   public String getColumnName() {
@@ -132,6 +131,7 @@ public class MdInfoDiffColumn implements MdInfoDiffInterface {
 
   /**
    * get column collation.
+   *
    * @return column collation
    */
   public String getColumnCollation() {
@@ -140,6 +140,7 @@ public class MdInfoDiffColumn implements MdInfoDiffInterface {
 
   /**
    * get column comment.
+   *
    * @return column comment.
    */
   public String getColumnComment() {
@@ -148,6 +149,7 @@ public class MdInfoDiffColumn implements MdInfoDiffInterface {
 
   /**
    * get column type.
+   *
    * @return column type
    */
   public String getColumnType() {
@@ -156,14 +158,17 @@ public class MdInfoDiffColumn implements MdInfoDiffInterface {
 
   /**
    * is primary.
+   *
    * @return if primary, true
    */
   public boolean isPrimary() {
-    return !isGenerated() && !MdUtils.isNullOrEmpty(COLUMN_KEY) && COLUMN_KEY.equalsIgnoreCase("PRI");
+    return !isGenerated() && !MdUtils.isNullOrEmpty(COLUMN_KEY) && COLUMN_KEY.equalsIgnoreCase(
+        "PRI");
   }
 
   /**
    * is generated.
+   *
    * @return if generated, true
    */
   public boolean isGenerated() {
@@ -172,6 +177,7 @@ public class MdInfoDiffColumn implements MdInfoDiffInterface {
 
   /**
    * is valid collation.
+   *
    * @return if valid, true
    */
   public boolean isValidCollation() {
@@ -184,6 +190,7 @@ public class MdInfoDiffColumn implements MdInfoDiffInterface {
 
   /**
    * has collation.
+   *
    * @return if collation name defined, true
    */
   public boolean hasCollation() {
@@ -192,6 +199,7 @@ public class MdInfoDiffColumn implements MdInfoDiffInterface {
 
   /**
    * get binary collation name.
+   *
    * @return binary collation name
    */
   public String getBinaryCollationName() {
@@ -212,11 +220,12 @@ public class MdInfoDiffColumn implements MdInfoDiffInterface {
     if (!(!MdUtils.isNullOrEmpty(COLUMN_DEFAULT) &&
         (
             COLUMN_DEFAULT.toLowerCase().startsWith("nextval")
-            || COLUMN_DEFAULT.toLowerCase().startsWith("lastval")
+                || COLUMN_DEFAULT.toLowerCase().startsWith("lastval")
         ) && option.ignoreDefaultForSequence)) {
       src.add(COLUMN_DEFAULT);
     } else {
-      MdLogger.trace(String.format("ignoreDefaultForSequence column:%s.%s", TABLE_NAME, COLUMN_NAME));
+      MdLogger.trace(
+          String.format("ignoreDefaultForSequence column:%s.%s", TABLE_NAME, COLUMN_NAME));
     }
     src.add(IS_NULLABLE);
     src.add(DATA_TYPE);

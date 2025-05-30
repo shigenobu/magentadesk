@@ -2,7 +2,6 @@ package com.walksocket.md.output.parts;
 
 import com.google.gson.annotations.Expose;
 import com.walksocket.md.MdValue;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +36,7 @@ public class MdOutputPartsReflectedRecord extends MdValue {
 
   /**
    * constructor.
+   *
    * @param partsRecord parts record
    */
   public MdOutputPartsReflectedRecord(MdOutputPartsRecord partsRecord) {
@@ -51,9 +51,9 @@ public class MdOutputPartsReflectedRecord extends MdValue {
 
       if (bValue == null && cValue == null) {
         changes.add(false);
-      } else if (bValue != null && cValue == null){
+      } else if (bValue != null && cValue == null) {
         changes.add(true);
-      } else if (bValue == null && cValue != null){
+      } else if (bValue == null && cValue != null) {
         changes.add(true);
       } else if (bValue.equals(cValue)) {
         changes.add(false);

@@ -6,21 +6,21 @@ import com.walksocket.md.MdInfoSync;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.db.MdDbConnection;
 import com.walksocket.md.db.MdDbFactory.DbType;
+import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.mysql.MdMysqlUtils;
 import com.walksocket.md.output.MdOutputSync;
-import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.output.member.MdOutputMemberNotReflectedRecordTable;
 import com.walksocket.md.output.member.MdOutputMemberReflectedRecordTable;
 import com.walksocket.md.output.parts.MdOutputPartsColumn;
 import com.walksocket.md.output.parts.MdOutputPartsNotReflectedRecord;
 import com.walksocket.md.output.parts.MdOutputPartsRecord;
 import com.walksocket.md.output.parts.MdOutputPartsReflectedRecord;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 /**
@@ -34,16 +34,17 @@ public class MdFilterSyncReflect extends MdFilterSyncAbstract {
    *   if true, force to delete from compare
    * </pre>
    */
-  private boolean force;
+  private final boolean force;
 
   /**
    * desk.
    */
-  private MdDesk desk;
+  private final MdDesk desk;
 
   /**
    * constructor.
-   * @param con db connection
+   *
+   * @param con   db connection
    * @param force force flag
    */
   public MdFilterSyncReflect(MdDbConnection con, boolean force) {
@@ -56,12 +57,15 @@ public class MdFilterSyncReflect extends MdFilterSyncAbstract {
   @Override
   public void filter(List<MdInfoSync> infoList, MdOutputSync outputSync) throws SQLException {
     for (MdInfoSync info : infoList) {
-      MdOutputMemberReflectedRecordTable reflectedRecordTable = new MdOutputMemberReflectedRecordTable(info);
-      MdOutputMemberNotReflectedRecordTable notReflectedRecordTable = new MdOutputMemberNotReflectedRecordTable(info);
+      MdOutputMemberReflectedRecordTable reflectedRecordTable = new MdOutputMemberReflectedRecordTable(
+          info);
+      MdOutputMemberNotReflectedRecordTable notReflectedRecordTable = new MdOutputMemberNotReflectedRecordTable(
+          info);
 
       Map<Long, Boolean> diffSeqReflectedMap = reflectFromBaseToCompare(info);
 
-      List<Long> reflectedDiffSeqs = diffSeqReflectedMap.entrySet().stream().filter(e -> e.getValue()).map(e -> e.getKey()).collect(Collectors.toList());
+      List<Long> reflectedDiffSeqs = diffSeqReflectedMap.entrySet().stream()
+          .filter(Entry::getValue).map(Entry::getKey).collect(Collectors.toList());
       if (!MdUtils.isNullOrEmpty(reflectedDiffSeqs)) {
         List<MdOutputPartsRecord> reflectedDiffRecords = desk.getPartRecordsForSync(
             reflectedDiffSeqs,
@@ -73,7 +77,8 @@ public class MdFilterSyncReflect extends MdFilterSyncAbstract {
         outputSync.reflectedRecordTables.add(reflectedRecordTable);
       }
 
-      List<Long> notReflectedDiffSeqs = diffSeqReflectedMap.entrySet().stream().filter(e -> !e.getValue()).map(e -> e.getKey()).collect(Collectors.toList());
+      List<Long> notReflectedDiffSeqs = diffSeqReflectedMap.entrySet().stream()
+          .filter(e -> !e.getValue()).map(Entry::getKey).collect(Collectors.toList());
       if (!MdUtils.isNullOrEmpty(notReflectedDiffSeqs)) {
         List<MdOutputPartsRecord> notFeflectedDiffRecords = desk.getPartRecordsForSync(
             notReflectedDiffSeqs,
@@ -89,6 +94,7 @@ public class MdFilterSyncReflect extends MdFilterSyncAbstract {
 
   /**
    * reflect from base to compare
+   *
    * @param info info
    * @return map diffSeq and reflect result
    * @throws SQLException sql error
@@ -96,7 +102,7 @@ public class MdFilterSyncReflect extends MdFilterSyncAbstract {
   private Map<Long, Boolean> reflectFromBaseToCompare(MdInfoSync info) throws SQLException {
     Map<Long, Boolean> diffSeqReflectedMap = new LinkedHashMap<>();
 
-    String sql = "";
+    String sql;
 
     // -----
     // get column
@@ -214,17 +220,18 @@ public class MdFilterSyncReflect extends MdFilterSyncAbstract {
       Map<String, String> primaryBaseValues = desk.getPrimaryValues(primaryBaseColumns, diffSeq);
 
       // force
-      if (primaryBaseValues.size() > 0 || force) {
-        Map<String, String> primaryCompareValues = desk.getPrimaryValues(primaryCompareColumns, diffSeq);
+      if (!primaryBaseValues.isEmpty() || force) {
+        Map<String, String> primaryCompareValues = desk.getPrimaryValues(primaryCompareColumns,
+            diffSeq);
 
         // if use condition, compare primary values may be empty, then base primary values is replaced into compare primary values.
-        if (primaryCompareValues.size() == 0) {
+        if (primaryCompareValues.isEmpty()) {
           primaryCompareValues = primaryBaseValues;
         }
 
         // -----
         // delete from compare
-        if (primaryCompareValues.size() > 0) {
+        if (!primaryCompareValues.isEmpty()) {
           List<String> conditions = new ArrayList<>();
           for (Map.Entry<String, String> entry : primaryCompareValues.entrySet()) {
             MdOutputPartsColumn column = info.getColumns().stream()
@@ -253,7 +260,7 @@ public class MdFilterSyncReflect extends MdFilterSyncAbstract {
       // check base
       Map<String, String> primaryBaseValues = desk.getPrimaryValues(primaryBaseColumns, diffSeq);
 
-      if (primaryBaseValues.size() > 0) {
+      if (!primaryBaseValues.isEmpty()) {
         // -----
         // insert compare from base
         sql = String.format(
@@ -275,7 +282,8 @@ public class MdFilterSyncReflect extends MdFilterSyncAbstract {
 
   /**
    * convert column value.
-   * @param columnType column type
+   *
+   * @param columnType  column type
    * @param columnValue column value
    * @return formed column value
    * @throws SQLException sql error
@@ -294,7 +302,8 @@ public class MdFilterSyncReflect extends MdFilterSyncAbstract {
     } else {
       if (MdMariadbUtils.getColumnType(columnType) == MdMariadbUtils.MdMariadbColumnType.STRING) {
         columnValue = String.format("'%s'", MdDbUtils.quote(columnValue));
-      } else if (MdMariadbUtils.getColumnType(columnType) == MdMariadbUtils.MdMariadbColumnType.BINARY) {
+      } else if (MdMariadbUtils.getColumnType(columnType)
+          == MdMariadbUtils.MdMariadbColumnType.BINARY) {
         columnValue = "0x" + MdUtils.toHexString(columnValue);
       }
     }

@@ -2,7 +2,6 @@ package com.walksocket.md;
 
 import com.walksocket.md.bash.MdBashCommand;
 import com.walksocket.md.bash.MdBashResult;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,6 +48,7 @@ public class MdBash {
 
   /**
    * exec.
+   *
    * @param cmd command object
    * @return result
    */
@@ -79,7 +79,7 @@ public class MdBash {
     commands.add("(IFS=$'\n';" + modifiedCommand + ")");
     MdLogger.trace(MdUtils.join(commands, " "));
     ProcessBuilder builder
-        = new ProcessBuilder((String[]) commands.toArray(new String[commands.size()]));
+        = new ProcessBuilder(commands.toArray(new String[0]));
     builder.redirectErrorStream(true);
 
     // exec
@@ -88,11 +88,11 @@ public class MdBash {
     Process process = null;
     InputStream in = null;
 
-    StringBuffer buffer = new StringBuffer();
+    StringBuilder buffer = new StringBuilder();
     try {
       process = builder.start();
       in = process.getInputStream();
-      int readLen = 0;
+      int readLen;
       while ((readLen = in.read(tmp, 0, len)) >= 0) {
         buffer.append(new String(tmp, 0, readLen, StandardCharsets.UTF_8));
       }
@@ -126,7 +126,7 @@ public class MdBash {
     MdLogger.trace(String.format("command -> %s, code -> %s, output -> %s",
         command,
         code,
-        buffer.toString()));
+        buffer));
 
     MdBashResult result = new MdBashResult();
     result.command = command;

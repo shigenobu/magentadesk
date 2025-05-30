@@ -9,9 +9,10 @@ public class MdSupplierInfoGetChecksumFake extends MdSupplierInfoGetChecksum {
 
   /**
    * constructor.
+   *
    * @param connectionString connection string
-   * @param database database
-   * @param tableName table name
+   * @param database         database
+   * @param tableName        table name
    */
   public MdSupplierInfoGetChecksumFake(String connectionString, String database, String tableName) {
     super(connectionString, database, tableName);

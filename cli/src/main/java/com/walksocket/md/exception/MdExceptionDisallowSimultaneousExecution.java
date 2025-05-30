@@ -7,6 +7,7 @@ public class MdExceptionDisallowSimultaneousExecution extends MdExceptionAbstrac
 
   /**
    * constructor.
+   *
    * @param message message
    */
   public MdExceptionDisallowSimultaneousExecution(String message) {

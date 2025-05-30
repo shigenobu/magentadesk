@@ -1,7 +1,6 @@
 package com.walksocket.md.html;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * html relation.
@@ -30,12 +29,14 @@ public class MdHtmlRelation {
 
   /**
    * constructor.
-   * @param table table
-   * @param foreignKeys foreignKeys
+   *
+   * @param table          table
+   * @param foreignKeys    foreignKeys
    * @param referenceTable referenceTable
-   * @param referenceKeys referenceKeys
+   * @param referenceKeys  referenceKeys
    */
-  public MdHtmlRelation(String table, List<String> foreignKeys, String referenceTable, List<String> referenceKeys) {
+  public MdHtmlRelation(String table, List<String> foreignKeys, String referenceTable,
+      List<String> referenceKeys) {
     this.table = table;
     this.foreignKeys = foreignKeys;
     this.referenceTable = referenceTable;
@@ -44,15 +45,16 @@ public class MdHtmlRelation {
 
   /**
    * get parent to child relation expression.
+   *
    * @return relation expression
    */
   public String getP2CRelation() {
     return String.format(
         "%s.%s => %s.%s",
         referenceTable,
-        referenceKeys.stream().collect(Collectors.joining(",")),
+        String.join(",", referenceKeys),
         table,
-        foreignKeys.stream().collect(Collectors.joining(",")));
+        String.join(",", foreignKeys));
   }
 
   @Override

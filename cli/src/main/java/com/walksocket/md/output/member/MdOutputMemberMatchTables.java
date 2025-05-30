@@ -4,7 +4,6 @@ import com.google.gson.annotations.Expose;
 import com.walksocket.md.MdInfoDiff;
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdValue;
-
 import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -54,11 +53,13 @@ public class MdOutputMemberMatchTables extends MdValue {
 
   /**
    * constructor.
-   * @param baseInfo base info
+   *
+   * @param baseInfo    base info
    * @param compareInfo compare info
    * @throws SQLException sql error
    */
-  public MdOutputMemberMatchTables(MdInfoDiff baseInfo, MdInfoDiff compareInfo) throws SQLException {
+  public MdOutputMemberMatchTables(MdInfoDiff baseInfo, MdInfoDiff compareInfo)
+      throws SQLException {
     this.tableName = baseInfo.getTableName();
     this.tableComment = baseInfo.getInfoTable().getTableComment();
     this.baseTableType = baseInfo.getInfoTable().getTableType();
@@ -73,7 +74,7 @@ public class MdOutputMemberMatchTables extends MdValue {
       this.compareChecksum = compareFuture.get(600, TimeUnit.SECONDS);
     } catch (Exception e) {
       MdLogger.error(e);
-      new SQLException(e);
+      throw new SQLException(e);
     }
   }
 }

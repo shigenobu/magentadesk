@@ -1,9 +1,7 @@
 package com.walksocket.md.server;
 
 import com.sun.net.httpserver.HttpExchange;
-import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdUtils;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -15,7 +13,7 @@ public class MdServerResponse {
   /**
    * exchange.
    */
-  private HttpExchange exchange;
+  private final HttpExchange exchange;
 
   /**
    * status.
@@ -25,7 +23,7 @@ public class MdServerResponse {
   /**
    * headers.
    */
-  private Map<String, String> headers = new HashMap<>();
+  private final Map<String, String> headers = new HashMap<>();
 
   /**
    * body.
@@ -39,6 +37,7 @@ public class MdServerResponse {
 
   /**
    * constructor.
+   *
    * @param exchange exchange
    */
   public MdServerResponse(HttpExchange exchange) {
@@ -54,6 +53,7 @@ public class MdServerResponse {
 
   /**
    * set status.
+   *
    * @param status status
    */
   public void setStatus(int status) {
@@ -62,6 +62,7 @@ public class MdServerResponse {
 
   /**
    * get status.
+   *
    * @return status
    */
   public int getStatus() {
@@ -70,6 +71,7 @@ public class MdServerResponse {
 
   /**
    * set content type.
+   *
    * @param contentType content type
    */
   public void setContentType(String contentType) {
@@ -78,6 +80,7 @@ public class MdServerResponse {
 
   /**
    * set content length.
+   *
    * @param contentLength content length
    */
   public void setContentLength(int contentLength) {
@@ -86,6 +89,7 @@ public class MdServerResponse {
 
   /**
    * set cache control.
+   *
    * @param cacheControl cache control
    */
   public void setCacheControl(String cacheControl) {
@@ -94,6 +98,7 @@ public class MdServerResponse {
 
   /**
    * set connection.
+   *
    * @param connection connection
    */
   public void setConnection(String connection) {
@@ -102,7 +107,8 @@ public class MdServerResponse {
 
   /**
    * add header.
-   * @param name name
+   *
+   * @param name  name
    * @param value value
    */
   public void addHeader(String name, String value) {
@@ -111,6 +117,7 @@ public class MdServerResponse {
 
   /**
    * set body.
+   *
    * @param body body string
    */
   public void setBody(String body) {
@@ -119,6 +126,7 @@ public class MdServerResponse {
 
   /**
    * set body.
+   *
    * @param body body bytes
    */
   public void setBody(byte[] body) {
@@ -127,6 +135,7 @@ public class MdServerResponse {
 
   /**
    * get body
+   *
    * @return body bytes.
    */
   public byte[] getBody() {
@@ -135,6 +144,7 @@ public class MdServerResponse {
 
   /**
    * send.
+   *
    * @throws IOException error
    */
   public void send() throws IOException {
@@ -174,6 +184,7 @@ public class MdServerResponse {
 
   /**
    * is sent response.
+   *
    * @return if true, response is sent
    */
   public boolean isSentResponse() {

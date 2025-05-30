@@ -1,9 +1,6 @@
 package com.walksocket.md.mariadb;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +16,6 @@ public class MdMariadbUtils {
     NUBMER,
     STRING,
     BINARY
-    ;
   }
 
   /**
@@ -35,18 +31,17 @@ public class MdMariadbUtils {
     INTEGER,
     TIME,
     UNSIGNED
-    ;
   }
 
   /**
    * column type mapping.
    */
-  private static Map<String, MdMariadbColumnType> columnTypes = new HashMap<>();
+  private static final Map<String, MdMariadbColumnType> columnTypes = new HashMap<>();
 
   /**
    * dynamic type mapping.
    */
-  private static Map<String, MdMariadbDynamicType> dynamicTypes = new HashMap<>();
+  private static final Map<String, MdMariadbDynamicType> dynamicTypes = new HashMap<>();
 
   static {
     // columnTypes
@@ -126,9 +121,10 @@ public class MdMariadbUtils {
 
   /**
    * get column type.
+   *
    * @param columnType column type string
    * @return column type enum
-   * @exception SQLException sql error
+   * @throws SQLException sql error
    */
   public static MdMariadbColumnType getColumnType(String columnType) throws SQLException {
     columnType = columnType.toUpperCase();
@@ -148,18 +144,19 @@ public class MdMariadbUtils {
 
   /**
    * get dynamic type.
+   *
    * @param columnType column type string
    * @return dynamic type enum
-   * @exception SQLException sql error
+   * @throws SQLException sql error
    */
   public static MdMariadbDynamicType getDynamicType(String columnType) throws SQLException {
     columnType = columnType.toUpperCase();
     if ((
         columnType.startsWith("TINYINT")
-          || columnType.startsWith("SMALLINT")
-          || columnType.startsWith("MEDIUMINT")
-          || columnType.startsWith("INT")
-          || columnType.startsWith("BIGINT"))
+            || columnType.startsWith("SMALLINT")
+            || columnType.startsWith("MEDIUMINT")
+            || columnType.startsWith("INT")
+            || columnType.startsWith("BIGINT"))
         && columnType.contains("UNSIGNED")) {
       return MdMariadbDynamicType.UNSIGNED;
     }

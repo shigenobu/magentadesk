@@ -6,4 +6,5 @@ import com.walksocket.md.MdValue;
  * output abstract.
  */
 public abstract class MdOutputAbstract extends MdValue {
+
 }

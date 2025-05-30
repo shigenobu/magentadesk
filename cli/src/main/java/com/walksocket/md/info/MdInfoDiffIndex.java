@@ -4,7 +4,6 @@ import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.db.MdDbRecord;
 import com.walksocket.md.input.member.MdInputMemberOption;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,55 +16,56 @@ public class MdInfoDiffIndex implements MdInfoDiffInterface {
   /**
    * table name.
    */
-  private String TABLE_NAME;
+  private final String TABLE_NAME;
 
   /**
    * non unique.
    */
-  private String NON_UNIQUE;
+  private final String NON_UNIQUE;
 
   /**
    * index name.
    */
-  private String INDEX_NAME;
+  private final String INDEX_NAME;
 
   /**
    * seq in index.
    */
-  private String SEQ_IN_INDEX;
+  private final String SEQ_IN_INDEX;
 
   /**
    * column name.
    */
-  private String COLUMN_NAME;
+  private final String COLUMN_NAME;
 
   /**
    * collation.
    */
-  private String COLLATION;
+  private final String COLLATION;
 
   /**
    * nullable.
    */
-  private String NULLABLE;
+  private final String NULLABLE;
 
   /**
    * index type.
    */
-  private String INDEX_TYPE;
+  private final String INDEX_TYPE;
 
   /**
    * index comment.
    */
-  private String INDEX_COMMENT;
+  private final String INDEX_COMMENT;
 
   /**
    * input option.
    */
-  private MdInputMemberOption option;
+  private final MdInputMemberOption option;
 
   /**
    * constructor.
+   *
    * @param record record
    * @param option input option
    * @throws SQLException sql error

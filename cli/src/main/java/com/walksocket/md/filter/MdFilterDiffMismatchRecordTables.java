@@ -6,12 +6,11 @@ import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.db.MdDbConnection;
 import com.walksocket.md.db.MdDbFactory.DbType;
+import com.walksocket.md.info.MdInfoDiffColumn;
 import com.walksocket.md.output.MdOutputDiff;
 import com.walksocket.md.output.member.MdOutputMemberMatchTables;
-import com.walksocket.md.info.MdInfoDiffColumn;
 import com.walksocket.md.output.member.MdOutputMemberMismatchRecordTable;
 import com.walksocket.md.output.parts.MdOutputPartsRecord;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -29,10 +28,11 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
   /**
    * desk.
    */
-  private MdDesk desk;
+  private final MdDesk desk;
 
   /**
    * constructor.
+   *
    * @param con db connection
    */
   public MdFilterDiffMismatchRecordTables(MdDbConnection con) {
@@ -42,7 +42,8 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
   }
 
   @Override
-  public void filter(List<MdInfoDiff> baseInfoList, List<MdInfoDiff> compareInfoList, MdOutputDiff outputDiff) throws SQLException {
+  public void filter(List<MdInfoDiff> baseInfoList, List<MdInfoDiff> compareInfoList,
+      MdOutputDiff outputDiff) throws SQLException {
     List<MdInfoDiff> removedBaseInfoList = new ArrayList<>();
     List<MdInfoDiff> removedCompareInfoLIst = new ArrayList<>();
 
@@ -54,8 +55,8 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
           .get();
 
       // checksum
-      String baseChecksum = null;
-      String compareChecksum = null;
+      String baseChecksum;
+      String compareChecksum;
       try {
         ExecutorService service = Executors.newFixedThreadPool(2);
         CompletableFuture<String> baseFuture = baseInfo.getChecksumFuture(service);
@@ -64,14 +65,11 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
         compareChecksum = compareFuture.get(600, TimeUnit.SECONDS);
       } catch (Exception e) {
         MdLogger.error(e);
-        new SQLException(e);
+        throw new SQLException(e);
       }
-      boolean matchChecksum = false;
-      if (!MdUtils.isNullOrEmpty(baseChecksum)
+      boolean matchChecksum = !MdUtils.isNullOrEmpty(baseChecksum)
           && !MdUtils.isNullOrEmpty(compareChecksum)
-          && baseChecksum.equals(compareChecksum)) {
-        matchChecksum = true;
-      }
+          && baseChecksum.equals(compareChecksum);
       if (MdUtils.isNullOrEmpty(baseChecksum)
           && MdUtils.isNullOrEmpty(compareChecksum)) {
         matchChecksum = true;
@@ -108,7 +106,8 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
       }
 
       // add mismatch
-      outputDiff.mismatchRecordTables.add(new MdOutputMemberMismatchRecordTable(baseInfo, partsRecord));
+      outputDiff.mismatchRecordTables.add(
+          new MdOutputMemberMismatchRecordTable(baseInfo, partsRecord));
 
       removedBaseInfoList.add(baseInfo);
       removedCompareInfoLIst.add(compareInfo);
@@ -126,12 +125,14 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
 
   /**
    * register diff records.
-   * @param summaryId summary id
-   * @param baseInfo base info
+   *
+   * @param summaryId   summary id
+   * @param baseInfo    base info
    * @param compareInfo compare info
    * @throws SQLException sql error
    */
-  private void registerDiffRecords(String summaryId, MdInfoDiff baseInfo, MdInfoDiff compareInfo) throws SQLException {
+  private void registerDiffRecords(String summaryId, MdInfoDiff baseInfo, MdInfoDiff compareInfo)
+      throws SQLException {
     List<String> baseColumnNames = new ArrayList<>();
     List<String> compareColumnNames = new ArrayList<>();
     List<String> baseDynamicColumnNames = new ArrayList<>();
@@ -186,8 +187,8 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
       conditions.add(condition);
     }
 
-    String seqExpression = "";
-    String dynamicExpression = "";
+    String seqExpression;
+    String dynamicExpression;
     String additionalExpression = "";
     if (con.getDbType() == DbType.MYSQL) {
       seqExpression = "`magentadesk`.`nextDiffSeq`()";
@@ -196,7 +197,7 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
           "WHERE JSON_OBJECT(%s) != JSON_OBJECT(%s)",
           MdUtils.join(baseDynamicColumnNames, ", "),
           MdUtils.join(compareDynamicColumnNames, ", ")
-          );
+      );
 
     } else {
       seqExpression = "nextval(`magentadesk`.`diffSequence`)";
@@ -204,7 +205,8 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
     }
 
     String sql = String.format(
-        "INSERT INTO `magentadesk`.`diffRecord` (`summaryId`, `tableName`, `diffSeq`, `baseValues`, `compareValues`) " +
+        "INSERT INTO `magentadesk`.`diffRecord` (`summaryId`, `tableName`, `diffSeq`, `baseValues`, `compareValues`) "
+            +
             "WITH " +
             "md_b2c AS (" +
             "  SELECT %s FROM `%s`.`%s` %s EXCEPT SELECT %s FROM `%s`.`%s` %s" +

@@ -3,7 +3,6 @@ package com.walksocket.md.output.member;
 import com.google.gson.annotations.Expose;
 import com.walksocket.md.MdInfoDiff;
 import com.walksocket.md.MdValue;
-
 import java.sql.SQLException;
 
 /**
@@ -45,10 +44,11 @@ public class MdOutputMemberForceExcludeTable extends MdValue {
     /**
      * reason.
      */
-    private String reason;
+    private final String reason;
 
     /**
      * constructor.
+     *
      * @param reason reason.
      */
     MdOutputMemberForceExcldeReason(String reason) {
@@ -57,6 +57,7 @@ public class MdOutputMemberForceExcludeTable extends MdValue {
 
     /**
      * get reason.
+     *
      * @return reason.
      */
     public String getReason() {
@@ -90,11 +91,13 @@ public class MdOutputMemberForceExcludeTable extends MdValue {
 
   /**
    * constructor.
-   * @param info info
+   *
+   * @param info   info
    * @param reason reason
    * @throws SQLException sql error
    */
-  public MdOutputMemberForceExcludeTable(MdInfoDiff info, MdOutputMemberForceExcldeReason reason) throws SQLException {
+  public MdOutputMemberForceExcludeTable(MdInfoDiff info, MdOutputMemberForceExcldeReason reason)
+      throws SQLException {
     this.tableName = info.getTableName();
     this.tableComment = info.getInfoTable().getTableComment();
     this.definition = info.getDefinition();

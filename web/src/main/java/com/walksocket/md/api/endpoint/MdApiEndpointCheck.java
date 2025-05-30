@@ -19,7 +19,8 @@ import com.walksocket.md.sqlite.MdSqliteConnection;
 public class MdApiEndpointCheck extends MdApiEndpointAbstract {
 
   @Override
-  public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws Exception {
+  public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws Exception {
     // method check
     if (!request.isPost()) {
       // method not allowed
@@ -63,7 +64,6 @@ public class MdApiEndpointCheck extends MdApiEndpointAbstract {
       // no content
       response.addHeader(HEADER_EXECUTION_ID, executionId);
       sendProcessing(response);
-      return;
     } else if (state.equals(MdState.COMPLETE.getState()) && output != null) {
       // ok
       if (mdMode == MdMode.DIFF) {
@@ -73,7 +73,6 @@ public class MdApiEndpointCheck extends MdApiEndpointAbstract {
       } else if (mdMode == MdMode.MAINTENANCE) {
         sendComplete(response, MdJson.toObject(output, MdOutputMaintenance.class));
       }
-      return;
     }
   }
 }

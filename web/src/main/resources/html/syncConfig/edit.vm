@@ -1,137 +1,167 @@
 <div class="page-title">
-    <h1>SYNC CONFIG EDIT</h1>
+  <h1>SYNC CONFIG EDIT</h1>
 </div>
 
 <script src="/asset/js/save.js" type="text/javascript"></script>
 <script src="/asset/js/delete.js" type="text/javascript"></script>
 <div class="page-content">
-    <form method="post" action="/syncConfig/save/">
-        <table class="input">
-            <tr>
-                <td>
-                    <div>syncConfigId</div>
-                </td>
-                <td>
-                    <div>
-                        <p>${record.getOrEmpty("syncConfigId")}</p>
-                        #if(!$record.getOrEmpty("syncConfigId").equals(""))
-                            <input type="hidden" name="syncConfigId" value="${record.get("syncConfigId")}" />
-                        #end
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div>title <span class="warning">*required</span></div>
-                </td>
-                <td>
-                    <div><input type="text" name="title" value="${MdTemplateUtils.nonEscape($record.getOrEmpty("title"))}" required></div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div>explanation</div>
-                </td>
-                <td>
-                    <div><textarea name="explanation">${MdTemplateUtils.nonEscape($record.getOrEmpty("explanation"))}</textarea></div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div>commandsBeforeCommit</div>
-                    <ol>
-                        <li>command</li>
-                        <li>timeout <span class="warning">*more than 1</span></li>
-                        <li>successCodeList <span class="warning">*more than 0</span></li>
-                    </ol>
-                </td>
-                <td>
-                #set($idx = 0)
-                #foreach($c in $commandsBeforeCommit)
-                    <ol>
-                        <li><input type="text" placeholder="command" name="commandsBeforeCommit_command${idx}" value="${MdTemplateUtils.nonEscape($c.command)}"></li>
-                        <li><input type="number" placeholder="timeout" name="commandsBeforeCommit_timout${idx}" value="${c.timeout}" min="1"></li>
-                        <li>
-                            <input type="number" placeholder="successCode" name="commandsBeforeCommit_successCodeList${idx}[]" value="${c.successCodeList.get(0)}" min="0">
-                            <input type="number" placeholder="successCode" name="commandsBeforeCommit_successCodeList${idx}[]" value="${c.successCodeList.get(1)}" min="0">
-                            <input type="number" placeholder="successCode" name="commandsBeforeCommit_successCodeList${idx}[]" value="${c.successCodeList.get(2)}" min="0">
-                        </li>
-                    </ol>
-                    #set($idx = $idx + 1)
-                #end
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div>commandsAfterCommit</div>
-                    <ol>
-                        <li>command</li>
-                        <li>timeout <span class="warning">*more than 1</span></li>
-                    </ol>
-                <td>
-                #set($idx = 0)
-                #foreach($c in $commandsAfterCommit)
-                    <ol>
-                        <li><input type="text" placeholder="command" name="commandsAfterCommit_command${idx}" value="${MdTemplateUtils.nonEscape($c.command)}"></li>
-                        <li><input type="number" placeholder="timeout" name="commandsAfterCommit_timout${idx}" value="${c.timeout}" min="1"></li>
-                    </ol>
-                    #set($idx = $idx + 1)
-                #end
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div>httpCallbackBeforeCommit</div>
-                    <ol>
-                        <li>url</li>
-                        <li>timeout <span class="warning">*more than 1</span></li>
-                        <li>successStatusList <span class="warning">*more than 200</span></li>
-                    </ol>
-                <td>
-                #set($idx = 0)
-                #foreach($h in $httpCallbackBeforeCommit)
-                    <ol>
-                        <li><input type="text" placeholder="url" name="httpCallbackBeforeCommit_url${idx}" value="${MdTemplateUtils.nonEscape($h.url)}"></li>
-                        <li><input type="number" placeholder="timeout" name="httpCallbackBeforeCommit_timeout${idx}" value="${h.timeout}" min="1"></li>
-                        <li>
-                            <input type="number" placeholder="successCode" name="httpCallbackBeforeCommit_successStatusList${idx}[]" value="${h.successStatusList.get(0)}" min="200">
-                            <input type="number" placeholder="successCode" name="httpCallbackBeforeCommit_successStatusList${idx}[]" value="${h.successStatusList.get(1)}" min="200">
-                            <input type="number" placeholder="successCode" name="httpCallbackBeforeCommit_successStatusList${idx}[]" value="${h.successStatusList.get(2)}" min="200">
-                        </li>
-                    </ol>
-                    #set($idx = $idx + 1)
-                #end
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div>httpCallbackAfterCommit</div>
-                    <ol>
-                        <li>url</li>
-                        <li>timeout <span class="warning">*more than 1</span></li>
-                    </ol>
-                <td>
-                #set($idx = 0)
-                #foreach($h in $httpCallbackAfterCommit)
-                    <ol>
-                        <li><input type="text" placeholder="url" name="httpCallbackAfterCommit_url${idx}" value="${MdTemplateUtils.nonEscape($h.url)}"></li>
-                        <li><input type="number" placeholder="timeout" name="httpCallbackAfterCommit_timeout${idx}" value="${h.timeout}" min="1"></li>
-                    </ol>
-                    #set($idx = $idx + 1)
-                #end
-                </td>
-            </tr>
-        </table>
-
-        <div class="page-buttons">
-            <input type="hidden" name="${saveMode.getName()}" value="${saveMode.getValue()}" />
-            <input type="submit" class="${saveMode.getCss()}" value="${saveMode.getValue()}">
-            <a href="/syncConfig/list/" class="btn-back">BACK</a>
-
-            #if(!$record.getOrEmpty("syncConfigId").equals(""))
-                <a href="/syncConfig/delete/?syncConfigId=${record.get("syncConfigId")}" class="btn-delete">DELETE</a>
+  <form method="post" action="/syncConfig/save/">
+    <table class="input">
+      <tr>
+        <td>
+          <div>syncConfigId</div>
+        </td>
+        <td>
+          <div>
+            <p>${record.getOrEmpty("syncConfigId")}</p>
+              #if(!$record.getOrEmpty("syncConfigId").equals(""))
+                <input type="hidden" name="syncConfigId" value="${record.get("syncConfigId")}"/>
+              #end
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div>title <span class="warning">*required</span></div>
+        </td>
+        <td>
+          <div><input type="text" name="title"
+                      value="${MdTemplateUtils.nonEscape($record.getOrEmpty("title"))}" required>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div>explanation</div>
+        </td>
+        <td>
+          <div><textarea name="explanation">${MdTemplateUtils.nonEscape($record.getOrEmpty(
+              "explanation"))}</textarea></div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div>commandsBeforeCommit</div>
+          <ol>
+            <li>command</li>
+            <li>timeout <span class="warning">*more than 1</span></li>
+            <li>successCodeList <span class="warning">*more than 0</span></li>
+          </ol>
+        </td>
+        <td>
+            #set($idx = 0)
+            #foreach($c in $commandsBeforeCommit)
+              <ol>
+                <li><input type="text" placeholder="command"
+                           name="commandsBeforeCommit_command${idx}"
+                           value="${MdTemplateUtils.nonEscape($c.command)}"></li>
+                <li><input type="number" placeholder="timeout"
+                           name="commandsBeforeCommit_timout${idx}" value="${c.timeout}" min="1">
+                </li>
+                <li>
+                  <input type="number" placeholder="successCode"
+                         name="commandsBeforeCommit_successCodeList${idx}[]"
+                         value="${c.successCodeList.get(0)}" min="0">
+                  <input type="number" placeholder="successCode"
+                         name="commandsBeforeCommit_successCodeList${idx}[]"
+                         value="${c.successCodeList.get(1)}" min="0">
+                  <input type="number" placeholder="successCode"
+                         name="commandsBeforeCommit_successCodeList${idx}[]"
+                         value="${c.successCodeList.get(2)}" min="0">
+                </li>
+              </ol>
+                #set($idx = $idx + 1)
             #end
-        </div>
-    </form>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div>commandsAfterCommit</div>
+          <ol>
+            <li>command</li>
+            <li>timeout <span class="warning">*more than 1</span></li>
+          </ol>
+        <td>
+            #set($idx = 0)
+            #foreach($c in $commandsAfterCommit)
+              <ol>
+                <li><input type="text" placeholder="command"
+                           name="commandsAfterCommit_command${idx}"
+                           value="${MdTemplateUtils.nonEscape($c.command)}"></li>
+                <li><input type="number" placeholder="timeout"
+                           name="commandsAfterCommit_timout${idx}" value="${c.timeout}" min="1">
+                </li>
+              </ol>
+                #set($idx = $idx + 1)
+            #end
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div>httpCallbackBeforeCommit</div>
+          <ol>
+            <li>url</li>
+            <li>timeout <span class="warning">*more than 1</span></li>
+            <li>successStatusList <span class="warning">*more than 200</span></li>
+          </ol>
+        <td>
+            #set($idx = 0)
+            #foreach($h in $httpCallbackBeforeCommit)
+              <ol>
+                <li><input type="text" placeholder="url" name="httpCallbackBeforeCommit_url${idx}"
+                           value="${MdTemplateUtils.nonEscape($h.url)}"></li>
+                <li><input type="number" placeholder="timeout"
+                           name="httpCallbackBeforeCommit_timeout${idx}" value="${h.timeout}"
+                           min="1"></li>
+                <li>
+                  <input type="number" placeholder="successCode"
+                         name="httpCallbackBeforeCommit_successStatusList${idx}[]"
+                         value="${h.successStatusList.get(0)}" min="200">
+                  <input type="number" placeholder="successCode"
+                         name="httpCallbackBeforeCommit_successStatusList${idx}[]"
+                         value="${h.successStatusList.get(1)}" min="200">
+                  <input type="number" placeholder="successCode"
+                         name="httpCallbackBeforeCommit_successStatusList${idx}[]"
+                         value="${h.successStatusList.get(2)}" min="200">
+                </li>
+              </ol>
+                #set($idx = $idx + 1)
+            #end
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div>httpCallbackAfterCommit</div>
+          <ol>
+            <li>url</li>
+            <li>timeout <span class="warning">*more than 1</span></li>
+          </ol>
+        <td>
+            #set($idx = 0)
+            #foreach($h in $httpCallbackAfterCommit)
+              <ol>
+                <li><input type="text" placeholder="url" name="httpCallbackAfterCommit_url${idx}"
+                           value="${MdTemplateUtils.nonEscape($h.url)}"></li>
+                <li><input type="number" placeholder="timeout"
+                           name="httpCallbackAfterCommit_timeout${idx}" value="${h.timeout}"
+                           min="1"></li>
+              </ol>
+                #set($idx = $idx + 1)
+            #end
+        </td>
+      </tr>
+    </table>
+
+    <div class="page-buttons">
+      <input type="hidden" name="${saveMode.getName()}" value="${saveMode.getValue()}"/>
+      <input type="submit" class="${saveMode.getCss()}" value="${saveMode.getValue()}">
+      <a href="/syncConfig/list/" class="btn-back">BACK</a>
+
+        #if(!$record.getOrEmpty("syncConfigId").equals(""))
+          <a href="/syncConfig/delete/?syncConfigId=${record.get("syncConfigId")}"
+             class="btn-delete">DELETE</a>
+        #end
+    </div>
+  </form>
 </div>
 

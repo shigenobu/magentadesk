@@ -10,10 +10,11 @@ public class MdApiQueue {
   /**
    * queue.
    */
-  private ConcurrentLinkedQueue<MdApiQueueMessage> queue = new ConcurrentLinkedQueue<>();
+  private final ConcurrentLinkedQueue<MdApiQueueMessage> queue = new ConcurrentLinkedQueue<>();
 
   /**
    * add.
+   *
    * @param message message
    */
   public void add(MdApiQueueMessage message) {
@@ -22,6 +23,7 @@ public class MdApiQueue {
 
   /**
    * poll.
+   *
    * @return message
    */
   public MdApiQueueMessage poll() {

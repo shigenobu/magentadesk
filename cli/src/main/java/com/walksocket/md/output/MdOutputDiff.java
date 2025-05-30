@@ -1,8 +1,13 @@
 package com.walksocket.md.output;
 
 import com.google.gson.annotations.Expose;
-import com.walksocket.md.output.member.*;
-
+import com.walksocket.md.output.member.MdOutputMemberExistsOnlyBaseTable;
+import com.walksocket.md.output.member.MdOutputMemberExistsOnlyCompareTable;
+import com.walksocket.md.output.member.MdOutputMemberForceExcludeTable;
+import com.walksocket.md.output.member.MdOutputMemberIncorrectDefinitionTables;
+import com.walksocket.md.output.member.MdOutputMemberMatchTables;
+import com.walksocket.md.output.member.MdOutputMemberMismatchDefinitionTable;
+import com.walksocket.md.output.member.MdOutputMemberMismatchRecordTable;
 import java.util.ArrayList;
 import java.util.List;
 

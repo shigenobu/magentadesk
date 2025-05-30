@@ -29,6 +29,7 @@ public class MdOutputMemberCommandResult extends MdValue {
 
   /**
    * constructor.
+   *
    * @param result bash result
    */
   public MdOutputMemberCommandResult(MdBashResult result) {

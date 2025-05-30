@@ -12,6 +12,7 @@ public class MdDbRecord {
 
   /**
    * create empty record.
+   *
    * @return db record
    */
   public static MdDbRecord createEmptyRecord() {
@@ -21,15 +22,17 @@ public class MdDbRecord {
   /**
    * params.
    */
-  private Map<String, String> params = new LinkedHashMap<>();
+  private final Map<String, String> params = new LinkedHashMap<>();
 
   /**
    * constructor.
    */
-  private MdDbRecord() {}
+  private MdDbRecord() {
+  }
 
   /**
    * constructor for record.
+   *
    * @param record record
    */
   public MdDbRecord(List<Map<String, String>> record) {
@@ -42,6 +45,7 @@ public class MdDbRecord {
 
   /**
    * get value.
+   *
    * @param columnName column name
    * @return column value
    * @throws SQLException no column error
@@ -56,6 +60,7 @@ public class MdDbRecord {
 
   /**
    * get value when not exists, return empty.
+   *
    * @param columnName column name
    * @return column value or empty
    */
@@ -65,7 +70,8 @@ public class MdDbRecord {
 
   /**
    * get value when not exists, return alternative.
-   * @param columnName column name
+   *
+   * @param columnName  column name
    * @param alternative alternative
    * @return column value or alternative
    */
@@ -79,6 +85,7 @@ public class MdDbRecord {
 
   /**
    * get all.
+   *
    * @return all params
    */
   public Map<String, String> getAll() {

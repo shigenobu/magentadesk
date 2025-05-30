@@ -2,7 +2,6 @@ package com.walksocket.md.output.parts;
 
 import com.google.gson.annotations.Expose;
 import com.walksocket.md.MdValue;
-
 import java.util.List;
 
 /**
@@ -30,6 +29,7 @@ public class MdOutputPartsNotReflectedRecord extends MdValue {
 
   /**
    * constructor.
+   *
    * @param partsRecord parts record
    */
   public MdOutputPartsNotReflectedRecord(MdOutputPartsRecord partsRecord) {

@@ -3,7 +3,6 @@ package com.walksocket.md.input.member;
 import com.google.gson.annotations.Expose;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.MdValue;
-
 import java.util.List;
 
 /**
@@ -31,8 +30,9 @@ public class MdInputMemberCommand extends MdValue {
 
   /**
    * constructor.
-   * @param command command
-   * @param timeout timeout
+   *
+   * @param command         command
+   * @param timeout         timeout
    * @param successCodeList success code list
    */
   public MdInputMemberCommand(String command, int timeout, List<Integer> successCodeList) {
@@ -43,6 +43,7 @@ public class MdInputMemberCommand extends MdValue {
 
   /**
    * is valid before.
+   *
    * @return if valid, return true
    */
   public boolean isValidBefore() {
@@ -52,23 +53,18 @@ public class MdInputMemberCommand extends MdValue {
     if (timeout <= 0) {
       return false;
     }
-    if (MdUtils.isNullOrEmpty(successCodeList)) {
-      return false;
-    }
-    return true;
+    return !MdUtils.isNullOrEmpty(successCodeList);
   }
 
   /**
    * is valid after.
+   *
    * @return if valid, return true
    */
   public boolean isValidAfter() {
     if (MdUtils.isNullOrEmpty(command)) {
       return false;
     }
-    if (timeout <= 0) {
-      return false;
-    }
-    return true;
+    return timeout > 0;
   }
 }

@@ -41,6 +41,7 @@ public class MdOutputPartsColumn extends MdValue {
 
   /**
    * constructor.
+   *
    * @param infoColumn info column
    */
   public MdOutputPartsColumn(MdInfoDiffColumn infoColumn) {

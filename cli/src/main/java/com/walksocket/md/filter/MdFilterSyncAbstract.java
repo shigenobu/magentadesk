@@ -3,7 +3,6 @@ package com.walksocket.md.filter;
 import com.walksocket.md.MdInfoSync;
 import com.walksocket.md.db.MdDbConnection;
 import com.walksocket.md.output.MdOutputSync;
-
 import java.sql.SQLException;
 import java.util.List;
 
@@ -19,6 +18,7 @@ public abstract class MdFilterSyncAbstract {
 
   /**
    * constructor.
+   *
    * @param con db connection
    */
   public MdFilterSyncAbstract(MdDbConnection con) {
@@ -27,9 +27,11 @@ public abstract class MdFilterSyncAbstract {
 
   /**
    * filter.
-   * @param infoList info list
+   *
+   * @param infoList   info list
    * @param outputSync output sync
    * @throws SQLException sql error
    */
-  public abstract void filter(List<MdInfoSync> infoList, MdOutputSync outputSync) throws SQLException;
+  public abstract void filter(List<MdInfoSync> infoList, MdOutputSync outputSync)
+      throws SQLException;
 }

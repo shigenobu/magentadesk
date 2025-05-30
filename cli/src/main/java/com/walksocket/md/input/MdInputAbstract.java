@@ -2,13 +2,12 @@ package com.walksocket.md.input;
 
 import com.google.gson.annotations.Expose;
 import com.walksocket.md.MdDbUtils;
-import com.walksocket.md.db.MdDbFactory;
-import com.walksocket.md.MdUtils;
 import com.walksocket.md.MdMode;
+import com.walksocket.md.MdUtils;
 import com.walksocket.md.MdValue;
+import com.walksocket.md.db.MdDbFactory;
 import com.walksocket.md.db.MdDbFactory.DbType;
 import com.walksocket.md.exception.MdExceptionInvalidInput;
-import com.walksocket.md.mariadb.MdMariadbUtils;
 
 /**
  * input abstract.
@@ -56,6 +55,7 @@ public abstract class MdInputAbstract extends MdValue {
 
   /**
    * get connection string.
+   *
    * @return connection string
    */
   public String getConnectionString() {
@@ -95,6 +95,7 @@ public abstract class MdInputAbstract extends MdValue {
 
   /**
    * validate.
+   *
    * @throws MdExceptionInvalidInput input error
    */
   public void validate() throws MdExceptionInvalidInput {
@@ -111,17 +112,18 @@ public abstract class MdInputAbstract extends MdValue {
       throw new MdExceptionInvalidInput("Invalid pass.");
     }
     if (MdUtils.isNullOrEmpty(charset)
-      || !MdDbUtils.isValidCharset(charset)) {
+        || !MdDbUtils.isValidCharset(charset)) {
       throw new MdExceptionInvalidInput("Invalid charset.");
     }
     if (!dbType.equalsIgnoreCase(MdDbFactory.DbType.MARIADB.getDbType())
-      && !dbType.equalsIgnoreCase(MdDbFactory.DbType.MYSQL.getDbType())) {
+        && !dbType.equalsIgnoreCase(MdDbFactory.DbType.MYSQL.getDbType())) {
       throw new MdExceptionInvalidInput("Invalid dbType.");
     }
   }
 
   /**
    * get mode.
+   *
    * @return mode enum.
    */
   public abstract MdMode getMode();

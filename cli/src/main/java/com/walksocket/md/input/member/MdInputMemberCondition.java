@@ -23,11 +23,13 @@ public class MdInputMemberCondition extends MdValue {
   /**
    * constructor.
    */
-  public MdInputMemberCondition() {}
+  public MdInputMemberCondition() {
+  }
 
   /**
    * constructor.
-   * @param tableName table name
+   *
+   * @param tableName  table name
    * @param expression expression
    */
   public MdInputMemberCondition(String tableName, String expression) {

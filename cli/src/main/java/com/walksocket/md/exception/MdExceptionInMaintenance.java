@@ -7,6 +7,7 @@ public class MdExceptionInMaintenance extends MdExceptionAbstract {
 
   /**
    * constructor.
+   *
    * @param message message
    */
   public MdExceptionInMaintenance(String message) {

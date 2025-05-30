@@ -2,7 +2,6 @@ package com.walksocket.md.output.parts;
 
 import com.google.gson.annotations.Expose;
 import com.walksocket.md.MdValue;
-
 import java.util.List;
 
 /**
@@ -30,8 +29,9 @@ public class MdOutputPartsRecord extends MdValue {
 
   /**
    * constructor.
-   * @param diffSeq diff seq
-   * @param baseValues base values
+   *
+   * @param diffSeq       diff seq
+   * @param baseValues    base values
    * @param compareValues compare values
    */
   public MdOutputPartsRecord(long diffSeq, List<String> baseValues, List<String> compareValues) {

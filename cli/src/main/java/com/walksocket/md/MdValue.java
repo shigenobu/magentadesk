@@ -11,14 +11,14 @@ public class MdValue {
 
   /**
    * get for velocity.
+   *
    * @param name name
    * @return value
    */
   public Object get(String name) {
     try {
       Field[] fields = getClass().getFields();
-      Optional<Field> opt = Arrays.asList(fields)
-          .stream()
+      Optional<Field> opt = Arrays.stream(fields)
           .filter(field -> field.getName().equals(name))
           .findFirst();
       if (opt.isPresent() && opt.get().get(this) != null) {

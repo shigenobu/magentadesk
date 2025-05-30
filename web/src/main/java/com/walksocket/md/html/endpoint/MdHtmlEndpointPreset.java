@@ -9,11 +9,13 @@ import com.walksocket.md.server.MdServerRequest;
 import com.walksocket.md.server.MdServerResponse;
 import com.walksocket.md.sqlite.MdSqliteConnection;
 import com.walksocket.md.sqlite.MdSqliteUtils;
-
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * html endpoint preset.
@@ -21,37 +23,45 @@ import java.util.stream.Collectors;
 public class MdHtmlEndpointPreset extends MdHtmlEndpointAbstract {
 
   @Override
-  public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws Exception {
+  public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws Exception {
     String path = request.getPath();
-    if (path.equals("/preset/list/")) {
-      list(request, response, con);
-      return;
-    } else if (path.equals("/preset/edit/")) {
-      edit(request, response, con);
-      return;
-    } else if (path.equals("/preset/save/")) {
-      save(request, response, con);
-      return;
-    } else if (path.equals("/preset/delete/")) {
-      delete(request, response, con);
-      return;
+    switch (path) {
+      case "/preset/list/" -> {
+        list(request, response, con);
+        return;
+      }
+      case "/preset/edit/" -> {
+        edit(request, response, con);
+        return;
+      }
+      case "/preset/save/" -> {
+        save(request, response, con);
+        return;
+      }
+      case "/preset/delete/" -> {
+        delete(request, response, con);
+        return;
+      }
     }
     renderOtherWithLayout(response, MdHtmlStatus.NOT_FOUND);
   }
 
   /**
    * list.
-   * @param request request
+   *
+   * @param request  request
    * @param response response
-   * @param con sqlite connection
-   * @throws IOException error
+   * @param con      sqlite connection
+   * @throws IOException  error
    * @throws SQLException sql error
    */
-  private void list(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws IOException, SQLException {
+  private void list(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws IOException, SQLException {
     // template
     MdTemplate template = createTemplate("html/preset/list.vm");
 
-    String sql = "";
+    String sql;
 
     // select
     sql = "SELECT " +
@@ -74,19 +84,19 @@ public class MdHtmlEndpointPreset extends MdHtmlEndpointAbstract {
       diffConfigIds.add(record.get("diffConfigId"));
       syncConfigIds.add(record.get("syncConfigId"));
     }
-    if (diffConfigIds.size() > 0) {
+    if (!diffConfigIds.isEmpty()) {
       sql = String.format(
           "SELECT diffConfigId, title FROM diffConfig WHERE diffConfigId in (%s)",
-          diffConfigIds.stream().collect(Collectors.joining(", ")));
+          String.join(", ", diffConfigIds));
       List<MdDbRecord> rsDiff = con.getRecords(sql);
       for (MdDbRecord r : rsDiff) {
         diffTitleMap.put(r.get("diffConfigId"), r.get("title"));
       }
     }
-    if (syncConfigIds.size() > 0) {
+    if (!syncConfigIds.isEmpty()) {
       sql = String.format(
           "SELECT syncConfigId, title FROM syncConfig WHERE syncConfigId in (%s)",
-          syncConfigIds.stream().collect(Collectors.joining(", ")));
+          String.join(", ", syncConfigIds));
       List<MdDbRecord> rsSync = con.getRecords(sql);
       for (MdDbRecord r : rsSync) {
         syncTitleMap.put(r.get("syncConfigId"), r.get("title"));
@@ -101,24 +111,26 @@ public class MdHtmlEndpointPreset extends MdHtmlEndpointAbstract {
 
   /**
    * edit.
-   * @param request request
+   *
+   * @param request  request
    * @param response response
-   * @param con sqlite connection
-   * @throws IOException error
+   * @param con      sqlite connection
+   * @throws IOException  error
    * @throws SQLException sql error
    */
-  private void edit(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws IOException, SQLException {
+  private void edit(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws IOException, SQLException {
     // template
     MdTemplate template = createTemplate("html/preset/edit.vm");
 
     // param
     String tmpPresetId = request.getQueryParam("presetId");
 
-    String sql = "";
+    String sql;
 
     // select
     MdHtmlSaveMode saveMode = MdHtmlSaveMode.UPDATE;
-    int presetId = 0;
+    int presetId;
     MdDbRecord record = null;
     if (!MdUtils.isNullOrEmpty(tmpPresetId)) {
       presetId = Integer.parseInt(tmpPresetId);
@@ -134,13 +146,13 @@ public class MdHtmlEndpointPreset extends MdHtmlEndpointAbstract {
     template.assign("saveMode", saveMode);
 
     // get all diff
-    List<MdDbRecord> diffRecords = new ArrayList<>();
+    List<MdDbRecord> diffRecords;
     sql = "SELECT diffConfigId, title FROM diffConfig ORDER BY diffConfigId DESC";
     diffRecords = con.getRecords(sql);
     template.assign("diffRecords", diffRecords);
 
     // get all sync
-    List<MdDbRecord> syncRecords = new ArrayList<>();
+    List<MdDbRecord> syncRecords;
     sql = "SELECT syncConfigId, title FROM syncConfig ORDER BY syncConfigId DESC";
     syncRecords = con.getRecords(sql);
     template.assign("syncRecords", syncRecords);
@@ -151,13 +163,15 @@ public class MdHtmlEndpointPreset extends MdHtmlEndpointAbstract {
 
   /**
    * save.
-   * @param request request
+   *
+   * @param request  request
    * @param response response
-   * @param con sqlite connection
-   * @throws IOException error
+   * @param con      sqlite connection
+   * @throws IOException  error
    * @throws SQLException sql error
    */
-  private void save(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws IOException, SQLException {
+  private void save(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws IOException, SQLException {
     // check
     if (!request.isPost()) {
       sendOther(response, MdHtmlStatus.METHOD_NOT_ALLOWED);
@@ -187,17 +201,19 @@ public class MdHtmlEndpointPreset extends MdHtmlEndpointAbstract {
     }
     int syncConfigId = Integer.parseInt(tmpSyncConfigId);
 
-    String sql = "";
+    String sql;
 
     // check
-    sql = String.format("SELECT diffConfigId FROM diffConfig WHERE diffConfigId = %s", diffConfigId);
+    sql = String.format("SELECT diffConfigId FROM diffConfig WHERE diffConfigId = %s",
+        diffConfigId);
     MdDbRecord rDiff = con.getRecord(sql);
     if (rDiff == null) {
       sendOther(response, MdHtmlStatus.BAD_REQUEST);
       return;
     }
 
-    sql = String.format("SELECT syncConfigId FROM syncConfig WHERE syncConfigId = %s", syncConfigId);
+    sql = String.format("SELECT syncConfigId FROM syncConfig WHERE syncConfigId = %s",
+        syncConfigId);
     MdDbRecord rSync = con.getRecord(sql);
     if (rSync == null) {
       sendOther(response, MdHtmlStatus.BAD_REQUEST);
@@ -250,13 +266,15 @@ public class MdHtmlEndpointPreset extends MdHtmlEndpointAbstract {
 
   /**
    * delete.
-   * @param request request
+   *
+   * @param request  request
    * @param response response
-   * @param con sqlite connection
-   * @throws IOException error
+   * @param con      sqlite connection
+   * @throws IOException  error
    * @throws SQLException sql error
    */
-  private void delete(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws IOException, SQLException {
+  private void delete(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws IOException, SQLException {
     // check
     if (!request.isDelete()) {
       sendOther(response, MdHtmlStatus.METHOD_NOT_ALLOWED);
@@ -271,7 +289,7 @@ public class MdHtmlEndpointPreset extends MdHtmlEndpointAbstract {
     }
     int presetId = Integer.parseInt(tmpPresetId);
 
-    String sql = "";
+    String sql;
 
     // check
     sql = String.format("SELECT projectId FROM projectPreset WHERE presetId = %s", presetId);
@@ -286,6 +304,6 @@ public class MdHtmlEndpointPreset extends MdHtmlEndpointAbstract {
     con.execute(sql);
 
     // ok
-    sendOk(response, String.format("/preset/list/"));
+    sendOk(response, "/preset/list/");
   }
 }

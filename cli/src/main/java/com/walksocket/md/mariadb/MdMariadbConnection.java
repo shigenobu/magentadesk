@@ -2,7 +2,6 @@ package com.walksocket.md.mariadb;
 
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.db.MdDbConnection;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -14,6 +13,7 @@ public class MdMariadbConnection extends MdDbConnection {
 
   /**
    * constructor.
+   *
    * @param connectionString connection string.
    */
   public MdMariadbConnection(String connectionString) {
@@ -22,6 +22,7 @@ public class MdMariadbConnection extends MdDbConnection {
 
   /**
    * open.
+   *
    * @throws SQLException sql error
    */
   public void open() throws SQLException {
@@ -41,6 +42,5 @@ public class MdMariadbConnection extends MdDbConnection {
       MdLogger.error(e);
     }
 
-    return;
   }
 }

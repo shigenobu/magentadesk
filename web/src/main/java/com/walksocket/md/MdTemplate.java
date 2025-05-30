@@ -2,14 +2,13 @@ package com.walksocket.md;
 
 import com.walksocket.md.template.MdTemplateHandler;
 import com.walksocket.md.template.MdTemplateUtils;
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
-
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
 
 /**
  * template.
@@ -22,12 +21,12 @@ public class MdTemplate {
    * テンプレートのパス
    * </pre>
    */
-  private String path;
+  private final String path;
 
   /**
    * velocity engine.
    */
-  private VelocityEngine engine = new VelocityEngine();
+  private final VelocityEngine engine = new VelocityEngine();
 
   /**
    * vars for assign.
@@ -39,6 +38,7 @@ public class MdTemplate {
 
   /**
    * constructor for class loader.
+   *
    * @param path template path
    */
   public MdTemplate(String path) {
@@ -59,8 +59,9 @@ public class MdTemplate {
 
   /**
    * constructor for file loader.
+   *
    * @param basePath base path of template
-   * @param path template path
+   * @param path     template path
    */
   public MdTemplate(String basePath, String path) {
     this.path = path;
@@ -81,7 +82,8 @@ public class MdTemplate {
 
   /**
    * assign var.
-   * @param key key
+   *
+   * @param key   key
    * @param value value
    */
   public void assign(String key, Object value) {
@@ -97,6 +99,7 @@ public class MdTemplate {
 
   /**
    * rendering template.
+   *
    * @return evaluated string
    */
   public String render() {

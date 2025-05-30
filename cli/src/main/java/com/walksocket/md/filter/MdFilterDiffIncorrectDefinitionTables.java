@@ -2,10 +2,9 @@ package com.walksocket.md.filter;
 
 import com.walksocket.md.MdInfoDiff;
 import com.walksocket.md.db.MdDbConnection;
+import com.walksocket.md.info.MdInfoDiffColumn;
 import com.walksocket.md.output.MdOutputDiff;
 import com.walksocket.md.output.member.MdOutputMemberIncorrectDefinitionTables;
-import com.walksocket.md.info.MdInfoDiffColumn;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -18,6 +17,7 @@ public class MdFilterDiffIncorrectDefinitionTables extends MdFilterDiffAbstract 
 
   /**
    * constructor.
+   *
    * @param con db connection
    */
   public MdFilterDiffIncorrectDefinitionTables(MdDbConnection con) {
@@ -25,7 +25,8 @@ public class MdFilterDiffIncorrectDefinitionTables extends MdFilterDiffAbstract 
   }
 
   @Override
-  public void filter(List<MdInfoDiff> baseInfoList, List<MdInfoDiff> compareInfoList, MdOutputDiff outputDiff) throws SQLException {
+  public void filter(List<MdInfoDiff> baseInfoList, List<MdInfoDiff> compareInfoList,
+      MdOutputDiff outputDiff) throws SQLException {
     List<MdInfoDiff> removedBaseInfoList = new ArrayList<>();
     List<MdInfoDiff> removedCompareInfoLIst = new ArrayList<>();
 
@@ -70,8 +71,8 @@ public class MdFilterDiffIncorrectDefinitionTables extends MdFilterDiffAbstract 
       // charset check
       if (!baseInfo.getInfoTable().isValidCollation()
           || !compareInfo.getInfoTable().isValidCollation()
-          || baseInfo.getRealColumns().stream().filter(c -> !c.isValidCollation()).findFirst().isPresent()
-          || compareInfo.getRealColumns().stream().filter(c -> !c.isValidCollation()).findFirst().isPresent()) {
+          || baseInfo.getRealColumns().stream().anyMatch(c -> !c.isValidCollation())
+          || compareInfo.getRealColumns().stream().anyMatch(c -> !c.isValidCollation())) {
         outputDiff.incorrectDefinitionTables.add(
             new MdOutputMemberIncorrectDefinitionTables(
                 baseInfo,

@@ -1,14 +1,17 @@
 package com.walksocket.md.html.endpoint;
 
 import com.google.gson.annotations.Expose;
-import com.walksocket.md.*;
-import com.walksocket.md.api.MdApiStatus;
+import com.walksocket.md.MdEndpointAbstract;
+import com.walksocket.md.MdEnv;
+import com.walksocket.md.MdJson;
+import com.walksocket.md.MdLogger;
+import com.walksocket.md.MdTemplate;
+import com.walksocket.md.MdUtils;
 import com.walksocket.md.html.MdHtmlStatus;
-import com.walksocket.md.output.MdOutputAbstract;
 import com.walksocket.md.server.MdServerRequest;
 import com.walksocket.md.server.MdServerResponse;
-
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * html endpoint abstract.
@@ -22,6 +25,7 @@ abstract public class MdHtmlEndpointAbstract extends MdEndpointAbstract {
 
   /**
    * set base path.
+   *
    * @param basePath base path
    */
   public static void setBasePath(String basePath) {
@@ -30,6 +34,7 @@ abstract public class MdHtmlEndpointAbstract extends MdEndpointAbstract {
 
   /**
    * get base path.
+   *
    * @return base path
    */
   public static String getBasePath() {
@@ -38,6 +43,7 @@ abstract public class MdHtmlEndpointAbstract extends MdEndpointAbstract {
 
   /**
    * create template.
+   *
    * @param path path
    * @return template
    */
@@ -59,6 +65,7 @@ abstract public class MdHtmlEndpointAbstract extends MdEndpointAbstract {
 
   /**
    * render ok.
+   *
    * @param response response
    * @param template template
    * @throws IOException error
@@ -69,11 +76,13 @@ abstract public class MdHtmlEndpointAbstract extends MdEndpointAbstract {
 
   /**
    * render ok with layout.
+   *
    * @param response response
    * @param template template
    * @throws IOException error
    */
-  protected void renderOkWithLayout(MdServerResponse response, MdTemplate template) throws IOException {
+  protected void renderOkWithLayout(MdServerResponse response, MdTemplate template)
+      throws IOException {
     MdTemplate layout = createTemplate("html/layout.vm");
     layout.assign("content", template.render());
     sendHtml(response, MdHtmlStatus.OK, layout.render());
@@ -81,8 +90,9 @@ abstract public class MdHtmlEndpointAbstract extends MdEndpointAbstract {
 
   /**
    * render other.
+   *
    * @param response response
-   * @param status status
+   * @param status   status
    * @throws IOException error
    */
   protected void renderOther(MdServerResponse response, MdHtmlStatus status) throws IOException {
@@ -91,11 +101,13 @@ abstract public class MdHtmlEndpointAbstract extends MdEndpointAbstract {
 
   /**
    * render other with layout.
+   *
    * @param response response
-   * @param status status
+   * @param status   status
    * @throws IOException error
    */
-  protected void renderOtherWithLayout(MdServerResponse response, MdHtmlStatus status) throws IOException {
+  protected void renderOtherWithLayout(MdServerResponse response, MdHtmlStatus status)
+      throws IOException {
     MdTemplate layout = createTemplate("html/layout.vm");
     layout.assign("content", status.getHtmlMessage());
     sendHtml(response, status, layout.render());
@@ -103,6 +115,7 @@ abstract public class MdHtmlEndpointAbstract extends MdEndpointAbstract {
 
   /**
    * send ok.
+   *
    * @param location location
    * @throws IOException error
    */
@@ -115,6 +128,7 @@ abstract public class MdHtmlEndpointAbstract extends MdEndpointAbstract {
 
   /**
    * send other.
+   *
    * @param status status
    * @throws IOException error
    */
@@ -127,8 +141,9 @@ abstract public class MdHtmlEndpointAbstract extends MdEndpointAbstract {
 
   /**
    * send ok json.
+   *
    * @param response response
-   * @param json json
+   * @param json     json
    */
   protected void sendOkJson(MdServerResponse response, String json) {
     response.setStatus(MdHtmlStatus.OK.getStatus());
@@ -138,11 +153,13 @@ abstract public class MdHtmlEndpointAbstract extends MdEndpointAbstract {
 
   /**
    * send json.
+   *
    * @param status status
-   * @param obj obj
+   * @param obj    obj
    * @throws IOException error
    */
-  private void sendJson(MdServerResponse response, MdHtmlStatus status, Object obj) throws IOException {
+  private void sendJson(MdServerResponse response, MdHtmlStatus status, Object obj)
+      throws IOException {
     String json = "";
     if (obj != null) {
       if (MdEnv.isPretty()) {
@@ -153,17 +170,19 @@ abstract public class MdHtmlEndpointAbstract extends MdEndpointAbstract {
     }
     response.setStatus(status.getStatus());
     response.setContentType("application/json; encoding=UTF8");
-    response.setBody(json);
+    response.setBody(Objects.requireNonNull(json));
   }
 
   /**
    * send html.
+   *
    * @param response response
-   * @param status status
-   * @param body body
+   * @param status   status
+   * @param body     body
    * @throws IOException error
    */
-  private void sendHtml(MdServerResponse response, MdHtmlStatus status, String body) throws IOException {
+  private void sendHtml(MdServerResponse response, MdHtmlStatus status, String body)
+      throws IOException {
     response.setStatus(status.getStatus());
     response.setContentType("text/html; charset=UTF-8");
     response.setBody(body);
@@ -172,7 +191,7 @@ abstract public class MdHtmlEndpointAbstract extends MdEndpointAbstract {
   /**
    * html response message.
    */
-  public class MdHtmlResponseMessage {
+  public static class MdHtmlResponseMessage {
 
     /**
      * status.
@@ -194,6 +213,7 @@ abstract public class MdHtmlEndpointAbstract extends MdEndpointAbstract {
 
     /**
      * constructor.
+     *
      * @param status status
      */
     public MdHtmlResponseMessage(MdHtmlStatus status) {
@@ -203,7 +223,8 @@ abstract public class MdHtmlEndpointAbstract extends MdEndpointAbstract {
 
     /**
      * constructor.
-     * @param status status
+     *
+     * @param status   status
      * @param location location
      */
     public MdHtmlResponseMessage(MdHtmlStatus status, String location) {

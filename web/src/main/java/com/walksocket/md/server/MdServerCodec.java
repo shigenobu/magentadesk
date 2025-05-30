@@ -1,11 +1,10 @@
 package com.walksocket.md.server;
 
 import com.walksocket.md.MdLogger;
-import org.apache.commons.codec.DecoderException;
-import org.apache.commons.codec.net.URLCodec;
-
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.net.URLCodec;
 
 /**
  * server codec.
@@ -14,6 +13,7 @@ public class MdServerCodec {
 
   /**
    * url encode.
+   *
    * @param target string
    * @return encoded string
    */
@@ -32,6 +32,7 @@ public class MdServerCodec {
 
   /**
    * url decode.
+   *
    * @param target string
    * @return decoded string
    */

@@ -7,6 +7,7 @@ public interface MdInfoDiffInterface {
 
   /**
    * get hash.
+   *
    * @return structure hash
    */
   String getHash();

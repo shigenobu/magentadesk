@@ -15,7 +15,6 @@ import com.walksocket.md.input.MdInputSync;
 import com.walksocket.md.server.MdServerRequest;
 import com.walksocket.md.server.MdServerResponse;
 import com.walksocket.md.sqlite.MdSqliteConnection;
-
 import java.util.stream.Collectors;
 
 /**
@@ -24,7 +23,8 @@ import java.util.stream.Collectors;
 public class MdHtmlEndpointReserve extends MdHtmlEndpointAbstract {
 
   @Override
-  public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws Exception {
+  public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws Exception {
     // template
     MdTemplate template = createTemplate("html/reserve/index.vm");
 
@@ -62,7 +62,8 @@ public class MdHtmlEndpointReserve extends MdHtmlEndpointAbstract {
         return;
       }
       presetId = Integer.parseInt(tmpPresetId);
-      presetRecord = con.getRecord(String.format("SELECT presetId, title FROM preset WHERE presetId = %s", presetId));
+      presetRecord = con.getRecord(
+          String.format("SELECT presetId, title FROM preset WHERE presetId = %s", presetId));
     }
     template.assign("presetId", presetId);
     template.assign("presetRecord", presetRecord);
@@ -87,7 +88,8 @@ public class MdHtmlEndpointReserve extends MdHtmlEndpointAbstract {
         // add param
         inputSync.summaryId = request.getBodyParam("summaryId");
         if (request.getBodyParam("diffMode").equals("each")) {
-          inputSync.diffSeqs = request.getBodyParams("diffSeqs[]").stream().map(s -> Long.parseLong(s)).collect(Collectors.toList());
+          inputSync.diffSeqs = request.getBodyParams("diffSeqs[]").stream()
+              .map(Long::parseLong).collect(Collectors.toList());
         }
         inputSync.run = Boolean.parseBoolean(request.getBodyParam("run"));
         inputSync.force = Boolean.parseBoolean(request.getBodyParam("force"));

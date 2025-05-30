@@ -6,20 +6,20 @@ import com.walksocket.md.db.MdDbFactory.DbType;
 import com.walksocket.md.db.MdDbRecord;
 import com.walksocket.md.exception.MdExceptionAbstract;
 import com.walksocket.md.exception.MdExceptionInvalidVersion;
-import com.walksocket.md.exception.MdExceptionUnknown;
 import com.walksocket.md.execute.MdExecuteAbstract;
 import com.walksocket.md.execute.MdExecuteDiff;
 import com.walksocket.md.execute.MdExecuteMaintenance;
 import com.walksocket.md.execute.MdExecuteSync;
 import com.walksocket.md.input.MdInputAbstract;
 import com.walksocket.md.output.MdOutputAbstract;
-
 import java.util.List;
+import java.util.Objects;
 
 public class MdExecute {
 
   /**
    * execute.
+   *
    * @param input input object
    * @return output object
    * @throws Exception several error
@@ -28,7 +28,7 @@ public class MdExecute {
     String sql;
     List<MdDbRecord> records;
 
-    Exception ex = new MdExceptionUnknown();
+    Exception ex;
     try (MdDbConnection con = MdDbFactory.newCreate(input.getConnectionString())) {
       if (con.getDbType() == DbType.MYSQL) {
         // check version
@@ -50,8 +50,10 @@ public class MdExecute {
             || version.contains("8.0.38")
             || version.contains("8.0.39")
             || version.contains("8.0.40")
-            || version.contains("8.0.41"))) {
-          throw new MdExceptionInvalidVersion("MySQL 8.0.31, 8.0.32, 8.0.33, 8.0.34, 8.0.35, 8.0.36, 8.0.37, 8.0.38, 8.0.39, 8.0.40, 8.0.41 is required.");
+            || version.contains("8.0.41")
+            || version.contains("8.0.42"))) {
+          throw new MdExceptionInvalidVersion(
+              "MySQL 8.0.31, 8.0.32, 8.0.33, 8.0.34, 8.0.35, 8.0.36, 8.0.37, 8.0.38, 8.0.39, 8.0.40, 8.0.41, 8.0.42 is required.");
         }
       } else {
         // check version
@@ -64,24 +66,13 @@ public class MdExecute {
         }
         if (MdUtils.isNullOrEmpty(version)
             || !version.contains("mariadb")
-            || !(version.contains("10.3.")
-            || version.contains("10.4.")
-            || version.contains("10.5.")
-            || version.contains("10.6.")
-            || version.contains("10.7.")
-            || version.contains("10.8.")
-            || version.contains("10.9.")
-            || version.contains("10.10.")
-            || version.contains("10.11.")
-            || version.contains("11.0.")
-            || version.contains("11.1.")
-            || version.contains("11.2.")
-            || version.contains("11.3.")
+            || !(version.contains("10.11.")
             || version.contains("11.4.")
             || version.contains("11.5.")
             || version.contains("11.6.")
             || version.contains("11.7."))) {
-          throw new MdExceptionInvalidVersion("MariaDB 10.3, 10.4, 10.5, 10.6, 10.7, 10.8, 10.9, 10.10, 10.11, 11.0, 11.1, 11.2, 11.3, 11.4, 11.5, 11.6, 11.7 is required.");
+          throw new MdExceptionInvalidVersion(
+              "MariaDB 10.11(LTS), 11.4(LTS), 11.5, 11.6, 11.7 is required.");
         }
       }
 
@@ -108,30 +99,35 @@ public class MdExecute {
           "  `tableComment` varchar(512)," +
           "  `columns` json," +
           "  primary key (`summaryId`, `tableName`)," +
-          "  foreign key (`summaryId`) references `magentadesk`.`diffSummary` (`summaryId`) on delete cascade" +
+          "  foreign key (`summaryId`) references `magentadesk`.`diffSummary` (`summaryId`) on delete cascade"
+          +
           ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
       con.execute(sql);
 
       if (con.getDbType() == DbType.MYSQL) {
         // create table `magentadesk`.`diffSequence`.
         sql = "CREATE TABLE IF NOT EXISTS `magentadesk`.`diffSequence` (" +
-          "  `id` bigint not null auto_increment," +
-          "  primary key (`id`)" +
-          ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+            "  `id` bigint not null auto_increment," +
+            "  primary key (`id`)" +
+            ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
         con.execute(sql);
 
         // create function `magentadesk`.`nextDiffSeq`.
-        sql = "CREATE FUNCTION IF NOT EXISTS `magentadesk`.`nextDiffSeq` () RETURNS INTEGER DETERMINISTIC" +
-          "  BEGIN" +
-          "    DECLARE lastId bigint;" +
-          "    SELECT id INTO lastId FROM `magentadesk`.`diffSequence`;" +
-          "    IF lastId IS NULL THEN INSERT IGNORE INTO `magentadesk`.`diffSequence` (`id`) VALUES (0);" +
-          "    ELSEIF lastId > 100000000 THEN DELETE FROM `magentadesk`.`diffSequence`; INSERT IGNORE INTO `magentadesk`.`diffSequence` (`id`) VALUES (0);" +
-          "    END IF;" +
-          "    UPDATE `magentadesk`.`diffSequence` SET `id` = LAST_INSERT_ID(`id` + 1);" +
-          "    SELECT LAST_INSERT_ID() INTO lastId;" +
-          "    RETURN lastId;" +
-          "  END";
+        sql =
+            "CREATE FUNCTION IF NOT EXISTS `magentadesk`.`nextDiffSeq` () RETURNS INTEGER DETERMINISTIC"
+                +
+                "  BEGIN" +
+                "    DECLARE lastId bigint;" +
+                "    SELECT id INTO lastId FROM `magentadesk`.`diffSequence`;" +
+                "    IF lastId IS NULL THEN INSERT IGNORE INTO `magentadesk`.`diffSequence` (`id`) VALUES (0);"
+                +
+                "    ELSEIF lastId > 100000000 THEN DELETE FROM `magentadesk`.`diffSequence`; INSERT IGNORE INTO `magentadesk`.`diffSequence` (`id`) VALUES (0);"
+                +
+                "    END IF;" +
+                "    UPDATE `magentadesk`.`diffSequence` SET `id` = LAST_INSERT_ID(`id` + 1);" +
+                "    SELECT LAST_INSERT_ID() INTO lastId;" +
+                "    RETURN lastId;" +
+                "  END";
         con.execute(sql);
 
         // create table `magentadesk`.`diffRecord`.
@@ -143,7 +139,8 @@ public class MdExecute {
             "  `compareValues` json," +
             "  primary key (`summaryId`, `tableName`, `diffSeq`)," +
             "  unique key (`diffSeq`)," +
-            "  foreign key (`summaryId`) references `magentadesk`.`diffSummary` (`summaryId`) on delete cascade" +
+            "  foreign key (`summaryId`) references `magentadesk`.`diffSummary` (`summaryId`) on delete cascade"
+            +
             ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
         con.execute(sql);
 
@@ -161,7 +158,8 @@ public class MdExecute {
             "  `compareValues` longblob," +
             "  primary key (`summaryId`, `tableName`, `diffSeq`)," +
             "  unique key (`diffSeq`)," +
-            "  foreign key (`summaryId`) references `magentadesk`.`diffSummary` (`summaryId`) on delete cascade" +
+            "  foreign key (`summaryId`) references `magentadesk`.`diffSummary` (`summaryId`) on delete cascade"
+            +
             ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
         con.execute(sql);
       }
@@ -200,9 +198,8 @@ public class MdExecute {
       } else if (mode == MdMode.MAINTENANCE) {
         execute = new MdExecuteMaintenance(con);
       }
-      MdOutputAbstract output = execute.execute(input);
 
-      return output;
+      return Objects.requireNonNull(execute).execute(input);
 
     } catch (MdExceptionAbstract e) {
       // rollback

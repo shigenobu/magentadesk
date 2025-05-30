@@ -2,7 +2,6 @@ package com.walksocket.md.info;
 
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.db.MdDbRecord;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,45 +14,46 @@ public class MdInfoDiffTrigger implements MdInfoDiffInterface {
   /**
    * trigger name.
    */
-  private String TRIGGER_NAME;
+  private final String TRIGGER_NAME;
 
   /**
    * event manipulation.
    */
-  private String EVENT_MANIPULATION;
+  private final String EVENT_MANIPULATION;
 
   /**
    * action order.
    */
-  private String ACTION_ORDER;
+  private final String ACTION_ORDER;
 
   /**
    * action statement.
    */
-  private String ACTION_STATEMENT;
+  private final String ACTION_STATEMENT;
 
   /**
    * action timing.
    */
-  private String ACTION_TIMING;
+  private final String ACTION_TIMING;
 
   /**
    * charset client.
    */
-  private String CHARACTER_SET_CLIENT;
+  private final String CHARACTER_SET_CLIENT;
 
   /**
    * collation connection.
    */
-  private String COLLATION_CONNECTION;
+  private final String COLLATION_CONNECTION;
 
   /**
    * database collation.
    */
-  private String DATABASE_COLLATION;
+  private final String DATABASE_COLLATION;
 
   /**
    * constructor.
+   *
    * @param record record
    * @throws SQLException sql error
    */

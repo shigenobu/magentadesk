@@ -3,7 +3,6 @@ package com.walksocket.md.output.member;
 import com.google.gson.annotations.Expose;
 import com.walksocket.md.MdInfoDiff;
 import com.walksocket.md.MdValue;
-
 import java.sql.SQLException;
 
 /**
@@ -37,11 +36,13 @@ public class MdOutputMemberMismatchDefinitionTable extends MdValue {
 
   /**
    * constructor.
-   * @param baseInfo base info
+   *
+   * @param baseInfo    base info
    * @param compareInfo compare info
    * @throws SQLException sql error
    */
-  public MdOutputMemberMismatchDefinitionTable(MdInfoDiff baseInfo, MdInfoDiff compareInfo) throws SQLException {
+  public MdOutputMemberMismatchDefinitionTable(MdInfoDiff baseInfo, MdInfoDiff compareInfo)
+      throws SQLException {
     this.tableName = baseInfo.getTableName();
     this.tableComment = baseInfo.getInfoTable().getTableComment();
     this.baseDefinition = baseInfo.getDefinition();

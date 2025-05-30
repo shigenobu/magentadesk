@@ -3,7 +3,6 @@ package com.walksocket.md.output.member;
 import com.google.gson.annotations.Expose;
 import com.walksocket.md.MdInfoDiff;
 import com.walksocket.md.MdValue;
-
 import java.sql.SQLException;
 
 /**
@@ -31,6 +30,7 @@ public class MdOutputMemberExistsOnlyCompareTable extends MdValue {
 
   /**
    * constructor.
+   *
    * @param compareInfo compare info
    * @throws SQLException sql error
    */

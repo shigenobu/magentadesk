@@ -78,16 +78,16 @@ public abstract class MdExceptionAbstract extends Exception {
     /**
      * unknown.
      */
-    UNKNOWN(99)
-    ;
+    UNKNOWN(99);
 
     /**
      * exit code.
      */
-    private int exitCode;
+    private final int exitCode;
 
     /**
      * constructor.
+     *
      * @param exitCode exit code
      */
     ExitCode(int exitCode) {
@@ -96,6 +96,7 @@ public abstract class MdExceptionAbstract extends Exception {
 
     /**
      * get exit code.
+     *
      * @return exit code.
      */
     public int getExitCode() {
@@ -112,6 +113,7 @@ public abstract class MdExceptionAbstract extends Exception {
 
   /**
    * constructor.
+   *
    * @param message message
    */
   public MdExceptionAbstract(String message) {
@@ -120,6 +122,7 @@ public abstract class MdExceptionAbstract extends Exception {
 
   /**
    * get exit code enum.
+   *
    * @return exit code enum
    */
   public abstract ExitCode getExitCode();

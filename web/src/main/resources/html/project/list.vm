@@ -1,74 +1,74 @@
 <div class="page-title">
-    <h1>PROJECT LIST</h1>
+  <h1>PROJECT LIST</h1>
 </div>
 
 <script src="/asset/js/json.js" type="text/javascript"></script>
 <div class="page-content">
-    <div class="page-buttons">
-        <a href="/project/edit/" class="btn-insert">NEW PROJECT</a>
-    </div>
+  <div class="page-buttons">
+    <a href="/project/edit/" class="btn-insert">NEW PROJECT</a>
+  </div>
 
-    <table class="list">
-        <thead>
+  <table class="list">
+    <thead>
+    <tr>
+      <td>-</td>
+      <td>projectId</td>
+      <td>title</td>
+      <td>explanation</td>
+      <td>host</td>
+      <td>port</td>
+      <td>charset</td>
+      <td>dbType</td>
+      <td>baseDatabase</td>
+      <td>compareDatabase</td>
+      <td>presetIdCount</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    </thead>
+    <tbody>
+        #foreach($record in $records)
         <tr>
-            <td>-</td>
-            <td>projectId</td>
-            <td>title</td>
-            <td>explanation</td>
-            <td>host</td>
-            <td>port</td>
-            <td>charset</td>
-            <td>dbType</td>
-            <td>baseDatabase</td>
-            <td>compareDatabase</td>
-            <td>presetIdCount</td>
-            <td>-</td>
-            <td>-</td>
+          <td>
+            <a href="/project/edit/?projectId=${record.get("projectId")}" class="btn-edit">EDIT</a>
+          </td>
+          <td>${record.get("projectId")}</td>
+          <td>${record.get("title")}</td>
+          <td>${record.get("explanation")}</td>
+          <td>${record.get("host")}</td>
+          <td>${record.get("port")}</td>
+          <td>${record.get("charset")}</td>
+          <td>${record.get("dbType")}</td>
+          <td>${record.get("baseDatabase")}</td>
+          <td>${record.get("compareDatabase")}</td>
+          <td>${record.get("presetIdCount")}</td>
+          <td>
+            <a href="/project/preset/?projectId=${record.get("projectId")}" class="btn-preset">PRESET</a>
+          </td>
+          <td>
+            <div class="vbox">
+              <form method="get" action="/json/mostly/maintenance/">
+                <input type="hidden" name="projectId" value="${record.get("projectId")}"/>
+                <input type="submit" class="btn-json" value="MOSTLY INPUT MAINTENANCE JSON"/>
+              </form>
+            </div>
+            <div class="vbox">
+              <form method="post" action="/reserve/maintenance/">
+                <input type="hidden" name="projectId" value="${record.get("projectId")}"/>
+                <input type="hidden" name="maintenance" value="on"/>
+                <input type="submit" class="btn-execute" value="GO MAINTENANCE ON"/>
+              </form>
+            </div>
+            <div class="vbox">
+              <form method="post" action="/reserve/maintenance/">
+                <input type="hidden" name="projectId" value="${record.get("projectId")}"/>
+                <input type="hidden" name="maintenance" value="off"/>
+                <input type="submit" class="btn-execute" value="GO MAINTENANCE OFF"/>
+              </form>
+            </div>
+          </td>
         </tr>
-        </thead>
-        <tbody>
-            #foreach($record in $records)
-            <tr>
-                <td>
-                    <a href="/project/edit/?projectId=${record.get("projectId")}" class="btn-edit">EDIT</a>
-                </td>
-                <td>${record.get("projectId")}</td>
-                <td>${record.get("title")}</td>
-                <td>${record.get("explanation")}</td>
-                <td>${record.get("host")}</td>
-                <td>${record.get("port")}</td>
-                <td>${record.get("charset")}</td>
-                <td>${record.get("dbType")}</td>
-                <td>${record.get("baseDatabase")}</td>
-                <td>${record.get("compareDatabase")}</td>
-                <td>${record.get("presetIdCount")}</td>
-                <td>
-                    <a href="/project/preset/?projectId=${record.get("projectId")}" class="btn-preset">PRESET</a>
-                </td>
-                <td>
-                    <div class="vbox">
-                        <form method="get" action="/json/mostly/maintenance/">
-                            <input type="hidden" name="projectId" value="${record.get("projectId")}" />
-                            <input type="submit" class="btn-json" value="MOSTLY INPUT MAINTENANCE JSON" />
-                        </form>
-                    </div>
-                    <div class="vbox">
-                        <form method="post" action="/reserve/maintenance/">
-                            <input type="hidden" name="projectId" value="${record.get("projectId")}" />
-                            <input type="hidden" name="maintenance" value="on" />
-                            <input type="submit" class="btn-execute" value="GO MAINTENANCE ON" />
-                        </form>
-                    </div>
-                    <div class="vbox">
-                        <form method="post" action="/reserve/maintenance/">
-                            <input type="hidden" name="projectId" value="${record.get("projectId")}" />
-                            <input type="hidden" name="maintenance" value="off" />
-                            <input type="submit" class="btn-execute" value="GO MAINTENANCE OFF" />
-                        </form>
-                    </div>
-                </td>
-            </tr>
-            #end
-        </tbody>
-    </table>
+        #end
+    </tbody>
+  </table>
 </div>

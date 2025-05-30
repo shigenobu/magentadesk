@@ -9,9 +9,7 @@ import com.walksocket.md.exception.MdExceptionDisallowSimultaneousExecution;
 import com.walksocket.md.exception.MdExceptionInMaintenance;
 import com.walksocket.md.input.MdInputAbstract;
 import com.walksocket.md.input.MdInputMaintenance;
-import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.output.MdOutputAbstract;
-
 import java.sql.SQLException;
 import java.util.List;
 
@@ -27,6 +25,7 @@ public abstract class MdExecuteAbstract {
 
   /**
    * constructor.
+   *
    * @param con db connection
    */
   public MdExecuteAbstract(MdDbConnection con) {
@@ -35,6 +34,7 @@ public abstract class MdExecuteAbstract {
 
   /**
    * execute.
+   *
    * @param input input
    * @return output
    * @throws Exception sql error
@@ -43,7 +43,8 @@ public abstract class MdExecuteAbstract {
 
   /**
    * lock.
-   * @param baseDatabase base database
+   *
+   * @param baseDatabase    base database
    * @param compareDatabase compare database
    * @throws Exception several error
    */
@@ -89,7 +90,8 @@ public abstract class MdExecuteAbstract {
 
   /**
    * check maintenance.
-   * @param baseDatabase base database
+   *
+   * @param baseDatabase    base database
    * @param compareDatabase compare database
    * @throws Exception several error
    */

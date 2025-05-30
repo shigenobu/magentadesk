@@ -2,8 +2,6 @@ package com.walksocket.md.http;
 
 import com.google.gson.annotations.Expose;
 import com.walksocket.md.output.member.MdOutputMemberReflectedRecordTable;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,14 +19,16 @@ public class MdHttpRequest {
    * reflected records.
    */
   @Expose
-  public List<MdOutputMemberReflectedRecordTable> reflectedRecordTables = new ArrayList<>();
+  public List<MdOutputMemberReflectedRecordTable> reflectedRecordTables;
 
   /**
    * constructor.
-   * @param run run
+   *
+   * @param run                   run
    * @param reflectedRecordTables reflected record tables
    */
-  public MdHttpRequest(boolean run, List<MdOutputMemberReflectedRecordTable> reflectedRecordTables) {
+  public MdHttpRequest(boolean run,
+      List<MdOutputMemberReflectedRecordTable> reflectedRecordTables) {
     this.run = run;
     this.reflectedRecordTables = reflectedRecordTables;
   }

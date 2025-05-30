@@ -5,7 +5,6 @@ import com.walksocket.md.MdInfoSync;
 import com.walksocket.md.MdValue;
 import com.walksocket.md.output.parts.MdOutputPartsColumn;
 import com.walksocket.md.output.parts.MdOutputPartsReflectedRecord;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +39,7 @@ public class MdOutputMemberReflectedRecordTable extends MdValue {
 
   /**
    * constructor.
+   *
    * @param info info
    */
   public MdOutputMemberReflectedRecordTable(MdInfoSync info) {

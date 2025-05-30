@@ -1,7 +1,5 @@
 package com.walksocket.md.mysql;
 
-import com.walksocket.md.mariadb.MdMariadbUtils.MdMariadbColumnType;
-import com.walksocket.md.mariadb.MdMariadbUtils.MdMariadbDynamicType;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +16,6 @@ public class MdMysqlUtils {
     NUBMER,
     STRING,
     BINARY
-    ;
   }
 
   /**
@@ -36,18 +33,17 @@ public class MdMysqlUtils {
     YEAR,
     CHAR,
     JSON
-    ;
   }
 
   /**
    * column type mapping.
    */
-  private static Map<String, MdMysqlColumnType> columnTypes = new HashMap<>();
+  private static final Map<String, MdMysqlColumnType> columnTypes = new HashMap<>();
 
   /**
    * returning type mapping.
    */
-  private static Map<String, MdMysqlReturningType> returningTypes = new HashMap<>();
+  private static final Map<String, MdMysqlReturningType> returningTypes = new HashMap<>();
 
   static {
     // columnTypes
@@ -121,9 +117,10 @@ public class MdMysqlUtils {
 
   /**
    * is binary.
+   *
    * @param columnType column type
    * @return if binary, true
-   * @exception SQLException sql error
+   * @throws SQLException sql error
    */
   public static boolean isBinary(String columnType) throws SQLException {
     columnType = columnType.toUpperCase();
@@ -143,9 +140,10 @@ public class MdMysqlUtils {
 
   /**
    * get column type.
+   *
    * @param columnType column type string
    * @return column type enum
-   * @exception SQLException sql error
+   * @throws SQLException sql error
    */
   public static MdMysqlColumnType getColumnType(String columnType) throws SQLException {
     columnType = columnType.toUpperCase();
@@ -165,18 +163,19 @@ public class MdMysqlUtils {
 
   /**
    * get returning type.
+   *
    * @param columnType column type string
    * @return dynamic type enum
-   * @exception SQLException sql error
+   * @throws SQLException sql error
    */
   public static MdMysqlReturningType getReturningType(String columnType) throws SQLException {
     columnType = columnType.toUpperCase();
     if ((
         columnType.startsWith("TINYINT")
-          || columnType.startsWith("SMALLINT")
-          || columnType.startsWith("MEDIUMINT")
-          || columnType.startsWith("INT")
-          || columnType.startsWith("BIGINT"))
+            || columnType.startsWith("SMALLINT")
+            || columnType.startsWith("MEDIUMINT")
+            || columnType.startsWith("INT")
+            || columnType.startsWith("BIGINT"))
         && columnType.contains("UNSIGNED")) {
       return MdMysqlReturningType.UNSIGNED;
     }

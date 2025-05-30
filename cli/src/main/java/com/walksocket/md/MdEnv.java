@@ -28,7 +28,7 @@ public class MdEnv {
   private static int limitMismatchCount = 10000;
 
   /**
-   * magentadesk home diretory.
+   * magentadesk home directory.
    */
   private static String mdHome = System.getProperty("user.home") + File.separator + ".magentadesk";
 
@@ -75,6 +75,7 @@ public class MdEnv {
 
   /**
    * is debug.
+   *
    * @return if debug, true
    */
   public static boolean isDebug() {
@@ -90,6 +91,7 @@ public class MdEnv {
 
   /**
    * is pretty.
+   *
    * @return if pretty, true
    */
   public static boolean isPretty() {
@@ -105,6 +107,7 @@ public class MdEnv {
 
   /**
    * get limit length.
+   *
    * @return limit length.
    */
   public static int getLimitLength() {
@@ -113,6 +116,7 @@ public class MdEnv {
 
   /**
    * get limit mismatch count.
+   *
    * @return limit mismatch count.
    */
   public static int getLimitMismatchCount() {
@@ -121,6 +125,7 @@ public class MdEnv {
 
   /**
    * set limit length.
+   *
    * @param limitLength limit length
    */
   public static void setLimitLength(int limitLength) {
@@ -129,6 +134,7 @@ public class MdEnv {
 
   /**
    * set limit mismatch count.
+   *
    * @param limitMismatchCount limit mismatch count
    */
   public static void setLimitMismatchCount(int limitMismatchCount) {
@@ -136,8 +142,9 @@ public class MdEnv {
   }
 
   /**
-   * get magentadesk home diretory.
-   * @return magentadesk home diretory
+   * get magentadesk home directory.
+   *
+   * @return magentadesk home directory
    */
   public static String getMdHome() {
     return mdHome;
@@ -145,6 +152,7 @@ public class MdEnv {
 
   /**
    * set is wait.
+   *
    * @param isWait is wait
    */
   public static void setIsWait(boolean isWait) {
@@ -153,6 +161,7 @@ public class MdEnv {
 
   /**
    * is wait.
+   *
    * @return lock wait is true, default is false.
    */
   public static boolean isWait() {

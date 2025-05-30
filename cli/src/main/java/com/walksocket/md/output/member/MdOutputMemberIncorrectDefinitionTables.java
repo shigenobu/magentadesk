@@ -3,7 +3,6 @@ package com.walksocket.md.output.member;
 import com.google.gson.annotations.Expose;
 import com.walksocket.md.MdInfoDiff;
 import com.walksocket.md.MdValue;
-
 import java.sql.SQLException;
 
 /**
@@ -35,10 +34,11 @@ public class MdOutputMemberIncorrectDefinitionTables extends MdValue {
     /**
      * reason.
      */
-    private String reason;
+    private final String reason;
 
     /**
      * constructor.
+     *
      * @param reason reason
      */
     MdOutputMemberIncorrectReason(String reason) {
@@ -47,6 +47,7 @@ public class MdOutputMemberIncorrectDefinitionTables extends MdValue {
 
     /**
      * get reason.
+     *
      * @return reason
      */
     public String getReason() {
@@ -80,11 +81,13 @@ public class MdOutputMemberIncorrectDefinitionTables extends MdValue {
 
   /**
    * constructor.
-   * @param info info
+   *
+   * @param info   info
    * @param reason reason
    * @throws SQLException sql error
    */
-  public MdOutputMemberIncorrectDefinitionTables(MdInfoDiff info, MdOutputMemberIncorrectReason reason) throws SQLException {
+  public MdOutputMemberIncorrectDefinitionTables(MdInfoDiff info,
+      MdOutputMemberIncorrectReason reason) throws SQLException {
     this.tableName = info.getTableName();
     this.tableComment = info.getInfoTable().getTableComment();
     this.definition = info.getDefinition();

@@ -1,12 +1,11 @@
 package com.walksocket.md.template;
 
-import org.apache.commons.text.StringEscapeUtils;
-import org.apache.velocity.app.event.ReferenceInsertionEventHandler;
-import org.apache.velocity.context.Context;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.apache.commons.text.StringEscapeUtils;
+import org.apache.velocity.app.event.ReferenceInsertionEventHandler;
+import org.apache.velocity.context.Context;
 
 /**
  * template handler.
@@ -16,7 +15,7 @@ public class MdTemplateHandler implements ReferenceInsertionEventHandler {
   /**
    * non escape Strings.
    */
-  private static List<String> nonEscapes = new ArrayList<String>();
+  private static final List<String> nonEscapes = new ArrayList<>();
 
   static {
     nonEscapes.add("${" + MdTemplateUtils.class.getSimpleName() + ".");
@@ -29,7 +28,7 @@ public class MdTemplateHandler implements ReferenceInsertionEventHandler {
       return "";
     }
     Optional<String> opt = nonEscapes.stream()
-        .filter(nonEscape -> reference.startsWith(nonEscape))
+        .filter(reference::startsWith)
         .findFirst();
     if (opt.isPresent()) {
       return value;

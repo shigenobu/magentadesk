@@ -24,10 +24,11 @@ public enum MdMode {
   /**
    * mode.
    */
-  private String mode;
+  private final String mode;
 
   /**
    * constructor.
+   *
    * @param mode mode
    */
   MdMode(String mode) {
@@ -36,6 +37,7 @@ public enum MdMode {
 
   /**
    * get mode.
+   *
    * @return mode
    */
   public String getMode() {

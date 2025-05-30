@@ -3,7 +3,6 @@ package com.walksocket.md.input.member;
 import com.google.gson.annotations.Expose;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.MdValue;
-
 import java.util.List;
 
 /**
@@ -31,8 +30,9 @@ public class MdInputMemberHttp extends MdValue {
 
   /**
    * constructor.
-   * @param url command
-   * @param timeout timeout
+   *
+   * @param url               command
+   * @param timeout           timeout
    * @param successStatusList success status list
    */
   public MdInputMemberHttp(String url, int timeout, List<Integer> successStatusList) {
@@ -43,6 +43,7 @@ public class MdInputMemberHttp extends MdValue {
 
   /**
    * is valid before.
+   *
    * @return if valid, return true
    */
   public boolean isValidBefore() {
@@ -52,23 +53,18 @@ public class MdInputMemberHttp extends MdValue {
     if (timeout <= 0) {
       return false;
     }
-    if (MdUtils.isNullOrEmpty(successStatusList)) {
-      return false;
-    }
-    return true;
+    return !MdUtils.isNullOrEmpty(successStatusList);
   }
 
   /**
    * is valid after.
+   *
    * @return if valid, return true
    */
   public boolean isValidAfter() {
     if (MdUtils.isNullOrEmpty(url) || !url.startsWith("http")) {
       return false;
     }
-    if (timeout <= 0) {
-      return false;
-    }
-    return true;
+    return timeout > 0;
   }
 }

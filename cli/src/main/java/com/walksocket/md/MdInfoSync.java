@@ -3,13 +3,12 @@ package com.walksocket.md;
 import com.walksocket.md.db.MdDbConnection;
 import com.walksocket.md.db.MdDbRecord;
 import com.walksocket.md.input.MdInputSync;
-import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.output.parts.MdOutputPartsColumn;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -19,10 +18,11 @@ public class MdInfoSync {
 
   /**
    * create info list.
-   * @param con db connection
-   * @param baseDatabase base database
+   *
+   * @param con             db connection
+   * @param baseDatabase    base database
    * @param compareDatabase compare database
-   * @param inputSync input object
+   * @param inputSync       input object
    * @return listed info
    * @throws SQLException sql error
    */
@@ -45,14 +45,15 @@ public class MdInfoSync {
     for (MdDbRecord record : records) {
       String tableName = record.get("tableName");
       String tableComment = record.get("tableComment");
-      MdOutputPartsColumn[] columns = MdJson.toObject(record.get("columns"), MdOutputPartsColumn[].class);
+      MdOutputPartsColumn[] columns = MdJson.toObject(record.get("columns"),
+          MdOutputPartsColumn[].class);
 
       MdInfoSync info = new MdInfoSync(
           baseDatabase,
           compareDatabase,
           tableName,
           tableComment,
-          Arrays.asList(columns));
+          Arrays.asList(Objects.requireNonNull(columns)));
       infoList.add(info);
     }
 
@@ -70,9 +71,7 @@ public class MdInfoSync {
           .stream()
           .filter(i -> i.getTableName().equals(tableName))
           .findFirst();
-      if (opt.isPresent()) {
-        opt.get().addDiffSeq(diffSeq);
-      }
+      opt.ifPresent(mdInfoSync -> mdInfoSync.addDiffSeq(diffSeq));
     }
 
     return infoList;
@@ -81,42 +80,44 @@ public class MdInfoSync {
   /**
    * base database.
    */
-  private String baseDatabase;
+  private final String baseDatabase;
 
   /**
    * compare database.
    */
-  private String compareDatabase;
+  private final String compareDatabase;
 
   /**
    * table name.
    */
-  private String tableName;
+  private final String tableName;
 
   /**
    * table comment.
    */
-  private String tableComment;
+  private final String tableComment;
 
   /**
    * columns.
    */
-  private List<MdOutputPartsColumn> columns;
+  private final List<MdOutputPartsColumn> columns;
 
   /**
    * diff seqs.
    */
-  private List<Long> diffSeqs = new ArrayList<>();
+  private final List<Long> diffSeqs = new ArrayList<>();
 
   /**
    * constructor.
-   * @param baseDatabase base database
+   *
+   * @param baseDatabase    base database
    * @param compareDatabase compare database
-   * @param tableName table name
-   * @param tableComment table comment
-   * @param columns columns
+   * @param tableName       table name
+   * @param tableComment    table comment
+   * @param columns         columns
    */
-  protected MdInfoSync(String baseDatabase, String compareDatabase, String tableName, String tableComment, List<MdOutputPartsColumn> columns) {
+  protected MdInfoSync(String baseDatabase, String compareDatabase, String tableName,
+      String tableComment, List<MdOutputPartsColumn> columns) {
     this.baseDatabase = baseDatabase;
     this.compareDatabase = compareDatabase;
     this.tableName = tableName;
@@ -126,6 +127,7 @@ public class MdInfoSync {
 
   /**
    * get base database.
+   *
    * @return base database
    */
   public String getBaseDatabase() {
@@ -134,6 +136,7 @@ public class MdInfoSync {
 
   /**
    * get compare database.
+   *
    * @return compare database
    */
   public String getCompareDatabase() {
@@ -142,6 +145,7 @@ public class MdInfoSync {
 
   /**
    * get table name.
+   *
    * @return table name.
    */
   public String getTableName() {
@@ -150,6 +154,7 @@ public class MdInfoSync {
 
   /**
    * get table comment.
+   *
    * @return table comment
    */
   public String getTableComment() {
@@ -158,6 +163,7 @@ public class MdInfoSync {
 
   /**
    * get columns.
+   *
    * @return columns
    */
   public List<MdOutputPartsColumn> getColumns() {
@@ -166,6 +172,7 @@ public class MdInfoSync {
 
   /**
    * add diff seq.
+   *
    * @param diffSeq diff seq
    */
   protected void addDiffSeq(long diffSeq) {
@@ -174,6 +181,7 @@ public class MdInfoSync {
 
   /**
    * get diff seqs.
+   *
    * @return diff seqs.
    */
   public List<Long> getDiffSeqs() {

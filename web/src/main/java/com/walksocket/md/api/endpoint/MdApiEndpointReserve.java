@@ -19,7 +19,8 @@ import com.walksocket.md.sqlite.MdSqliteConnection;
 public class MdApiEndpointReserve extends MdApiEndpointAbstract {
 
   @Override
-  public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws Exception {
+  public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws Exception {
     // method check
     if (!request.isPost()) {
       // method not allowed
@@ -70,6 +71,5 @@ public class MdApiEndpointReserve extends MdApiEndpointAbstract {
     // accepted
     response.addHeader(HEADER_EXECUTION_ID, executionId);
     sendReserved(response);
-    return;
   }
 }

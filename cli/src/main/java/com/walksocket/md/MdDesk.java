@@ -8,7 +8,6 @@ import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.mysql.MdMysqlUtils;
 import com.walksocket.md.output.parts.MdOutputPartsColumn;
 import com.walksocket.md.output.parts.MdOutputPartsRecord;
-
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,10 +23,11 @@ public class MdDesk {
   /**
    * db connection.
    */
-  private MdDbConnection con;
+  private final MdDbConnection con;
 
   /**
    * constructor.
+   *
    * @param con db connection
    */
   public MdDesk(MdDbConnection con) {
@@ -36,14 +36,16 @@ public class MdDesk {
 
   /**
    * get primary values.
+   *
    * @param primaryColumns primary columns
-   * @param diffSeq diff seq
+   * @param diffSeq        diff seq
    * @return primary map values
    * @throws SQLException sql error
    */
-  public Map<String, String> getPrimaryValues(List<String> primaryColumns, long diffSeq) throws SQLException {
+  public Map<String, String> getPrimaryValues(List<String> primaryColumns, long diffSeq)
+      throws SQLException {
     List<MdDbRecord> records;
-    String sql = "";
+    String sql;
 
     Map<String, String> primaryValues = new LinkedHashMap<>();
     sql = String.format(
@@ -64,13 +66,15 @@ public class MdDesk {
 
   /**
    * get part records for diff.
-   * @param summaryId summary id
-   * @param baseInfo base info
+   *
+   * @param summaryId   summary id
+   * @param baseInfo    base info
    * @param compareInfo compare info
    * @return part records
    * @throws SQLException sql error
    */
-  public List<MdOutputPartsRecord> getPartRecordsForDiff(String summaryId, MdInfoDiff baseInfo, MdInfoDiff compareInfo) throws SQLException {
+  public List<MdOutputPartsRecord> getPartRecordsForDiff(String summaryId, MdInfoDiff baseInfo,
+      MdInfoDiff compareInfo) throws SQLException {
     // get base columns
     List<String> baseColumns = new ArrayList<>();
     for (MdInfoDiffColumn column : baseInfo.getRealColumns()) {
@@ -149,12 +153,14 @@ public class MdDesk {
 
   /**
    * get part records for sync.
+   *
    * @param diffSeqs diff seqs.
-   * @param columns columns
+   * @param columns  columns
    * @return part records
    * @throws SQLException sql error
    */
-  public List<MdOutputPartsRecord> getPartRecordsForSync(List<Long> diffSeqs, List<MdOutputPartsColumn> columns) throws SQLException {
+  public List<MdOutputPartsRecord> getPartRecordsForSync(List<Long> diffSeqs,
+      List<MdOutputPartsColumn> columns) throws SQLException {
     // get columns
     List<String> baseColumns = new ArrayList<>();
     List<String> compareColumns = new ArrayList<>();
@@ -219,6 +225,7 @@ public class MdDesk {
 
   /**
    * get part records.
+   *
    * @param sql sql
    * @return part records
    * @throws SQLException sql error
@@ -239,7 +246,7 @@ public class MdDesk {
 
         if (!MdUtils.isNullOrEmpty(columnValue)
             && columnValue.getBytes(StandardCharsets.UTF_8).length > MdEnv.getLimitLength()) {
-          // if lenght over MD_LIMIT_LENGTH, column value is to hash.
+          // if length over MD_LIMIT_LENGTH, column value is to hash.
           columnValue = String.format("[HASH]%s", MdUtils.getHash(columnValue));
         }
 

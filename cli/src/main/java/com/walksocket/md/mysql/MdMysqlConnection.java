@@ -13,6 +13,7 @@ public class MdMysqlConnection extends MdDbConnection {
 
   /**
    * constructor.
+   *
    * @param connectionString connection string.
    */
   public MdMysqlConnection(String connectionString) {
@@ -21,6 +22,7 @@ public class MdMysqlConnection extends MdDbConnection {
 
   /**
    * open.
+   *
    * @throws SQLException sql error
    */
   @Override
@@ -41,6 +43,5 @@ public class MdMysqlConnection extends MdDbConnection {
       MdLogger.error(e);
     }
 
-    return;
   }
 }

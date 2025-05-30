@@ -1,417 +1,446 @@
 <style>
-    h5.magenta_sync_headline {
-        font-weight: bold;
-    }
-    div.magenta_sync_area {
-        margin-top: 10px;
-        margin-bottom: 5px;
-    }
-    ul.magenta_sync_ul {
-        list-style-type: square;
-    }
-    div.magenta_sync_open {
-        cursor: pointer;
-    }
-    div.magenta_sync_slide {
-        display: none;
-        padding: 5px;
-    }
-    div.magenta_sync_slide pre {
-        background-color: lightgrey;
-        font-size: 90%;
-        margin: 2px;
-        padding: 4px;
-    }
-    table.magenta_sync_list {
-        margin-top: 5px;
-        margin-bottom: 10px;
-        font-size: 90%;
-        border-collapse: collapse;
-    }
-    table.magenta_sync_list thead td {
-        text-align: center;
-        font-weight: bold;
-        padding: 2px 4px 2px 4px;
-        background-color: black;
-        font-size: 90%;
-        color: white;
-        white-space: nowrap;
-        border: 1px solid dimgrey;
-    }
-    table.magenta_sync_list tbody tr {
-        border: 1px solid gainsboro;
-    }
-    table.magenta_sync_list tbody td {
-        background-color: lightgrey;
-        font-size: 90%;
-        padding: 2px 4px 2px 4px;
-        max-width: 180px;
-        white-space: nowrap;
-        word-wrap: break-word;
-        text-overflow: ellipsis;
-        overflow: hidden;
-    }
-    table.magenta_sync_list tbody td:nth-child(n + 2) {
-        min-width: 50px;
-    }
-    table.magenta_sync_list tbody td:nth-child(n + 2):active {
-        white-space: normal;
-        overflow: scroll;
-    }
-    table.magenta_sync_list tbody td.magenta_nosync_column {
-        background-color: yellow;
-    }
-    table.magenta_sync_list tbody td span.all_null {
-        color: whitesmoke;
-    }
-    table.magenta_sync_list tbody td hr {
-        border: 1px dashed whitesmoke;
-    }
-    div.magenta_sync_result {
-        display: block;
-        border: 2px dotted gray;
-        padding: 10px;
-    }
-    div.magenta_sync_result > div {
-        padding-bottom: 2px;
-        margin-bottom: 10px;
-    }
-    div.magenta_sync_result p {
-        margin: 5px 0px 5px 0px;
-        font-weight: bold;
-    }
+  h5.magenta_sync_headline {
+    font-weight: bold;
+  }
+
+  div.magenta_sync_area {
+    margin-top: 10px;
+    margin-bottom: 5px;
+  }
+
+  ul.magenta_sync_ul {
+    list-style-type: square;
+  }
+
+  div.magenta_sync_open {
+    cursor: pointer;
+  }
+
+  div.magenta_sync_slide {
+    display: none;
+    padding: 5px;
+  }
+
+  div.magenta_sync_slide pre {
+    background-color: lightgrey;
+    font-size: 90%;
+    margin: 2px;
+    padding: 4px;
+  }
+
+  table.magenta_sync_list {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-size: 90%;
+    border-collapse: collapse;
+  }
+
+  table.magenta_sync_list thead td {
+    text-align: center;
+    font-weight: bold;
+    padding: 2px 4px 2px 4px;
+    background-color: black;
+    font-size: 90%;
+    color: white;
+    white-space: nowrap;
+    border: 1px solid dimgrey;
+  }
+
+  table.magenta_sync_list tbody tr {
+    border: 1px solid gainsboro;
+  }
+
+  table.magenta_sync_list tbody td {
+    background-color: lightgrey;
+    font-size: 90%;
+    padding: 2px 4px 2px 4px;
+    max-width: 180px;
+    white-space: nowrap;
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  table.magenta_sync_list tbody td:nth-child(n + 2) {
+    min-width: 50px;
+  }
+
+  table.magenta_sync_list tbody td:nth-child(n + 2):active {
+    white-space: normal;
+    overflow: scroll;
+  }
+
+  table.magenta_sync_list tbody td.magenta_nosync_column {
+    background-color: yellow;
+  }
+
+  table.magenta_sync_list tbody td span.all_null {
+    color: whitesmoke;
+  }
+
+  table.magenta_sync_list tbody td hr {
+    border: 1px dashed whitesmoke;
+  }
+
+  div.magenta_sync_result {
+    display: block;
+    border: 2px dotted gray;
+    padding: 10px;
+  }
+
+  div.magenta_sync_result > div {
+    padding-bottom: 2px;
+    margin-bottom: 10px;
+  }
+
+  div.magenta_sync_result p {
+    margin: 5px 0px 5px 0px;
+    font-weight: bold;
+  }
 </style>
 
 <script src="/asset/js/json.js" type="text/javascript"></script>
 <div>
-    <div class="hbox">
-        <form method="get" action="/json/really/sync/input/">
-            <input type="hidden" name="executionId" value="${executionId}" />
-            <input type="submit" class="btn-json" value="REALLY INPUT SYNC JSON" />
-        </form>
-    </div>
-    <div class="hbox">
-        <form method="get" action="/json/really/sync/output/">
-            <input type="hidden" name="executionId" value="${executionId}" />
-            <input type="submit" class="btn-json" value="REALLY OUTPUT SYNC JSON" />
-        </form>
-    </div>
+  <div class="hbox">
+    <form method="get" action="/json/really/sync/input/">
+      <input type="hidden" name="executionId" value="${executionId}"/>
+      <input type="submit" class="btn-json" value="REALLY INPUT SYNC JSON"/>
+    </form>
+  </div>
+  <div class="hbox">
+    <form method="get" action="/json/really/sync/output/">
+      <input type="hidden" name="executionId" value="${executionId}"/>
+      <input type="submit" class="btn-json" value="REALLY OUTPUT SYNC JSON"/>
+    </form>
+  </div>
 </div>
 
 #if($output.reflectedRecordTables.size() > 0)
 <div class="magenta_sync_area">
-    <h5 class="magenta_sync_headline">reflected record tables</h5>
-    <ul class="magenta_sync_ul">
-        #foreach($table in $output.reflectedRecordTables)
+  <h5 class="magenta_sync_headline">reflected record tables</h5>
+  <ul class="magenta_sync_ul">
+      #foreach($table in $output.reflectedRecordTables)
         <li>
-            <div>
-                ${table.records.size()} rows
-                -
-                ${table.tableName}
-                #if(!$table.tableComment.equals(""))
-                    / ${table.tableComment}
-                #end
-            </div>
-            <div>
-                <table class="magenta_sync_list">
-                    <thead>
-                    <tr>
-                        <td>DIFF SEQ</td>
-                        #foreach($column in $table.columns)
-                        <td>
-                            #if($column.isPrimary)
-                                <u>
-                            #end
-                            <div class="magenta_sync_open" id="magenta_sync_open_yes_${table.tableName}_${column.columnName}">
-                                ${column.columnName}
-                                #if(!$column.columnComment.equals(""))
-                                    / ${column.columnComment}
-                                #end
-                            </div>
-                            <div class="magenta_sync_slide" id="magenta_sync_slide_yes_${table.tableName}_${column.columnName}">
-                                ${column.columnType}
-                                #if(!$column.columnCollation.equals(""))
-                                    (${column.columnCollation})
-                                #end
-                            </div>
-                            #if($column.isPrimary)
-                                </u>
-                            #end
-                        </td>
+          <div>
+              ${table.records.size()} rows
+            -
+              ${table.tableName}
+              #if(!$table.tableComment.equals(""))
+                / ${table.tableComment}
+              #end
+          </div>
+          <div>
+            <table class="magenta_sync_list">
+              <thead>
+              <tr>
+                <td>DIFF SEQ</td>
+                  #foreach($column in $table.columns)
+                    <td>
+                        #if($column.isPrimary)
+                        <u>
                         #end
-                    </tr>
-                    </thead>
-                    <tbody>
-                    #foreach($record in $table.records)
-                    <tr>
-                        #set($allNull = $MdTemplateUtils.isAllNull($record.values))
+                      <div class="magenta_sync_open"
+                           id="magenta_sync_open_yes_${table.tableName}_${column.columnName}">
+                          ${column.columnName}
+                          #if(!$column.columnComment.equals(""))
+                            / ${column.columnComment}
+                          #end
+                      </div>
+                      <div class="magenta_sync_slide"
+                           id="magenta_sync_slide_yes_${table.tableName}_${column.columnName}">
+                          ${column.columnType}
+                          #if(!$column.columnCollation.equals(""))
+                            (${column.columnCollation})
+                          #end
+                      </div>
+                        #if($column.isPrimary)
+                        </u>
+                        #end
+                    </td>
+                  #end
+              </tr>
+              </thead>
+              <tbody>
+                  #foreach($record in $table.records)
+                  <tr>
+                      #set($allNull = $MdTemplateUtils.isAllNull($record.values))
+                    <td>
+                        ${record.diffSeq}
+                        #if($allNull)
+                          <span class="all_null">[P]</span>
+                        #end
+                    </td>
+                      #set($idx = 0)
+                      #foreach($value in $record.values)
                         <td>
-                            ${record.diffSeq}
-                            #if($allNull)
-                                <span class="all_null">[P]</span>
+                            #set($null = "<NULL>")
+                            #set($empty = "<EMPTY>")
+                            #if($MdTemplateUtils.isNull($value))
+                                ${null}
+                            #elseif($value.equals(""))
+                                ${empty}
+                            #else
+                                ${value}
                             #end
-                        </td>
-                        #set($idx = 0)
-                        #foreach($value in $record.values)
-                            <td>
-                                #set($null = "<NULL>")
-                                #set($empty = "<EMPTY>")
-                                #if($MdTemplateUtils.isNull($value))
-                                    ${null}
-                                #elseif($value.equals(""))
-                                    ${empty}
-                                #else
-                                    ${value}
-                                #end
 
-                                #if($allNull)
-                                    <hr />
-                                    <span class="all_null">
+                            #if($allNull)
+                              <hr/>
+                              <span class="all_null">
                                         #set($pValue = $record.previousValues.get($idx))
                                         #set($null = "<NULL>")
                                         #set($empty = "<EMPTY>")
                                         #if($MdTemplateUtils.isNull($pValue))
-                                            ${null}
-                                        #elseif($pValue.equals(""))
-                                            ${empty}
-                                        #else
-                                            ${pValue}
-                                        #end
+                                  ${null}
+                              #elseif($pValue.equals(""))
+                                  ${empty}
+                              #else
+                                  ${pValue}
+                              #end
                                     </span>
-                                #end
-                            </td>
-                            #set($idx = $idx + 1)
-                        #end
-                    </tr>
-                    #end
-                    </tbody>
-                </table>
-            </div>
+                            #end
+                        </td>
+                          #set($idx = $idx + 1)
+                      #end
+                  </tr>
+                  #end
+              </tbody>
+            </table>
+          </div>
         </li>
-        #end
-    </ul>
+      #end
+  </ul>
 </div>
 #end
 
 #if($output.notReflectedRecordTables.size() > 0)
 <div class="magenta_sync_area">
-    <h5 class="magenta_sync_headline">not reflected record tables</h5>
-    <ul class="magenta_sync_ul">
-        #foreach($table in $output.notReflectedRecordTables)
+  <h5 class="magenta_sync_headline">not reflected record tables</h5>
+  <ul class="magenta_sync_ul">
+      #foreach($table in $output.notReflectedRecordTables)
         <li>
-            <div>
-                ${table.tableName}
-                #if(!$table.tableComment.equals(""))
-                    / ${table.tableComment}
-                #end
-            </div>
-            <div>
-                <table class="magenta_sync_list">
-                    <thead>
-                    <tr>
-                        #foreach($column in $table.columns)
-                        <td>
-                            #if($column.isPrimary)
-                            <u>
-                            #end
-                            <div class="magenta_sync_open" id="magenta_sync_open_yes_${table.tableName}_${column.columnName}">
-                                ${column.columnName}
-                                #if(!$column.columnComment.equals(""))
-                                    / ${column.columnComment}
-                                #end
-                            </div>
-                            <div class="magenta_sync_slide" id="magenta_sync_slide_yes_${table.tableName}_${column.columnName}">
-                                ${column.columnType}
-                                #if(!$column.columnCollation.equals(""))
-                                    (${column.columnCollation})
-                                #end
-                            </div>
-                            #if($column.isPrimary)
-                            </u>
-                            #end
-                        </td>
+          <div>
+              ${table.tableName}
+              #if(!$table.tableComment.equals(""))
+                / ${table.tableComment}
+              #end
+          </div>
+          <div>
+            <table class="magenta_sync_list">
+              <thead>
+              <tr>
+                  #foreach($column in $table.columns)
+                    <td>
+                        #if($column.isPrimary)
+                        <u>
                         #end
-                    </tr>
-                    </thead>
-                    <tbody>
-                    #foreach($record in $table.records)
-                        <tr>
-                            #set($idx = 0)
-                            #foreach($value in $record.baseValues)
-                                <td>
-                                #set($null = "<NULL>")
+                      <div class="magenta_sync_open"
+                           id="magenta_sync_open_yes_${table.tableName}_${column.columnName}">
+                          ${column.columnName}
+                          #if(!$column.columnComment.equals(""))
+                            / ${column.columnComment}
+                          #end
+                      </div>
+                      <div class="magenta_sync_slide"
+                           id="magenta_sync_slide_yes_${table.tableName}_${column.columnName}">
+                          ${column.columnType}
+                          #if(!$column.columnCollation.equals(""))
+                            (${column.columnCollation})
+                          #end
+                      </div>
+                        #if($column.isPrimary)
+                        </u>
+                        #end
+                    </td>
+                  #end
+              </tr>
+              </thead>
+              <tbody>
+                  #foreach($record in $table.records)
+                  <tr>
+                      #set($idx = 0)
+                      #foreach($value in $record.baseValues)
+                        <td>
+                            #set($null = "<NULL>")
                                 #set($empty = "<EMPTY>")
                                 #if($MdTemplateUtils.isNull($value))
-                                    ${null}
-                                #elseif($value.equals(""))
-                                    ${empty}
-                                #else
-                                    ${value}
-                                #end
+                            ${null}
+                        #elseif($value.equals(""))
+                            ${empty}
+                        #else
+                            ${value}
+                        #end
                                 #set($idx = $idx + 1)
-                                </td>
-                            #end
-                        </tr>
-                        <tr>
-                            #set($idx = 0)
-                            #foreach($value in $record.compareValues)
-                                #set($cls = "")
-                                #if($MdTemplateUtils.isNull($record.baseValues.get($idx)) && $MdTemplateUtils.isNull($record.compareValues.get($idx)))
-                                    #set($cls = "")
-                                #elseif($MdTemplateUtils.isNull($record.baseValues.get($idx)) && $MdTemplateUtils.isNotNull($record.compareValues.get($idx)))
-                                    #set($cls = "magenta_nosync_column")
-                                #elseif($MdTemplateUtils.isNotNull($record.baseValues.get($idx)) && $MdTemplateUtils.isNull($record.compareValues.get($idx)))
-                                    #set($cls = "magenta_nosync_column")
-                                #elseif(!$record.baseValues.get($idx).equals($record.compareValues.get($idx)))
-                                    #set($cls = "magenta_nosync_column")
-                                #else
-                                    #set($cls = "")
-                                #end
-                                <td class="${cls}">
-                                #set($null = "<NULL>")
+                        </td>
+                      #end
+                  </tr>
+                  <tr>
+                      #set($idx = 0)
+                      #foreach($value in $record.compareValues)
+                          #set($cls = "")
+                          #if($MdTemplateUtils.isNull($record.baseValues.get($idx)) && $MdTemplateUtils.isNull($record.compareValues.get($idx)))
+                              #set($cls = "")
+                          #elseif($MdTemplateUtils.isNull($record.baseValues.get($idx)) && $MdTemplateUtils.isNotNull($record.compareValues.get($idx)))
+                              #set($cls = "magenta_nosync_column")
+                          #elseif($MdTemplateUtils.isNotNull($record.baseValues.get($idx)) && $MdTemplateUtils.isNull($record.compareValues.get($idx)))
+                              #set($cls = "magenta_nosync_column")
+                          #elseif(!$record.baseValues.get($idx).equals($record.compareValues.get($idx)))
+                              #set($cls = "magenta_nosync_column")
+                          #else
+                              #set($cls = "")
+                          #end
+                        <td class="${cls}">
+                            #set($null = "<NULL>")
                                 #set($empty = "<EMPTY>")
                                 #if($MdTemplateUtils.isNull($value))
-                                    ${null}
-                                #elseif($value.equals(""))
-                                    ${empty}
-                                #else
-                                    ${value}
-                                #end
+                            ${null}
+                        #elseif($value.equals(""))
+                            ${empty}
+                        #else
+                            ${value}
+                        #end
                                 #set($idx = $idx + 1)
-                                </td>
-                            #end
-                        </tr>
-                    #end
-                    </tbody>
-                </table>
-            </div>
+                        </td>
+                      #end
+                  </tr>
+                  #end
+              </tbody>
+            </table>
+          </div>
         </li>
-        #end
-    </ul>
+      #end
+  </ul>
 </div>
 #end
 
 #if($output.commandResultsBeforeCommit.size() > 0)
 <div class="magenta_sync_area">
-    <h5 class="magenta_sync_headline">command results before commit</h5>
-    <ul class="magenta_sync_ul">
-        #foreach($command in $output.commandResultsBeforeCommit)
-            <li>
-                <div class="magenta_sync_open" id="magenta_sync_open_bc_${MdTemplateUtils.getHash($command.command)}">
-                    ${command.command} (${command.code})
-                </div>
-                <div class="magenta_sync_slide" id="magenta_sync_slide_bc_${MdTemplateUtils.getHash($command.command)}">
-                    <pre>${command.output}</pre>
-                </div>
-            </li>
-        #end
-    </ul>
+  <h5 class="magenta_sync_headline">command results before commit</h5>
+  <ul class="magenta_sync_ul">
+      #foreach($command in $output.commandResultsBeforeCommit)
+        <li>
+          <div class="magenta_sync_open"
+               id="magenta_sync_open_bc_${MdTemplateUtils.getHash($command.command)}">
+              ${command.command} (${command.code})
+          </div>
+          <div class="magenta_sync_slide"
+               id="magenta_sync_slide_bc_${MdTemplateUtils.getHash($command.command)}">
+            <pre>${command.output}</pre>
+          </div>
+        </li>
+      #end
+  </ul>
 </div>
 #end
 
 #if($output.commandResultsAfterCommit.size() > 0)
 <div class="magenta_sync_area">
-    <h5 class="magenta_sync_headline">command results after commit</h5>
-    <ul class="magenta_sync_ul">
-        #foreach($command in $output.commandResultsAfterCommit)
-            <li>
-                <div class="magenta_sync_open" id="magenta_sync_open_bc_${MdTemplateUtils.getHash($command.command)}">
-                    ${command.command} (${command.code})
-                </div>
-                <div class="magenta_sync_slide" id="magenta_sync_slide_bc_${MdTemplateUtils.getHash($command.command)}">
-                    <pre>${command.output}</pre>
-                </div>
-            </li>
-        #end
-    </ul>
+  <h5 class="magenta_sync_headline">command results after commit</h5>
+  <ul class="magenta_sync_ul">
+      #foreach($command in $output.commandResultsAfterCommit)
+        <li>
+          <div class="magenta_sync_open"
+               id="magenta_sync_open_bc_${MdTemplateUtils.getHash($command.command)}">
+              ${command.command} (${command.code})
+          </div>
+          <div class="magenta_sync_slide"
+               id="magenta_sync_slide_bc_${MdTemplateUtils.getHash($command.command)}">
+            <pre>${command.output}</pre>
+          </div>
+        </li>
+      #end
+  </ul>
 </div>
 #end
 
 #if($output.httpResultsBeforeCommit.size() > 0)
 <div class="magenta_sync_area">
-    <h5 class="magenta_sync_headline">http results before commit</h5>
-    <ul class="magenta_sync_ul">
-        #foreach($http in $output.httpResultsBeforeCommit)
-            <li>
-                <div class="magenta_sync_open" id="magenta_sync_open_bc_${MdTemplateUtils.getHash($http.url)}">
-                    ${http.url} (${http.status})
-                </div>
-                <div class="magenta_sync_slide" id="magenta_sync_slide_bc_${MdTemplateUtils.getHash($http.url)}">
-                    <pre>${http.body}</pre>
-                </div>
-            </li>
-        #end
-    </ul>
+  <h5 class="magenta_sync_headline">http results before commit</h5>
+  <ul class="magenta_sync_ul">
+      #foreach($http in $output.httpResultsBeforeCommit)
+        <li>
+          <div class="magenta_sync_open"
+               id="magenta_sync_open_bc_${MdTemplateUtils.getHash($http.url)}">
+              ${http.url} (${http.status})
+          </div>
+          <div class="magenta_sync_slide"
+               id="magenta_sync_slide_bc_${MdTemplateUtils.getHash($http.url)}">
+            <pre>${http.body}</pre>
+          </div>
+        </li>
+      #end
+  </ul>
 </div>
 #end
 
 #if($output.httpResultsAfterCommit.size() > 0)
 <div class="magenta_sync_area">
-    <h5 class="magenta_sync_headline">http results after commit</h5>
-    <ul class="magenta_sync_ul">
-        #foreach($http in $output.httpResultsAfterCommit)
-            <li>
-                <div class="magenta_sync_open" id="magenta_sync_open_bc_${MdTemplateUtils.getHash($http.url)}">
-                    ${http.url} (${http.status})
-                </div>
-                <div class="magenta_sync_slide" id="magenta_sync_slide_bc_${MdTemplateUtils.getHash($http.url)}">
-                    <pre>${http.body}</pre>
-                </div>
-            </li>
-        #end
-    </ul>
+  <h5 class="magenta_sync_headline">http results after commit</h5>
+  <ul class="magenta_sync_ul">
+      #foreach($http in $output.httpResultsAfterCommit)
+        <li>
+          <div class="magenta_sync_open"
+               id="magenta_sync_open_bc_${MdTemplateUtils.getHash($http.url)}">
+              ${http.url} (${http.status})
+          </div>
+          <div class="magenta_sync_slide"
+               id="magenta_sync_slide_bc_${MdTemplateUtils.getHash($http.url)}">
+            <pre>${http.body}</pre>
+          </div>
+        </li>
+      #end
+  </ul>
 </div>
 #end
 
 <div class="magenta_sync_result">
-    <div>
-        <p>summarId:</p>
-        <label>${input.summaryId}</label>
-    </div>
-    <div>
-        <p>run mode:</p>
-        #if($input.run)
-            <label>run</label>
-        #else
-            <label>dry run</label>
-        #end
-    </div>
-    <div>
-        <p>force mode:</p>
-        #if($input.force)
-            <label>force delete to compare</label>
-        #else
-            <label>no delete only compare</label>
-        #end
-    </div>
-    <div>
-        <p>loose mode:</p>
-        #if($input.loose)
-            <label>delete only summaryId related log</label>
-        #else
-            <label>delete base and compare related log</label>
-        #end
-    </div>
+  <div>
+    <p>summarId:</p>
+    <label>${input.summaryId}</label>
+  </div>
+  <div>
+    <p>run mode:</p>
+      #if($input.run)
+        <label>run</label>
+      #else
+        <label>dry run</label>
+      #end
+  </div>
+  <div>
+    <p>force mode:</p>
+      #if($input.force)
+        <label>force delete to compare</label>
+      #else
+        <label>no delete only compare</label>
+      #end
+  </div>
+  <div>
+    <p>loose mode:</p>
+      #if($input.loose)
+        <label>delete only summaryId related log</label>
+      #else
+        <label>delete base and compare related log</label>
+      #end
+  </div>
 </div>
 
 <script type="text/javascript">
-    function magentaSyncSlider(e) {
-        let id = e.target.id;
-        let name = id.substring('magenta_sync_open_'.length);
-        let slideId = "magenta_sync_slide_" + name;
-        let slide = document.getElementById(slideId);
+  function magentaSyncSlider(e) {
+    let id = e.target.id;
+    let name = id.substring('magenta_sync_open_'.length);
+    let slideId = "magenta_sync_slide_" + name;
+    let slide = document.getElementById(slideId);
 
-        if (slide.style.display == '' || slide.style.display == 'none') {
-            slide.style.display = 'inline-flex';
-        } else {
-            slide.style.display = 'none';
-        }
+    if (slide.style.display == '' || slide.style.display == 'none') {
+      slide.style.display = 'inline-flex';
+    } else {
+      slide.style.display = 'none';
     }
+  }
 
-    let syncOpenList = document.querySelectorAll('div.magenta_sync_open');
-    if (syncOpenList != void(0)) {
-        for (let i = 0; i < syncOpenList.length; i++) {
-            syncOpenList[i].addEventListener('click', magentaSyncSlider)
-        }
+  let syncOpenList = document.querySelectorAll('div.magenta_sync_open');
+  if (syncOpenList != void (0)) {
+    for (let i = 0; i < syncOpenList.length; i++) {
+      syncOpenList[i].addEventListener('click', magentaSyncSlider)
     }
+  }
 </script>

@@ -3,8 +3,10 @@ package com.walksocket.md.html;
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.input.member.MdInputMemberRelation;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -16,7 +18,7 @@ public class MdHtmlRelationManager {
   /**
    * relation list.
    */
-  private List<MdHtmlRelation> relationList = new ArrayList<>();
+  private final List<MdHtmlRelation> relationList = new ArrayList<>();
 
   /**
    * add.
@@ -31,6 +33,7 @@ public class MdHtmlRelationManager {
    *   'tier.battle_id' => 'battle.battle_id'
    *   'bonus.battle_id' => 'battle.battle_id'
    * </pre>
+   *
    * @param relation relation
    */
   public void add(MdInputMemberRelation relation) {
@@ -59,7 +62,8 @@ public class MdHtmlRelationManager {
     for (String tmpForeignKey : tmpForeignKeys) {
       foreignKeys.add(tmpForeignKey.trim());
     }
-    MdLogger.trace(String.format("foreignKeys:%s", foreignKeys.stream().collect(Collectors.joining(","))));
+    MdLogger.trace(
+        String.format("foreignKeys:%s", String.join(",", foreignKeys)));
 
     // referenceTable
     String[] tmpReferences = reference.split(Pattern.quote("."));
@@ -81,13 +85,15 @@ public class MdHtmlRelationManager {
     for (String referenceKey : tmpReferenceKeys) {
       referenceKeys.add(referenceKey.trim());
     }
-    MdLogger.trace(String.format("referenceKeys:%s", referenceKeys.stream().collect(Collectors.joining(","))));
+    MdLogger.trace(
+        String.format("referenceKeys:%s", String.join(",", referenceKeys)));
 
     relationList.add(new MdHtmlRelation(table, foreignKeys, referenceTable, referenceKeys));
   }
 
   /**
    * get relation list.
+   *
    * @return get relation list
    */
   public List<MdHtmlRelation> getRelationList() {
@@ -96,24 +102,27 @@ public class MdHtmlRelationManager {
 
   /**
    * get relation list for table.
+   *
    * @param table table
    * @return get relation list
    */
   public List<MdHtmlRelation> getRelationListForTable(String table) {
-    return relationList.stream().filter(r -> r.referenceTable.equals(table)).collect(Collectors.toList());
+    return relationList.stream().filter(r -> r.referenceTable.equals(table))
+        .collect(Collectors.toList());
   }
 
   /**
    * get link target.
-   * @param table table
+   *
+   * @param table       table
    * @param columnNames columnNames
-   * @param values values
+   * @param values      values
    * @return link
    */
   public String getLinkTarget(String table, List<String> columnNames, List<String> values) {
     List<MdHtmlRelation> relations = relationList.stream()
         .filter(r -> r.referenceTable.equals(table))
-        .collect(Collectors.toList());
+        .toList();
     if (MdUtils.isNullOrEmpty(relations)) {
       return "";
     }
@@ -133,33 +142,32 @@ public class MdHtmlRelationManager {
 
       links.add(MdUtils.getHash(
           String.format(
-          "%s.%s.%s",
-          r.table,
-          r.foreignKeys.stream().collect(Collectors.joining(",")),
-          filteredValues.values()
-              .stream()
-              .collect(Collectors.toList())
-              .stream()
-              .collect(Collectors.joining(",")))));
+              "%s.%s.%s",
+              r.table,
+              String.join(",", r.foreignKeys),
+              String.join(",", filteredValues.values()
+                  .stream()
+                  .toList()))));
     }
     if (MdUtils.isNullOrEmpty(links)) {
       return "";
     }
 
-    return String.format("data-target=%s", links.stream().collect(Collectors.joining("|")));
+    return String.format("data-target=%s", String.join("|", links));
   }
 
   /**
    * get link id.
-   * @param table table
+   *
+   * @param table       table
    * @param columnNames columnNames
-   * @param values values
+   * @param values      values
    * @return link
    */
   public String getLinkId(String table, List<String> columnNames, List<String> values) {
     List<MdHtmlRelation> relations = relationList.stream()
         .filter(r -> r.table.equals(table))
-        .collect(Collectors.toList());
+        .toList();
     if (MdUtils.isNullOrEmpty(relations)) {
       return "";
     }
@@ -179,19 +187,17 @@ public class MdHtmlRelationManager {
 
       links.add(MdUtils.getHash(
           String.format(
-          "%s.%s.%s",
-          r.table,
-          r.foreignKeys.stream().collect(Collectors.joining(",")),
-          filteredValues.values()
-              .stream()
-              .collect(Collectors.toList())
-              .stream()
-              .collect(Collectors.joining(",")))));
+              "%s.%s.%s",
+              r.table,
+              String.join(",", r.foreignKeys),
+              String.join(",", filteredValues.values()
+                  .stream()
+                  .toList()))));
     }
     if (MdUtils.isNullOrEmpty(links)) {
       return "";
     }
 
-    return String.format("data-id=%s", links.stream().collect(Collectors.joining("|")));
+    return String.format("data-id=%s", String.join("|", links));
   }
 }

@@ -1,40 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, user-scalable=yes">
-    <title>magentadesk-web</title>
-    <link href="/asset/jquery-ui-1.13.2/jquery-ui.min.css" rel="stylesheet" type="text/css">
-    <link href="/asset/css/layout.css" rel="stylesheet" type="text/css">
-    <link href="/asset/css/common.css" rel="stylesheet" type="text/css">
-    <link href="/asset/css/table.css" rel="stylesheet" type="text/css">
-    <link href="/asset/css/page.css" rel="stylesheet" type="text/css">
-    <link href="/asset/css/button.css" rel="stylesheet" type="text/css">
+  <meta charset="utf-8"/>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, user-scalable=yes">
+  <title>magentadesk-web</title>
+  <link href="/asset/jquery-ui-1.13.2/jquery-ui.min.css" rel="stylesheet" type="text/css">
+  <link href="/asset/css/layout.css" rel="stylesheet" type="text/css">
+  <link href="/asset/css/common.css" rel="stylesheet" type="text/css">
+  <link href="/asset/css/table.css" rel="stylesheet" type="text/css">
+  <link href="/asset/css/page.css" rel="stylesheet" type="text/css">
+  <link href="/asset/css/button.css" rel="stylesheet" type="text/css">
 
-    <script src="/asset/js/jquery-3.3.1.js" type="text/javascript"></script>
-    <script src="/asset/jquery-ui-1.13.2/jquery-ui.min.js"></script>
+  <script src="/asset/js/jquery-3.3.1.js" type="text/javascript"></script>
+  <script src="/asset/jquery-ui-1.13.2/jquery-ui.min.js"></script>
 </head>
 <body>
 <header>
-    <nav>
-        <h3><a href="/">magentadesk-web</a></h3>
-        <ol>
-            <li><a href="/diffConfig/list/">diffConfig</a></li>
-            <li><a href="/syncConfig/list/">syncConfig</a></li>
-            <li><a href="/preset/list/">preset</a></li>
-            <li><a href="/project/list/">project</a></li>
-        </ol>
-    </nav>
+  <nav>
+    <h3><a href="/">magentadesk-web</a></h3>
+    <ol>
+      <li><a href="/diffConfig/list/">diffConfig</a></li>
+      <li><a href="/syncConfig/list/">syncConfig</a></li>
+      <li><a href="/preset/list/">preset</a></li>
+      <li><a href="/project/list/">project</a></li>
+    </ol>
+  </nav>
 </header>
 <div class="container">
-    <main>
-        ${MdTemplateUtils.nonEscape($content)}
-        <img id="loading" src="/asset/img/loading.svg" class="overlay" />
-        <div id="dialog"><pre id="dialog-content"></pre></div>
-        <footer>
-            <a href="https://github.com/shigenobu/magentadesk" target="_blank">@magentadesk</a>
-        </footer>
-    </main>
+  <main>
+      ${MdTemplateUtils.nonEscape($content)}
+    <img id="loading" src="/asset/img/loading.svg" class="overlay"/>
+    <div id="dialog">
+      <pre id="dialog-content"></pre>
+    </div>
+    <footer>
+      <a href="https://github.com/shigenobu/magentadesk" target="_blank">@magentadesk</a>
+    </footer>
+  </main>
 </div>
 </body>
 </html>

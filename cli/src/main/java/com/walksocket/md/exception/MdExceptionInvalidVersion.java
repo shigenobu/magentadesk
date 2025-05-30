@@ -7,6 +7,7 @@ public class MdExceptionInvalidVersion extends MdExceptionAbstract {
 
   /**
    * constructor.
+   *
    * @param message message
    */
   public MdExceptionInvalidVersion(String message) {

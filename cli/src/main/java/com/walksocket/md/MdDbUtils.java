@@ -15,11 +15,11 @@ public class MdDbUtils {
     UTF8,
     UTF8MB3,
     UTF8MB4,
-    ;
   }
 
   /**
    * quote.
+   *
    * @param src string
    * @return quoted string
    */
@@ -29,19 +29,18 @@ public class MdDbUtils {
 
   /**
    * is valid charset.
+   *
    * @param charset charset
    * @return if valid, true
    */
   public static boolean isValidCharset(String charset) {
-    return Arrays.asList(MdDbCharset.values())
-        .stream()
-        .filter(c -> c.toString().equalsIgnoreCase(charset))
-        .findFirst()
-        .isPresent();
+    return Arrays.stream(MdDbCharset.values())
+        .anyMatch(c -> c.toString().equalsIgnoreCase(charset));
   }
 
   /**
    * is valid collation.
+   *
    * @param collation collation.
    * @return if valid, true
    */

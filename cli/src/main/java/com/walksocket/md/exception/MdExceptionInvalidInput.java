@@ -7,6 +7,7 @@ public class MdExceptionInvalidInput extends MdExceptionAbstract {
 
   /**
    * constructor.
+   *
    * @param message message
    */
   public MdExceptionInvalidInput(String message) {

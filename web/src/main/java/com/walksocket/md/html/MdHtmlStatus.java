@@ -39,16 +39,17 @@ public enum MdHtmlStatus {
   /**
    * status.
    */
-  private int status;
+  private final int status;
 
   /**
    * message.
    */
-  private String message;
+  private final String message;
 
   /**
    * constructor.
-   * @param status status
+   *
+   * @param status  status
    * @param message message
    */
   MdHtmlStatus(int status, String message) {
@@ -58,6 +59,7 @@ public enum MdHtmlStatus {
 
   /**
    * get status.
+   *
    * @return status
    */
   public int getStatus() {
@@ -66,6 +68,7 @@ public enum MdHtmlStatus {
 
   /**
    * get message.
+   *
    * @return message
    */
   public String getMessage() {
@@ -74,6 +77,7 @@ public enum MdHtmlStatus {
 
   /**
    * get html message.
+   *
    * @return html message
    */
   public String getHtmlMessage() {

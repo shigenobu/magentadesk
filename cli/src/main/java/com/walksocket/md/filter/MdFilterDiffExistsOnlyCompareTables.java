@@ -4,12 +4,10 @@ import com.walksocket.md.MdInfoDiff;
 import com.walksocket.md.db.MdDbConnection;
 import com.walksocket.md.output.MdOutputDiff;
 import com.walksocket.md.output.member.MdOutputMemberExistsOnlyCompareTable;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * filter diff exists only compare.
@@ -18,6 +16,7 @@ public class MdFilterDiffExistsOnlyCompareTables extends MdFilterDiffAbstract {
 
   /**
    * constructor.
+   *
    * @param con db connection
    */
   public MdFilterDiffExistsOnlyCompareTables(MdDbConnection con) {
@@ -25,10 +24,12 @@ public class MdFilterDiffExistsOnlyCompareTables extends MdFilterDiffAbstract {
   }
 
   @Override
-  public void filter(List<MdInfoDiff> baseInfoList, List<MdInfoDiff> compareInfoList, MdOutputDiff outputDiff) throws SQLException {
+  public void filter(List<MdInfoDiff> baseInfoList, List<MdInfoDiff> compareInfoList,
+      MdOutputDiff outputDiff) throws SQLException {
     List<MdInfoDiff> removedCompareInfoLIst = new ArrayList<>();
 
-    List<String> baseTableNames = baseInfoList.stream().map(m -> m.getTableName()).collect(Collectors.toList());
+    List<String> baseTableNames = baseInfoList.stream().map(MdInfoDiff::getTableName)
+        .toList();
     for (MdInfoDiff compareInfo : compareInfoList) {
       String compareTableName = compareInfo.getTableName();
       if (!baseTableNames.contains(compareTableName)) {

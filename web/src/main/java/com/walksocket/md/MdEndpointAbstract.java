@@ -8,7 +8,6 @@ import com.walksocket.md.server.MdServerRequest;
 import com.walksocket.md.server.MdServerResponse;
 import com.walksocket.md.sqlite.MdSqliteConnection;
 import com.walksocket.md.sqlite.MdSqliteUtils;
-
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -48,22 +47,26 @@ abstract public class MdEndpointAbstract implements HttpHandler {
 
   /**
    * action.
-   * @param request request
+   *
+   * @param request  request
    * @param response response
-   * @param con sqlite connection
+   * @param con      sqlite connection
    * @throws Exception error
    */
-  abstract public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws Exception;
+  abstract public void action(MdServerRequest request, MdServerResponse response,
+      MdSqliteConnection con) throws Exception;
 
   /**
    * error.
-   * @param request request
+   *
+   * @param request  request
    * @param response response
    */
   abstract public void error(MdServerRequest request, MdServerResponse response);
 
   /**
    * get mode
+   *
    * @return mode
    */
   protected MdMode getMode(MdServerRequest request) {
@@ -80,13 +83,15 @@ abstract public class MdEndpointAbstract implements HttpHandler {
 
   /**
    * reserve execution.
-   * @param con sqlite connection
+   *
+   * @param con    sqlite connection
    * @param mdMode mode
-   * @param input input
+   * @param input  input
    * @return execution id
    * @throws SQLException sql error
    */
-  protected String reserveExecution(MdSqliteConnection con, MdMode mdMode, MdInputAbstract input) throws SQLException {
+  protected String reserveExecution(MdSqliteConnection con, MdMode mdMode, MdInputAbstract input)
+      throws SQLException {
     // executionId
     String executionId = MdUtils.randomString();
 
@@ -108,12 +113,14 @@ abstract public class MdEndpointAbstract implements HttpHandler {
 
   /**
    * check execution.
-   * @param con sqlite connection
+   *
+   * @param con         sqlite connection
    * @param executionId executionId
    * @return record or null
    * @throws SQLException sqlerror
    */
-  protected MdDbRecord checkExecution(MdSqliteConnection con, String executionId) throws SQLException {
+  protected MdDbRecord checkExecution(MdSqliteConnection con, String executionId)
+      throws SQLException {
     String sql = String.format(
         "SELECT mode, state, input, output " +
             "FROM execution " +

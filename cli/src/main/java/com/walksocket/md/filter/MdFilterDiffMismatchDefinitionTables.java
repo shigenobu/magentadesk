@@ -4,7 +4,6 @@ import com.walksocket.md.MdInfoDiff;
 import com.walksocket.md.db.MdDbConnection;
 import com.walksocket.md.output.MdOutputDiff;
 import com.walksocket.md.output.member.MdOutputMemberMismatchDefinitionTable;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -17,6 +16,7 @@ public class MdFilterDiffMismatchDefinitionTables extends MdFilterDiffAbstract {
 
   /**
    * constructor.
+   *
    * @param con db connection
    */
   public MdFilterDiffMismatchDefinitionTables(MdDbConnection con) {
@@ -24,7 +24,8 @@ public class MdFilterDiffMismatchDefinitionTables extends MdFilterDiffAbstract {
   }
 
   @Override
-  public void filter(List<MdInfoDiff> baseInfoList, List<MdInfoDiff> compareInfoList, MdOutputDiff outputDiff) throws SQLException {
+  public void filter(List<MdInfoDiff> baseInfoList, List<MdInfoDiff> compareInfoList,
+      MdOutputDiff outputDiff) throws SQLException {
     List<MdInfoDiff> removedBaseInfoList = new ArrayList<>();
     List<MdInfoDiff> removedCompareInfoLIst = new ArrayList<>();
 

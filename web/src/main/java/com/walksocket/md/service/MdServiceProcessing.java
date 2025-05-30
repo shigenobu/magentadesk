@@ -4,6 +4,9 @@ import com.walksocket.md.MdExecute;
 import com.walksocket.md.MdJson;
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdMode;
+import com.walksocket.md.MdState;
+import com.walksocket.md.api.MdApiQueue;
+import com.walksocket.md.api.MdApiQueueMessage;
 import com.walksocket.md.input.MdInputAbstract;
 import com.walksocket.md.input.MdInputDiff;
 import com.walksocket.md.input.MdInputMaintenance;
@@ -11,9 +14,6 @@ import com.walksocket.md.input.MdInputSync;
 import com.walksocket.md.output.MdOutputAbstract;
 import com.walksocket.md.sqlite.MdSqliteConnection;
 import com.walksocket.md.sqlite.MdSqliteUtils;
-import com.walksocket.md.api.MdApiQueue;
-import com.walksocket.md.api.MdApiQueueMessage;
-import com.walksocket.md.MdState;
 
 /**
  * service processing.
@@ -23,10 +23,11 @@ public class MdServiceProcessing implements Runnable {
   /**
    * queue.
    */
-  private MdApiQueue queue;
+  private final MdApiQueue queue;
 
   /**
    * constructor.
+   *
    * @param queue queue
    */
   public MdServiceProcessing(MdApiQueue queue) {
@@ -39,7 +40,7 @@ public class MdServiceProcessing implements Runnable {
   @Override
   public void run() {
     MdLogger.trace("start " + getClass().getSimpleName());
-    MdApiQueueMessage message = null;
+    MdApiQueueMessage message;
     if ((message = queue.poll()) == null) {
       return;
     }
@@ -61,7 +62,7 @@ public class MdServiceProcessing implements Runnable {
     }
 
     try (MdSqliteConnection con = new MdSqliteConnection()) {
-      String sql = "";
+      String sql;
 
       // begin
       con.begin();

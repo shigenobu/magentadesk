@@ -29,7 +29,8 @@ public class MdOutputMemberHttpResult extends MdValue {
 
   /**
    * constructor.
-   * @param url url
+   *
+   * @param url          url
    * @param httpResponse http response
    */
   public MdOutputMemberHttpResult(String url, MdHttpClient.MdHttpClientResponse httpResponse) {

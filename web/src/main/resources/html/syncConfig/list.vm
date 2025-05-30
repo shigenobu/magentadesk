@@ -1,40 +1,40 @@
 <div class="page-title">
-    <h1>SYNC CONFIG LIST</h1>
+  <h1>SYNC CONFIG LIST</h1>
 </div>
 
 <div class="page-content">
-    <div class="page-buttons">
-        <a href="/syncConfig/edit/" class="btn-insert">NEW SYNC CONFIG</a>
-    </div>
+  <div class="page-buttons">
+    <a href="/syncConfig/edit/" class="btn-insert">NEW SYNC CONFIG</a>
+  </div>
 
-    <table class="list">
-        <thead>
+  <table class="list">
+    <thead>
+    <tr>
+      <td>-</td>
+      <td>syncConfigId</td>
+      <td>title</td>
+      <td>explanation</td>
+      <td>commandsBeforeCommitCount</td>
+      <td>commandsAfterCommitCount</td>
+      <td>httpCallbackBeforeCommitCount</td>
+      <td>httpCallbackAfterCommitCount</td>
+    </tr>
+    </thead>
+    <tbody>
+        #foreach($record in $records)
         <tr>
-            <td>-</td>
-            <td>syncConfigId</td>
-            <td>title</td>
-            <td>explanation</td>
-            <td>commandsBeforeCommitCount</td>
-            <td>commandsAfterCommitCount</td>
-            <td>httpCallbackBeforeCommitCount</td>
-            <td>httpCallbackAfterCommitCount</td>
+          <td>
+            <a href="/syncConfig/edit/?syncConfigId=${record.get("syncConfigId")}" class="btn-edit">EDIT</a>
+          </td>
+          <td>${record.get("syncConfigId")}</td>
+          <td>${record.get("title")}</td>
+          <td>${record.get("explanation")}</td>
+          <td>${record.get("commandsBeforeCommitCount")}</td>
+          <td>${record.get("commandsAfterCommitCount")}</td>
+          <td>${record.get("httpCallbackBeforeCommitCount")}</td>
+          <td>${record.get("httpCallbackAfterCommitCount")}</td>
         </tr>
-        </thead>
-        <tbody>
-            #foreach($record in $records)
-                <tr>
-                    <td>
-                        <a href="/syncConfig/edit/?syncConfigId=${record.get("syncConfigId")}" class="btn-edit">EDIT</a>
-                    </td>
-                    <td>${record.get("syncConfigId")}</td>
-                    <td>${record.get("title")}</td>
-                    <td>${record.get("explanation")}</td>
-                    <td>${record.get("commandsBeforeCommitCount")}</td>
-                    <td>${record.get("commandsAfterCommitCount")}</td>
-                    <td>${record.get("httpCallbackBeforeCommitCount")}</td>
-                    <td>${record.get("httpCallbackAfterCommitCount")}</td>
-                </tr>
-            #end
-        </tbody>
-    </table>
+        #end
+    </tbody>
+  </table>
 </div>

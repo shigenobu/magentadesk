@@ -1,9 +1,9 @@
 package com.walksocket.md.template;
 
 import com.walksocket.md.MdUtils;
-
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * template utils.
@@ -12,7 +12,8 @@ public class MdTemplateUtils {
 
   /**
    * selected.
-   * @param base base
+   *
+   * @param base    base
    * @param compare compare
    * @return selected="selected" or empty
    */
@@ -28,7 +29,8 @@ public class MdTemplateUtils {
 
   /**
    * selected.
-   * @param base base
+   *
+   * @param base    base
    * @param compare compare
    * @return selected="selected" or empty
    */
@@ -44,7 +46,8 @@ public class MdTemplateUtils {
 
   /**
    * selected.
-   * @param base base
+   *
+   * @param base    base
    * @param compare compare
    * @return selected="selected" or empty
    */
@@ -60,7 +63,8 @@ public class MdTemplateUtils {
 
   /**
    * checked.
-   * @param base base
+   *
+   * @param base    base
    * @param compare compare
    * @return checked="checked" or empty
    */
@@ -76,7 +80,8 @@ public class MdTemplateUtils {
 
   /**
    * checked.
-   * @param base base
+   *
+   * @param base    base
    * @param compare compare
    * @return checked="checked" or empty
    */
@@ -92,7 +97,8 @@ public class MdTemplateUtils {
 
   /**
    * checked.
-   * @param base base
+   *
+   * @param base    base
    * @param compare compare
    * @return checked="checked" or empty
    */
@@ -108,6 +114,7 @@ public class MdTemplateUtils {
 
   /**
    * readonly.
+   *
    * @return readonly="readonly" or empty
    */
   public static String readonly() {
@@ -116,6 +123,7 @@ public class MdTemplateUtils {
 
   /**
    * disabled.
+   *
    * @return disabled="disabled" or empty
    */
   public static String disabled() {
@@ -124,7 +132,8 @@ public class MdTemplateUtils {
 
   /**
    * non escape.
-   * @param value
+   *
+   * @param value value
    * @return non escape value
    */
   public static String nonEscape(Object value) {
@@ -136,6 +145,7 @@ public class MdTemplateUtils {
 
   /**
    * line break to br.
+   *
    * @param value value
    * @return value replaced to <br />
    */
@@ -151,6 +161,7 @@ public class MdTemplateUtils {
 
   /**
    * get hash.
+   *
    * @param src src
    * @return hash
    */
@@ -160,6 +171,7 @@ public class MdTemplateUtils {
 
   /**
    * is null.
+   *
    * @param src src
    * @return if null, return true
    */
@@ -169,15 +181,17 @@ public class MdTemplateUtils {
 
   /**
    * is all null.
+   *
    * @param src src
    * @return if all null, return true
    */
   public static boolean isAllNull(Collection src) {
-    return src.stream().allMatch(s -> s == null);
+    return src.stream().allMatch(Objects::isNull);
   }
 
   /**
    * is not null.
+   *
    * @param src src
    * @return if not null, return true
    */

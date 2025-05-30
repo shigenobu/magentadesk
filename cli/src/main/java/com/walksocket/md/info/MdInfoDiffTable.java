@@ -3,10 +3,8 @@ package com.walksocket.md.info;
 import com.walksocket.md.MdDbUtils;
 import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdUtils;
-import com.walksocket.md.input.member.MdInputMemberOption;
-import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.db.MdDbRecord;
-
+import com.walksocket.md.input.member.MdInputMemberOption;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,45 +17,46 @@ public class MdInfoDiffTable implements MdInfoDiffInterface {
   /**
    * table name.
    */
-  private String TABLE_NAME;
+  private final String TABLE_NAME;
 
   /**
    * table type.
    */
-  private String TABLE_TYPE;
+  private final String TABLE_TYPE;
 
   /**
    * engine.
    */
-  private String ENGINE;
+  private final String ENGINE;
 
   /**
    * row format.
    */
-  private String ROW_FORMAT;
+  private final String ROW_FORMAT;
 
   /**
    * auto increment.
    */
-  private String AUTO_INCREMENT;
+  private final String AUTO_INCREMENT;
 
   /**
    * table collation.
    */
-  private String TABLE_COLLATION;
+  private final String TABLE_COLLATION;
 
   /**
    * table comment.
    */
-  private String TABLE_COMMENT;
+  private final String TABLE_COMMENT;
 
   /**
    * input option.
    */
-  private MdInputMemberOption option;
+  private final MdInputMemberOption option;
 
   /**
    * constructor.
+   *
    * @param record record
    * @param option input option
    * @throws SQLException sql error
@@ -76,6 +75,7 @@ public class MdInfoDiffTable implements MdInfoDiffInterface {
 
   /**
    * get table type.
+   *
    * @return table type.
    */
   public String getTableType() {
@@ -84,6 +84,7 @@ public class MdInfoDiffTable implements MdInfoDiffInterface {
 
   /**
    * get table comment.
+   *
    * @return table comment.
    */
   public String getTableComment() {
@@ -92,6 +93,7 @@ public class MdInfoDiffTable implements MdInfoDiffInterface {
 
   /**
    * is valid collation.
+   *
    * @return if valid, true
    */
   public boolean isValidCollation() {
@@ -100,6 +102,7 @@ public class MdInfoDiffTable implements MdInfoDiffInterface {
 
   /**
    * is innodeb.
+   *
    * @return if innodb, true
    */
   public boolean isInnodb() {
@@ -108,6 +111,7 @@ public class MdInfoDiffTable implements MdInfoDiffInterface {
 
   /**
    * is view.
+   *
    * @return if view, true
    */
   public boolean isView() {
@@ -116,6 +120,7 @@ public class MdInfoDiffTable implements MdInfoDiffInterface {
 
   /**
    * is sequence.
+   *
    * @return if sequence, true
    */
   public boolean isSequence() {

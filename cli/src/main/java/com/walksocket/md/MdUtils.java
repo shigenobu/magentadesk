@@ -1,14 +1,12 @@
 package com.walksocket.md;
 
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
-
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * utils.
@@ -17,15 +15,17 @@ public class MdUtils {
 
   /**
    * is null or empty for string.
+   *
    * @param src string
    * @return if null or empty, true
    */
   public static boolean isNullOrEmpty(String src) {
-    return src == null || src.equals("");
+    return src == null || src.isEmpty();
   }
 
   /**
    * is null or empty for array.
+   *
    * @param src array
    * @return if null or empty, true
    */
@@ -35,6 +35,7 @@ public class MdUtils {
 
   /**
    * is null or empty for array.
+   *
    * @param src array
    * @return if null or empty, true
    */
@@ -44,30 +45,33 @@ public class MdUtils {
 
   /**
    * is null or empty for list.
+   *
    * @param src list
    * @return if null or empty, true
    */
   public static boolean isNullOrEmpty(List src) {
-    return src == null || src.size() == 0;
+    return src == null || src.isEmpty();
   }
 
   /**
    * is null or empty for map.
+   *
    * @param src map
    * @return if null or empty, true
    */
   public static boolean isNullOrEmpty(Map src) {
-    return src == null || src.size() == 0;
+    return src == null || src.isEmpty();
   }
 
   /**
    * get hash.
+   *
    * @param src base string
    * @return hashed string
    */
   public static String getHash(String src) {
     StringBuilder builder = new StringBuilder();
-    byte[] data = new byte[0];
+    byte[] data;
     try {
       data = MessageDigest.getInstance("MD5").digest(src.getBytes(StandardCharsets.UTF_8));
       for (byte d : data) {
@@ -81,6 +85,7 @@ public class MdUtils {
 
   /**
    * is number.
+   *
    * @param src string
    * @return if number, true
    */
@@ -90,7 +95,8 @@ public class MdUtils {
 
   /**
    * join list, to create string.
-   * @param src list
+   *
+   * @param src       list
    * @param delimiter devided string
    * @return joined string
    */
@@ -100,14 +106,16 @@ public class MdUtils {
 
   /**
    * get random string.
+   *
    * @return random string
    */
   public static String randomString() {
-    return RandomStringUtils.randomAlphanumeric(32).toLowerCase();
+    return RandomStringUtils.secureStrong().nextAlphanumeric(32).toLowerCase();
   }
 
   /**
    * to hex string.
+   *
    * @param value string
    * @return hex string
    */

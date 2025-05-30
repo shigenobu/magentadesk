@@ -30,13 +30,15 @@ public class MdJson {
   /**
    * constructor.
    */
-  private MdJson() {}
+  private MdJson() {
+  }
 
   /**
    * to object from json string.
+   *
    * @param json json string
-   * @param cls binding class
-   * @param <T> binding type
+   * @param cls  binding class
+   * @param <T>  binding type
    * @return binding object
    */
   public static <T> T toObject(String json, Class<T> cls) {
@@ -50,6 +52,7 @@ public class MdJson {
 
   /**
    * to json string from object.
+   *
    * @param src object
    * @return json string
    */
@@ -64,6 +67,7 @@ public class MdJson {
 
   /**
    * to json string from object at friendly.
+   *
    * @param src object
    * @return json string
    */

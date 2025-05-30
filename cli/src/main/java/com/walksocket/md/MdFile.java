@@ -24,6 +24,7 @@ public class MdFile {
 
   /**
    * read string from input stream.
+   *
    * @param in input stream
    * @return string
    * @throws IOException close error
@@ -35,6 +36,7 @@ public class MdFile {
 
   /**
    * read byte from input stream.
+   *
    * @param in input stream
    * @return byte array
    * @throws IOException close error
@@ -42,10 +44,10 @@ public class MdFile {
   public static byte[] readByteArray(InputStream in) throws IOException {
     byte[] data;
     try (ReadableByteChannel channel = Channels.newChannel(in);
-         ByteArrayOutputStream baos = new ByteArrayOutputStream();) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
       int bufferLen = 2048;
       ByteBuffer buffer = ByteBuffer.allocate(bufferLen);
-      int len = 0;
+      int len;
       while ((len = channel.read(buffer)) >= 0) {
         baos.write(buffer.array(), 0, len);
         ((Buffer) buffer).clear();
@@ -57,13 +59,14 @@ public class MdFile {
 
   /**
    * write string to file.
+   *
    * @param path file path
    * @param data data
    * @throws IOException close error
    */
   public static void writeString(String path, String data) throws IOException {
     try (FileOutputStream fos = new FileOutputStream(path);
-         FileChannel channel = fos.getChannel();) {
+        FileChannel channel = fos.getChannel()) {
       ByteBuffer buffer = ByteBuffer.wrap(data.getBytes(StandardCharsets.UTF_8));
       channel.write(buffer);
     }

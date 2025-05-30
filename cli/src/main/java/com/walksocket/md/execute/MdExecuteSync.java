@@ -1,33 +1,38 @@
 package com.walksocket.md.execute;
 
-import com.walksocket.md.*;
+import com.walksocket.md.MdBash;
+import com.walksocket.md.MdDbUtils;
+import com.walksocket.md.MdEnv;
+import com.walksocket.md.MdFile;
+import com.walksocket.md.MdInfoSync;
+import com.walksocket.md.MdJson;
+import com.walksocket.md.MdLogger;
+import com.walksocket.md.MdUtils;
 import com.walksocket.md.bash.MdBashCommand;
 import com.walksocket.md.bash.MdBashResult;
 import com.walksocket.md.bash.MdBashStdin;
 import com.walksocket.md.db.MdDbConnection;
+import com.walksocket.md.db.MdDbRecord;
+import com.walksocket.md.exception.MdExceptionNoExistsBaseOrCompare;
 import com.walksocket.md.exception.MdExceptionNoExistsDiffSeqs;
 import com.walksocket.md.exception.MdExceptionNotSuccessCode;
+import com.walksocket.md.exception.MdExceptionNotSuccessStatus;
 import com.walksocket.md.filter.MdFilterSyncAbstract;
 import com.walksocket.md.filter.MdFilterSyncReflect;
 import com.walksocket.md.http.MdHttpClient;
-import com.walksocket.md.input.member.MdInputMemberHttp;
-import com.walksocket.md.output.MdOutputAbstract;
-import com.walksocket.md.output.MdOutputSync;
-import com.walksocket.md.output.member.MdOutputMemberHttpResult;
-import com.walksocket.md.db.MdDbRecord;
-import com.walksocket.md.exception.MdExceptionNoExistsBaseOrCompare;
-import com.walksocket.md.exception.MdExceptionNotSuccessStatus;
 import com.walksocket.md.http.MdHttpRequest;
 import com.walksocket.md.input.MdInputAbstract;
 import com.walksocket.md.input.MdInputSync;
 import com.walksocket.md.input.member.MdInputMemberCommand;
-import com.walksocket.md.mariadb.MdMariadbUtils;
+import com.walksocket.md.input.member.MdInputMemberHttp;
+import com.walksocket.md.output.MdOutputAbstract;
+import com.walksocket.md.output.MdOutputSync;
 import com.walksocket.md.output.member.MdOutputMemberCommandResult;
-
+import com.walksocket.md.output.member.MdOutputMemberHttpResult;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * execute sync.
@@ -36,6 +41,7 @@ public class MdExecuteSync extends MdExecuteAbstract {
 
   /**
    * constructor.
+   *
    * @param con db connection
    */
   public MdExecuteSync(MdDbConnection con) {
@@ -86,7 +92,8 @@ public class MdExecuteSync extends MdExecuteAbstract {
       inputSync.diffSeqs = new ArrayList<>();
 
       // select `diffSeq` from `magentadesk`.`diffRecord`
-      sql = String.format("SELECT `diffSeq` FROM `magentadesk`.`diffRecord` WHERE `summaryId` = '%s'",
+      sql = String.format(
+          "SELECT `diffSeq` FROM `magentadesk`.`diffRecord` WHERE `summaryId` = '%s'",
           MdDbUtils.quote(inputSync.summaryId));
       records = con.getRecords(sql);
       for (MdDbRecord record : records) {
@@ -100,11 +107,12 @@ public class MdExecuteSync extends MdExecuteAbstract {
 
     // -----
     // get table info
-    List<MdInfoSync> infoList = MdInfoSync.createInfoList(con, baseDatabase, compareDatabase, inputSync);
+    List<MdInfoSync> infoList = MdInfoSync.createInfoList(con, baseDatabase, compareDatabase,
+        inputSync);
 
     // -----
     // filter
-    List<MdFilterSyncAbstract> filters = Arrays.asList(
+    List<MdFilterSyncAbstract> filters = List.of(
         new MdFilterSyncReflect(con, inputSync.force));
     for (MdFilterSyncAbstract filter : filters) {
       filter.filter(infoList, outputSync);
@@ -119,7 +127,8 @@ public class MdExecuteSync extends MdExecuteAbstract {
       con.execute(sql);
     } else {
       // delete from `magentadesk`.`diffSummary` WHERE `baseDatabase`, `compareDatabase`
-      sql = String.format("DELETE FROM `magentadesk`.`diffSummary` WHERE `baseDatabase` = '%s' and `compareDatabase` = '%s'",
+      sql = String.format(
+          "DELETE FROM `magentadesk`.`diffSummary` WHERE `baseDatabase` = '%s' and `compareDatabase` = '%s'",
           baseDatabase,
           compareDatabase);
       con.execute(sql);
@@ -127,15 +136,18 @@ public class MdExecuteSync extends MdExecuteAbstract {
 
     // -----
     // create reflected json file
-    String reflectedJsonPath = MdEnv.getMdHome() + File.separator + "reflected_" + outputSync.summaryId + ".json";
+    String reflectedJsonPath =
+        MdEnv.getMdHome() + File.separator + "reflected_" + outputSync.summaryId + ".json";
     File f = new File(reflectedJsonPath);
     if (!f.exists()) {
       MdFile.writeString(
           reflectedJsonPath,
-          MdJson.toJsonString(outputSync.reflectedRecordTables));
+          Objects.requireNonNull(MdJson.toJsonString(outputSync.reflectedRecordTables)));
     }
-    String stdin = MdJson.toJsonString(new MdBashStdin(inputSync.run, reflectedJsonPath));  // for local
-    String requestJson = MdJson.toJsonString(new MdHttpRequest(inputSync.run, outputSync.reflectedRecordTables)); // for http
+    String stdin = MdJson.toJsonString(
+        new MdBashStdin(inputSync.run, reflectedJsonPath));  // for local
+    String requestJson = MdJson.toJsonString(
+        new MdHttpRequest(inputSync.run, outputSync.reflectedRecordTables)); // for http
 
     // -----
     // execute before commit commands

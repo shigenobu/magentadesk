@@ -12,7 +12,6 @@ import com.walksocket.md.server.MdServerRequest;
 import com.walksocket.md.server.MdServerResponse;
 import com.walksocket.md.sqlite.MdSqliteConnection;
 import com.walksocket.md.sqlite.MdSqliteUtils;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,33 +24,41 @@ import java.util.List;
 public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
 
   @Override
-  public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws Exception {
+  public void action(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws Exception {
     String path = request.getPath();
-    if (path.equals("/syncConfig/list/")) {
-      list(request, response, con);
-      return;
-    } else if (path.equals("/syncConfig/edit/")) {
-      edit(request, response, con);
-      return;
-    } else if (path.equals("/syncConfig/save/")) {
-      save(request, response, con);
-      return;
-    } else if (path.equals("/syncConfig/delete/")) {
-      delete(request, response, con);
-      return;
+    switch (path) {
+      case "/syncConfig/list/" -> {
+        list(request, response, con);
+        return;
+      }
+      case "/syncConfig/edit/" -> {
+        edit(request, response, con);
+        return;
+      }
+      case "/syncConfig/save/" -> {
+        save(request, response, con);
+        return;
+      }
+      case "/syncConfig/delete/" -> {
+        delete(request, response, con);
+        return;
+      }
     }
     renderOtherWithLayout(response, MdHtmlStatus.NOT_FOUND);
   }
 
   /**
    * list.
-   * @param request request
+   *
+   * @param request  request
    * @param response response
-   * @param con sqlite connection
-   * @throws IOException error
+   * @param con      sqlite connection
+   * @throws IOException  error
    * @throws SQLException sql error
    */
-  private void list(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws IOException, SQLException {
+  private void list(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws IOException, SQLException {
     // template
     MdTemplate template = createTemplate("html/syncConfig/list.vm");
 
@@ -62,7 +69,8 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
         "explanation, " +
         "ifnull(json_array_length(commandsBeforeCommit), 0) as commandsBeforeCommitCount, " +
         "ifnull(json_array_length(commandsAfterCommit), 0) as commandsAfterCommitCount, " +
-        "ifnull(json_array_length(httpCallbackBeforeCommit), 0) as httpCallbackBeforeCommitCount, " +
+        "ifnull(json_array_length(httpCallbackBeforeCommit), 0) as httpCallbackBeforeCommitCount, "
+        +
         "ifnull(json_array_length(httpCallbackAfterCommit), 0) as httpCallbackAfterCommitCount " +
         "FROM syncConfig " +
         "ORDER BY syncConfigId DESC";
@@ -75,13 +83,15 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
 
   /**
    * edit.
-   * @param request request
+   *
+   * @param request  request
    * @param response response
-   * @param con sqlite connection
-   * @throws IOException error
+   * @param con      sqlite connection
+   * @throws IOException  error
    * @throws SQLException sql error
    */
-  private void edit(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws IOException, SQLException {
+  private void edit(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws IOException, SQLException {
     // template
     MdTemplate template = createTemplate("html/syncConfig/edit.vm");
 
@@ -90,7 +100,7 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
 
     // select
     MdHtmlSaveMode saveMode = MdHtmlSaveMode.UPDATE;
-    int syncConfigId = 0;
+    int syncConfigId;
     MdDbRecord record = null;
     if (!MdUtils.isNullOrEmpty(tmpSyncConfigId)) {
       syncConfigId = Integer.parseInt(tmpSyncConfigId);
@@ -105,7 +115,7 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
     template.assign("record", record);
     template.assign("saveMode", saveMode);
 
-    int idx = 0;
+    int idx;
 
     // commandsBeforeCommit
     List<MdInputMemberCommand> commandsBeforeCommit = new ArrayList<>();
@@ -114,7 +124,8 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
     }
     idx = 0;
     if (!MdUtils.isNullOrEmpty(record.getOrEmpty("commandsBeforeCommit"))) {
-      for (MdInputMemberCommand c : MdJson.toObject(record.get("commandsBeforeCommit"), MdInputMemberCommand[].class)) {
+      for (MdInputMemberCommand c : MdJson.toObject(record.get("commandsBeforeCommit"),
+          MdInputMemberCommand[].class)) {
         if (c != null) {
           commandsBeforeCommit.remove(idx);
           commandsBeforeCommit.add(idx, c);
@@ -131,7 +142,8 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
     }
     idx = 0;
     if (!MdUtils.isNullOrEmpty(record.getOrEmpty("commandsAfterCommit"))) {
-      for (MdInputMemberCommand c : MdJson.toObject(record.get("commandsAfterCommit"), MdInputMemberCommand[].class)) {
+      for (MdInputMemberCommand c : MdJson.toObject(record.get("commandsAfterCommit"),
+          MdInputMemberCommand[].class)) {
         if (c != null) {
           commandsAfterCommit.remove(idx);
           commandsAfterCommit.add(idx, c);
@@ -148,7 +160,8 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
     }
     idx = 0;
     if (!MdUtils.isNullOrEmpty(record.getOrEmpty("httpCallbackBeforeCommit"))) {
-      for (MdInputMemberHttp h : MdJson.toObject(record.get("httpCallbackBeforeCommit"), MdInputMemberHttp[].class)) {
+      for (MdInputMemberHttp h : MdJson.toObject(record.get("httpCallbackBeforeCommit"),
+          MdInputMemberHttp[].class)) {
         if (h != null) {
           httpCallbackBeforeCommit.remove(idx);
           httpCallbackBeforeCommit.add(idx, h);
@@ -165,7 +178,8 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
     }
     idx = 0;
     if (!MdUtils.isNullOrEmpty(record.getOrEmpty("httpCallbackAfterCommit"))) {
-      for (MdInputMemberHttp h : MdJson.toObject(record.get("httpCallbackAfterCommit"), MdInputMemberHttp[].class)) {
+      for (MdInputMemberHttp h : MdJson.toObject(record.get("httpCallbackAfterCommit"),
+          MdInputMemberHttp[].class)) {
         if (h != null) {
           httpCallbackAfterCommit.remove(idx);
           httpCallbackAfterCommit.add(idx, h);
@@ -181,13 +195,15 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
 
   /**
    * save.
-   * @param request request
+   *
+   * @param request  request
    * @param response response
-   * @param con sqlite connection
-   * @throws IOException error
+   * @param con      sqlite connection
+   * @throws IOException  error
    * @throws SQLException sql error
    */
-  private void save(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws IOException, SQLException {
+  private void save(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws IOException, SQLException {
     // check
     if (!request.isPost()) {
       sendOther(response, MdHtmlStatus.METHOD_NOT_ALLOWED);
@@ -203,23 +219,24 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
     }
     String explanation = request.getBodyParam("explanation");
 
-    int idx = 0;
-
     // commandsBeforeCommit
     List<MdInputMemberCommand> commandsBeforeCommit = new ArrayList<>();
-    idx = 0;
     for (int i = 0; i < 3; i++) {
-      if (MdUtils.isNullOrEmpty(request.getBodyParam(String.format("commandsBeforeCommit_command%s", i)))) {
+      if (MdUtils.isNullOrEmpty(
+          request.getBodyParam(String.format("commandsBeforeCommit_command%s", i)))) {
         continue;
       }
       String command = request.getBodyParam(String.format("commandsBeforeCommit_command%s", i));
-      if (MdUtils.isNullOrEmpty(request.getBodyParam(String.format("commandsBeforeCommit_timout%s", i)))) {
+      if (MdUtils.isNullOrEmpty(
+          request.getBodyParam(String.format("commandsBeforeCommit_timout%s", i)))) {
         continue;
       }
-      int timeout = Integer.parseInt(request.getBodyParam(String.format("commandsBeforeCommit_timout%s", i)));
+      int timeout = Integer.parseInt(
+          request.getBodyParam(String.format("commandsBeforeCommit_timout%s", i)));
 
       List<Integer> codeList = new ArrayList<>();
-      for (String code : request.getBodyParams(String.format("commandsBeforeCommit_successCodeList%s[]", i))) {
+      for (String code : request.getBodyParams(
+          String.format("commandsBeforeCommit_successCodeList%s[]", i))) {
         codeList.add(Integer.parseInt(code));
       }
       commandsBeforeCommit.add(new MdInputMemberCommand(
@@ -232,16 +249,18 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
 
     // commandsAfterCommit
     List<MdInputMemberCommand> commandsAfterCommit = new ArrayList<>();
-    idx = 0;
     for (int i = 0; i < 3; i++) {
-      if (MdUtils.isNullOrEmpty(request.getBodyParam(String.format("commandsAfterCommit_command%s", i)))) {
+      if (MdUtils.isNullOrEmpty(
+          request.getBodyParam(String.format("commandsAfterCommit_command%s", i)))) {
         continue;
       }
       String command = request.getBodyParam(String.format("commandsAfterCommit_command%s", i));
-      if (MdUtils.isNullOrEmpty(request.getBodyParam(String.format("commandsAfterCommit_timout%s", i)))) {
+      if (MdUtils.isNullOrEmpty(
+          request.getBodyParam(String.format("commandsAfterCommit_timout%s", i)))) {
         continue;
       }
-      int timeout = Integer.parseInt(request.getBodyParam(String.format("commandsAfterCommit_timout%s", i)));
+      int timeout = Integer.parseInt(
+          request.getBodyParam(String.format("commandsAfterCommit_timout%s", i)));
 
       List<Integer> codeList = new ArrayList<>();
       commandsAfterCommit.add(new MdInputMemberCommand(
@@ -254,19 +273,22 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
 
     // httpCallbackBeforeCommit
     List<MdInputMemberHttp> httpCallbackBeforeCommit = new ArrayList<>();
-    idx = 0;
     for (int i = 0; i < 3; i++) {
-      if (MdUtils.isNullOrEmpty(request.getBodyParam(String.format("httpCallbackBeforeCommit_url%s", i)))) {
+      if (MdUtils.isNullOrEmpty(
+          request.getBodyParam(String.format("httpCallbackBeforeCommit_url%s", i)))) {
         continue;
       }
       String url = request.getBodyParam(String.format("httpCallbackBeforeCommit_url%s", i));
-      if (MdUtils.isNullOrEmpty(request.getBodyParam(String.format("httpCallbackBeforeCommit_timeout%s", i)))) {
+      if (MdUtils.isNullOrEmpty(
+          request.getBodyParam(String.format("httpCallbackBeforeCommit_timeout%s", i)))) {
         continue;
       }
-      int timeout = Integer.parseInt(request.getBodyParam(String.format("httpCallbackBeforeCommit_timeout%s", i)));
+      int timeout = Integer.parseInt(
+          request.getBodyParam(String.format("httpCallbackBeforeCommit_timeout%s", i)));
 
       List<Integer> statusList = new ArrayList<>();
-      for (String status : request.getBodyParams(String.format("httpCallbackBeforeCommit_successStatusList%s[]", i))) {
+      for (String status : request.getBodyParams(
+          String.format("httpCallbackBeforeCommit_successStatusList%s[]", i))) {
         statusList.add(Integer.parseInt(status));
       }
       httpCallbackBeforeCommit.add(new MdInputMemberHttp(
@@ -279,16 +301,18 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
 
     // httpCallbackAfterCommit
     List<MdInputMemberHttp> httpCallbackAfterCommit = new ArrayList<>();
-    idx = 0;
     for (int i = 0; i < 3; i++) {
-      if (MdUtils.isNullOrEmpty(request.getBodyParam(String.format("httpCallbackAfterCommit_url%s", i)))) {
+      if (MdUtils.isNullOrEmpty(
+          request.getBodyParam(String.format("httpCallbackAfterCommit_url%s", i)))) {
         continue;
       }
       String url = request.getBodyParam(String.format("httpCallbackAfterCommit_url%s", i));
-      if (MdUtils.isNullOrEmpty(request.getBodyParam(String.format("httpCallbackAfterCommit_timeout%s", i)))) {
+      if (MdUtils.isNullOrEmpty(
+          request.getBodyParam(String.format("httpCallbackAfterCommit_timeout%s", i)))) {
         continue;
       }
-      int timeout = Integer.parseInt(request.getBodyParam(String.format("httpCallbackAfterCommit_timeout%s", i)));
+      int timeout = Integer.parseInt(
+          request.getBodyParam(String.format("httpCallbackAfterCommit_timeout%s", i)));
 
       List<Integer> statusList = new ArrayList<>();
       httpCallbackAfterCommit.add(new MdInputMemberHttp(
@@ -300,12 +324,13 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
     String httpCallbackAfterCommitJson = MdJson.toJsonString(httpCallbackAfterCommit.toArray());
 
     int syncConfigId = 0;
-    String sql = "";
+    String sql;
     if (saveMode.equals(MdHtmlSaveMode.INSERT.getValue())) {
       // insert
       sql = String.format(
           "INSERT INTO syncConfig " +
-              "(title, explanation, commandsBeforeCommit, commandsAfterCommit, httpCallbackBeforeCommit, httpCallbackAfterCommit) " +
+              "(title, explanation, commandsBeforeCommit, commandsAfterCommit, httpCallbackBeforeCommit, httpCallbackAfterCommit) "
+              +
               "VALUES " +
               "('%s', '%s', '%s', '%s', '%s', '%s')",
           MdSqliteUtils.quote(title),
@@ -352,13 +377,15 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
 
   /**
    * delete.
-   * @param request request
+   *
+   * @param request  request
    * @param response response
-   * @param con sqlite connection
-   * @throws IOException error
+   * @param con      sqlite connection
+   * @throws IOException  error
    * @throws SQLException sql error
    */
-  private void delete(MdServerRequest request, MdServerResponse response, MdSqliteConnection con) throws IOException, SQLException {
+  private void delete(MdServerRequest request, MdServerResponse response, MdSqliteConnection con)
+      throws IOException, SQLException {
     // check
     if (!request.isDelete()) {
       sendOther(response, MdHtmlStatus.METHOD_NOT_ALLOWED);
@@ -373,7 +400,7 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
     }
     int syncConfigId = Integer.parseInt(tmpSyncConfigId);
 
-    String sql = "";
+    String sql;
 
     // check
     sql = String.format("SELECT presetId FROM preset WHERE syncConfigId = %s", syncConfigId);
@@ -388,6 +415,6 @@ public class MdHtmlEndpointSyncConfig extends MdHtmlEndpointAbstract {
     con.execute(sql);
 
     // ok
-    sendOk(response, String.format("/syncConfig/list/"));
+    sendOk(response, "/syncConfig/list/");
   }
 }

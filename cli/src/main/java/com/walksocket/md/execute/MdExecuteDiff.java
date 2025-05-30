@@ -1,19 +1,23 @@
 package com.walksocket.md.execute;
 
 import com.walksocket.md.MdDbUtils;
-import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdInfoDiff;
 import com.walksocket.md.MdJson;
+import com.walksocket.md.MdLogger;
 import com.walksocket.md.MdUtils;
 import com.walksocket.md.db.MdDbConnection;
-import com.walksocket.md.filter.*;
+import com.walksocket.md.filter.MdFilterDiffAbstract;
+import com.walksocket.md.filter.MdFilterDiffExistsOnlyBaseTables;
+import com.walksocket.md.filter.MdFilterDiffExistsOnlyCompareTables;
+import com.walksocket.md.filter.MdFilterDiffForceExcludeTables;
+import com.walksocket.md.filter.MdFilterDiffIncorrectDefinitionTables;
+import com.walksocket.md.filter.MdFilterDiffMismatchDefinitionTables;
+import com.walksocket.md.filter.MdFilterDiffMismatchRecordTables;
 import com.walksocket.md.input.MdInputAbstract;
 import com.walksocket.md.input.MdInputDiff;
-import com.walksocket.md.mariadb.MdMariadbUtils;
 import com.walksocket.md.output.MdOutputAbstract;
 import com.walksocket.md.output.MdOutputDiff;
 import com.walksocket.md.output.member.MdOutputMemberMismatchRecordTable;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,6 +28,7 @@ public class MdExecuteDiff extends MdExecuteAbstract {
 
   /**
    * constructor.
+   *
    * @param con db connection
    */
   public MdExecuteDiff(MdDbConnection con) {
@@ -34,7 +39,7 @@ public class MdExecuteDiff extends MdExecuteAbstract {
   public MdOutputAbstract execute(MdInputAbstract input) throws Exception {
     MdInputDiff inputDiff = (MdInputDiff) input;
     MdOutputDiff outputDiff = new MdOutputDiff();
-    String sql = "";
+    String sql;
 
     // -----
     // lock
