@@ -14,8 +14,8 @@ Get diff and sync between two databases in the same host created by MariaDB or M
 
 ### Usage by cli
 
-When put json to stdin, get result from stdout by json.  
-Below, it's simple usage.  
+When put JSON to stdin, get a result from stdout by JSON.  
+Below, it's a simple usage.  
 Cli document is [here](cli/README.md).  
 
     echo '${json}' | java -jar magentadesk-cli.jar --mode=${mode}
@@ -42,7 +42,7 @@ Cli document is [here](cli/README.md).
 ### Usage by web
 
 No stdin, startup http server.
-Below, it's simple usage.  
+Below, it's a simple usage.  
 Web document is [here](web/README.md).
 
     java -jar magentadesk-web.jar
@@ -74,13 +74,13 @@ Web document is [here](web/README.md).
 | MD_ENV                  | if 'DEBUG', log in detail.                                                                                                   |
 | MD_OUTPUT               | if 'PRETTY', write out json result in pretty.                                                                                |
 | MD_LIMIT_LENGTH         | when diff and over this, returned value is to hash. default is 10000.                                                        |
-| MD_LIMIT_MISMATCH_COUNT | when diff and over this, returned mismatch recods is convert empty. default is 10000.                                        |
+| MD_LIMIT_MISMATCH_COUNT | when diff and over this, returned mismatch records is convert empty. default is 10000.                                       |
 | MD_HOME                 | default is ${HOME}/.magentadesk. There is a home directory, by commands which execute in sync and at local database storage. |
 | MD_WAIT                 | if 'WAIT', waiting until getting lock. Default is 'NOWAIT'.                                                                  |
 
 ### Notice
 
-* Use checksum, checksum is different, as a result to extract record diff takes more time.
-* In much record, to extract diff may takes much time.
-* Mainly, magentadesk is target to 'master data'.
+* Use checksum, checksum is different, as a result, to extract record diff takes more time.
+* In many records, to extract diff may take much time.
+* Mainly, magentadesk is target to 'MASTER DATA'.
 

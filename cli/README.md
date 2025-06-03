@@ -1,6 +1,6 @@
 # magentadesk for cli
 
-### Json Format
+### JSON Format
 
 * [diff](../doc/json_diff.md)
 * [sync](../doc/json_sync.md)
@@ -37,7 +37,7 @@
 (mode=sync)
 
 * (diff and sync) create magentadesk database, and table.
-* (diff and sync) delete from diff recored passed over 3 hours since created.
+* (diff and sync) delete diff records passed over 3 hours since created.
 * (diff and sync) base and compare, lock execute simultaneously. （FOR UPDATE NOWAIT/WAIT）
 * check maintenance state between base and compare.
 * sync table diff used by diff.
@@ -46,8 +46,6 @@
 (mode=maintenance)
 
 * (diff and sync) create magentadesk database, and table.
-* (diff and sync) delete from diff recored passed over 3 hours since created.
+* (diff and sync) delete diff records passed over 3 hours since created.
 * (diff and sync) base and compare, lock execute simultaneously. （FOR UPDATE NOWAIT/WAIT）
-* set maintenance state.
-
-
+* set a maintenance state.

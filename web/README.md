@@ -4,7 +4,7 @@ web binary is used for 'api' and 'html'.
 html is default access to `http://localhost:8710`.  
 api message format is below.  
 
-### Json Format
+### JSON Format
 
 * [diff](../doc/json_diff.md)
 * [sync](../doc/json_sync.md)
