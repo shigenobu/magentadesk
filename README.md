@@ -9,8 +9,8 @@ Get diff and sync between two databases in the same host created by MariaDB or M
 ### System Required
 
 * over JDK 17
-* MariaDB 10.11(LTS), 11.4(LTS), 11.5, 11.6, 11.7
-* MySQL 8.0.31, 8.0.32, 8.0.33, 8.0.34, 8.0.35, 8.0.36, 8.0.37, 8.0.38, 8.0.39, 8.0.40, 8.0.41, 8.0.42
+* MariaDB 10.6, 10.11, 11.4, 11.5, 11.6, 11.7, 11.8
+* MySQL 8.0.31 - 8.0.42
 
 ### Usage by cli
 
