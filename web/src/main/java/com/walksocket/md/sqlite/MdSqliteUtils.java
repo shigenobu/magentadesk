@@ -1,6 +1,6 @@
 package com.walksocket.md.sqlite;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 /**
  * sqlite utils.
@@ -14,6 +14,6 @@ public class MdSqliteUtils {
    * @return quoted string
    */
   public static String quote(String src) {
-    return StringUtils.replace(src, "'", "''");
+    return Strings.CS.replace(src, "'", "''");
   }
 }

@@ -185,7 +185,7 @@ public class MdTemplateUtils {
    * @param src src
    * @return if all null, return true
    */
-  public static boolean isAllNull(Collection src) {
+  public static boolean isAllNull(Collection<?> src) {
     return src.stream().allMatch(Objects::isNull);
   }
 

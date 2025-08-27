@@ -1,10 +1,10 @@
 package com.walksocket.md;
 
-import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 
 /**
  * date.
@@ -19,14 +19,14 @@ public class MdDate {
   /**
    * add seconds for now.
    */
-  private static long addSeconds;
+  private static int addSeconds;
 
   /**
    * init.
    *
    * @param addSeconds add seconds
    */
-  public static void init(long addSeconds) {
+  public static void init(int addSeconds) {
     MdDate.addSeconds = addSeconds;
   }
 
@@ -36,11 +36,8 @@ public class MdDate {
    * @return now
    */
   public static String now() {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-    sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-    Date date = new Date();
-    date.setTime(date.getTime() + addSeconds * 1000);
-    return sdf.format(date);
+    var dt = OffsetDateTime.now(ZoneOffset.ofTotalSeconds(addSeconds));
+    return dt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"));
   }
 
   /**

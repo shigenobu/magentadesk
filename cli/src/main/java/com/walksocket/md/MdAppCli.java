@@ -49,7 +49,7 @@ public class MdAppCli implements AutoCloseable {
     // check args
     String mode = null;
     String logPath = null;
-    long addSeconds = 60 * 60 * 9;
+    int addSeconds = 60 * 60 * 9;
     for (String arg : args) {
       if (arg.startsWith(ARG_MODE)) {
         mode = arg.substring(ARG_MODE.length());
@@ -58,7 +58,7 @@ public class MdAppCli implements AutoCloseable {
         logPath = arg.substring(ARG_LOG_PATH.length());
       }
       if (arg.startsWith(ARG_ADD_SECONDS)) {
-        addSeconds = Long.parseLong(arg.substring(ARG_ADD_SECONDS.length()));
+        addSeconds = Integer.parseInt(arg.substring(ARG_ADD_SECONDS.length()));
       }
     }
     if (mode == null) {

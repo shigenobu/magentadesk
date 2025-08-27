@@ -36,7 +36,7 @@ public class MdAppWeb implements AutoCloseable {
   public static void main(String[] args) throws Exception {
     // check args
     String logPath = null;
-    long addSeconds = 60 * 60 * 9;
+    int addSeconds = 60 * 60 * 9;
     String webHost = "0.0.0.0";
     int webPort = 8710;
     for (String arg : args) {
@@ -44,7 +44,7 @@ public class MdAppWeb implements AutoCloseable {
         logPath = arg.substring(ARG_LOG_PATH.length());
       }
       if (arg.startsWith(ARG_ADD_SECONDS)) {
-        addSeconds = Long.parseLong(arg.substring(ARG_ADD_SECONDS.length()));
+        addSeconds = Integer.parseInt(arg.substring(ARG_ADD_SECONDS.length()));
       }
       if (arg.startsWith(ARG_WEB_HOST)) {
         webHost = arg.substring(ARG_WEB_HOST.length());

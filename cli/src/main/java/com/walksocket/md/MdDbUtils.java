@@ -1,7 +1,7 @@
 package com.walksocket.md;
 
 import java.util.Arrays;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 /**
  * db utils.
@@ -24,7 +24,7 @@ public class MdDbUtils {
    * @return quoted string
    */
   public static String quote(String src) {
-    return StringUtils.replace(src, "'", "''");
+    return Strings.CS.replace(src, "'", "''");
   }
 
   /**
