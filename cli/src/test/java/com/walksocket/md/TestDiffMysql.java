@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.walksocket.md.bash.MdBashCommand;
 import com.walksocket.md.db.MdDbFactory.DbType;
 import com.walksocket.md.input.MdInputDiff;
 import com.walksocket.md.input.member.MdInputMemberCondition;
@@ -28,6 +29,11 @@ public class TestDiffMysql {
 //    MdEnv.setLimitLength(3);
     MdDate.init(60 * 60 * 9);
     MdLogger.open("stderr");
+
+    MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 23306 -u root -ppass -e 'drop database if exists base'", 300));
+    MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 23306 -u root -ppass -e 'drop database if exists compare'", 300));
+    MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 23306 -u root -ppass < ../docker/mysql/init/1_base.sql", 300));
+    MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 23306 -u root -ppass < ../docker/mysql/init/2_compare.sql", 300));
   }
 
   @BeforeEach

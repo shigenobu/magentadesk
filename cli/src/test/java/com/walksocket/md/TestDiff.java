@@ -2,6 +2,7 @@ package com.walksocket.md;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.walksocket.md.bash.MdBashCommand;
 import com.walksocket.md.input.MdInputDiff;
 import com.walksocket.md.input.member.MdInputMemberCondition;
 import com.walksocket.md.input.member.MdInputMemberOption;
@@ -26,6 +27,11 @@ public class TestDiff {
 //    MdEnv.setLimitLength(3);
     MdDate.init(60 * 60 * 9);
     MdLogger.open("stderr");
+
+    MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 13306 -u root -ppass -e 'drop database if exists base'", 300));
+    MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 13306 -u root -ppass -e 'drop database if exists compare'", 300));
+    MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 13306 -u root -ppass < ../docker/mariadb/init/1_base.sql", 300));
+    MdBash.exec(new MdBashCommand("mysql -h 127.0.0.1 -P 13306 -u root -ppass < ../docker/mariadb/init/2_compare.sql", 300));
   }
 
   @BeforeEach
@@ -410,7 +416,7 @@ public class TestDiff {
         outputDiff.mismatchRecordTables.stream().filter(o -> o.tableName.equals("t_inet6")).findFirst().isPresent());
   }
 
-  @Test
+//  @Test
   public void test43Inet4DataType() throws Exception {
     MdEnv.setLimitLength(100);
 

@@ -53,9 +53,10 @@ public class MdExecute {
             || version.contains("8.0.41")
             || version.contains("8.0.42")
             || version.contains("8.0.43")
-            || version.contains("8.0.44"))) {
+            || version.contains("8.0.44")
+            || version.contains("8.4."))) {
           throw new MdExceptionInvalidVersion(
-              "MySQL 8.0.31 - 8.0.44 is required.");
+              "MySQL 8.0.31 - 8.0.44, 8.4 is required.");
         }
       } else {
         // check version

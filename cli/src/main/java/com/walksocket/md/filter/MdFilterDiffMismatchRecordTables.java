@@ -137,17 +137,18 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
     List<String> compareColumnNames = new ArrayList<>();
     List<String> baseDynamicColumnNames = new ArrayList<>();
     List<String> compareDynamicColumnNames = new ArrayList<>();
-    List<String> realColumnNames = new ArrayList<>();
+    List<String> hashedPrimaryColumnNames = new ArrayList<>();
+    List<String> hashedColumnNames = new ArrayList<>();
     for (MdInfoDiffColumn column : baseInfo.getRealColumns()) {
       baseColumnNames.add(
           String.format(
-              "md_b2c.cl_%s as mdb_%s",
+              "b.%s as mdb_%s",
               column.getColumnName(),
               column.getColumnName()));
 
       compareColumnNames.add(
           String.format(
-              "md_c2b.cl_%s as mdc_%s",
+              "c.%s as mdc_%s",
               column.getColumnName(),
               column.getColumnName()));
 
@@ -161,67 +162,77 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
               column.getColumnName(),
               column.getColumnName()));
 
+      hashedColumnNames.add(String.format(
+          "MD5(IFNULL(`%s`, '<NULL>'))",
+          column.getColumnName()));
+    }
+
+    List<String> joinBaseConditions = new ArrayList<>();
+    List<String> joinCompareConditions = new ArrayList<>();
+    for (MdInfoDiffColumn column : baseInfo.getPrimaryColumns()) {
+      String joinBaseCondition = String.format(
+          "p.%s = b.%s",
+          column.getColumnName(),
+          column.getColumnName());
+      String joinCompareCondition = String.format(
+          "p.%s = c.%s",
+          column.getColumnName(),
+          column.getColumnName());
       if (column.hasCollation()) {
-        realColumnNames.add(String.format(
-            "`%s` collate %s as cl_%s",
+        joinBaseCondition = String.format("%s collate %s", joinBaseCondition,
+            column.getBinaryCollationName());
+        joinCompareCondition = String.format("%s collate %s", joinCompareCondition,
+            column.getBinaryCollationName());
+      }
+      joinBaseConditions.add(joinBaseCondition);
+      joinCompareConditions.add(joinCompareCondition);
+
+      if (column.hasCollation()) {
+        hashedPrimaryColumnNames.add(String.format(
+            "`%s` collate %s as %s",
             column.getColumnName(),
             column.getBinaryCollationName(),
             column.getColumnName()));
       } else {
-        realColumnNames.add(String.format(
-            "`%s` as cl_%s",
+        hashedPrimaryColumnNames.add(String.format(
+            "`%s` as %s",
             column.getColumnName(),
             column.getColumnName()));
       }
     }
 
-    List<String> conditions = new ArrayList<>();
-    for (MdInfoDiffColumn column : baseInfo.getPrimaryColumns()) {
-      String condition = String.format(
-          "md_b2c.cl_%s = md_c2b.cl_%s",
-          column.getColumnName(),
-          column.getColumnName());
-      if (column.hasCollation()) {
-        condition = String.format("%s collate %s", condition, column.getBinaryCollationName());
-      }
-      conditions.add(condition);
-    }
-
     String seqExpression;
     String dynamicExpression;
-    String additionalExpression = "";
     if (con.getDbType() == DbType.MYSQL) {
       seqExpression = "`magentadesk`.`nextDiffSeq`()";
       dynamicExpression = "JSON_OBJECT";
-      additionalExpression = String.format(
-          "WHERE JSON_OBJECT(%s) != JSON_OBJECT(%s)",
-          MdUtils.join(baseDynamicColumnNames, ", "),
-          MdUtils.join(compareDynamicColumnNames, ", ")
-      );
-
     } else {
       seqExpression = "nextval(`magentadesk`.`diffSequence`)";
       dynamicExpression = "COLUMN_CREATE";
+    }
+
+    String hashedColumns = MdUtils.join(hashedPrimaryColumnNames, ", ");
+    if (hashedColumnNames.size() > 0) {
+      hashedColumns += ", " + String.format("MD5(CONCAT(%s)) as md_row_hash",
+          MdUtils.join(hashedColumnNames, ", "));
     }
 
     String sql = String.format(
         "INSERT INTO `magentadesk`.`diffRecord` (`summaryId`, `tableName`, `diffSeq`, `baseValues`, `compareValues`) "
             +
             "WITH " +
-            "md_b2c AS (" +
+            "md_b2c_hash AS (" +
             "  SELECT %s FROM `%s`.`%s` %s EXCEPT SELECT %s FROM `%s`.`%s` %s" +
             ")," +
-            "md_c2b AS (" +
+            "md_c2b_hash AS (" +
             "  SELECT %s FROM `%s`.`%s` %s EXCEPT SELECT %s FROM `%s`.`%s` %s" +
             ")," +
-            "md_left AS (" +
-            "  SELECT %s, %s FROM md_b2c LEFT OUTER JOIN md_c2b ON %s" +
+            "md_cmn_pk AS (" +
+            "  SELECT %s FROM md_b2c_hash UNION SELECT %s FROM md_c2b_hash" +
             ")," +
-            "md_right AS (" +
-            "  SELECT %s, %s FROM md_b2c RIGHT OUTER JOIN md_c2b ON %s" +
-            "), " +
             "md_full AS (" +
-            "  SELECT * FROM md_left UNION SELECT * FROM md_right" +
+            "  SELECT %s, %s FROM md_cmn_pk as p LEFT OUTER JOIN `%s`.`%s` as b ON %s LEFT OUTER JOIN `%s`.`%s` as c ON %s"
+            +
             ") " +
             "SELECT " +
             "  '%s' as summaryId, " +
@@ -230,34 +241,37 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
             "  %s(%s) as baseValues, " +
             "  %s(%s) as compareValues " +
             "FROM " +
-            "  md_full " +
-            "%s",
-        // md_b2c
-        MdUtils.join(realColumnNames, ", "),
+            "  md_full",
+        // md_b2c_hash
+        hashedColumns,
         baseInfo.getDatabase(),
         baseInfo.getTableName(),
         baseInfo.getWhereExpression(),
-        MdUtils.join(realColumnNames, ", "),
+        hashedColumns,
         compareInfo.getDatabase(),
         compareInfo.getTableName(),
         compareInfo.getWhereExpression(),
-        // md_c2b
-        MdUtils.join(realColumnNames, ", "),
+        // md_c2b_hash
+        hashedColumns,
         compareInfo.getDatabase(),
         compareInfo.getTableName(),
         compareInfo.getWhereExpression(),
-        MdUtils.join(realColumnNames, ", "),
+        hashedColumns,
         baseInfo.getDatabase(),
         baseInfo.getTableName(),
         baseInfo.getWhereExpression(),
-        // md_left
+        // md_cmn_pk
+        MdUtils.join(hashedPrimaryColumnNames, ", "),
+        MdUtils.join(hashedPrimaryColumnNames, ", "),
+        // md_full
         MdUtils.join(baseColumnNames, ", "),
         MdUtils.join(compareColumnNames, ", "),
-        MdUtils.join(conditions, " AND "),
-        // md_right
-        MdUtils.join(baseColumnNames, ", "),
-        MdUtils.join(compareColumnNames, ", "),
-        MdUtils.join(conditions, " AND "),
+        baseInfo.getDatabase(),
+        baseInfo.getTableName(),
+        MdUtils.join(joinBaseConditions, " AND "),
+        compareInfo.getDatabase(),
+        compareInfo.getTableName(),
+        MdUtils.join(joinCompareConditions, " AND "),
         // SELECT
         summaryId,
         baseInfo.getTableName(),
@@ -265,8 +279,7 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
         dynamicExpression,
         MdUtils.join(baseDynamicColumnNames, ", "),
         dynamicExpression,
-        MdUtils.join(compareDynamicColumnNames, ", "),
-        additionalExpression);
+        MdUtils.join(compareDynamicColumnNames, ", "));
     con.execute(sql);
   }
 }
