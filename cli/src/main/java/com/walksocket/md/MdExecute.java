@@ -54,9 +54,10 @@ public class MdExecute {
             || version.contains("8.0.42")
             || version.contains("8.0.43")
             || version.contains("8.0.44")
+            || version.contains("8.0.45")
             || version.contains("8.4."))) {
           throw new MdExceptionInvalidVersion(
-              "MySQL 8.0.31 - 8.0.44, 8.4 is required.");
+              "MySQL 8.0.31 - 8.0.45, 8.4 is required.");
         }
       } else {
         // check version
@@ -74,9 +75,10 @@ public class MdExecute {
             || version.contains("11.4.")
             || version.contains("11.8.")
             || version.contains("12.0.")
-            || version.contains("12.1."))) {
+            || version.contains("12.1.")
+            || version.contains("12.2."))) {
           throw new MdExceptionInvalidVersion(
-              "MariaDB 10.6, 10.11, 11.4, 11.8, 12.0, 12.1 is required.");
+              "MariaDB 10.6, 10.11, 11.4, 11.8, 12.0, 12.1, 12.2 is required.");
         }
       }
 
