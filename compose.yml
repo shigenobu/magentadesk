@@ -20,7 +20,7 @@ services:
   mysql:
     build: ./docker/mysql
     container_name: magentadesk-mysql
-    image: magentadesk-mysql:0.2.0
+    image: magentadesk-mysql:0.3.0
     ports:
       - 23306:3306
     environment:

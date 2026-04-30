@@ -163,7 +163,7 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
               column.getColumnName()));
 
       hashedColumnNames.add(String.format(
-          "MD5(IFNULL(`%s`, '<NULL>'))",
+          "SHA2(IFNULL(`%s`, '<NULL>'), 0)",
           column.getColumnName()));
     }
 
@@ -213,7 +213,7 @@ public class MdFilterDiffMismatchRecordTables extends MdFilterDiffAbstract {
 
     String hashedColumns = MdUtils.join(hashedPrimaryColumnNames, ", ");
     if (hashedColumnNames.size() > 0) {
-      hashedColumns += ", " + String.format("MD5(CONCAT(%s)) as md_row_hash",
+      hashedColumns += ", " + String.format("SHA2(CONCAT(%s), 0) as md_row_hash",
           MdUtils.join(hashedColumnNames, ", "));
     }
 

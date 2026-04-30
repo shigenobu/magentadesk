@@ -40,24 +40,10 @@ public class MdExecute {
           break;
         }
         if (MdUtils.isNullOrEmpty(version)
-            || !(version.contains("8.0.31")
-            || version.contains("8.0.32")
-            || version.contains("8.0.33")
-            || version.contains("8.0.34")
-            || version.contains("8.0.35")
-            || version.contains("8.0.36")
-            || version.contains("8.0.37")
-            || version.contains("8.0.38")
-            || version.contains("8.0.39")
-            || version.contains("8.0.40")
-            || version.contains("8.0.41")
-            || version.contains("8.0.42")
-            || version.contains("8.0.43")
-            || version.contains("8.0.44")
-            || version.contains("8.0.45")
-            || version.contains("8.4."))) {
+            || !(version.contains("8.4.")
+            || version.contains("9.7."))) {
           throw new MdExceptionInvalidVersion(
-              "MySQL 8.0.31 - 8.0.45, 8.4 is required.");
+              "MySQL 8.4, 9.7 is required.");
         }
       } else {
         // check version
