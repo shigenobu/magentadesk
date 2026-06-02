@@ -12,7 +12,7 @@ services:
   mariadb:
     build: ./docker/mariadb
     container_name: magentadesk-mariadb
-    image: magentadesk-mariadb:0.2.5
+    image: magentadesk-mariadb:0.2.6
     ports:
       - 13306:3306
     environment:
