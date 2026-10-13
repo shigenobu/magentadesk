@@ -59,9 +59,10 @@ public class MdExecute {
             || !(version.contains("10.11.")
             || version.contains("11.4.")
             || version.contains("11.8.")
-            || version.contains("12.3."))) {
+            || version.contains("12.3.")
+            || version.contains("13.0."))) {
           throw new MdExceptionInvalidVersion(
-              "MariaDB 10.11, 11.4, 11.8, 12.3 is required.");
+              "MariaDB 10.11, 11.4, 11.8, 12.3, 13.0 is required.");
         }
       }
 
